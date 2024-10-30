@@ -44,18 +44,30 @@ function App() {
       />
         <div className = 'flex shadow-lg hover:opacity-90 cursor-pointer justify-center items-center bg-violet-900 h-8 w-20 rounded-3xl text-white font-semibold'> Button1 </div>
         <div className = 'flex shadow-lg justify-center items-center bg-violet-900 h-8 w-20 rounded-3xl text-white font-semibold'> Button2 </div>
-        <div className = 'flex shadow-lg justify-center items-center bg-violet-900 h-8 w-20 rounded-3xl text-white font-semibold'> Button3 </div>
+        <div className = 'flex shadow-lg justify-center items-center bg-violet-900 h-8 w-20 rounded-3xl text-white font-semibold'> Activity </div>
 
       </div>
-      <div className = 'absolute gap-5 flex flex-col items-center pointer-events-none p-5 right-1 top-1 rounded bg-zinc-900 bg-opacity-65 text-white'> 
+      <div className = 'absolute h-96 overflow-y-scroll gap-5 flex flex-col items-center p-5 right-1 top-1 rounded bg-zinc-900 bg-opacity-65 text-white'> 
       <div className = 'text-2xl'>Activity Feed</div>
-      <ul className= 'flex flex-col gap-1  list-disc pl-2 text-slate-200'>
+      <ul className= 'flex flex-col gap-2 pl-2 text-slate-200'>
         {posts.map(post => (
-          <>
-          <li className = 'font-semibold' key={post.id}>{post.name + ' ' + 'joined' }</li>
-          <div className = 'text-sm'> 2024-10-27 01:01:01+00</div>
-          <div className = 'mb-2 border-slate-400 border-b'> </div>
-          </>
+          <div className='flex flex-col items-center justify-center bg-green-400 pl-5 pr-5 pt-2 pb-2 rounded-lg bg-opacity-50'>
+          <li className = 'font-semibold font-sm' key={post.id}>{post.name + ' ' + 'joined' }</li>
+          <div className = 'text-xs'> {new Date(post.created_at).toLocaleString('en-US')}</div>
+          </div>
+        ))}
+                {posts.map(post => (
+          <div className='flex flex-col items-center justify-center bg-blue-400 pl-5 pr-5 pt-2 pb-2 rounded-lg bg-opacity-50'>
+          <li className = 'font-semibold font-sm' key={post.id}>{post.name + ' ' + 'joined' }</li>
+          <div className = 'text-xs'> {new Date(post.created_at).toLocaleString('en-US')}</div>
+          </div>
+        ))}
+
+{posts.map(post => (
+          <div className='flex flex-col items-center justify-center bg-red-400 pl-5 pr-5 pt-2 pb-2 rounded-lg bg-opacity-50'>
+          <li className = 'font-semibold font-sm' key={post.id}>{post.name + ' ' + 'joined' }</li>
+          <div className = 'text-xs'> {new Date(post.created_at).toLocaleString('en-US')}</div>
+          </div>
         ))}
       </ul>
       </div>

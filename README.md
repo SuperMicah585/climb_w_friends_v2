@@ -20,3 +20,14 @@ Home:
     i. will prompt user for Name of Map and starting point of map(city name). 
 2. Friends list that you can add friends to map
 3. Activity feed for friends(sends,climbs,trips,etc.). Will be able to filter to show only events that user wants
+4. Climber Stats(think of it like pokemon trainer card)
+
+
+Map:
+1. Ability to Tick completed climbs.
+2. Ability to Tick attempted climbs.
+3. Activity Feed will show a variety of activity climbs,coments,users,etc..
+4. Ability to add Climbs via seach Box.
+5. Ability to navigate to climbs via search.
+6. Ability to create other layers outside of climbs?
+7. Ability to add comments to climbs.
