@@ -17,7 +17,7 @@ const Map = () => {
       zoom: 9, // Starting zoom level
       projection: 'globe' // Enable the globe projection
     });
-    map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
+    map.addControl(new mapboxgl.NavigationControl(), 'bottom-left');
     return () => map.remove(); // Clean up on unmount
   }, []);
 

@@ -47,7 +47,7 @@ function App() {
         <div className = 'flex shadow-lg justify-center items-center bg-violet-900 h-8 w-20 rounded-3xl text-white font-semibold'> Activity </div>
 
       </div>
-      <div className = 'absolute h-96 overflow-y-scroll gap-5 flex flex-col items-center p-5 right-1 top-1 rounded bg-zinc-900 bg-opacity-65 text-white'> 
+      <div className = 'absolute border-zinc-900 border h-1/2 overflow-y-scroll gap-5 flex flex-col items-center p-5 right-1 top-1 rounded bg-zinc-900 bg-opacity-65 text-white'> 
       <div className = 'text-2xl'>Activity Feed</div>
       <ul className= 'flex flex-col gap-2 pl-2 text-slate-200'>
         {posts.map(post => (
