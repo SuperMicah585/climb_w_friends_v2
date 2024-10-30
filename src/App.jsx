@@ -36,13 +36,25 @@ function App() {
     <div style = {{zIndex:50}}>
  
       <Map/>
-  
-      <h1>Posts</h1>
-      <ul>
+      <div className = 'absolute flex justify-center items-center left-5 top-5 gap-10 '>
+      <input
+          type="text"
+          placeholder="Add Climbs"
+          className="border border-gray-300 rounded-xl p-2 w-64 focus:outline-none text-black focus:ring-2 focus:ring-violet-900"
+        />
+        <div className = 'flex hover:opacity-90 cursor-pointer justify-center items-center bg-violet-900 h-8 w-20 rounded-3xl text-white font-semibold'> Button1 </div>
+        <div className = 'flex justify-center items-center bg-violet-900 h-8 w-20 rounded-3xl text-white font-semibold'> Button2 </div>
+        <div className = 'flex justify-center items-center bg-violet-900 h-8 w-20 rounded-3xl text-white font-semibold'> Button3 </div>
+
+      </div>
+      <div className = 'absolute gap-5 flex flex-col items-center pointer-events-none p-5 right-1 top-1 rounded bg-zinc-900 bg-opacity-50 text-white'> 
+      <div className = 'text-2xl'>Activity Feed</div>
+      <ul className= 'list-disc pl-2 text-slate-400 font-bold'>
         {posts.map(post => (
-          <li key={post.id}>{post.name +' '+ post.created_at}</li>
+          <li key={post.id}>{post.name + ' ' + 'joined' }</li>
         ))}
       </ul>
+      </div>
     </div>
   )
 }

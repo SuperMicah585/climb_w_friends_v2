@@ -22,8 +22,8 @@ const Map = () => {
 
   return (
     <div
+     className = 'w-screen h-screen'
       ref={mapContainer}
-      style={{ width: '100vw', height: '100vh' }} // Fullscreen map styling
     />
   );
 };
