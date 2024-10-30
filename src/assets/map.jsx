@@ -5,9 +5,10 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 
 // Set Mapbox access token
 mapboxgl.accessToken = import.meta.env.VITE_MAP_BOX_KEY;
+
 const Map = () => {
   const mapContainer = useRef(null);
-
+  
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainer.current, // Container for the map
@@ -16,7 +17,7 @@ const Map = () => {
       zoom: 9, // Starting zoom level
       projection: 'globe' // Enable the globe projection
     });
-
+    map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
     return () => map.remove(); // Clean up on unmount
   }, []);
 

@@ -38,23 +38,23 @@ function App() {
       <Map/>
       <div className = 'absolute flex justify-center items-center left-5 top-5 gap-10 '>
       <input
-          type="text"
-          placeholder="Add Climbs"
-          className="border border-gray-300 rounded-xl p-2 w-64 focus:outline-none text-black focus:ring-2 focus:ring-violet-900"
-        />
-        <div className = 'flex hover:opacity-90 cursor-pointer justify-center items-center bg-violet-900 h-8 w-20 rounded-3xl text-white font-semibold'> Button1 </div>
-        <div className = 'flex justify-center items-center bg-violet-900 h-8 w-20 rounded-3xl text-white font-semibold'> Button2 </div>
-        <div className = 'flex justify-center items-center bg-violet-900 h-8 w-20 rounded-3xl text-white font-semibold'> Button3 </div>
+        type="text"
+        placeholder="Search for Climbs"
+        className="rounded-xl p-2 w-64 focus:outline-none text-black bg-slate-50 focus:ring-2 focus:ring-violet-900 shadow-lg"
+      />
+        <div className = 'flex shadow-lg hover:opacity-90 cursor-pointer justify-center items-center bg-violet-900 h-8 w-20 rounded-3xl text-white font-semibold'> Button1 </div>
+        <div className = 'flex shadow-lg justify-center items-center bg-violet-900 h-8 w-20 rounded-3xl text-white font-semibold'> Button2 </div>
+        <div className = 'flex shadow-lg justify-center items-center bg-violet-900 h-8 w-20 rounded-3xl text-white font-semibold'> Button3 </div>
 
       </div>
-      <div className = 'absolute gap-5 flex flex-col items-center pointer-events-none p-5 right-1 top-1 rounded bg-zinc-900 bg-opacity-50 text-white'> 
+      <div className = 'absolute gap-5 flex flex-col items-center pointer-events-none p-5 right-1 top-1 rounded bg-zinc-900 bg-opacity-65 text-white'> 
       <div className = 'text-2xl'>Activity Feed</div>
       <ul className= 'flex flex-col gap-1  list-disc pl-2 text-slate-200'>
         {posts.map(post => (
           <>
           <li className = 'font-semibold' key={post.id}>{post.name + ' ' + 'joined' }</li>
           <div className = 'text-sm'> 2024-10-27 01:01:01+00</div>
-          <div className = 'mb-2 border-slate-700 border-b'> </div>
+          <div className = 'mb-2 border-slate-400 border-b'> </div>
           </>
         ))}
       </ul>
