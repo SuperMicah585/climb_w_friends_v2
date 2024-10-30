@@ -49,9 +49,13 @@ function App() {
       </div>
       <div className = 'absolute gap-5 flex flex-col items-center pointer-events-none p-5 right-1 top-1 rounded bg-zinc-900 bg-opacity-50 text-white'> 
       <div className = 'text-2xl'>Activity Feed</div>
-      <ul className= 'list-disc pl-2 text-slate-400 font-bold'>
+      <ul className= 'flex flex-col gap-1  list-disc pl-2 text-slate-200'>
         {posts.map(post => (
-          <li key={post.id}>{post.name + ' ' + 'joined' }</li>
+          <>
+          <li className = 'font-semibold' key={post.id}>{post.name + ' ' + 'joined' }</li>
+          <div className = 'text-sm'> 2024-10-27 01:01:01+00</div>
+          <div className = 'mb-2 border-slate-700 border-b'> </div>
+          </>
         ))}
       </ul>
       </div>
