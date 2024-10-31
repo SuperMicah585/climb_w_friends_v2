@@ -5,7 +5,7 @@ import { Post } from './types/Posts';
 
 function App() {
   const [posts, setPosts] = useState<Post[]>([]);
-  console.log(posts, 'hi');
+  
   useEffect(() => {
     const fetchPosts = async () => {
       const { data, error } = await supabase.from('map_table').select('*');
@@ -34,7 +34,7 @@ function App() {
   }, []);
   return (
     <div style={{ zIndex: 50 }}>
-      <Map />
+      <Map zoomLevel={2}/>
 
       <div className='absolute flex justify-center items-center left-5 top-5 gap-10 '>
         <input
