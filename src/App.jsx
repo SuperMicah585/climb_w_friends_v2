@@ -36,15 +36,18 @@ function App() {
     <div style = {{zIndex:50}}>
  
       <Map/>
+
       <div className = 'absolute flex justify-center items-center left-5 top-5 gap-10 '>
       <input
         type="text"
         placeholder="Search for Climbs"
-        className="rounded-xl p-2 w-64 focus:outline-none text-black bg-slate-50 focus:ring-2 focus:ring-violet-900 shadow-lg"
+        className="rounded-xl text-purple-900 pl-16 w-96 p-3 w-64 focus:outline-none text-black bg-slate-50 focus:ring-2 focus:ring-violet-900 shadow-lg"
       />
-        <div className = 'flex shadow-lg hover:opacity-90 cursor-pointer justify-center items-center bg-violet-900 h-8 w-20 rounded-3xl text-white font-semibold'> Button1 </div>
-        <div className = 'flex shadow-lg justify-center items-center bg-violet-900 h-8 w-20 rounded-3xl text-white font-semibold'> Button2 </div>
-        <div className = 'flex shadow-lg justify-center items-center bg-violet-900 h-8 w-20 rounded-3xl text-white font-semibold'> Activity </div>
+
+    <div className = 'absolute hover:opacity-50 text-violet-900 cursor-pointer z-10 left-2'> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" class="size-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+    </svg>
+    </div>
 
       </div>
       <div className = 'absolute border-zinc-900 border h-1/2 overflow-y-scroll gap-5 flex flex-col items-center p-5 right-1 top-1 rounded bg-zinc-900 bg-opacity-65 text-white'> 
