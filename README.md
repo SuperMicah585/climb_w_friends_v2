@@ -31,3 +31,5 @@ Map:
 5. Ability to navigate to climbs via search.
 6. Ability to create other layers outside of climbs?
 7. Ability to add comments to climbs.
+
+Figma: https://www.figma.com/board/WKDxGmbIQnUzdiXXF34W2t/Untitled?node-id=0-1&node-type=canvas
