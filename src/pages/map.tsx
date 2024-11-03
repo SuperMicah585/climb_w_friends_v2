@@ -1,8 +1,12 @@
 // Import Mapbox GL, and CSS
 import { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
+import Search from './mapComponents/search'
+import ActivityFeed from './mapComponents/activityFeed';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
+
+console.log("hi")
 // Set Mapbox access token
 mapboxgl.accessToken = import.meta.env.VITE_MAP_BOX_KEY;
 
@@ -28,7 +32,21 @@ const Map: React.FC<MapProps> = ({zoomLevel}) => {
     return () => map.current?.remove(); // Clean up on unmount
   }, []);
 
-  return <div className='w-screen h-screen' ref={mapContainer} />;
+
+
+  return (
+    <> 
+  <div className = 'absolute top-0 left-0'> <Search/> </div>
+  <ActivityFeed/>
+
+  <div className='w-screen h-screen' ref={mapContainer}/>
+  
+
+  
+  </>
+  
+  )
+  ;
 };
 
 export default Map;

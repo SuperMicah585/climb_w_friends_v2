@@ -2,13 +2,14 @@
 
 import React, { useState,useEffect } from 'react';
 import { signUp, signIn, signOut, getUser } from '../supaBaseClient';
-import Map from './map';
+import { useNavigate} from 'react-router-dom';
 
 const AuthComponent: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [user, setUser] = useState<any>(getUser());
     
+    const navigate:any = useNavigate()
 
     useEffect(()=>{
 
@@ -33,12 +34,14 @@ const AuthComponent: React.FC = () => {
         } else {
             setUser(user)
             alert(user?.email + 'Sign-in successful');
+            navigate('/map')
             //setUser(user);
         }
     };
 
     const handleSignOut = async () => {
         const response = await signOut();
+        console.log(response)
         if (response?.error) {
             alert('Sign-out failed: ' + response.error.message);
         } else {
@@ -52,13 +55,13 @@ Going to want to capture additional metaData
 Name,username,etc.
 */
 
-const inputStyle:string = 'p-5 text-white focus:ring-violet-900 focus:ring-2 focus:outline-none rounded-lg'
-const buttonStyle:string = 'border-2 border-transparent bg-zinc-800 hover:border-violet-900'
+const inputStyle:string = 'p-5 text-white bg-black focus:ring-violet-900 focus:ring-2 focus:outline-none rounded-lg'
+const buttonStyle:string = 'border-2 border-transparent bg-zinc-950 hover:border-violet-900'
 
     return (
         <> 
-        <div className = 'absolute left-0 top-0 opacity-75'> <Map zoomLevel ={2} /></div>
-        <div className = 'absolute z-25 pointer-events-none top-0 left-0 flex items-center justify-center w-screen h-screen'> 
+     
+        <div className = 'absolute bg-zinc-800 top-0 left-0 flex items-center justify-center w-screen h-screen'> 
         <div className = 'flex p-5 pointer-events-auto bg-zinc-900 rounded-lg flex-col w-96 gap-1'>
             <div className = 'flex justify-center items-center text-2xl font-bold text-violet-700'> CLIMB W FRIENDS BITCHESS</div>
             <input
