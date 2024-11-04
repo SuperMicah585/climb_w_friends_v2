@@ -7,7 +7,6 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import {ClimbsTableResponse} from '../types/interfaces'
 import {createMarker,createClimbingShapes,updateLayerVisibility} from './mapComponents/mapLayers'
 
-
 // Set Mapbox access token
 mapboxgl.accessToken = import.meta.env.VITE_MAP_BOX_KEY;
 
@@ -67,6 +66,8 @@ const Map: React.FC<MapProps> = ({zoomLevel}) => {
 
 
   useEffect(() => {
+
+  
     if (selectedClimb && map?.current) {
       if (currentMarker) {
         currentMarker.remove();
@@ -87,6 +88,7 @@ const Map: React.FC<MapProps> = ({zoomLevel}) => {
   }, [selectedClimb]);
 
 useEffect(() => {
+
   if(mapLoaded){
   updateLayerVisibility(map,polygonOrCircleDisplay)
   }
