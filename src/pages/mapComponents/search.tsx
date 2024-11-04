@@ -11,8 +11,15 @@ import {
   climbDropDownStyleContainer,
   stateDropDownStyleContainer,
   searchDropDownStyleContainer,
-} from './mapStyles'; 
-const Search = () =>{
+} from './mapStyles';
+
+
+type SearchProps = {
+  selectedClimbCallBack: (climb: ClimbsTableResponse) => void;
+};
+
+
+const Search: React.FC<SearchProps> = ({selectedClimbCallBack}) => {
 
 const [toggleClimbTypeDropDown,setToggleClimbTypeDropDown] = useState<boolean>(false)
 const [toggleStateDropDown,setToggleStateDropDown] = useState<boolean>(false)
@@ -170,7 +177,7 @@ const handleClimbSearch = async(query:string) =>{
 
 const handleClimbSelect = (item: ClimbsTableResponse ) => {
 
-  console.log(item)
+  selectedClimbCallBack(item)
 
 }
 

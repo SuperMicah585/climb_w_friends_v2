@@ -1,5 +1,3 @@
-
-
 export const dropDownStyles: string = 'flex items-center hover:opacity-75 text-sm cursor-pointer hover:bg-neutral-300 p-2 text-black ';
 
 export const dropDownSvgOpen = (

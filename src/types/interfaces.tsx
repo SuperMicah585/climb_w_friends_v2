@@ -12,3 +12,8 @@ export interface ClimbsTableResponse {
     "Area Latitude": number; 
     "Area Longitude": number; 
   }
+
+  export interface GeoJsonFeature {
+
+    
+  }
