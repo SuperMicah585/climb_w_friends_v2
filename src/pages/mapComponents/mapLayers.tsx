@@ -51,7 +51,7 @@ marker.togglePopup();
 export const createClimbingShapes = (map:any) =>{
 
   map.current?.on("load", () => {
-    
+    console.log("loadsdss")
     displayLayersInitial(map)
 
 
@@ -70,20 +70,41 @@ const displayLayersInitial = (map:any) =>{
         data: testData, // Your GeoJSON data
       });
     }
-  
-    // Add layers for each feature based on geometry type
+
     testData.features.forEach((feature, index) => {
       const fillLayerId = `geojson-fill-layer-${index}`;
       const circleLayerId = `geojson-circle-layer-${index}`;
       const layerId = `geojson-layer-${index}`;
 
+
+    
   
       switch (feature.geometry.type) {
         case "Point":
           map.current?.addLayer({
             id: layerId,
             type: "circle",
-            source: "geojson-data",
+            source: {
+              type: "geojson",
+              data: {
+                type: "FeatureCollection",
+                features: [
+                  {
+                    type: "Feature",
+                    geometry: {
+                      type: "Point",
+                      coordinates: feature.geometry.coordinates,
+                      //need to add property features
+                    },
+                    properties: {
+                      climbs: feature.properties.climbs,
+                      total_climbers: feature.properties.total_climbers
+       
+                    }
+                  },
+                ],
+              },
+            },
             filter: ["==", "$type", "Point"],
             paint: {
               "circle-color": "blue",
@@ -91,19 +112,42 @@ const displayLayersInitial = (map:any) =>{
               "circle-opacity": 0.8,
             },
           });
+          addClickToFeature(map,layerId)
           break;
   
         case "LineString":
           map.current?.addLayer({
             id: layerId,
             type: "line",
-            source: "geojson-data",
+            source: {
+              type: "geojson",
+              data: {
+                type: "FeatureCollection",
+                features: [
+                  {
+                    type: "Feature",
+                    geometry: {
+                      type: "LineString",
+                      coordinates: feature.geometry.coordinates,
+                      //need to add property features
+                    },
+                    properties: {
+                      climbs: feature.properties.climbs,
+                      total_climbers: feature.properties.total_climbers
+       
+                    }
+                  },
+                ],
+              },
+            },
+            
             filter: ["==", "$type", "LineString"],
             paint: {
               "line-color": "green",
               "line-width": 2,
             },
           });
+          addClickToFeature(map,layerId)
           break;
   
           case "Polygon":
@@ -111,8 +155,28 @@ const displayLayersInitial = (map:any) =>{
             map.current?.addLayer({
               id: fillLayerId,
               type: "fill",
-              source: "geojson-data",
- 
+              source: {
+                type: "geojson",
+                data: {
+                  type: "FeatureCollection",
+                  features: [
+                    {
+                      type: "Feature",
+                      geometry: {
+                        type: "Polygon",
+                        coordinates: feature.geometry.coordinates,
+                        //need to add property features
+                      },
+                      properties: {
+                        climbs: feature.properties.climbs,
+                        total_climbers: feature.properties.total_climbers
+         
+                      }
+                    },
+                  ],
+                },
+              },
+              filter: ["==", "$type", "Polygon"],
               paint: {
                 "fill-color": "blue",
                 "fill-opacity": 0.8,
@@ -121,7 +185,7 @@ const displayLayersInitial = (map:any) =>{
                 visibility: "none",
               },
             });
-      
+            addClickToFeature(map,fillLayerId)
             // Circle layer for polygon (alternative representation)
             const centroid = turf.centroid(feature);
             const [longitude, latitude] = centroid.geometry.coordinates;
@@ -129,6 +193,7 @@ const displayLayersInitial = (map:any) =>{
             // Circle layer for the centroid of the polygon
             map.current?.addLayer({
               id: circleLayerId,
+        
               type: "circle",
               source: {
                 type: "geojson",
@@ -160,12 +225,18 @@ const displayLayersInitial = (map:any) =>{
                 visibility: "visible", // Initially visible
               },
             });
+            addClickToFeature(map,circleLayerId)
           break;
   
         default:
           console.warn(`Unsupported GeoJSON type: ${feature.geometry.type}`);
       }
+
+
+      
     });
+
+;
 
 };
 
@@ -189,3 +260,17 @@ export const updateLayerVisibility = (map: any, displayBoolean: boolean) => {
   });
 
 };
+
+const addClickToFeature = (map:any,id:string) =>{
+
+  map.current?.on('click', id,  (event: mapboxgl.MapMouseEvent & { features: mapboxgl.GeoJSONFeature[] }) => {
+    if(event.features[0].layer?.id ===id){
+    const properties = event.features[0].properties?.climbs;
+    const climbs = JSON.parse(properties);
+    console.log(climbs)
+    //allow propigation. Will join all climbs together and display output within modal
+  }
+  });
+
+
+}
