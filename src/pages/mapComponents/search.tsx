@@ -133,11 +133,12 @@ const SearchDropDown = () =>{
         </div>
         
         <div className= 'text-xs font-thin'>{item.Location}</div>
+
        
         </div> 
 
         </div>
-      )): <div onClick = {()=>{setToggleSearchDropDown(false)}} className = 'flex items-center text-sm p-2 text-black '> No Results </div>
+      )): <div onClick = {()=>{setToggleSearchDropDown(false)}} className = 'flex w-96 items-center text-sm p-2 text-black '> No Results </div>
     
     }
     </div>
@@ -182,6 +183,8 @@ const handleClimbSelect = (item: ClimbsTableResponse ) => {
 }
 
 
+//add two buttons. 1) 'Add' which will add the climb to the map(only show if not already added) 2) 'View' which will only place marker on where it is,but not add climb. 
+
 return(
   <>  
 
@@ -199,7 +202,7 @@ return(
     />
 
 
-{toggleSearchDropDown?<div className = 'absolute w-content left-40 top-[50px] z-10'> 
+{toggleSearchDropDown?<div className = 'absolute w-content top-[50px] z-10'> 
     <SearchDropDown/>
     </div>:null}
 

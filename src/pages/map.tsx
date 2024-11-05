@@ -3,8 +3,9 @@ import { useState, useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import Search from './mapComponents/search'
 import ActivityFeed from './mapComponents/activityFeed';
+import ClimbModal from './mapComponents/climbModal'
 import 'mapbox-gl/dist/mapbox-gl.css';
-import {ClimbsTableResponse} from '../types/interfaces'
+import {ClimbsTableResponse,GeoJsonFeature} from '../types/interfaces'
 import {createMarker,createClimbingShapes,updateLayerVisibility} from './mapComponents/mapLayers'
 
 // Set Mapbox access token
@@ -21,12 +22,31 @@ const Map: React.FC<MapProps> = ({zoomLevel}) => {
   const [currentMarker,setCurrentMarker] = useState<any>(null)
   const [polygonOrCircleDisplay, setpolygonOrCircleDisplay] = useState<boolean>(false)
   const [mapLoaded, setMapLoaded] = useState(false);
- 
+  const [clickedFeatureClimbs,setClickedFeatureClimbs] = useState<GeoJsonFeature[]>([])
+  const [clickedFeatureModalTriggerBoolean,setClickedFeatureModalTriggerBoolean] = useState<boolean>(false)
 
   const selectedClimbCallBack = (climbData:ClimbsTableResponse) =>{
-
+    
     setSelectedClimb(climbData)
   }
+
+
+
+  const closeModalCallBack = (trigger:boolean) =>{
+    setClickedFeatureClimbs([])
+    setClickedFeatureModalTriggerBoolean(trigger)
+  }
+
+
+  const clickedFeatureClimbCallBack: (climbData: GeoJsonFeature[]) => void = (climbData) => {
+
+   
+    setClickedFeatureClimbs(prev => [...prev, ...climbData]);
+
+  };
+  
+
+  
 
   useEffect(() => {
     if (mapContainer.current) {
@@ -50,7 +70,7 @@ const Map: React.FC<MapProps> = ({zoomLevel}) => {
     });
 
 
-    createClimbingShapes(map)
+    createClimbingShapes(map,clickedFeatureClimbCallBack)
     map.current?.addControl(new mapboxgl.NavigationControl(), 'bottom-left');
     return () => map.current?.remove(); // Clean up on unmount
   }, []);
@@ -95,13 +115,24 @@ useEffect(() => {
 },[polygonOrCircleDisplay,mapLoaded])
   
 
+useEffect(()=>{
+
+ // setClickedFeatureModalTrigger(prev=>prev+1)
+  if(clickedFeatureClimbs.length>0){
+  setClickedFeatureModalTriggerBoolean(true)
+  }
+},[clickedFeatureClimbs])
+
+
+
+
   
 
   return (
     <> 
   <div className = 'absolute top-0 left-0'> <Search selectedClimbCallBack = {selectedClimbCallBack} /> </div>
   <ActivityFeed/>
-
+  {clickedFeatureModalTriggerBoolean?<ClimbModal closeModalCallBack = {closeModalCallBack} clickedFeatureClimbs={clickedFeatureClimbs}/>:null}
   <div className='w-screen h-screen' ref={mapContainer}/>
   
 
