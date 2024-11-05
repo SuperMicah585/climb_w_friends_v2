@@ -1,4 +1,4 @@
-export const dropDownStyles: string = 'flex items-center hover:opacity-75 text-sm cursor-pointer hover:bg-neutral-300 p-2 text-black ';
+export const dropDownStyles: string = 'flex items-center text-sm cursor-pointer hover:bg-zinc-700 p-2 text-white ';
 
 export const dropDownSvgOpen = (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="4.0" stroke="currentColor" className="size-2.5">
@@ -12,8 +12,8 @@ export const dropDownSvgClosed = (
   </svg>
 );
 
-export const climbTypeDropDownStyle = 'bg-zinc-700 text-white flex font-semibold text-sm w-[84px] justify-center gap-1 items-center hover:opacity-75 text-black cursor-pointer rounded-l-xl p-2 z-10';
-export const stateDropDownStyle = 'bg-zinc-700 text-white font-semibold flex w-14 text-sm justify-center gap-1 items-center hover:opacity-75 text-black cursor-pointer rounded-r-xl p-2 z-10';
-export const climbDropDownStyleContainer = "w-20 rounded-md bg-white max-h-48 overflow-y-scroll";
-export const stateDropDownStyleContainer = "w-14 rounded-md bg-white max-h-48 overflow-y-scroll";
-export const searchDropDownStyleContainer = "w-14 rounded-md bg-white w-full overflow-hidden max-h-48 overflow-y-scroll";
+export const climbTypeDropDownStyle = 'bg-zinc-700 text-white flex font-semibold text-sm w-[84px] justify-center gap-1 items-center hover:opacity-75 cursor-pointer rounded-l-xl p-2 z-10';
+export const stateDropDownStyle = 'bg-zinc-700 text-white font-semibold flex w-14 text-sm justify-center gap-1 items-center hover:opacity-75 cursor-pointer rounded-r-xl p-2 z-10';
+export const climbDropDownStyleContainer = "w-20 border border-slate-500 text-white rounded-md bg-zinc-900 bg-opacity-90 max-h-48 overflow-y-scroll";
+export const stateDropDownStyleContainer = "w-14 border border-slate-500 text-white rounded-md bg-zinc-900 bg-opacity-90 max-h-48 overflow-y-scroll";
+export const searchDropDownStyleContainer = "w-14 border border-slate-500 rounded-md bg-zinc-900 bg-opacity-90 w-full overflow-hidden max-h-48 overflow-y-scroll";
