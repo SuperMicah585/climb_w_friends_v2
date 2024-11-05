@@ -138,7 +138,7 @@ const SearchDropDown = () =>{
         </div> 
 
         </div>
-      )): <div onClick = {()=>{setToggleSearchDropDown(false)}} className = 'flex w-96 items-center text-sm p-2 text-black '> No Results </div>
+      )): <div onClick = {()=>{setToggleSearchDropDown(false)}} className = 'flex w-96 items-center text-sm p-2 text-white '> No Results </div>
     
     }
     </div>
@@ -198,11 +198,11 @@ return(
       onChange={(e) => setQuery(e.target.value)}
       type='text'
       placeholder='Search for Climbs'
-      className='rounded-xl text-black bg-white pl-40 w-96 p-3 w-64 focus:outline-none text-black bg-slate-50 focus:ring-2 focus:ring-zinc-700 shadow-lg'
+      className='rounded-xl text-white bg-zinc-900 bg-opacity-90 pl-40 w-96 p-3 w-64 border border-slate-500 focus:outline-none text-white bg-slate-50 focus:ring-1 focus:ring-violet-500 shadow-lg'
     />
 
 
-{toggleSearchDropDown?<div className = 'absolute w-content top-[50px] z-10'> 
+{toggleSearchDropDown?<div className = 'absolute w-content top-[51px] z-10'> 
     <SearchDropDown/>
     </div>:null}
 

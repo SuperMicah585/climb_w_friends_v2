@@ -35,7 +35,7 @@ const ActivityFeed = () =>{
 
 
 return(
-   <div className = 'flex flex-col items-center justify-center absolute z-10 border-zinc-900 border right-1 top-1 rounded bg-zinc-900 bg-opacity-65 text-white'> 
+   <div className = 'flex flex-col border border-slate-500 items-center justify-center absolute z-10 border-zinc-900 border right-1 top-1 rounded bg-zinc-900 bg-opacity-90 text-white'> 
    <div className='text-2xl p-3'>Activity Feed</div>
     <div className='h-96 overflow-y-scroll gap-5 flex flex-col items-center pl-5 pr-5'>
     

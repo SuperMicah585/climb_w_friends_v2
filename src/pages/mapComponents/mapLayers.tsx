@@ -261,18 +261,27 @@ export const updateLayerVisibility = (map: any, displayBoolean: boolean) => {
   });
 
 };
+const addClickToFeature = (
+  map: any,
+  id: string,
+  clickedFeatureClimbCallBack: (climbData: GeoJsonFeature[]) => void
+) => {
+  // Ensure map and map.current are defined
+  if (!map?.current) return;
 
-const addClickToFeature = (map:any,id:string,clickedFeatureClimbCallBack: (climbData: GeoJsonFeature[]) => void) =>{
-
-  map.current?.on('click', id,  (event: mapboxgl.MapMouseEvent & { features: mapboxgl.GeoJSONFeature[] }) => {
-    if(event.features[0].layer?.id ===id){
-    const properties = event.features[0].properties?.climbs;
-    const climbs = JSON.parse(properties);
-  
-    clickedFeatureClimbCallBack(climbs)
-    //allow propigation. Will join all climbs together and display output within modal
-  }
+  map.current.on('click', id, (event: mapboxgl.MapLayerMouseEvent) => {
+    if (event.features && event.features[0]?.layer?.id === id) {
+      const properties = event.features[0].properties?.climbs;
+      if (properties) {
+        try {
+          const climbs = JSON.parse(properties);
+          clickedFeatureClimbCallBack(climbs);
+        } catch (error) {
+          console.error('Error parsing climbs property:', error);
+        }
+      }
+    }
   });
 
 
-}
+};
