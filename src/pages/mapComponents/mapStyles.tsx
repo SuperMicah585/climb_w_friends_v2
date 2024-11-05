@@ -16,4 +16,4 @@ export const climbTypeDropDownStyle = 'bg-zinc-700 text-white flex font-semibold
 export const stateDropDownStyle = 'bg-zinc-700 text-white font-semibold flex w-14 text-sm justify-center gap-1 items-center hover:opacity-75 text-black cursor-pointer rounded-r-xl p-2 z-10';
 export const climbDropDownStyleContainer = "w-20 rounded-md bg-white max-h-48 overflow-y-scroll";
 export const stateDropDownStyleContainer = "w-14 rounded-md bg-white max-h-48 overflow-y-scroll";
-export const searchDropDownStyleContainer = "w-14 rounded-md bg-white w-56 overflow-hidden max-h-48 overflow-y-scroll";
+export const searchDropDownStyleContainer = "w-14 rounded-md bg-white w-full overflow-hidden max-h-48 overflow-y-scroll";

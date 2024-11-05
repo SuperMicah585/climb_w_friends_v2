@@ -2,6 +2,7 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import {testData} from './mapObjects'
 import * as turf from '@turf/turf';
+import {ClimbsTableResponse,GeoJsonFeature} from '../../types/interfaces'
 
 
 
@@ -48,11 +49,11 @@ marker.togglePopup();
 }
 
 
-export const createClimbingShapes = (map:any) =>{
+export const createClimbingShapes = (map:any,clickedFeatureClimbCallBack: (climbData: GeoJsonFeature[]) => void) =>{
 
   map.current?.on("load", () => {
-    console.log("loadsdss")
-    displayLayersInitial(map)
+  
+    displayLayersInitial(map,clickedFeatureClimbCallBack)
 
 
 });
@@ -60,7 +61,7 @@ export const createClimbingShapes = (map:any) =>{
 };
 
 
-const displayLayersInitial = (map:any) =>{
+const displayLayersInitial = (map:any,clickedFeatureClimbCallBack: (climbData: GeoJsonFeature[]) => void) =>{
 
 
     // Only add the source once
@@ -109,10 +110,10 @@ const displayLayersInitial = (map:any) =>{
             paint: {
               "circle-color": "blue",
               "circle-radius": 6,
-              "circle-opacity": 0.8,
+              "circle-opacity": 0.5,
             },
           });
-          addClickToFeature(map,layerId)
+          addClickToFeature(map,layerId,clickedFeatureClimbCallBack)
           break;
   
         case "LineString":
@@ -147,7 +148,7 @@ const displayLayersInitial = (map:any) =>{
               "line-width": 2,
             },
           });
-          addClickToFeature(map,layerId)
+          addClickToFeature(map,layerId,clickedFeatureClimbCallBack)
           break;
   
           case "Polygon":
@@ -179,13 +180,13 @@ const displayLayersInitial = (map:any) =>{
               filter: ["==", "$type", "Polygon"],
               paint: {
                 "fill-color": "blue",
-                "fill-opacity": 0.8,
+                "fill-opacity": 0.5,
               },
               layout: {
                 visibility: "none",
               },
             });
-            addClickToFeature(map,fillLayerId)
+            addClickToFeature(map,fillLayerId,clickedFeatureClimbCallBack)
             // Circle layer for polygon (alternative representation)
             const centroid = turf.centroid(feature);
             const [longitude, latitude] = centroid.geometry.coordinates;
@@ -219,13 +220,13 @@ const displayLayersInitial = (map:any) =>{
               paint: {
                 "circle-color": "blue",
                 "circle-radius": 14,
-                "circle-opacity": 0.8,
+                "circle-opacity": 0.5,
               },
               layout: {
                 visibility: "visible", // Initially visible
               },
             });
-            addClickToFeature(map,circleLayerId)
+            addClickToFeature(map,circleLayerId,clickedFeatureClimbCallBack)
           break;
   
         default:
@@ -261,13 +262,14 @@ export const updateLayerVisibility = (map: any, displayBoolean: boolean) => {
 
 };
 
-const addClickToFeature = (map:any,id:string) =>{
+const addClickToFeature = (map:any,id:string,clickedFeatureClimbCallBack: (climbData: GeoJsonFeature[]) => void) =>{
 
   map.current?.on('click', id,  (event: mapboxgl.MapMouseEvent & { features: mapboxgl.GeoJSONFeature[] }) => {
     if(event.features[0].layer?.id ===id){
     const properties = event.features[0].properties?.climbs;
     const climbs = JSON.parse(properties);
-    console.log(climbs)
+  
+    clickedFeatureClimbCallBack(climbs)
     //allow propigation. Will join all climbs together and display output within modal
   }
   });

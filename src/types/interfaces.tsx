@@ -14,6 +14,13 @@ export interface ClimbsTableResponse {
   }
 
   export interface GeoJsonFeature {
-
+ 
+      id: string;
+      climber_names: string[];
+      name: string;
+      grade: string;
+  
     
   }
+
+  
