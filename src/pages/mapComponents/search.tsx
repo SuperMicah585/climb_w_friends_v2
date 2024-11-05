@@ -11,6 +11,7 @@ import {
   climbDropDownStyleContainer,
   stateDropDownStyleContainer,
   searchDropDownStyleContainer,
+  notificationSVG
 } from './mapStyles';
 
 
@@ -190,7 +191,7 @@ return(
 
 
   
-    <div className='absolute flex  items-center z-10 left-5 top-5 gap-10 '>
+    <div className='absolute flex  items-center z-20 left-5 top-5 gap-10 '>
     
     <input
       ref = {inputRef}
@@ -202,8 +203,8 @@ return(
     />
 
 
-{toggleSearchDropDown?<div className = 'absolute w-content top-[51px] z-10'> 
-    <SearchDropDown/>
+{toggleSearchDropDown?<div className = 'absolute w-content top-[51px]'> 
+    <SearchDropDown/> 
     </div>:null}
 
       <div className = 'absolute pl-1 items-center gap-2 flex'>
@@ -218,7 +219,7 @@ return(
     
 
     </div>
-    {toggleClimbTypeDropDown?<div className = 'absolute top-11 z-10'> <ClimbDropDown/> </div>:null}
+    {toggleClimbTypeDropDown?<div className = 'absolute top-11'> <ClimbDropDown/> </div>:null}
     </div>
 
     <div className = 'flex flex-col items-center justify-center'> 
@@ -230,7 +231,7 @@ return(
 
 
     </div>
-    {toggleStateDropDown?<div className = 'absolute top-11 z-10'> <StateDropDown/> </div>:null}
+    {toggleStateDropDown?<div className = 'absolute top-11'> <StateDropDown/> </div>:null}
     </div>
 
 
@@ -239,6 +240,8 @@ return(
 
 
   </div>
+
+
   
   </>
 )
