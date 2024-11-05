@@ -7,6 +7,7 @@ import ClimbModal from './mapComponents/climbModal'
 import 'mapbox-gl/dist/mapbox-gl.css';
 import {ClimbsTableResponse,GeoJsonFeature} from '../types/interfaces'
 import {createMarker,createClimbingShapes,updateLayerVisibility} from './mapComponents/mapLayers'
+import { notificationSVG } from './mapComponents/mapStyles';
 
 // Set Mapbox access token
 mapboxgl.accessToken = import.meta.env.VITE_MAP_BOX_KEY;
@@ -130,7 +131,8 @@ useEffect(()=>{
 
   return (
     <> 
-  <div className = 'absolute top-0 left-0'> <Search selectedClimbCallBack = {selectedClimbCallBack} /> </div>
+  <div className = 'absolute top-0 left-0 flex'> <Search selectedClimbCallBack = {selectedClimbCallBack} />  </div> 
+
   <ActivityFeed/>
   {clickedFeatureModalTriggerBoolean?<ClimbModal closeModalCallBack = {closeModalCallBack} clickedFeatureClimbs={clickedFeatureClimbs}/>:null}
   <div className='w-screen h-screen' ref={mapContainer}/>
