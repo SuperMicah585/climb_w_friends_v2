@@ -191,7 +191,7 @@ return(
 
 
   
-    <div className='absolute flex  items-center z-20 left-5 top-5 gap-10 '>
+    <div className=' flex  items-center z-20 gap-10 '>
     
     <input
       ref = {inputRef}

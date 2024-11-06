@@ -1,6 +1,6 @@
 
 import {ClimbsTableResponse,GeoJsonFeature} from '../../types/interfaces'
-import {checkBadge,chatIcon,minusIcon,closeIcon} from '../mapComponents/mapStyles'
+import {checkBadge,chatIcon,minusIcon,closeIcon,filterIcon} from '../mapComponents/mapStyles'
 
 type ClimbModalProps = {
     clickedFeatureClimbs: GeoJsonFeature[];
@@ -15,7 +15,7 @@ type ClimbModalProps = {
 
 
 
-
+//add input so that users can search for climbs within a point
 
 return(
     
@@ -23,9 +23,19 @@ return(
 
     <div onClick={(event) => event.stopPropagation()} className = 'bg-zinc-900 rounded-lg relative shadow-md shadow-opacity-50 shadow-violet-200 gap-2 pt-5 pb-5 overflow-y-scroll h-1/2 w-1/2 items-center flex flex-col pl-10 pr-10 min-h-96 min-w-96 z-36'>    
     <div onClick = {()=>closeModalCallBack(false)} className = 'absolute hover:bg-slate-500 rounded-full hover:opacity-75 p-1 cursor-pointer text-white right-2 top-2'> {closeIcon} </div>
+    <div className ='flex pb-5 w-full gap-10 border-b border-neutral-500 items-center'> 
 
-    <div className = 'text-white w-full border-b border-neutral-500 text-4xl pb-5 font-semibold tracking-widest'> CLIMBS</div>
+    <div className = 'flex relative items-center'> 
+    <input
+      type='text'
+      placeholder='Search Climbs within Location'
+      className='rounded-xl text-white bg-zinc-900 w-96 p-3 w-64 border border-slate-500 focus:outline-none text-white bg-slate-50 focus:ring-1 focus:ring-violet-500 shadow-lg'
+    />
+    <div className = ' cursor-pointer text-white right-3 absolute p-1 hover:bg-slate-500 hover:opacity-75 rounded-full'> {filterIcon}</div>
+    </div>
+    </div>
 
+    
    <div> 
    
    <div className="w-full rounded-md bg-zinc-900">
@@ -35,7 +45,7 @@ return(
 
       <div className = 'absolute top-2 right-2 hover:bg-slate-500 rounded-full hover:opacity-75 p-1 cursor-pointer text-red-300'> {minusIcon} </div>
       <div className = 'absolute flex items-center gap-2 right-2 bottom-2'> 
-      <div className=" hover:bg-slate-500 rounded-full hover:opacity-75 p-1 cursor-pointer text-green-500">{checkBadge}</div>
+      <div className=" hover:bg-slate-500 hover:text-green-500 rounded-full hover:opacity-75 p-1 cursor-pointer text-neutral-500">{checkBadge}</div>
       <div className="hover:bg-slate-500 rounded-full hover:opacity-75 p-1 cursor-pointer text-blue-500">{chatIcon}</div> 
      </div>
       {/* Main details section */}
