@@ -14,7 +14,7 @@ export const dropDownSvgClosed = (
 
 export const notificationSVG = 
 
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
   <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
 </svg>
 
@@ -43,9 +43,16 @@ export const closeIcon =
   <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
 </svg>
 
+export const filterIcon =
+
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+</svg>
+
+
 
 export const climbTypeDropDownStyle = 'bg-zinc-700 text-white flex font-semibold text-sm w-[84px] justify-center gap-1 items-center hover:opacity-75 cursor-pointer rounded-l-xl p-2 z-10';
 export const stateDropDownStyle = 'bg-zinc-700 text-white font-semibold flex w-14 text-sm justify-center gap-1 items-center hover:opacity-75 cursor-pointer rounded-r-xl p-2 z-10';
 export const climbDropDownStyleContainer = "w-20 border border-slate-500 text-white rounded-md bg-zinc-900 bg-opacity-90 max-h-48 overflow-y-scroll";
 export const stateDropDownStyleContainer = "w-14 border border-slate-500 text-white rounded-md bg-zinc-900 bg-opacity-90 max-h-48 overflow-y-scroll";
-export const searchDropDownStyleContainer = "w-14 border border-slate-500 rounded-md bg-zinc-900 bg-opacity-90 w-full overflow-hidden max-h-48 overflow-y-scroll";
+export const searchDropDownStyleContainer = "w-14 border border-slate-500 rounded-md bg-zinc-900 bg-opacity-90 w-96 overflow-hidden max-h-48 overflow-y-scroll";

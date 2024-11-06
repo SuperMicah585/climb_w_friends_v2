@@ -25,6 +25,7 @@ const Map: React.FC<MapProps> = ({zoomLevel}) => {
   const [mapLoaded, setMapLoaded] = useState(false);
   const [clickedFeatureClimbs,setClickedFeatureClimbs] = useState<GeoJsonFeature[]>([])
   const [clickedFeatureModalTriggerBoolean,setClickedFeatureModalTriggerBoolean] = useState<boolean>(false)
+  const [feedToggle,setFeedToggle] = useState<boolean>(false)
 
   const selectedClimbCallBack = (climbData:ClimbsTableResponse) =>{
     
@@ -131,9 +132,11 @@ useEffect(()=>{
 
   return (
     <> 
-  <div className = 'absolute top-0 left-0 flex'> <Search selectedClimbCallBack = {selectedClimbCallBack} />  </div> 
+  <div className = 'absolute top-5 left-5 flex items-center justify-center gap-5'> <Search selectedClimbCallBack = {selectedClimbCallBack} /> 
+  <div onClick = {()=> setFeedToggle(prev=>!prev)} 
+  className = {`cursor-pointer ${feedToggle?'text-violet-500 border-violet-500 fill-violet-500':'fill-none border-slate-500'} hover:text-violet-500 z-20 p-2 bg-slate-900 opacity-90 border border-slate-500 hover:border-violet-500 rounded-full`}> {notificationSVG} </div>   </div> 
 
-  <ActivityFeed/>
+  <ActivityFeed feedToggle = {feedToggle}/>
   {clickedFeatureModalTriggerBoolean?<ClimbModal closeModalCallBack = {closeModalCallBack} clickedFeatureClimbs={clickedFeatureClimbs}/>:null}
   <div className='w-screen h-screen' ref={mapContainer}/>
   
