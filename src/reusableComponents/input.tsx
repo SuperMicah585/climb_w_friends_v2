@@ -8,6 +8,7 @@ interface InputComponentProps {
 }
 
 
+
 const InputComponent = forwardRef<HTMLInputElement, InputComponentProps>(
   ({ handleSearch, setToggleSearchDropDown,paddingLeft }, ref) => {
     const [query, setQuery] = useState<string>('');
