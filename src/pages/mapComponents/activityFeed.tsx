@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../../supaBaseClient';
 import { Post } from '../../types/Posts';
-import { notificationSVG,closeIcon } from '../mapComponents/mapStyles'
 import Draggable from 'react-draggable';
 
 const ActivityFeed = ({feedToggle}) =>{
