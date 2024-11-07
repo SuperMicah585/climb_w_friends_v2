@@ -2,24 +2,22 @@ import {useState,useEffect,useRef} from 'react'
 import {climbType,usStates} from './mapObjects'
 import { supabase } from '../../supaBaseClient';
 import {ClimbsTableResponse} from '../../types/interfaces'
+import InputComponent from '../../reusableComponents/input'
+
 import {
   dropDownStyles,
   dropDownSvgOpen,
   dropDownSvgClosed,
   climbTypeDropDownStyle,
   stateDropDownStyle,
-  climbDropDownStyleContainer,
-  stateDropDownStyleContainer,
+  basicDropDownStyleContainer,
   searchDropDownStyleContainer,
-  notificationSVG
-} from './mapStyles';
+} from '../../reusableComponents/styles';
 
 
 type SearchProps = {
   selectedClimbCallBack: (climb: ClimbsTableResponse) => void;
 };
-
-
 const Search: React.FC<SearchProps> = ({selectedClimbCallBack}) => {
 
 const [toggleClimbTypeDropDown,setToggleClimbTypeDropDown] = useState<boolean>(false)
@@ -27,8 +25,6 @@ const [toggleStateDropDown,setToggleStateDropDown] = useState<boolean>(false)
 const [toggleSearchDropDown,setToggleSearchDropDown] = useState<boolean>(false)
 const [climbTypeDropDownValue,setclimbTypeDropDown] = useState('Boulder')
 const [stateDropDownValue,setStateDropDown] = useState('WA')
-const [query, setQuery] = useState('');
-const [debouncedQuery, setDebouncedQuery] = useState(query);
 const [searchResults,setsearchResults] = useState<ClimbsTableResponse[]>([]);
 const [stateDropDownName,setStateDropDownName] = useState('Washington')
 
@@ -38,31 +34,7 @@ const climbTypeRefButtonRef = useRef<HTMLDivElement | null>(null)
 const stateRefDropdownRef = useRef<HTMLDivElement | null>(null)
 const stateRefButtonRef = useRef<HTMLDivElement | null>(null)
 const searchTypeRefDropdownRef = useRef<HTMLDivElement | null>(null)
-const inputRef = useRef<HTMLInputElement | null>(null)
-
-//debouncing
-useEffect(() => {
-  const handler = setTimeout(() => {
-    setDebouncedQuery(query);
-  }, 500);
-
-  return () => {
-    clearTimeout(handler);
-  };
-}, [query]);
-
-
-useEffect(() => {
-  
- 
-
-    handleClimbSearch(debouncedQuery)
-
-  
-}, [debouncedQuery]);
-
-
-//check to see if mouse click outside of drops(to close them)
+const inputRef = useRef<HTMLInputElement | null>(null);
 
 const handleClickOutside = (event:any) => {
   
@@ -81,6 +53,11 @@ const handleClickOutside = (event:any) => {
 
 };
 
+const setToggleSearchDropDownCallBack = (booleanValue:boolean)=>{
+
+  setToggleSearchDropDown(booleanValue)
+}
+
 
 useEffect(() => {
 
@@ -95,7 +72,7 @@ useEffect(() => {
 
 const StateDropDown = () => {
   return (
-    <div ref = {stateRefDropdownRef} className={stateDropDownStyleContainer}>
+    <div ref = {stateRefDropdownRef} className={basicDropDownStyleContainer('w-14')}>
       {usStates.map((item) => (
       item.abbreviation !== stateDropDownValue? 
       <div onClick = {()=>{setStateDropDownName(item.name);setStateDropDown(item.abbreviation);setToggleStateDropDown(false);}} className = {dropDownStyles} key={item.abbreviation}> {item.abbreviation} </div>:null
@@ -107,7 +84,7 @@ const StateDropDown = () => {
 
 const ClimbDropDown = () => {
   return (
-    <div ref = {climbTypeRefDropdownRef} className={climbDropDownStyleContainer}>
+    <div ref = {climbTypeRefDropdownRef} className={basicDropDownStyleContainer('w-20')}>
       {climbType.map((item) => (
         item !== climbTypeDropDownValue? 
         <div onClick = {()=>{setclimbTypeDropDown(item);setToggleClimbTypeDropDown(false);}} className = {dropDownStyles} key={item}> {item} </div>:null
@@ -183,9 +160,6 @@ const handleClimbSelect = (item: ClimbsTableResponse ) => {
 
 }
 
-
-//add two buttons. 1) 'Add' which will add the climb to the map(only show if not already added) 2) 'View' which will only place marker on where it is,but not add climb. 
-
 return(
   <>  
 
@@ -193,18 +167,11 @@ return(
   
     <div className=' flex  items-center z-20 gap-10 '>
     
-    <input
-      ref = {inputRef}
-      onFocus = {()=>setToggleSearchDropDown(true)}
-      onChange={(e) => setQuery(e.target.value)}
-      type='text'
-      placeholder='Search for Climbs'
-      className='rounded-xl text-white bg-zinc-900 bg-opacity-90 pl-40 w-96 p-3 w-64 border border-slate-500 focus:outline-none text-white bg-slate-50 focus:ring-1 focus:ring-violet-500 shadow-lg'
-    />
+   <InputComponent paddingLeft={'pl-40'} ref={inputRef} handleSearch ={handleClimbSearch} setToggleSearchDropDown={setToggleSearchDropDownCallBack}/>
 
 
 {toggleSearchDropDown?<div className = 'absolute w-content top-[51px]'> 
-    <SearchDropDown/> 
+    <SearchDropDown /> 
     </div>:null}
 
       <div className = 'absolute pl-1 items-center gap-2 flex'>
@@ -216,8 +183,6 @@ return(
       {climbTypeDropDownValue}
       {toggleClimbTypeDropDown?dropDownSvgOpen:dropDownSvgClosed}
 
-    
-
     </div>
     {toggleClimbTypeDropDown?<div className = 'absolute top-11'> <ClimbDropDown/> </div>:null}
     </div>
@@ -226,23 +191,11 @@ return(
     <div ref={stateRefButtonRef} onClick = {()=>setToggleStateDropDown(prev=>!prev)} className={stateDropDownStyle}>
        {stateDropDownValue}
       {toggleStateDropDown?dropDownSvgOpen:dropDownSvgClosed}
-
-      
-
-
     </div>
     {toggleStateDropDown?<div className = 'absolute top-11'> <StateDropDown/> </div>:null}
     </div>
-
-
-
   </div>
-
-
   </div>
-
-
-  
   </>
 )
 

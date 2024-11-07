@@ -8,6 +8,8 @@ export const climbType:Array<string> = [
     'Rock','Boulder','Aid','Ice','Mix','Alpine'
 ]
 
+export const filterTypes:string[] = ['Order Route DESC','Order Route ASC','Order Grade ASC','Order Grade DESC']
+
 export const usStates:Array<State>= [
     { name: "Alabama", abbreviation: "AL" },
     { name: "Alaska", abbreviation: "AK" },

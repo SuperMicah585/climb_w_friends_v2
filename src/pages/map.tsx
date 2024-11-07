@@ -7,7 +7,7 @@ import ClimbModal from './mapComponents/climbModal'
 import 'mapbox-gl/dist/mapbox-gl.css';
 import {ClimbsTableResponse,GeoJsonFeature} from '../types/interfaces'
 import {createMarker,createClimbingShapes,updateLayerVisibility} from './mapComponents/mapLayers'
-import { notificationSVG } from './mapComponents/mapStyles';
+import { notificationSVG } from '../reusableComponents/styles';
 
 // Set Mapbox access token
 mapboxgl.accessToken = import.meta.env.VITE_MAP_BOX_KEY;
