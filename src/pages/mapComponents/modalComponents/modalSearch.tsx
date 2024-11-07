@@ -10,7 +10,7 @@ interface ModalSearchProps {
 
 
 const ModalSearch: React.FC<ModalSearchProps> = ({ searchFilterCallBack }) =>{
-  const [searchResults, setSearchResults] = useState('')
+const [searchResults, setSearchResults] = useState('')
 const [dropDownToggle,setDropDownToggle] = useState(false)
 const [selectedFilter,setSelectedFilter] = useState('Order Grade ASC')
 const filterDropDownRef = useRef<HTMLDivElement | null>(null)

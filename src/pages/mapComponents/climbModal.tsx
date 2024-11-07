@@ -65,10 +65,10 @@ return(
       </div>
 
       <div className='flex gap-2 items-center italic font-bold text-xs text-black mt-5'>
-        <div className='p-1 rounded-md bg-violet-300'>Theresa</div>
-        <div className='p-1 rounded-md bg-violet-300'>Micah</div>
-        <div className='p-1 rounded-md bg-violet-300'>Corbin</div>
-        <div className='p-1 rounded-md bg-violet-300'>Leavy</div>
+        <div className='p-1 text-white rounded-md border-violet-500 border-2'>Theresa</div>
+        <div className='p-1 text-white rounded-md border-violet-500 border-2'>Micah</div>
+        <div className='p-1 text-white rounded-md border-violet-500 border-2'>Corbin</div>
+        <div className='p-1 text-white rounded-md border-violet-500 border-2'>Leavy</div>
       </div>
     </div>
   ))}
