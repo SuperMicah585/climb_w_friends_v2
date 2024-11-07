@@ -5,11 +5,12 @@ import {filterTypes} from '../mapObjects'
 
 interface ModalSearchProps {
   searchFilterCallBack: (data: string) => void;
+  sortStringCallBack: (data:string) =>void;
 
 }
 
 
-const ModalSearch: React.FC<ModalSearchProps> = ({ searchFilterCallBack }) =>{
+const ModalSearch: React.FC<ModalSearchProps> = ({ searchFilterCallBack,sortStringCallBack }) =>{
 const [searchResults, setSearchResults] = useState('')
 const [dropDownToggle,setDropDownToggle] = useState(false)
 const [selectedFilter,setSelectedFilter] = useState('Order Grade ASC')
@@ -24,6 +25,12 @@ useEffect(()=>{
   searchFilterCallBack(searchResults)
 
 },[searchResults])
+
+useEffect(()=>{
+  
+  sortStringCallBack(selectedFilter)
+
+},[selectedFilter])
 
 
 const handleDocumentClick = (event:any) => {
