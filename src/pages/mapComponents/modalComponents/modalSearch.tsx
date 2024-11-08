@@ -91,9 +91,9 @@ return(
 
     <div className ='flex pb-5 w-full gap-10 border-b border-neutral-500 items-center'> 
 
-    <div className = 'flex relative items-center'> 
+    <div className = 'flex max-w-96 flex-grow relative items-center'> 
     <Input paddingLeft = {'pl-5'} ref={inputRef} handleSearch = {handleClimbSearch}/>
-    <div ref = {filterIconDownRef} onClick = {() =>setDropDownToggle(prev=>!prev)} className = ' cursor-pointer text-white right-3 absolute p-1 z-10 hover:bg-slate-500 hover:opacity-75 rounded-full'> {filterIcon}</div>
+    <div ref = {filterIconDownRef} onClick = {() =>setDropDownToggle(prev=>!prev)} className = ' cursor-pointer text-white right-3 absolute p-1 hover:bg-slate-500 hover:opacity-75 rounded-full'> {filterIcon}</div>
    {dropDownToggle? <FilterDropDown/>:null}
     </div>
 
