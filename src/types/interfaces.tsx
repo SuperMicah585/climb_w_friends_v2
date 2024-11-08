@@ -23,4 +23,16 @@ export interface ClimbsTableResponse {
     
   }
 
+  export interface ChatProps {
+    displayTrigger: number
+    climbName: string
+    climbGrade:string
+
+  }
+
+export interface ChatObject {
+    message:string
+    name:string
+}
+
   

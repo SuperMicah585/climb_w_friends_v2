@@ -2,6 +2,7 @@
 import {GeoJsonFeature} from '../../types/interfaces'
 import {checkBadge,chatIcon,minusIcon,closeIcon,addIcon,newWindowIcon} from '../../reusableComponents/styles'
 import ModalSearch from './modalComponents/modalSearch'
+import ModalChat from './modalComponents/modalChat'
 import {useState,useEffect} from 'react'
 type ClimbModalProps = {
 
@@ -20,6 +21,9 @@ const [isClimbAdded,setIsClimbAdded] = useState<boolean>(false)
 const [routeFilterString,setRouteFilterString] = useState<string>('')
 const [sortString,setSortString] = useState('Order Grade ASC')
 const [isClimbTicked,setisClimbTicked] = useState(false)
+const [displayTrigger,setDisplayTrigger] = useState(0)
+const [climbNameForChat,setClimbNameForChat] = useState('')
+const [climbGradeForChat,setClimbGradeForChat] = useState('')
 
 
  const searchFilterCallBack=(data:string)=>{
@@ -43,8 +47,14 @@ const [isClimbTicked,setisClimbTicked] = useState(false)
 return(
     
     <div onClick = {()=>closeModalCallBack(false)} className = 'flex justify-center z-20 items-center bg-slate-500 w-screen h-screen bg-opacity-75 bg-blur-md absolute'> 
+    <div className ='absolute w-screen h-screen flex justify-center items-center pointer-events-none' onClick={(event) => event.stopPropagation()}>
+    <ModalChat climbGrade={climbGradeForChat} climbName ={climbNameForChat} displayTrigger={displayTrigger}/>
+    </div>
+    <div onClick={(event) => event.stopPropagation()} className = 'bg-zinc-900 rounded-lg relative shadow-sm shadow-opacity-50 shadow-violet-200 gap-2 pt-5 pb-5 overflow-y-scroll h-1/2 w-1/2 items-start flex flex-col pl-10 pr-10 min-h-96 min-w-96 z-36'>    
+    
+    
 
-    <div onClick={(event) => event.stopPropagation()} className = 'bg-zinc-900 rounded-lg relative shadow-sm shadow-opacity-50 shadow-violet-200 gap-2 pt-5 pb-5 overflow-y-scroll h-1/2 w-1/2 items-center flex flex-col pl-10 pr-10 min-h-96 min-w-96 z-36'>    
+    
     <div onClick = {()=>closeModalCallBack(false)} 
     className = 'absolute hover:bg-slate-500 rounded-full hover:opacity-75 p-1 cursor-pointer text-white right-2 top-2'> {closeIcon} </div>
 
@@ -73,7 +83,7 @@ return(
 
       <div className='absolute flex items-center gap-2 right-2 bottom-2'>
         <div onClick = {()=> setisClimbTicked(prev=>!prev)} className={`hover:bg-slate-500 rounded-full hover:opacity-75 p-1 cursor-pointer ${isClimbTicked?'text-green-500':'text-neutral-500 hover:text-neutral-400'}`}>{checkBadge}</div>
-        <div className="hover:bg-slate-500 rounded-full hover:opacity-75 p-1 cursor-pointer text-blue-500">{chatIcon}</div>
+        <div onClick ={()=>{setDisplayTrigger(prev=>prev+1);setClimbNameForChat(item.name);setClimbGradeForChat(item.grade)}} className="hover:bg-slate-500 rounded-full hover:opacity-75 p-1 cursor-pointer text-blue-500">{chatIcon}</div>
       </div>
       {/* Main details section */}
       <div className="flex gap-5 text-white font-semibold">

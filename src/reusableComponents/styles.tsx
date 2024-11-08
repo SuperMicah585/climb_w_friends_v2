@@ -59,6 +59,20 @@ export const newWindowIcon =
 <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
 </svg>
 
+export const backArrowIcon = 
+
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5" />
+</svg>
+
+export const submitAirplane = 
+
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+</svg>
+
+
+
 export const dropDownStyles: string = 'flex items-center text-sm cursor-pointer hover:bg-zinc-300 hover:bg-opacity-25 p-2 text-white ';
 export const climbTypeDropDownStyle = 'bg-zinc-700 text-white flex font-semibold text-sm w-[84px] justify-center gap-1 items-center hover:opacity-75 cursor-pointer rounded-l-xl p-2 z-10';
 export const stateDropDownStyle = 'bg-zinc-700 text-white font-semibold flex w-14 text-sm justify-center gap-1 items-center hover:opacity-75 cursor-pointer rounded-r-xl p-2 z-10';
