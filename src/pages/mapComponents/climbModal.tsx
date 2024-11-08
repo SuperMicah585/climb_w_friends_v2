@@ -50,7 +50,7 @@ return(
     <div className ='absolute w-screen h-screen flex justify-center items-center pointer-events-none' onClick={(event) => event.stopPropagation()}>
     <ModalChat climbGrade={climbGradeForChat} climbName ={climbNameForChat} displayTrigger={displayTrigger}/>
     </div>
-    <div onClick={(event) => event.stopPropagation()} className = 'bg-zinc-900 rounded-lg relative shadow-sm shadow-opacity-50 shadow-violet-200 gap-2 pt-5 pb-5 overflow-y-scroll h-1/2 w-1/2 items-start flex flex-col pl-10 pr-10 min-h-96 min-w-96 z-36'>    
+    <div onClick={(event) => event.stopPropagation()} className = 'bg-zinc-900 rounded-lg relative shadow-sm shadow-opacity-50 shadow-violet-200 gap-2 pt-5 pb-5 max-w-[700px] overflow-y-scroll h-1/2 w-1/2 items-start flex flex-col pl-10 pr-10 min-h-96 min-w-96 z-36'>    
     
     
 
@@ -97,13 +97,14 @@ return(
       <div className="text-white text-xs">
         Roadside Boulder &gt; Jefferson Lake &gt; Olympic Bouldering &gt; Olympic National Park &gt; Olympics & Pacific Coast &gt; Washington
       </div>
-
       <div className='flex gap-2 items-center italic font-bold text-xs text-black mt-5'>
-        <div className='p-1 text-white rounded-md border-violet-500 border-2'>Theresa</div>
-        <div className='p-1 text-white rounded-md border-violet-500 border-2'>Micah</div>
-        <div className='p-1 text-white rounded-md border-violet-500 border-2'>Corbin</div>
-        <div className='p-1 text-white rounded-md border-violet-500 border-2'>Leavy</div>
-      </div>
+      {item.climber_names.map((item)=>
+             <div className='p-1 text-white rounded-md border-violet-500 border-2'>{item}</div>
+      )}
+ </div>
+ 
+   
+      
     </div>
   ))}
 

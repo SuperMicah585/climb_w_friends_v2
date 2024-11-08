@@ -6,7 +6,7 @@ import ActivityFeed from './mapComponents/activityFeed';
 import ClimbModal from './mapComponents/climbModal'
 import 'mapbox-gl/dist/mapbox-gl.css';
 import {ClimbsTableResponse,GeoJsonFeature} from '../types/interfaces'
-import {createMarker,createClimbingShapes,updateLayerVisibility} from './mapComponents/mapLayers'
+import {createMarker,createClimbingShapes,updateLayerVisibility,shapeColors} from './mapComponents/mapLayers'
 import { notificationSVG } from '../reusableComponents/styles';
 
 // Set Mapbox access token
@@ -79,12 +79,35 @@ const Map: React.FC<MapProps> = ({zoomLevel}) => {
 
 
   useEffect(() => {
+    const onLoadHandler = () => {
+      setMapLoaded(true); // Map has finished loading
+    };
+  
     if (map.current) {
-      map.current.on("load", () => {
-        setMapLoaded(true); // Map has finished loading
-      });
+      map.current.on("load", onLoadHandler);
     }
-  }, [map]);
+  
+    // Cleanup function to remove the "load" event listener
+    return () => {
+      if (map.current) {
+        map.current.off("load", onLoadHandler);
+      }
+    };
+  }, []); // Only run once on mount
+  
+  
+
+
+  
+
+
+  useEffect(() => {
+
+    if(mapLoaded){
+      console.log("inside")
+      shapeColors(map,2)
+    }
+  },[mapLoaded])
 
 
   useEffect(() => {
@@ -132,7 +155,8 @@ useEffect(()=>{
 
   return (
     <> 
-  <div className = 'absolute top-5 left-5 flex items-center justify-center gap-5'> <Search selectedClimbCallBack = {selectedClimbCallBack} /> 
+  <div className = 'absolute w-full top-5 left-5 flex items-center justify-start gap-5'> 
+  <div className = 'max-w-96 flex-grow z-20'> <Search selectedClimbCallBack = {selectedClimbCallBack} /> </div>
   <div onClick = {()=> setFeedToggle(prev=>!prev)} 
   className = {`cursor-pointer ${feedToggle?'text-violet-500 border-violet-500 fill-violet-500':'fill-none border-slate-500'} hover:text-violet-500 z-20 p-2 bg-slate-900 opacity-90 border border-slate-500 hover:border-violet-500 rounded-full`}> {notificationSVG} </div>   </div> 
 

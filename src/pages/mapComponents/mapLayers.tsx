@@ -242,8 +242,65 @@ const displayLayersInitial = (map:any,clickedFeatureClimbCallBack: (climbData: G
 };
 
 
+const shapeColorHelperFunction = (climberCountTotal:number,climberonFeatureArray:GeoJsonFeature[]) =>{
+  //could take a while
+  const climberSet = new Set();
+  for (const item of climberonFeatureArray) {
+    for (const climber of item.climber_names) {
+      climberSet.add(climber);
+    }
+  }
+  const climbersOnFeatureCount = climberSet.size
+const percantageOfClimbersWithinShape = climbersOnFeatureCount/climberCountTotal
+
+if(percantageOfClimbersWithinShape<.34){
+  return 'orange'
+}
+if(percantageOfClimbersWithinShape<.67){
+
+  return 'blue'
+}
+if(percantageOfClimbersWithinShape<=1){
+  return 'purple'
+}
+
+}
+
+export const shapeColors = (map: any,climberCountTotal:number) => {
+
+  testData.features.forEach((feature, index) => {
+
+    switch(feature.geometry.type){
+      
+      case "Polygon":
+        const fillLayerId = `geojson-fill-layer-${index}`;
+        const circleLayerId = `geojson-circle-layer-${index}`;
+        const Polygoncolor = shapeColorHelperFunction(climberCountTotal,feature.properties.climbs)
+        map.current?.setPaintProperty(fillLayerId, "fill-color", Polygoncolor);
+        map.current?.setPaintProperty(circleLayerId, "circle-color", Polygoncolor);
+  
+        break;
+
+      case "Point":
+        const pointLayerId = `geojson-layer-${index}`;
+        const pointcolor = shapeColorHelperFunction(climberCountTotal,feature.properties.climbs)
+        map.current?.setPaintProperty(pointLayerId, "circle-color", pointcolor);
+        break;
+
+      case "LineString":
+        const layerId = `geojson-layer-${index}`;
+        const layercolor = shapeColorHelperFunction(climberCountTotal,feature.properties.climbs)
+        map.current?.setPaintProperty(layerId, "line-color", layercolor);
+        break;
+    }
+
+  }
+  )
+}
+
 export const updateLayerVisibility = (map: any, displayBoolean: boolean) => {
   testData.features.forEach((feature, index) => {
+
     if(feature.geometry.type === "Polygon"){
     const fillLayerId = `geojson-fill-layer-${index}`;
     const circleLayerId = `geojson-circle-layer-${index}`;
