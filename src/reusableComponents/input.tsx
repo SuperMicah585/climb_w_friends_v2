@@ -9,6 +9,7 @@ interface InputComponentProps {
 
 
 
+
 const InputComponent = forwardRef<HTMLInputElement, InputComponentProps>(
   ({ handleSearch, setToggleSearchDropDown,paddingLeft }, ref) => {
     const [query, setQuery] = useState<string>('');
@@ -35,7 +36,7 @@ const InputComponent = forwardRef<HTMLInputElement, InputComponentProps>(
         onChange={(e) => setQuery(e.target.value)}
         type="text"
         placeholder="Search for Climbs"
-        className={`rounded-xl text-white bg-zinc-900 bg-opacity-90 ${paddingLeft} w-96 p-3 border border-slate-500 focus:outline-none focus:ring-1 focus:ring-violet-500 shadow-lg`}
+        className={`rounded-xl text-white bg-zinc-900 bg-opacity-90 ${paddingLeft} w-96 flex-grow p-3 border border-slate-500 focus:outline-none focus:ring-1 focus:ring-violet-500 shadow-lg`}
       />
     );
   }

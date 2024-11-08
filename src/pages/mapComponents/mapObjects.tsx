@@ -10,6 +10,20 @@ export const climbType:Array<string> = [
 
 export const filterTypes:string[] = ['Order Route DESC','Order Route ASC','Order Grade ASC','Order Grade DESC']
 
+export const conversation = [
+    { name: 'Micah', message: 'Hey everyone, how’s it going?' },
+    { name: 'Theresa', message: 'Pretty good! Just finished a big project at work. How about you?' },
+    { name: 'Ben', message: 'I’m doing well, just enjoying the weekend. What project were you working on, Theresa?' },
+    { name: 'Theresa', message: 'It was a website redesign for a client. Took a lot longer than expected, but it’s finally done!' },
+    { name: 'Micah', message: 'Congrats on finishing it, Theresa! That must feel like a big relief.' },
+    { name: 'Theresa', message: 'Definitely! Thanks, Micah. Any plans for the weekend?' },
+    { name: 'Ben', message: 'I’m thinking of going hiking tomorrow if the weather’s good. You guys interested?' },
+    { name: 'Micah', message: 'I’m down! Been wanting to get out and stretch my legs.' },
+    { name: 'Theresa', message: 'Sounds like fun! Count me in if I’m not too tired.' },
+    { name: 'Ben', message: 'Awesome! Let’s meet up in the morning then. Can’t wait!' }
+  ];
+  
+
 export const usStates:Array<State>= [
     { name: "Alabama", abbreviation: "AL" },
     { name: "Alaska", abbreviation: "AK" },

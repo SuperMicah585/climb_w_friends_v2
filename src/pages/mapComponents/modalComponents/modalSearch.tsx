@@ -66,7 +66,7 @@ return(
   <div ref={filterDropDownRef}  className = {`absolute right-0 top-16 z-10 ${basicDropDownStyleContainer('w-40')}`}> 
   {filterTypes.map((item) =>
   <>
-  <div onClick = {()=>{setDropDownToggle(false);setSelectedFilter(item)}} key = {item} className = {` ${dropDownStyles} `}>
+  <div key = {item} onClick = {()=>{setDropDownToggle(false);setSelectedFilter(item)}} className = {` ${dropDownStyles} `}>
   <div className = 'flex-col'> 
   <div> {item} </div>
 
@@ -93,7 +93,7 @@ return(
 
     <div className = 'flex relative items-center'> 
     <Input paddingLeft = {'pl-5'} ref={inputRef} handleSearch = {handleClimbSearch}/>
-    <div ref = {filterIconDownRef} onClick = {() =>setDropDownToggle(prev=>!prev)} className = ' cursor-pointer text-white right-3 absolute p-1 hover:bg-slate-500 hover:opacity-75 rounded-full'> {filterIcon}</div>
+    <div ref = {filterIconDownRef} onClick = {() =>setDropDownToggle(prev=>!prev)} className = ' cursor-pointer text-white right-3 absolute p-1 z-10 hover:bg-slate-500 hover:opacity-75 rounded-full'> {filterIcon}</div>
    {dropDownToggle? <FilterDropDown/>:null}
     </div>
 
