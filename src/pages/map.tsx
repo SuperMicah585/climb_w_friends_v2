@@ -1,12 +1,17 @@
 // Import Mapbox GL, and CSS
 import { useState, useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
-import Search from './mapComponents/search'
+import Search from './mapComponents/search';
 import ActivityFeed from './mapComponents/activityFeed';
-import ClimbModal from './mapComponents/climbModal'
+import ClimbModal from './mapComponents/climbModal';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import {ClimbsTableResponse,GeoJsonFeature} from '../types/interfaces'
-import {createMarker,createClimbingShapes,updateLayerVisibility,shapeColors} from './mapComponents/mapLayers'
+import { ClimbsTableResponse, GeoJsonFeature } from '../types/interfaces';
+import {
+  createMarker,
+  createClimbingShapes,
+  updateLayerVisibility,
+  shapeColors,
+} from './mapComponents/mapLayers';
 import { notificationSVG } from '../reusableComponents/styles';
 
 // Set Mapbox access token
@@ -16,39 +21,38 @@ type MapProps = {
   zoomLevel: number;
 };
 
-const Map: React.FC<MapProps> = ({zoomLevel}) => {
+const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   const map = useRef<mapboxgl.Map>();
   const mapContainer = useRef<HTMLDivElement>(null);
-  const [selectedClimb,setSelectedClimb] = useState<ClimbsTableResponse | null>(null)
-  const [currentMarker,setCurrentMarker] = useState<any>(null)
-  const [polygonOrCircleDisplay, setpolygonOrCircleDisplay] = useState<boolean>(false)
+  const [selectedClimb, setSelectedClimb] =
+    useState<ClimbsTableResponse | null>(null);
+  const [currentMarker, setCurrentMarker] = useState<any>(null);
+  const [polygonOrCircleDisplay, setpolygonOrCircleDisplay] =
+    useState<boolean>(false);
   const [mapLoaded, setMapLoaded] = useState(false);
-  const [clickedFeatureClimbs,setClickedFeatureClimbs] = useState<GeoJsonFeature[]>([])
-  const [clickedFeatureModalTriggerBoolean,setClickedFeatureModalTriggerBoolean] = useState<boolean>(false)
-  const [feedToggle,setFeedToggle] = useState<boolean>(false)
+  const [clickedFeatureClimbs, setClickedFeatureClimbs] = useState<
+    GeoJsonFeature[]
+  >([]);
+  const [
+    clickedFeatureModalTriggerBoolean,
+    setClickedFeatureModalTriggerBoolean,
+  ] = useState<boolean>(false);
+  const [feedToggle, setFeedToggle] = useState<boolean>(false);
 
-  const selectedClimbCallBack = (climbData:ClimbsTableResponse) =>{
-    
-    setSelectedClimb(climbData)
-  }
-
-
-
-  const closeModalCallBack = (trigger:boolean) =>{
-    setClickedFeatureClimbs([])
-    setClickedFeatureModalTriggerBoolean(trigger)
-  }
-
-
-  const clickedFeatureClimbCallBack: (climbData: GeoJsonFeature[]) => void = (climbData) => {
-
-   
-    setClickedFeatureClimbs(prev => [...prev, ...climbData]);
-
+  const selectedClimbCallBack = (climbData: ClimbsTableResponse) => {
+    setSelectedClimb(climbData);
   };
-  
 
-  
+  const closeModalCallBack = (trigger: boolean) => {
+    setClickedFeatureClimbs([]);
+    setClickedFeatureModalTriggerBoolean(trigger);
+  };
+
+  const clickedFeatureClimbCallBack: (climbData: GeoJsonFeature[]) => void = (
+    climbData,
+  ) => {
+    setClickedFeatureClimbs((prev) => [...prev, ...climbData]);
+  };
 
   useEffect(() => {
     if (mapContainer.current) {
@@ -61,115 +65,100 @@ const Map: React.FC<MapProps> = ({zoomLevel}) => {
       });
     }
 
-    map.current?.on("zoomend", () => {
+    map.current?.on('zoomend', () => {
       const currentZoom = map.current?.getZoom() ?? 2;
-      if(currentZoom>12){
-      setpolygonOrCircleDisplay(true);
-      }
-      else{
+      if (currentZoom > 12) {
+        setpolygonOrCircleDisplay(true);
+      } else {
         setpolygonOrCircleDisplay(false);
       }
     });
 
-
-    createClimbingShapes(map,clickedFeatureClimbCallBack)
+    createClimbingShapes(map, clickedFeatureClimbCallBack);
     map.current?.addControl(new mapboxgl.NavigationControl(), 'bottom-left');
     return () => map.current?.remove(); // Clean up on unmount
   }, []);
-
 
   useEffect(() => {
     const onLoadHandler = () => {
       setMapLoaded(true); // Map has finished loading
     };
-  
+
     if (map.current) {
-      map.current.on("load", onLoadHandler);
+      map.current.on('load', onLoadHandler);
     }
-  
+
     // Cleanup function to remove the "load" event listener
     return () => {
       if (map.current) {
-        map.current.off("load", onLoadHandler);
+        map.current.off('load', onLoadHandler);
       }
     };
   }, []); // Only run once on mount
-  
-  
-
-
-  
-
 
   useEffect(() => {
-
-    if(mapLoaded){
-      console.log("inside")
-      shapeColors(map,2)
+    if (mapLoaded) {
+      console.log('inside');
+      shapeColors(map, 2);
     }
-  },[mapLoaded])
-
+  }, [mapLoaded]);
 
   useEffect(() => {
-
-  
     if (selectedClimb && map?.current) {
       if (currentMarker) {
         currentMarker.remove();
       }
-  
 
       const newMarker = createMarker(
-        selectedClimb["Area Latitude"],
-        selectedClimb["Area Longitude"],
+        selectedClimb['Area Latitude'],
+        selectedClimb['Area Longitude'],
         selectedClimb.Route,
-        map.current
+        map.current,
       );
 
-      
-  
       setCurrentMarker(newMarker);
     }
   }, [selectedClimb]);
 
-useEffect(() => {
+  useEffect(() => {
+    if (mapLoaded) {
+      updateLayerVisibility(map, polygonOrCircleDisplay);
+    }
+  }, [polygonOrCircleDisplay, mapLoaded]);
 
-  if(mapLoaded){
-  updateLayerVisibility(map,polygonOrCircleDisplay)
-  }
-},[polygonOrCircleDisplay,mapLoaded])
-  
-
-useEffect(()=>{
-
- // setClickedFeatureModalTrigger(prev=>prev+1)
-  if(clickedFeatureClimbs.length>0){
-  setClickedFeatureModalTriggerBoolean(true)
-  }
-},[clickedFeatureClimbs])
-
-
-
-
-  
+  useEffect(() => {
+    // setClickedFeatureModalTrigger(prev=>prev+1)
+    if (clickedFeatureClimbs.length > 0) {
+      setClickedFeatureModalTriggerBoolean(true);
+    }
+  }, [clickedFeatureClimbs]);
 
   return (
-    <> 
-  <div className = 'absolute w-full top-5 left-5 flex items-center justify-start gap-5'> 
-  <div className = 'max-w-96 flex-grow z-20'> <Search selectedClimbCallBack = {selectedClimbCallBack} /> </div>
-  <div onClick = {()=> setFeedToggle(prev=>!prev)} 
-  className = {`cursor-pointer ${feedToggle?'text-violet-500 border-violet-500 fill-violet-500':'fill-none border-slate-500'} hover:text-violet-500 z-20 p-2 bg-slate-900 opacity-90 border border-slate-500 hover:border-violet-500 rounded-full`}> {notificationSVG} </div>   </div> 
+    <>
+      <div className="absolute left-5 top-5 flex w-full items-center justify-start gap-5">
+        <div className="z-20 max-w-96 flex-grow">
+          {' '}
+          <Search selectedClimbCallBack={selectedClimbCallBack} />{' '}
+        </div>
+        <div
+          onClick={() => setFeedToggle((prev) => !prev)}
+          className={`cursor-pointer ${feedToggle ? 'border-violet-500 fill-violet-500 text-violet-500' : 'border-slate-500 fill-none'} z-20 rounded-full border border-slate-500 bg-slate-900 p-2 opacity-90 hover:border-violet-500 hover:text-violet-500`}
+        >
+          {' '}
+          {notificationSVG}{' '}
+        </div>{' '}
+      </div>
 
-  <ActivityFeed feedToggle = {feedToggle}/>
-  {clickedFeatureModalTriggerBoolean?<ClimbModal closeModalCallBack = {closeModalCallBack} clickedFeatureClimbs={clickedFeatureClimbs}/>:null}
-  <div className='w-screen h-screen' ref={mapContainer}/>
-  
-
-  
-  </>
-  
-  )
-  ;
+      <ActivityFeed feedToggle={feedToggle} />
+      {clickedFeatureModalTriggerBoolean ? (
+        <ClimbModal
+          closeModalCallBack={closeModalCallBack}
+          clickedFeatureClimbs={clickedFeatureClimbs}
+        />
+      ) : null}
+      <div className="h-screen w-screen" ref={mapContainer} />
+    </>
+  );
 };
 
 export default Map;
