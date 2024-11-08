@@ -18,7 +18,7 @@ const handleChatInputCallBack = (chat:ChatObject) =>{
 }
 
 useEffect(()=>{
-    console.log(displayTrigger)
+  
 if(displayTrigger>0){
     setDisplayChat(prev=>!prev)
 }
@@ -33,15 +33,14 @@ useEffect(() => {
 
 
 return(
-
-  <div
-    className="absolute pointer-events-auto transition-all duration-200 bg-zinc-900 max-w-[700px] rounded-lg  items-start flex flex-col z-10"
+<> 
+  {displayChat?<div
+    className="absolute pointer-events-auto bg-zinc-900 max-w-[700px] rounded-lg  items-start flex flex-col z-10"
     style={{
       width: displayChat ? '50%' : '0',        // Smoothly transition width
       minWidth: displayChat ? '24rem' : '0',
       height: displayChat ? '50%' : '0',        // Smoothly transition width
       minHeight: displayChat ? '24rem' : '0',   // Optional for minimum width
-      opacity: displayChat ? 1 : 0,            // Optional for fade effect
     }}
   >
     <div className="flex gap-5 text-2xl p-5 border-b border-neutral-500 w-full text-white font-semibold">
@@ -77,8 +76,8 @@ return(
       ) : null}
       <ChatInput handleSearch={handleChatInputCallBack} paddingLeft="pl-5" />
     </div>
-  </div>
-
+  </div>:null}
+  </>
 
 )
 
