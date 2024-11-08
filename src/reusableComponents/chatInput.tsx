@@ -1,42 +1,37 @@
-import React, { useState, useEffect, forwardRef,useRef } from 'react';
-import {ChatObject} from '../types/interfaces'
-import {submitAirplane} from './styles'
+import React, { useState, useEffect, forwardRef, useRef } from 'react';
+import { ChatObject } from '../types/interfaces';
+import { submitAirplane } from './styles';
 interface InputComponentProps {
   handleSearch: (query: ChatObject) => void;
-  paddingLeft: string
+  paddingLeft: string;
 }
 
-
-
-
 const chatInput = forwardRef<HTMLTextAreaElement, InputComponentProps>(
-  ({ handleSearch,paddingLeft }, ref) => {
+  ({ handleSearch, paddingLeft }, ref) => {
     const [query, setQuery] = useState<string>('');
 
-
-
-
- 
-
-
     return (
-      <div className = 'flex justify-end items-center relative w-full'> 
-      <textarea
-        style={{ resize: "none" }}
-        ref={ref} // Now correctly forwarding the ref
-        onChange={(e) => setQuery(e.target.value)}
-        value={query}
-        placeholder="Send Message"
-        className={`rounded-xl z-10 p-2.5 h-12 pr-12 box-border text-white bg-zinc-900 bg-opacity-90 ${paddingLeft} flex-grow max-w-96 border border-slate-500 focus:outline-none focus:ring-1 focus:ring-violet-500 shadow-lg`}
-      />
-    <div onClick = {()=>{ handleSearch({'message':query,'name':'Micah'}) ; setQuery('')}} className = 'absolute text-white z-10 p-1 hover:bg-slate-500 rounded-full cursor-pointer hover:opacity-75 right-5'> 
-      {submitAirplane}
-      </div>
+      <div className="relative flex w-full items-center justify-end">
+        <textarea
+          style={{ resize: 'none' }}
+          ref={ref} // Now correctly forwarding the ref
+          onChange={(e) => setQuery(e.target.value)}
+          value={query}
+          placeholder="Send Message"
+          className={`z-10 box-border h-12 rounded-xl bg-zinc-900 bg-opacity-90 p-2.5 pr-12 text-white ${paddingLeft} max-w-96 flex-grow border border-slate-500 shadow-lg focus:outline-none focus:ring-1 focus:ring-violet-500`}
+        />
+        <div
+          onClick={() => {
+            handleSearch({ message: query, name: 'Micah' });
+            setQuery('');
+          }}
+          className="absolute right-5 z-10 cursor-pointer rounded-full p-1 text-white hover:bg-slate-500 hover:opacity-75"
+        >
+          {submitAirplane}
+        </div>
       </div>
     );
-  }
+  },
 );
-
-
 
 export default chatInput;

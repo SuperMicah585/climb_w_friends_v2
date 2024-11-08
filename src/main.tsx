@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
 import App from './App.tsx';
 import Login from './pages/login.tsx';
+//npx prettier --write .
 
 const root = document.getElementById('root');
 
@@ -16,6 +17,6 @@ if (root !== null) {
           <Route path="/map" element={<App />} />
         </Routes>
       </BrowserRouter>
-    </StrictMode>
+    </StrictMode>,
   );
 }

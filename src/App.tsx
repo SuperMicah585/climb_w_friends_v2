@@ -1,14 +1,9 @@
-
 import Map from './pages/map';
 
 function App() {
-
   return (
     <div>
-      <Map zoomLevel={2}/>
-
-
- 
+      <Map zoomLevel={2} />
     </div>
   );
 }
