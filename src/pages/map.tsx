@@ -2,6 +2,8 @@
 import { useState, useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import Search from './mapComponents/search';
+import Login from './loginButton'
+import Logout from './logoutButton'
 import ActivityFeed from './mapComponents/activityFeed';
 import ClimbModal from './mapComponents/climbModal';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -148,6 +150,12 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
           {notificationSVG}{' '}
         </div>{' '}
       </div>
+
+       {/* Login/Logout button in the top right */}
+       <div className="absolute top-5 right-5 z-20 flex gap-2">
+      <Login />
+      <Logout />
+    </div>
 
       <ActivityFeed feedToggle={feedToggle} />
       {clickedFeatureModalTriggerBoolean ? (
