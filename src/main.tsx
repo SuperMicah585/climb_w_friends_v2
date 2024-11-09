@@ -15,7 +15,7 @@ if (root !== null) {
       domain="dev-qvplotxzdb57f6vf.us.auth0.com"
       clientId="VOq0a56M5GZho3Okd9oEqqGUUzlS2BUC"
       authorizationParams={{
-        redirect_uri: 'http://localhost:5173/map'
+        redirect_uri: 'http://localhost:5173/map',
       }}
     >
       <StrictMode>
