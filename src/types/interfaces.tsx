@@ -30,3 +30,11 @@ export interface ChatObject {
   message: string;
   name: string;
 }
+
+export interface MapObject {
+  id: number;
+  name: string;
+  description: string;
+  totalClimbs: number;
+  peopleOnMap: string[];
+}

@@ -179,6 +179,40 @@ const displayLayersInitial = (
             visibility: 'none',
           },
         });
+
+        /*
+   export const updateClimbingFeature = (
+  map: any,
+  featureIndex: number,
+  newCoordinates: any,
+  newProperties: any
+) => {
+  const layerId = `geojson-layer-${featureIndex}`; // Ensure this matches the generated layer ID
+
+  // Check if the layer exists before updating
+  if (map.current?.getLayer(layerId)) {
+    const newData = {
+      type: 'FeatureCollection',
+      features: [
+        {
+          type: 'Feature',
+          geometry: {
+            type: 'Point', // Adjust this if updating other geometry types
+            coordinates: newCoordinates,
+          },
+          properties: newProperties,
+        },
+      ],
+    };
+
+    // Set new data for the source of the specific layer
+    map.current.getSource(layerId).setData(newData);
+  }
+};
+
+
+
+        */
         addClickToFeature(map, fillLayerId, clickedFeatureClimbCallBack);
         // Circle layer for polygon (alternative representation)
         const centroid = turf.centroid(feature);

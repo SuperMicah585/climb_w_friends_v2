@@ -141,8 +141,11 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                     &gt; Washington
                   </div>
                   <div className="mt-5 flex items-center gap-2 text-xs font-bold italic text-black">
-                    {item.climber_names.map((item,index) => (
-                      <div key = {index} className="rounded-md border-2 border-violet-500 p-1 text-white">
+                    {item.climber_names.map((item, index) => (
+                      <div
+                        key={index}
+                        className="rounded-md border-2 border-violet-500 p-1 text-white"
+                      >
                         {item}
                       </div>
                     ))}
