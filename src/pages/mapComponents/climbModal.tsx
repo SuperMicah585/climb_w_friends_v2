@@ -9,6 +9,7 @@ import {
 } from '../../reusableComponents/styles';
 import ModalSearch from './modalComponents/modalSearch';
 import ModalChat from './modalComponents/modalChat';
+import ZincModal from '../../reusableComponents/zincModal';
 import { useState, useEffect } from 'react';
 type ClimbModalProps = {
   clickedFeatureClimbs: GeoJsonFeature[];
@@ -40,12 +41,9 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   };
 
   return (
-    <div
-      onClick={() => closeModalCallBack(false)}
-      className="bg-blur-md absolute z-20 flex h-screen w-screen items-center justify-center bg-slate-500 bg-opacity-75"
-    >
+    <>
       <div
-        className="pointer-events-none absolute flex h-screen w-screen items-center justify-center"
+        className="pointer-events-none absolute z-20 flex h-screen w-screen items-center justify-center"
         onClick={(event) => event.stopPropagation()}
       >
         <ModalChat
@@ -54,18 +52,11 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
           displayTrigger={displayTrigger}
         />
       </div>
-      <div
-        onClick={(event) => event.stopPropagation()}
-        className="shadow-opacity-50 z-36 relative flex h-1/2 min-h-96 w-1/2 min-w-96 max-w-[700px] flex-col items-start gap-2 overflow-y-scroll rounded-lg bg-zinc-900 pb-5 pl-10 pr-10 pt-5 shadow-sm shadow-violet-200"
+      <ZincModal
+        maxHeight={'max-h-[700px]'}
+        maxWidth={'max-w-[700px]'}
+        closeModalCallBack={closeModalCallBack}
       >
-        <div
-          onClick={() => closeModalCallBack(false)}
-          className="absolute right-2 top-2 cursor-pointer rounded-full p-1 text-white hover:bg-slate-500 hover:opacity-75"
-        >
-          {' '}
-          {closeIcon}{' '}
-        </div>
-
         <ModalSearch
           sortStringCallBack={sortStringCallBack}
           searchFilterCallBack={searchFilterCallBack}
@@ -154,8 +145,8 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
               ))}
           </div>
         </div>
-      </div>
-    </div>
+      </ZincModal>
+    </>
   );
 };
 export default ClimbModal;

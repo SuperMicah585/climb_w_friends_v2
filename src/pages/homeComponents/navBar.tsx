@@ -17,10 +17,11 @@ const NavBar = () => {
       <div className="flex items-center justify-center gap-10 text-2xl">
         {navBarItems.map((item) => (
           <div
+            key={item}
             onClick={() => {
               setCurrentPage(item);
             }}
-            className={`border-b-4 border-transparent hover:cursor-pointer hover:border-violet-500 ${currentPage === item ? 'border-violet-500' : ''}`}
+            className={`border-b-4 border-transparent pb-1 hover:cursor-pointer hover:border-violet-500 ${currentPage === item ? 'border-violet-500' : ''}`}
           >
             {item}{' '}
           </div>

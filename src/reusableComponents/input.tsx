@@ -4,10 +4,14 @@ interface InputComponentProps {
   handleSearch: (query: string) => void;
   setToggleSearchDropDown?: (value: boolean) => void; // Optional
   paddingLeft: string;
+  setPlaceHolder?: string;
 }
 
 const InputComponent = forwardRef<HTMLInputElement, InputComponentProps>(
-  ({ handleSearch, setToggleSearchDropDown, paddingLeft }, ref) => {
+  (
+    { handleSearch, setToggleSearchDropDown, paddingLeft, setPlaceHolder },
+    ref,
+  ) => {
     const [query, setQuery] = useState<string>('');
     const [debouncedQuery, setDebouncedQuery] = useState<string>(query);
 
@@ -31,7 +35,7 @@ const InputComponent = forwardRef<HTMLInputElement, InputComponentProps>(
         onFocus={() => setToggleSearchDropDown && setToggleSearchDropDown(true)}
         onChange={(e) => setQuery(e.target.value)}
         type="text"
-        placeholder="Search for Climbs"
+        placeholder={`${setPlaceHolder ? setPlaceHolder : 'Search for Climbs'}`}
         className={`rounded-xl bg-zinc-900 bg-opacity-90 text-white ${paddingLeft} w-full flex-grow border border-slate-500 p-3 shadow-lg focus:outline-none focus:ring-1 focus:ring-violet-500`}
       />
     );
