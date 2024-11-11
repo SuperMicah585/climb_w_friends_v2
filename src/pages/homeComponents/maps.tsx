@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { exampleMapObjects, friendExample } from './homeObjects';
-import { MapObject,friendsObject } from '../../types/interfaces';
+import { MapObject, friendsObject } from '../../types/interfaces';
 import { verticalDotIcon } from '../../reusableComponents/styles';
 import { Link } from 'react-router-dom';
-import AddMapComponent from './mapsComponents/addMapModal'
+import AddMapComponent from './mapsComponents/addMapModal';
 import EditModal from './mapsComponents/editModal';
 import PurpleButton from '../../reusableComponents/purpleButton';
 const Maps = () => {
@@ -17,7 +17,7 @@ const Maps = () => {
     setEditMapTrigger(false);
   };
 
-  const closeAddModalCallBack = (value:boolean) => {
+  const closeAddModalCallBack = (value: boolean) => {
     setAddMapTrigger(value);
   };
 
@@ -31,11 +31,9 @@ const Maps = () => {
     );
   };
 
-  const newMapCallBack = (newMapObj:MapObject) =>{
-
-    setMapObject(prev=>[...prev,newMapObj])
-
-  }
+  const newMapCallBack = (newMapObj: MapObject) => {
+    setMapObject((prev) => [...prev, newMapObj]);
+  };
 
   const EditedClimbCallBack = (item: any) => {
     setMapObject((prev) =>
@@ -47,15 +45,13 @@ const Maps = () => {
     );
   };
 
-  const AddMapButtonTrigger = () =>{
-    setAddMapTrigger(true)
-  }
+  const AddMapButtonTrigger = () => {
+    setAddMapTrigger(true);
+  };
   return (
     <>
-      <div className="relative w-screen flex-grow bg-zinc-800 pl-10 pr-10 pt-20">
-        <PurpleButton clickCallBack = {AddMapButtonTrigger}>
-          Add Map
-        </PurpleButton>
+      <div className="relative w-screen flex-grow bg-zinc-800 pl-10 pr-10 pt-20 pb-20 border-box">
+        <PurpleButton clickCallBack={AddMapButtonTrigger}>Add Map</PurpleButton>
 
         <div className="flex justify-center">
           <div className="grid max-w-[1800px] grid-cols-1 justify-center gap-5 md:grid-cols-2">
@@ -110,10 +106,10 @@ const Maps = () => {
         />
       ) : null}
 
-{addMapTrigger ? (
+      {addMapTrigger ? (
         <AddMapComponent
-        closeAddModalCallBack = {closeAddModalCallBack}
-        newMapCallBack = {newMapCallBack}
+          closeAddModalCallBack={closeAddModalCallBack}
+          newMapCallBack={newMapCallBack}
         />
       ) : null}
     </>

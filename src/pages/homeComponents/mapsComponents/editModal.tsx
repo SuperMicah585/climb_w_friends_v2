@@ -214,7 +214,7 @@ const EditModal: React.FC<EditModalProps> = ({
             name: titleState,
             description: descriptionState,
             totalClimbs: editMapObject.totalClimbs,
-            peopleOnMap: editMapObject.peopleOnMap
+            peopleOnMap: editMapObject.peopleOnMap,
           });
         }}
         className="ml-auto cursor-pointer rounded-lg bg-violet-500 p-2 font-semibold text-zinc-900 hover:opacity-75"
