@@ -136,13 +136,13 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   return (
     <>
       <div className="absolute left-5 top-5 flex w-full items-center justify-start gap-5">
-        <div className="z-20 max-w-96 flex-grow">
+        <div className="z-10 max-w-96 flex-grow">
           {' '}
           <Search selectedClimbCallBack={selectedClimbCallBack} />{' '}
         </div>
         <div
           onClick={() => setFeedToggle((prev) => !prev)}
-          className={`cursor-pointer ${feedToggle ? 'border-violet-500 fill-violet-500 text-violet-500' : 'border-slate-500 fill-none'} z-20 rounded-full border border-slate-500 bg-slate-900 p-2 opacity-90 hover:border-violet-500 hover:text-violet-500`}
+          className={`cursor-pointer ${feedToggle ? 'border-violet-500 fill-violet-500 text-violet-500' : 'border-slate-500 fill-none'} z-10 rounded-full border border-slate-500 bg-slate-900 p-2 opacity-90 hover:border-violet-500 hover:text-violet-500`}
         >
           {' '}
           {notificationSVG}{' '}

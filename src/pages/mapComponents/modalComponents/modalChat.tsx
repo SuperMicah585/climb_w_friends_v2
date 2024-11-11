@@ -33,7 +33,7 @@ const ModalChat: React.FC<ChatProps> = ({
     <>
       {displayChat ? (
         <div
-          className="pointer-events-auto absolute z-10 flex max-w-[700px] flex-col items-start rounded-lg bg-zinc-900"
+          className="pointer-events-auto fixed z-10 flex max-w-[700px] flex-col items-start rounded-lg bg-zinc-900"
           style={{
             width: displayChat ? '50%' : '0', // Smoothly transition width
             minWidth: displayChat ? '24rem' : '0',
