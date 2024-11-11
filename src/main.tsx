@@ -15,8 +15,8 @@ if (root !== null) {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/map" element={<App />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/Maps/1" element={<App />} />
+          <Route path="/Maps" element={<Home />} />
         </Routes>
       </BrowserRouter>
     </StrictMode>,

@@ -33,8 +33,16 @@ export interface ChatObject {
 
 export interface MapObject {
   id: number;
-  name: string;
-  description: string;
-  totalClimbs: number;
-  peopleOnMap: string[];
+  name?: string;
+  description?: string;
+  totalClimbs?: number;
+  peopleOnMap: friendsObject[];
+}
+
+export interface friendsObject {
+  id?: number;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  userName?: string;
 }

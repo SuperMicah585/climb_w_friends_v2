@@ -3,6 +3,7 @@ import { climbType, usStates } from './mapObjects';
 import { supabase } from '../../supaBaseClient';
 import { ClimbsTableResponse } from '../../types/interfaces';
 import InputComponent from '../../reusableComponents/input';
+import SearchDropDown from '../../reusableComponents/searchDropDown';
 
 import {
   dropDownStyles,
@@ -33,7 +34,6 @@ const Search: React.FC<SearchProps> = ({ selectedClimbCallBack }) => {
   const climbTypeRefButtonRef = useRef<HTMLDivElement | null>(null);
   const stateRefDropdownRef = useRef<HTMLDivElement | null>(null);
   const stateRefButtonRef = useRef<HTMLDivElement | null>(null);
-  const searchTypeRefDropdownRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleClickOutside = (event: any) => {
@@ -54,15 +54,6 @@ const Search: React.FC<SearchProps> = ({ selectedClimbCallBack }) => {
     ) {
       setToggleStateDropDown(false);
     }
-
-    if (
-      searchTypeRefDropdownRef.current &&
-      !searchTypeRefDropdownRef.current.contains(event.target) &&
-      inputRef.current &&
-      !inputRef.current.contains(event.target)
-    ) {
-      setToggleSearchDropDown(false);
-    }
   };
 
   const setToggleSearchDropDownCallBack = (booleanValue: boolean) => {
@@ -75,7 +66,7 @@ const Search: React.FC<SearchProps> = ({ selectedClimbCallBack }) => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [climbTypeRefDropdownRef, stateRefDropdownRef, searchTypeRefDropdownRef]);
+  }, [climbTypeRefDropdownRef, stateRefDropdownRef]);
 
   const StateDropDown = () => {
     return (
@@ -128,53 +119,6 @@ const Search: React.FC<SearchProps> = ({ selectedClimbCallBack }) => {
     );
   };
 
-  const SearchDropDown = () => {
-    return (
-      <div
-        ref={searchTypeRefDropdownRef}
-        className={searchDropDownStyleContainer}
-      >
-        {searchResults.length > 0 ? (
-          searchResults.map((item) => (
-            <div
-              onClick={() => {
-                handleClimbSelect(item);
-                setToggleSearchDropDown(false);
-              }}
-              className={dropDownStyles}
-              key={item.ID}
-            >
-              <div className="flex flex-col gap-2 p-2">
-                <div>
-                  <div className="flex gap-2 font-semibold">
-                    <div> {item.Route} </div>
-                    <div> {item.Rating} </div>
-                  </div>
-                  <div className="text-xs font-thin italic">
-                    {' '}
-                    {item['Route Type']}{' '}
-                  </div>
-                </div>
-
-                <div className="text-xs font-thin">{item.Location}</div>
-              </div>
-            </div>
-          ))
-        ) : (
-          <div
-            onClick={() => {
-              setToggleSearchDropDown(false);
-            }}
-            className="flex w-96 items-center p-2 text-sm text-white"
-          >
-            {' '}
-            No Results{' '}
-          </div>
-        )}
-      </div>
-    );
-  };
-
   const handleClimbSearch = async (query: string) => {
     if (query.length === 0) {
       return setsearchResults([]);
@@ -216,7 +160,51 @@ const Search: React.FC<SearchProps> = ({ selectedClimbCallBack }) => {
 
         {toggleSearchDropDown ? (
           <div className="w-content absolute top-[51px]">
-            <SearchDropDown />
+            <SearchDropDown
+              width={'w-96'}
+              maxHeight={'max-h-48'}
+              dropDownStatus={toggleSearchDropDown}
+              inputRef={inputRef}
+              closeDropDownCallBack={setToggleSearchDropDownCallBack}
+            >
+              {searchResults.length > 0 ? (
+                searchResults.map((item) => (
+                  <div
+                    onClick={() => {
+                      handleClimbSelect(item);
+                      setToggleSearchDropDown(false);
+                    }}
+                    className={dropDownStyles}
+                    key={item.ID}
+                  >
+                    <div className="flex flex-col gap-2 p-2">
+                      <div>
+                        <div className="flex gap-2 font-semibold">
+                          <div> {item.Route} </div>
+                          <div> {item.Rating} </div>
+                        </div>
+                        <div className="text-xs font-thin italic">
+                          {' '}
+                          {item['Route Type']}{' '}
+                        </div>
+                      </div>
+
+                      <div className="text-xs font-thin">{item.Location}</div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div
+                  onClick={() => {
+                    setToggleSearchDropDown(false);
+                  }}
+                  className="flex w-96 items-center p-2 text-sm text-white"
+                >
+                  {' '}
+                  No Results{' '}
+                </div>
+              )}
+            </SearchDropDown>
           </div>
         ) : null}
 
