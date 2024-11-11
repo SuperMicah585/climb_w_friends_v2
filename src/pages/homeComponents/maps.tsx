@@ -1,21 +1,27 @@
 import { useState } from 'react';
 import { exampleMapObjects, friendExample } from './homeObjects';
-import { MapObject } from '../../types/interfaces';
+import { MapObject,friendsObject } from '../../types/interfaces';
 import { verticalDotIcon } from '../../reusableComponents/styles';
 import { Link } from 'react-router-dom';
-
+import AddMapComponent from './mapsComponents/addMapModal'
 import EditModal from './mapsComponents/editModal';
+import PurpleButton from '../../reusableComponents/purpleButton';
 const Maps = () => {
   const [mapObject, setMapObject] = useState<MapObject[]>(exampleMapObjects);
   const [editMapTrigger, setEditMapTrigger] = useState(false);
+  const [addMapTrigger, setAddMapTrigger] = useState(false);
   const [editMapObject, setEditMapObject] = useState<MapObject>({});
   const [mapId, setMapId] = useState<number>(0);
 
-  const closeModalCallBack = () => {
+  const closeEditModalCallBack = () => {
     setEditMapTrigger(false);
   };
 
-  const editPeopleOnMapCallBack = (data: MapObject[]) => {
+  const closeAddModalCallBack = (value:boolean) => {
+    setAddMapTrigger(value);
+  };
+
+  const editPeopleOnMapCallBack = (data: friendsObject[]) => {
     setMapObject((prev) =>
       prev.map((item) =>
         item.id === mapId
@@ -25,7 +31,13 @@ const Maps = () => {
     );
   };
 
-  const EditedClimbCallBack = (item: MapObject) => {
+  const newMapCallBack = (newMapObj:MapObject) =>{
+
+    setMapObject(prev=>[...prev,newMapObj])
+
+  }
+
+  const EditedClimbCallBack = (item: any) => {
     setMapObject((prev) =>
       prev.map((mapItem) =>
         mapItem.id === item.id
@@ -34,13 +46,16 @@ const Maps = () => {
       ),
     );
   };
+
+  const AddMapButtonTrigger = () =>{
+    setAddMapTrigger(true)
+  }
   return (
     <>
       <div className="relative w-screen flex-grow bg-zinc-800 pl-10 pr-10 pt-20">
-        <div className="items-items absolute right-5 top-5 z-10 flex cursor-pointer justify-center rounded-lg bg-violet-500 p-2 font-semibold hover:opacity-75">
-          {' '}
-          Add Map{' '}
-        </div>
+        <PurpleButton clickCallBack = {AddMapButtonTrigger}>
+          Add Map
+        </PurpleButton>
 
         <div className="flex justify-center">
           <div className="grid max-w-[1800px] grid-cols-1 justify-center gap-5 md:grid-cols-2">
@@ -91,7 +106,14 @@ const Maps = () => {
           friendsList={friendExample}
           EditedClimbCallBack={EditedClimbCallBack}
           editMapObject={editMapObject}
-          closeModalCallBack={closeModalCallBack}
+          closeModalCallBack={closeEditModalCallBack}
+        />
+      ) : null}
+
+{addMapTrigger ? (
+        <AddMapComponent
+        closeAddModalCallBack = {closeAddModalCallBack}
+        newMapCallBack = {newMapCallBack}
         />
       ) : null}
     </>
