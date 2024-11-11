@@ -8,6 +8,7 @@ import { MapObject, friendsObject } from '../../../types/interfaces';
 import InputComponent from '../../../reusableComponents/input';
 import ZincModal from '../../../reusableComponents/zincModal';
 import SearchDropDown from '../../../reusableComponents/searchDropDown';
+
 import { useState, useRef, useEffect } from 'react';
 
 type EditModalProps = {
@@ -15,7 +16,7 @@ type EditModalProps = {
   closeModalCallBack: (trigger: boolean) => void;
   EditedClimbCallBack: (item: MapObject) => void;
   friendsList: friendsObject[];
-  editPeopleOnMapCallBack: (data: MapObject[]) => void;
+  editPeopleOnMapCallBack: (data: friendsObject[]) => void;
 };
 const EditModal: React.FC<EditModalProps> = ({
   closeModalCallBack,
@@ -41,8 +42,8 @@ const EditModal: React.FC<EditModalProps> = ({
     setInputData(data);
   };
 
-  const closeDropDownCallBack = (value: boolean) => {
-    setToggleSearchDropDown(value);
+  const closeDropDownCallBack = (trigger: boolean) => {
+    setToggleSearchDropDown(trigger);
   };
 
   useEffect(() => {}, []);
@@ -212,6 +213,8 @@ const EditModal: React.FC<EditModalProps> = ({
             id: editMapObject.id,
             name: titleState,
             description: descriptionState,
+            totalClimbs: editMapObject.totalClimbs,
+            peopleOnMap: editMapObject.peopleOnMap
           });
         }}
         className="ml-auto cursor-pointer rounded-lg bg-violet-500 p-2 font-semibold text-zinc-900 hover:opacity-75"

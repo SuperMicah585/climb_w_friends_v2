@@ -26,7 +26,7 @@ const ZincModal: React.FC<ModalProps> = ({
   return (
     <div
       onClick={() => closeModalCallBack(false)}
-      className="bg-blur-md absolute z-10 flex h-full w-screen items-center justify-center bg-zinc-500 bg-opacity-75"
+      className="bg-blur-md fixed z-10 flex h-screen w-screen items-center justify-center bg-zinc-500 bg-opacity-75 bottom-0 right-0"
     >
       <div
         onClick={(event) => event.stopPropagation()}
