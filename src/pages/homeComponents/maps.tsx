@@ -50,7 +50,7 @@ const Maps = () => {
   };
   return (
     <>
-      <div className="relative w-screen flex-grow bg-zinc-800 pl-10 pr-10 pt-20 pb-20 border-box">
+      <div className="border-box relative w-screen flex-grow bg-zinc-800 pb-20 pl-10 pr-10 pt-20">
         <PurpleButton clickCallBack={AddMapButtonTrigger}>Add Map</PurpleButton>
 
         <div className="flex justify-center">
@@ -61,7 +61,7 @@ const Maps = () => {
                 className="relative min-w-[350px] max-w-[600px]"
               >
                 <Link to={`/maps/${item.id}`}>
-                  <div className="flex h-full flex-col items-start justify-start gap-5 rounded-lg border border-transparent bg-zinc-900 p-16 text-white hover:cursor-pointer hover:border-neutral-500 hover:bg-opacity-75">
+                  <div className="flex h-full flex-col items-start justify-start gap-5 rounded-lg border border-transparent bg-zinc-900 p-16 text-white shadow-sm shadow-violet-200 hover:cursor-pointer hover:border-neutral-500 hover:bg-opacity-75">
                     <div className="flex items-center gap-5">
                       <div className="text-xl font-bold"> {item.name} </div>
                       <div className="font-semibold text-violet-500">

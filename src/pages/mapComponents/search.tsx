@@ -150,7 +150,7 @@ const Search: React.FC<SearchProps> = ({ selectedClimbCallBack }) => {
 
   return (
     <>
-      <div className="z-20 flex items-center gap-10">
+      <div className="z-20 flex w-96 items-center gap-10">
         <InputComponent
           paddingLeft={'pl-40'}
           ref={inputRef}
@@ -159,7 +159,7 @@ const Search: React.FC<SearchProps> = ({ selectedClimbCallBack }) => {
         />
 
         {toggleSearchDropDown ? (
-          <div className="w-content absolute top-[51px]">
+          <div className="w-content absolute top-[60px]">
             <SearchDropDown
               width={'w-96'}
               maxHeight={'max-h-48'}

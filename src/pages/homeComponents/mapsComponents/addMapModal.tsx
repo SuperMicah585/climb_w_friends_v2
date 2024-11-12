@@ -1,6 +1,5 @@
 import ZincModal from '../../../reusableComponents/zincModal';
 import { useState } from 'react';
-import PurpleButton from '../../../reusableComponents/purpleButton';
 import { MapObject } from '../../../types/interfaces';
 interface AddMapComponentInterface {
   closeAddModalCallBack: (value: boolean) => void;

@@ -13,6 +13,10 @@ export interface ClimbsTableResponse {
   'Area Longitude': number;
 }
 
+export interface Tags{
+  id:number;
+  tag:string
+}
 export interface GeoJsonFeature {
   id: string;
   climber_names: string[];
