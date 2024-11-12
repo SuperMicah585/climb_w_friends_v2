@@ -8,7 +8,8 @@ import MapNavBar from './mapComponents/mapNavBar';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { ClimbsTableResponse, GeoJsonFeature,Tags } from '../types/interfaces';
 import TagModal from './mapComponents/modalComponents/modalTag'
-import {tagsObject} from './mapComponents/mapObjects'
+
+import {exampleMapObjects} from './homeComponents/homeObjects'
 import {
   createMarker,
   createClimbingShapes,
@@ -49,18 +50,25 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
 
   
   const [feedToggle, setFeedToggle] = useState<boolean>(false);
-  const [tagToggle, setTagToggle] = useState<boolean>(false);
 
   const feedToggleCallBack = () =>{
 
     setFeedToggle(prev=>!prev)
   }
 
-  const newTagCallBack = (data:Tags) =>{
-
-    setTags(prev=>[...prev,data])
-
-  }
+  const newTagCallBack = (data: Tags) => {
+    setTags(prev => {
+      // Check if the tag already exists in the array
+      const tagExists = prev.some(tagObj => tagObj.tag === data.tag);
+  
+      // If it doesn't exist, add it to the array, otherwise return the existing array
+      if (!tagExists) {
+        return [...prev, data];
+      }
+      return prev;
+    });
+  };
+  
 
   const tagToggleCallBack = () =>{
 
@@ -86,12 +94,17 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     setClickedFeatureClimbs((prev) => [...prev, ...climbData]);
   };
 
+  const deleteTagCallBack = (item) => {
+    setTags(prev => prev.filter(tagObj => tagObj.id !== item.id));
+  };
+  
+
 
   useEffect(()=>{
 
-    setTags(tagsObject)
+    setTags(exampleMapObjects[0].tags)
 
-  },[tagsObject])
+  },[exampleMapObjects])
 
   useEffect(() => {
     if (mapContainer.current) {
@@ -173,7 +186,6 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   }, [clickedFeatureClimbs]);
 
 
-  console.log(tagModalDisplay,'sdfsd')
 
   return (
     <>
@@ -196,7 +208,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
 
       {tagModalDisplay?
 
-        <TagModal newTagCallBack ={newTagCallBack} tags = {tags} closeTagModalCallBack = {closeTagModalCallBack}/>:null
+        <TagModal deleteTagCallBack = {deleteTagCallBack} newTagCallBack ={newTagCallBack} tags = {tags} closeTagModalCallBack = {closeTagModalCallBack}/>:null
       }
       <div className="h-screen w-screen" ref={mapContainer} />
     </>

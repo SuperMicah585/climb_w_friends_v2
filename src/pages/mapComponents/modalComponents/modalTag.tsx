@@ -1,31 +1,34 @@
 import ZincModal from '../../../reusableComponents/zincModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Tags } from '../../../types/interfaces';
-import { submitAirplane } from '../../../reusableComponents/styles';
+import Tooltip from '../../../reusableComponents/toolTip';
 
 interface AddMapComponentInterface {
   closeTagModalCallBack: (value: boolean) => void;
   newTagCallBack: (mapData: Tags) => void;
+  deleteTagCallBack: (tag:Tags) =>void
   tags:Tags[]
 }
 
 const AddMapComponent: React.FC<AddMapComponentInterface> = ({
-    closeTagModalCallBack,newTagCallBack,tags
+    closeTagModalCallBack,newTagCallBack,tags,deleteTagCallBack
 
 }) => {
   const [tagName, setTagName] = useState<string>('');
   
 
   //generating random number to test id
-  let min = 100;
-  let max = 1000;
-  let randomInt = Math.floor(Math.random() * (max - min + 1)) + min;
+
   const buttonClickCallBack = () => {
+    let min = 100;
+    let max = 1000;
+    let randomInt = Math.floor(Math.random() * (max - min + 1)) + min;
     newTagCallBack({
       id: randomInt,
       tag: tagName,
     });
   };
+
 
 
 
@@ -74,7 +77,7 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
             <div className="font-semibold"> Tags</div>
             <div className = 'flex flex-wrap gap-2'>
             {tags.map((item)=>
-            <div className = 'flex cursor-pointer hover:opacity-75 rounded-lg bg-neutral-500 p-2 text-center font-semibold'>{item.tag} </div> 
+           <Tooltip deleteItemCallBack={deleteTagCallBack} tag = {item}> <div className = 'flex cursor-pointer hover:opacity-75 text-sm rounded-md bg-neutral-500 p-1 border-2 border-neutral-600 text-center'>{item.tag} </div> </Tooltip> 
             )}
             </div>
             </div>

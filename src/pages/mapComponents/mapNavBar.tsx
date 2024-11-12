@@ -27,7 +27,7 @@ const MapNavBar: React.FC<MapNavBarProps> = ({ feedToggleCallBack,tagToggleCallB
       <div className="flex items-center gap-3">
         {children}
         <div
-          className={`${navBarStateExpanded ? 'max-w-full pl-5 pr-5 opacity-100 duration-1000' : 'max-w-0 opacity-0'} transition-max-height flex gap-5 font-semibold transition-opacity`}
+          className={`${navBarStateExpanded ? 'max-w-full pl-5 pr-5 opacity-100 duration-1000' : 'max-w-0 opacity-0 pointer-events-none'} transition-max-height flex gap-5 font-semibold transition-opacity`}
         >
                     <div onClick = {()=>tagToggleCallBack()} className={`cursor-pointer ${tagToggle ? 'border-violet-500 fill-violet-500 text-violet-500' : 'border-slate-500 fill-none'} z-10 rounded-full border border-slate-500 p-2 opacity-90 shadow-lg hover:bg-slate-500 hover:bg-opacity-75`}> 
 

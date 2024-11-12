@@ -40,6 +40,7 @@ export interface MapObject {
   name: string;
   description: string;
   totalClimbs: number;
+  tags:Tags[]
   peopleOnMap: friendsObject[];
 }
 
