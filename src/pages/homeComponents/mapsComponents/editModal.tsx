@@ -9,6 +9,7 @@ import InputComponent from '../../../reusableComponents/input';
 import ZincModal from '../../../reusableComponents/zincModal';
 import SearchDropDown from '../../../reusableComponents/searchDropDown';
 
+
 import { useState, useRef, useEffect } from 'react';
 
 type EditModalProps = {
@@ -120,7 +121,7 @@ const EditModal: React.FC<EditModalProps> = ({
           {editMapObject.peopleOnMap?.map((person) => (
             <div
               key={person.id}
-              className="w-20 rounded-lg bg-neutral-500 p-1 text-center font-semibold"
+              className="flex rounded-lg bg-neutral-500 p-2 text-center font-semibold"
             >
               {person.firstName}
             </div>
