@@ -19,13 +19,13 @@ export const filterTypes: string[] = [
   'Order Grade DESC',
 ];
 
-export const tagsObject =[
+export const tagsObject = [
   { id: 1, tag: 'crimp' },
   { id: 2, tag: 'jug' },
   { id: 3, tag: 'dyno' },
   { id: 4, tag: 'sloper' },
-  { id: 5, tag: 'beta' }
-]
+  { id: 5, tag: 'beta' },
+];
 
 export const conversation = [
   { name: 'Micah', message: 'Hey everyone, how’s it going?' },

@@ -4,12 +4,12 @@ export const exampleMapObjects = [
     name: 'Leavenworth Fall 2024',
     description: 'Micah and Friends Leavenworth climbing map for fall 2024',
     totalClimbs: 782,
-    tags:[
+    tags: [
       { id: 1, tag: 'crimp' },
       { id: 2, tag: 'jug' },
       { id: 3, tag: 'dyno' },
       { id: 4, tag: 'sloper' },
-      { id: 5, tag: 'beta' }
+      { id: 5, tag: 'beta' },
     ],
     peopleOnMap: [
       {
@@ -54,12 +54,12 @@ export const exampleMapObjects = [
     name: 'Yosemite Spring 2024',
     description: 'Spring adventure at Yosemite with the big wall crew',
     totalClimbs: 350,
-    tags:[
+    tags: [
       { id: 1, tag: 'crimp' },
       { id: 2, tag: 'jug' },
       { id: 3, tag: 'dyno' },
       { id: 4, tag: 'sloper' },
-      { id: 5, tag: 'beta' }
+      { id: 5, tag: 'beta' },
     ],
     peopleOnMap: [
       {
@@ -104,12 +104,12 @@ export const exampleMapObjects = [
     name: 'Red Rocks Winter 2024',
     description: 'Winter climbing escape in Red Rocks for the desert lovers',
     totalClimbs: 420,
-    tags:[
+    tags: [
       { id: 1, tag: 'crimp' },
       { id: 2, tag: 'jug' },
       { id: 3, tag: 'dyno' },
       { id: 4, tag: 'sloper' },
-      { id: 5, tag: 'beta' }
+      { id: 5, tag: 'beta' },
     ],
     peopleOnMap: [
       {
@@ -155,12 +155,12 @@ export const exampleMapObjects = [
     description:
       'Celebrating the New Year at Joshua Tree with campfire sessions',
     totalClimbs: 530,
-    tags:[
+    tags: [
       { id: 1, tag: 'crimp' },
       { id: 2, tag: 'jug' },
       { id: 3, tag: 'dyno' },
       { id: 4, tag: 'sloper' },
-      { id: 5, tag: 'beta' }
+      { id: 5, tag: 'beta' },
     ],
     peopleOnMap: [
       {
@@ -206,12 +206,12 @@ export const exampleMapObjects = [
     description:
       'Summer trad climbing and bouldering in Squamish with the Canadian crew',
     totalClimbs: 610,
-    tags:[
+    tags: [
       { id: 1, tag: 'crimp' },
       { id: 2, tag: 'jug' },
       { id: 3, tag: 'dyno' },
       { id: 4, tag: 'sloper' },
-      { id: 5, tag: 'beta' }
+      { id: 5, tag: 'beta' },
     ],
     peopleOnMap: [
       {
@@ -257,12 +257,12 @@ export const exampleMapObjects = [
     description:
       'Exploring the boulders of Rocklands, South Africa in the fall',
     totalClimbs: 895,
-    tags:[
+    tags: [
       { id: 1, tag: 'crimp' },
       { id: 2, tag: 'jug' },
       { id: 3, tag: 'dyno' },
       { id: 4, tag: 'sloper' },
-      { id: 5, tag: 'beta' }
+      { id: 5, tag: 'beta' },
     ],
     peopleOnMap: [
       {

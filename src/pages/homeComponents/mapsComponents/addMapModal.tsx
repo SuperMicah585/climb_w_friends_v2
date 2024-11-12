@@ -23,7 +23,7 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
       name: titleState,
       description: descriptionState,
       totalClimbs: 0,
-      tags:[],
+      tags: [],
       peopleOnMap: [
         {
           id: randomInt,
