@@ -9,7 +9,6 @@ import InputComponent from '../../../reusableComponents/input';
 import ZincModal from '../../../reusableComponents/zincModal';
 import SearchDropDown from '../../../reusableComponents/searchDropDown';
 
-
 import { useState, useRef, useEffect } from 'react';
 
 type EditModalProps = {
@@ -98,8 +97,8 @@ const EditModal: React.FC<EditModalProps> = ({
   const addFriendstoMap = (
     <div className="flex flex-col gap-5">
       <div className="font-semibold">Friend Portal</div>
-      <div className="w-1/2 min-w-72">
-        <div className="">
+      <div className="w-full">
+        <div className="w-1/2 min-w-72">
           <InputComponent
             ref={inputRef}
             setPlaceHolder={'Search for Friends to Add'}
@@ -109,11 +108,11 @@ const EditModal: React.FC<EditModalProps> = ({
           />
         </div>
         <div className="mt-5 font-semibold">Friends On Map</div>
-        <div className="mt-5 flex flex-wrap gap-2">
+        <div className="mt-5 flex w-full flex-wrap gap-2">
           {selectedFriends.map((person) => (
             <div
               key={person.id}
-              className="w-20 rounded-lg bg-green-500 p-1 text-center font-semibold"
+              className="flex w-20 items-center justify-center rounded-lg bg-green-500 p-1 text-center font-semibold"
             >
               {person.firstName}
             </div>
@@ -212,6 +211,7 @@ const EditModal: React.FC<EditModalProps> = ({
           closeModalCallBack(false);
           EditedClimbCallBack({
             id: editMapObject.id,
+            tags: [],
             name: titleState,
             description: descriptionState,
             totalClimbs: editMapObject.totalClimbs,

@@ -13,9 +13,9 @@ export interface ClimbsTableResponse {
   'Area Longitude': number;
 }
 
-export interface Tags{
-  id:number;
-  tag:string
+export interface Tags {
+  id: number;
+  tag: string;
 }
 export interface GeoJsonFeature {
   id: string;
@@ -40,6 +40,7 @@ export interface MapObject {
   name: string;
   description: string;
   totalClimbs: number;
+  tags: Tags[];
   peopleOnMap: friendsObject[];
 }
 

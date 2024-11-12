@@ -6,9 +6,10 @@ import ActivityFeed from './mapComponents/activityFeed';
 import ClimbModal from './mapComponents/climbModal';
 import MapNavBar from './mapComponents/mapNavBar';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { ClimbsTableResponse, GeoJsonFeature,Tags } from '../types/interfaces';
-import TagModal from './mapComponents/modalComponents/modalTag'
-import {tagsObject} from './mapComponents/mapObjects'
+import { ClimbsTableResponse, GeoJsonFeature, Tags } from '../types/interfaces';
+import TagModal from './mapComponents/modalComponents/modalTag';
+
+import { exampleMapObjects } from './homeComponents/homeObjects';
 import {
   createMarker,
   createClimbingShapes,
@@ -27,7 +28,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const [selectedClimb, setSelectedClimb] =
     useState<ClimbsTableResponse | null>(null);
-  
+
   const [currentMarker, setCurrentMarker] = useState<any>(null);
   const [polygonOrCircleDisplay, setpolygonOrCircleDisplay] =
     useState<boolean>(false);
@@ -36,36 +37,36 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     GeoJsonFeature[]
   >([]);
 
-  const [tags,setTags] = useState<Tags[]>([{id:0,tag:''}])
+  const [tags, setTags] = useState<Tags[]>([{ id: 0, tag: '' }]);
   const [
     clickedFeatureModalTriggerBoolean,
     setClickedFeatureModalTriggerBoolean,
   ] = useState<boolean>(false);
 
-  const [
-    tagModalDisplay,
-    setTagModalDisplay,
-  ] = useState<boolean>(false);
+  const [tagModalDisplay, setTagModalDisplay] = useState<boolean>(false);
 
-  
   const [feedToggle, setFeedToggle] = useState<boolean>(false);
-  const [tagToggle, setTagToggle] = useState<boolean>(false);
 
-  const feedToggleCallBack = () =>{
+  const feedToggleCallBack = () => {
+    setFeedToggle((prev) => !prev);
+  };
 
-    setFeedToggle(prev=>!prev)
-  }
+  const newTagCallBack = (data: Tags) => {
+    setTags((prev) => {
+      // Check if the tag already exists in the array
+      const tagExists = prev.some((tagObj) => tagObj.tag === data.tag);
 
-  const newTagCallBack = (data:Tags) =>{
+      // If it doesn't exist, add it to the array, otherwise return the existing array
+      if (!tagExists) {
+        return [...prev, data];
+      }
+      return prev;
+    });
+  };
 
-    setTags(prev=>[...prev,data])
-
-  }
-
-  const tagToggleCallBack = () =>{
-
-    setTagModalDisplay(true)
-  }
+  const tagToggleCallBack = () => {
+    setTagModalDisplay(true);
+  };
 
   const selectedClimbCallBack = (climbData: ClimbsTableResponse) => {
     setSelectedClimb(climbData);
@@ -76,9 +77,9 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     setClickedFeatureModalTriggerBoolean(trigger);
   };
 
-  const closeTagModalCallBack = (trigger:boolean) =>{
+  const closeTagModalCallBack = (trigger: boolean) => {
     setTagModalDisplay(trigger);
-  }
+  };
 
   const clickedFeatureClimbCallBack: (climbData: GeoJsonFeature[]) => void = (
     climbData,
@@ -86,12 +87,13 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     setClickedFeatureClimbs((prev) => [...prev, ...climbData]);
   };
 
+  const deleteTagCallBack = (item) => {
+    setTags((prev) => prev.filter((tagObj) => tagObj.id !== item.id));
+  };
 
-  useEffect(()=>{
-
-    setTags(tagsObject)
-
-  },[tagsObject])
+  useEffect(() => {
+    setTags(exampleMapObjects[0].tags);
+  }, [exampleMapObjects]);
 
   useEffect(() => {
     if (mapContainer.current) {
@@ -172,18 +174,19 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     }
   }, [clickedFeatureClimbs]);
 
-
-  console.log(tagModalDisplay,'sdfsd')
-
   return (
     <>
-      <MapNavBar feedToggle={feedToggle} tagToggle={tagModalDisplay} feedToggleCallBack={feedToggleCallBack} tagToggleCallBack={tagToggleCallBack}>
+      <MapNavBar
+        feedToggle={feedToggle}
+        tagToggle={tagModalDisplay}
+        feedToggleCallBack={feedToggleCallBack}
+        tagToggleCallBack={tagToggleCallBack}
+      >
         <div className="flex w-full items-center justify-start gap-5">
           <div className="z-10 max-w-96 flex-grow">
             {' '}
             <Search selectedClimbCallBack={selectedClimbCallBack} />{' '}
           </div>
-
         </div>
       </MapNavBar>
       <ActivityFeed feedToggle={feedToggle} />
@@ -194,10 +197,14 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
         />
       ) : null}
 
-      {tagModalDisplay?
-
-        <TagModal newTagCallBack ={newTagCallBack} tags = {tags} closeTagModalCallBack = {closeTagModalCallBack}/>:null
-      }
+      {tagModalDisplay ? (
+        <TagModal
+          deleteTagCallBack={deleteTagCallBack}
+          newTagCallBack={newTagCallBack}
+          tags={tags}
+          closeTagModalCallBack={closeTagModalCallBack}
+        />
+      ) : null}
       <div className="h-screen w-screen" ref={mapContainer} />
     </>
   );
