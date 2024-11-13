@@ -1,27 +1,9 @@
 {
-  "file:///Users/mphelps/climb_w_friends_v2/src/App.tsx": {
-    "language": "TypeScript JSX",
-    "code": 9,
-    "comment": 32,
-    "blank": 4
-  },
   "file:///Users/mphelps/climb_w_friends_v2/src/supaBaseClient.tsx": {
     "language": "TypeScript JSX",
     "code": 45,
     "comment": 1,
     "blank": 12
-  },
-  "file:///Users/mphelps/climb_w_friends_v2/src/main.tsx": {
-    "language": "TypeScript JSX",
-    "code": 21,
-    "comment": 1,
-    "blank": 3
-  },
-  "file:///Users/mphelps/climb_w_friends_v2/src/pages/map.tsx": {
-    "language": "TypeScript JSX",
-    "code": 139,
-    "comment": 4,
-    "blank": 22
   },
   "file:///Users/mphelps/climb_w_friends_v2/src/index.css": {
     "language": "CSS",
@@ -41,29 +23,29 @@
     "comment": 0,
     "blank": 0
   },
-  "file:///Users/mphelps/climb_w_friends_v2/src/types/Posts.ts": {
-    "language": "TypeScript",
-    "code": 5,
-    "comment": 0,
-    "blank": 1
-  },
-  "file:///Users/mphelps/climb_w_friends_v2/src/pages/home.tsx": {
-    "language": "TypeScript JSX",
-    "code": 11,
-    "comment": 0,
-    "blank": 1
-  },
   "file:///Users/mphelps/climb_w_friends_v2/src/pages/login.tsx": {
     "language": "TypeScript JSX",
     "code": 81,
     "comment": 10,
     "blank": 13
   },
-  "file:///Users/mphelps/climb_w_friends_v2/src/reusableComponents/chatInput.tsx": {
+  "file:///Users/mphelps/climb_w_friends_v2/src/main.tsx": {
     "language": "TypeScript JSX",
-    "code": 34,
-    "comment": 0,
+    "code": 21,
+    "comment": 1,
+    "blank": 3
+  },
+  "file:///Users/mphelps/climb_w_friends_v2/src/App.tsx": {
+    "language": "TypeScript JSX",
+    "code": 9,
+    "comment": 32,
     "blank": 4
+  },
+  "file:///Users/mphelps/climb_w_friends_v2/src/types/Posts.ts": {
+    "language": "TypeScript",
+    "code": 5,
+    "comment": 0,
+    "blank": 1
   },
   "file:///Users/mphelps/climb_w_friends_v2/src/reusableComponents/input.tsx": {
     "language": "TypeScript JSX",
@@ -77,47 +59,59 @@
     "comment": 0,
     "blank": 6
   },
+  "file:///Users/mphelps/climb_w_friends_v2/src/reusableComponents/chatInput.tsx": {
+    "language": "TypeScript JSX",
+    "code": 34,
+    "comment": 0,
+    "blank": 4
+  },
+  "file:///Users/mphelps/climb_w_friends_v2/src/types/interfaces.tsx": {
+    "language": "TypeScript JSX",
+    "code": 48,
+    "comment": 0,
+    "blank": 6
+  },
+  "file:///Users/mphelps/climb_w_friends_v2/src/reusableComponents/purpleButton.tsx": {
+    "language": "TypeScript JSX",
+    "code": 18,
+    "comment": 0,
+    "blank": 1
+  },
+  "file:///Users/mphelps/climb_w_friends_v2/src/reusableComponents/toolTip.tsx": {
+    "language": "TypeScript JSX",
+    "code": 62,
+    "comment": 2,
+    "blank": 6
+  },
+  "file:///Users/mphelps/climb_w_friends_v2/src/reusableComponents/styles.tsx": {
+    "language": "TypeScript JSX",
+    "code": 300,
+    "comment": 0,
+    "blank": 20
+  },
   "file:///Users/mphelps/climb_w_friends_v2/src/reusableComponents/zincModal.tsx": {
     "language": "TypeScript JSX",
     "code": 42,
     "comment": 2,
     "blank": 5
   },
-  "file:///Users/mphelps/climb_w_friends_v2/src/reusableComponents/styles.tsx": {
+  "file:///Users/mphelps/climb_w_friends_v2/src/pages/home.tsx": {
     "language": "TypeScript JSX",
-    "code": 249,
-    "comment": 0,
-    "blank": 17
-  },
-  "file:///Users/mphelps/climb_w_friends_v2/src/types/interfaces.tsx": {
-    "language": "TypeScript JSX",
-    "code": 43,
-    "comment": 0,
-    "blank": 6
-  },
-  "file:///Users/mphelps/climb_w_friends_v2/src/pages/homeComponents/maps.tsx": {
-    "language": "TypeScript JSX",
-    "code": 94,
-    "comment": 0,
-    "blank": 7
-  },
-  "file:///Users/mphelps/climb_w_friends_v2/src/pages/homeComponents/mapsComponents/editModal.tsx": {
-    "language": "TypeScript JSX",
-    "code": 219,
-    "comment": 0,
-    "blank": 14
-  },
-  "file:///Users/mphelps/climb_w_friends_v2/src/pages/homeComponents/mapsComponents/addMapModal.tsx": {
-    "language": "TypeScript JSX",
-    "code": 0,
+    "code": 11,
     "comment": 0,
     "blank": 1
   },
-  "file:///Users/mphelps/climb_w_friends_v2/src/pages/homeComponents/navBar.tsx": {
+  "file:///Users/mphelps/climb_w_friends_v2/src/pages/homeComponents/maps.tsx": {
     "language": "TypeScript JSX",
-    "code": 30,
+    "code": 109,
     "comment": 0,
-    "blank": 4
+    "blank": 10
+  },
+  "file:///Users/mphelps/climb_w_friends_v2/src/pages/map.tsx": {
+    "language": "TypeScript JSX",
+    "code": 175,
+    "comment": 6,
+    "blank": 33
   },
   "file:///Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/climbModal.tsx": {
     "language": "TypeScript JSX",
@@ -125,17 +119,23 @@
     "comment": 1,
     "blank": 11
   },
-  "file:///Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/activityFeed.tsx": {
+  "file:///Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/mapObjects.tsx": {
     "language": "TypeScript JSX",
-    "code": 59,
-    "comment": 1,
-    "blank": 9
+    "code": 3129,
+    "comment": 0,
+    "blank": 7
   },
   "file:///Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/mapLayers.tsx": {
     "language": "TypeScript JSX",
     "code": 297,
     "comment": 45,
     "blank": 28
+  },
+  "file:///Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/mapNavBar.tsx": {
+    "language": "TypeScript JSX",
+    "code": 72,
+    "comment": 0,
+    "blank": 3
   },
   "file:///Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/search.tsx": {
     "language": "TypeScript JSX",
@@ -145,21 +145,45 @@
   },
   "file:///Users/mphelps/climb_w_friends_v2/src/pages/homeComponents/homeObjects.tsx": {
     "language": "TypeScript JSX",
-    "code": 335,
+    "code": 377,
     "comment": 0,
     "blank": 2
   },
-  "file:///Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/mapObjects.tsx": {
+  "file:///Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/activityFeed.tsx": {
     "language": "TypeScript JSX",
-    "code": 3122,
+    "code": 59,
+    "comment": 1,
+    "blank": 9
+  },
+  "file:///Users/mphelps/climb_w_friends_v2/src/pages/homeComponents/navBar.tsx": {
+    "language": "TypeScript JSX",
+    "code": 30,
     "comment": 0,
-    "blank": 6
+    "blank": 4
+  },
+  "file:///Users/mphelps/climb_w_friends_v2/src/pages/homeComponents/mapsComponents/addMapModal.tsx": {
+    "language": "TypeScript JSX",
+    "code": 76,
+    "comment": 1,
+    "blank": 5
+  },
+  "file:///Users/mphelps/climb_w_friends_v2/src/pages/homeComponents/mapsComponents/editModal.tsx": {
+    "language": "TypeScript JSX",
+    "code": 222,
+    "comment": 0,
+    "blank": 15
   },
   "file:///Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/modalChat.tsx": {
     "language": "TypeScript JSX",
     "code": 94,
     "comment": 0,
     "blank": 8
+  },
+  "file:///Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/modalTag.tsx": {
+    "language": "TypeScript JSX",
+    "code": 79,
+    "comment": 2,
+    "blank": 10
   },
   "file:///Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/modalSearch.tsx": {
     "language": "TypeScript JSX",

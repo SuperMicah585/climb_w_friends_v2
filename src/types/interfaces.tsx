@@ -22,12 +22,15 @@ export interface GeoJsonFeature {
   climber_names: string[];
   name: string;
   grade: string;
+  tags: Tags[];
+  conversation: ChatObject[];
 }
 
 export interface ChatProps {
   displayTrigger: number;
   climbName: string;
   climbGrade: string;
+  climbChat: ChatObject[];
 }
 
 export interface ChatObject {

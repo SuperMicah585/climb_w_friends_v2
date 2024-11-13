@@ -1,9 +1,9 @@
-import { GeoJsonFeature } from '../../types/interfaces';
+import { GeoJsonFeature, ChatObject } from '../../types/interfaces';
 import {
   checkBadge,
   chatIcon,
   minusIcon,
-  closeIcon,
+  tagIcon,
   addIcon,
   newWindowIcon,
 } from '../../reusableComponents/styles';
@@ -26,6 +26,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   const [displayTrigger, setDisplayTrigger] = useState(0);
   const [climbNameForChat, setClimbNameForChat] = useState('');
   const [climbGradeForChat, setClimbGradeForChat] = useState('');
+  const [climbChatForChat, setClimbChatForChat] = useState<ChatObject[]>([]);
 
   const searchFilterCallBack = (data: string) => {
     setRouteFilterString(data);
@@ -49,6 +50,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
         <ModalChat
           climbGrade={climbGradeForChat}
           climbName={climbNameForChat}
+          climbChat={climbChatForChat}
           displayTrigger={displayTrigger}
         />
       </div>
@@ -100,6 +102,10 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                   </div>
 
                   <div className="absolute bottom-2 right-2 flex items-center gap-2">
+                    <div className="cursor-pointer p-1 text-sm font-semibold text-neutral-200 hover:text-white">
+                      {' '}
+                      Tags{' '}
+                    </div>
                     <div
                       onClick={() => setisClimbTicked((prev) => !prev)}
                       className={`cursor-pointer rounded-full p-1 hover:bg-slate-500 hover:opacity-75 ${isClimbTicked ? 'text-green-500' : 'text-neutral-500 hover:text-neutral-400'}`}
@@ -111,6 +117,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                         setDisplayTrigger((prev) => prev + 1);
                         setClimbNameForChat(item.name);
                         setClimbGradeForChat(item.grade);
+                        setClimbChatForChat(item.conversation);
                       }}
                       className="cursor-pointer rounded-full p-1 text-blue-500 hover:bg-slate-500 hover:opacity-75"
                     >

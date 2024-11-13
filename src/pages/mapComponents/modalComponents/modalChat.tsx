@@ -2,15 +2,15 @@ import { useEffect, useState, useRef } from 'react';
 import { backArrowIcon } from '../../../reusableComponents/styles';
 import ChatInput from '../../../reusableComponents/chatInput';
 import { ChatProps, ChatObject } from '../../../types/interfaces';
-import { conversation } from '../mapObjects';
 
 const ModalChat: React.FC<ChatProps> = ({
   displayTrigger,
   climbName,
   climbGrade,
+  climbChat,
 }) => {
   const [displayChat, setDisplayChat] = useState(false);
-  const [chatArray, setChatArray] = useState<ChatObject[]>(conversation);
+  const [chatArray, setChatArray] = useState<ChatObject[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleChatInputCallBack = (chat: ChatObject) => {
@@ -26,8 +26,13 @@ const ModalChat: React.FC<ChatProps> = ({
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
+      //Will need to pass the updated chat array to the server along with 'map id, feature id,climb id'
     }
   }, [chatArray]);
+
+  useEffect(() => {
+    setChatArray(climbChat);
+  }, [climbChat]);
 
   return (
     <>
