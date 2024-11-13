@@ -94,6 +94,7 @@ const ModalSearch: React.FC<ModalSearchProps> = ({
           paddingLeft={'pl-5'}
           ref={inputRef}
           handleSearch={handleClimbSearch}
+          setPlaceHolder={'Search by Climb, or Tag'}
         />
         <div
           ref={filterIconDownRef}

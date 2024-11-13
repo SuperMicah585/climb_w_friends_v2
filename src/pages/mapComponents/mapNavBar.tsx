@@ -1,6 +1,6 @@
 import {
   backArrowIcon,
-  expandArrowIcon,
+  filterIcon,
   tagIcon,
   notificationSVG,
 } from '../../reusableComponents/styles';
@@ -12,10 +12,14 @@ interface MapNavBarProps {
   tagToggleCallBack: () => void;
   feedToggle: boolean;
   tagToggle: boolean;
+  filterModalDisplay: boolean;
+  filterToggleCallBack: () => void;
 }
 const MapNavBar: React.FC<MapNavBarProps> = ({
   feedToggleCallBack,
   tagToggleCallBack,
+  filterToggleCallBack,
+  filterModalDisplay,
   feedToggle,
   tagToggle,
   children,
@@ -38,6 +42,12 @@ const MapNavBar: React.FC<MapNavBarProps> = ({
             className={`cursor-pointer ${tagToggle ? 'border-violet-500 fill-violet-500 text-violet-500' : 'border-slate-500 fill-none'} z-10 rounded-full border border-slate-500 p-2 opacity-90 shadow-lg hover:bg-slate-500 hover:bg-opacity-75`}
           >
             {tagIcon}
+          </div>
+          <div
+            onClick={() => filterToggleCallBack()}
+            className={`cursor-pointer ${filterModalDisplay ? 'border-violet-500 fill-violet-500 text-violet-500' : 'border-slate-500 fill-none'} z-10 rounded-full border border-slate-500 p-2 opacity-90 shadow-lg hover:bg-slate-500 hover:bg-opacity-75`}
+          >
+            {filterIcon}
           </div>
           <div
             onClick={() => feedToggleCallBack()}

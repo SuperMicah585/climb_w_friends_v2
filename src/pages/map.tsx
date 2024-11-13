@@ -8,6 +8,7 @@ import MapNavBar from './mapComponents/mapNavBar';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { ClimbsTableResponse, GeoJsonFeature, Tags } from '../types/interfaces';
 import TagModal from './mapComponents/modalComponents/modalTag';
+import FilterModal from './mapComponents/modalComponents/filterModal';
 
 import { exampleMapObjects } from './homeComponents/homeObjects';
 import {
@@ -44,6 +45,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   ] = useState<boolean>(false);
 
   const [tagModalDisplay, setTagModalDisplay] = useState<boolean>(false);
+  const [filterModalDisplay, setFilterModalDisplay] = useState<boolean>(false);
 
   const [feedToggle, setFeedToggle] = useState<boolean>(false);
 
@@ -57,7 +59,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
       const tagExists = prev.some((tagObj) => tagObj.tag === data.tag);
 
       // If it doesn't exist, add it to the array, otherwise return the existing array
-      if (!tagExists) {
+      if (!tagExists && data.tag.length > 0) {
         return [...prev, data];
       }
       return prev;
@@ -68,6 +70,10 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     setTagModalDisplay(true);
   };
 
+  const filterToggleCallBack = () => {
+    setFilterModalDisplay(true);
+  };
+
   const selectedClimbCallBack = (climbData: ClimbsTableResponse) => {
     setSelectedClimb(climbData);
   };
@@ -75,6 +81,10 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   const closeModalCallBack = (trigger: boolean) => {
     setClickedFeatureClimbs([]);
     setClickedFeatureModalTriggerBoolean(trigger);
+  };
+
+  const closeFilterModalCallBack = (trigger: boolean) => {
+    setFilterModalDisplay(trigger);
   };
 
   const closeTagModalCallBack = (trigger: boolean) => {
@@ -179,6 +189,8 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
       <MapNavBar
         feedToggle={feedToggle}
         tagToggle={tagModalDisplay}
+        filterModalDisplay={filterModalDisplay}
+        filterToggleCallBack={filterToggleCallBack}
         feedToggleCallBack={feedToggleCallBack}
         tagToggleCallBack={tagToggleCallBack}
       >
@@ -205,6 +217,14 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
           closeTagModalCallBack={closeTagModalCallBack}
         />
       ) : null}
+
+      {filterModalDisplay ? (
+        <FilterModal
+          tagsOnMap={tags}
+          closeTagModalCallBack={closeFilterModalCallBack}
+        />
+      ) : null}
+
       <div className="h-screen w-screen" ref={mapContainer} />
     </>
   );
