@@ -1,0 +1,6 @@
+2024-11-11 11:09:17.230 PST [12548] LOG:  starting PostgreSQL 16.1, compiled by Visual C++ build 1937, 64-bit
+2024-11-11 11:09:17.232 PST [12548] LOG:  could not bind IPv6 address "::1": Permission denied
+2024-11-11 11:09:17.233 PST [12548] LOG:  could not bind IPv4 address "127.0.0.1": Permission denied
+2024-11-11 11:09:17.233 PST [12548] WARNING:  could not create listen socket for "localhost"
+2024-11-11 11:09:17.233 PST [12548] FATAL:  could not create any TCP/IP sockets
+2024-11-11 11:09:17.234 PST [12548] LOG:  database system is shut down
