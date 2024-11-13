@@ -1,11 +1,8 @@
-import {
-  filterIcon,
-  dropDownStyles,
-  basicDropDownStyleContainer,
-} from '../../../reusableComponents/styles';
+import { filterIcon } from '../../../reusableComponents/styles';
 import { useState, useRef, useEffect } from 'react';
 import Input from '../../../reusableComponents/input';
 import { filterTypes } from '../mapObjects';
+import DownDrop from '../../../reusableComponents/downDrop';
 
 interface ModalSearchProps {
   searchFilterCallBack: (data: string) => void;
@@ -55,36 +52,12 @@ const ModalSearch: React.FC<ModalSearchProps> = ({
     setSearchResults(query);
   };
 
-  const FilterDropDown = () => {
-    return (
-      <div
-        ref={filterDropDownRef}
-        className={`absolute right-0 top-16 z-10 ${basicDropDownStyleContainer('w-40')}`}
-      >
-        {filterTypes.map((item) => (
-          <>
-            <div
-              key={item}
-              onClick={() => {
-                setDropDownToggle(false);
-                setSelectedFilter(item);
-              }}
-              className={` ${dropDownStyles} `}
-            >
-              <div className="flex-col">
-                <div> {item} </div>
+  const setSelectedFilterCallBack = (item: string) => {
+    setSelectedFilter(item);
+  };
 
-                <div
-                  className={`${selectedFilter === item ? 'w-content border-b-2 border-violet-500' : null} `}
-                >
-                  {' '}
-                </div>
-              </div>
-            </div>
-          </>
-        ))}
-      </div>
-    );
+  const setDropDownToggleCallBack = (booleanValue: boolean) => {
+    setDropDownToggle(booleanValue);
   };
 
   return (
@@ -104,9 +77,26 @@ const ModalSearch: React.FC<ModalSearchProps> = ({
           {' '}
           {filterIcon}
         </div>
-        {dropDownToggle ? <FilterDropDown /> : null}
+        {dropDownToggle ? (
+          <DownDrop
+            selectedFilter={selectedFilter}
+            setDropDownToggleCallBack={setDropDownToggleCallBack}
+            setSelectedFilterCallBack={setSelectedFilterCallBack}
+            filterTypes={filterTypes}
+            downDropWidth={'w-40'}
+          />
+        ) : null}
       </div>
     </div>
   );
 };
 export default ModalSearch;
+
+/*
+    filterTypes:string[]
+    setSelectedFilterCallBack:(item:string)=>void
+    setDropDownToggleCalBack:(boolean:boolean)=>void
+    selectedFilter:string
+    downDropWidth:string
+
+*/

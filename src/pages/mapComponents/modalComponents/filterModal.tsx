@@ -4,7 +4,11 @@ import Input from '../../../reusableComponents/input';
 import { useState, useRef, useEffect } from 'react';
 import SearchDropDown from '../../../reusableComponents/searchDropDown';
 import { Tags } from '../../../types/interfaces';
-import { dropDownStyles } from '../../../reusableComponents/styles';
+import {
+  dropDownStyles,
+  threeLineDropDownIcon,
+} from '../../../reusableComponents/styles';
+
 interface FilterModalProps {
   closeTagModalCallBack: (value: boolean) => void;
   tagsOnMap: Tags[];
@@ -40,7 +44,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
     );
 
     setSearchResults(filteredTags);
-  }, [searchString]);
+  }, [searchString, tagsOnMount]);
 
   useEffect(() => {
     setTagsOnMount(tagsOnMap);
@@ -50,39 +54,45 @@ const FilterModal: React.FC<FilterModalProps> = ({
     console.log(item);
   };
 
+  //need to filter my climber(s)
   return (
     <ZincModal
       maxHeight={'max-h-[500px]'}
       maxWidth={'max-w-[500px]'}
       closeModalCallBack={closeTagModalCallBack}
     >
-      <div className="mt-10 flex h-10 w-40 w-full h-full flex-col gap-5">
-        <div className ='flex justify-between'> 
-        <div className="flex w-52 flex-col gap-2">
-          <div>Filter Map by Tag</div>
-          <Input
-            ref={inputFilterRef}
-            setToggleSearchDropDown={setToggleFilterDropDownCallBack}
-            setPlaceHolder={'search tags'}
-            handleSearch={handleSearch}
-            paddingLeft={'pl-2'}
-          />
-        </div>
-        <div className="flex w-52 flex-col gap-2 ">
-          <div>Filter By Grade</div>
+      <div className="mt-10 flex h-10 h-full w-40 w-full flex-col gap-5">
+        <div className="flex flex-col gap-5">
+          <div className="flex w-80 flex-col gap-2">
+            <div>Searchable Filters</div>
+            <div className="relative">
+              <Input
+                ref={inputFilterRef}
+                setToggleSearchDropDown={setToggleFilterDropDownCallBack}
+                setPlaceHolder={'Add Tags to Filter'}
+                handleSearch={handleSearch}
+                paddingLeft={'pl-2'}
+              />
 
-        </div>
-        </div>
-        Filters on Map
-        <div className="flex flex-wrap gap-2">
-          {tagFiltersOnMap.map((item) => (
-            <Tooltip deleteItemCallBack={deleteTagCallBack} tag={item}>
-  
-              <div className="flex cursor-pointer rounded-md border-2 border-neutral-600 bg-neutral-500 p-1 text-center text-sm hover:opacity-75">
-                {item.tag}
+              <div className="absolute right-2 top-2 flex cursor-pointer items-center justify-center rounded-full p-1 hover:bg-slate-500">
+                {threeLineDropDownIcon}
               </div>
-            </Tooltip>
-          ))}
+            </div>
+          </div>
+          <div>Filter by Grade</div>
+          <div className="flex flex-wrap gap-2">
+            {tagFiltersOnMap.map((item) => (
+              <Tooltip deleteItemCallBack={deleteTagCallBack} tag={item}>
+                {' '}
+                <div
+                  key={item.id}
+                  className="flex cursor-pointer rounded-md border-2 border-neutral-600 bg-neutral-500 p-1 text-center text-sm hover:opacity-75"
+                >
+                  {item.tag}{' '}
+                </div>{' '}
+              </Tooltip>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -90,7 +100,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
         {toggleFilterDropDown ? (
           <div className="w-content absolute top-[145px]">
             <SearchDropDown
-              width={'w-52'}
+              width={'w-80'}
               maxHeight={'max-h-48'}
               dropDownStatus={toggleFilterDropDown}
               inputRef={inputFilterRef}
