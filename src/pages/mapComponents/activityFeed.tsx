@@ -3,7 +3,10 @@ import { supabase } from '../../supaBaseClient';
 import { Post } from '../../types/Posts';
 import Draggable from 'react-draggable';
 
-const ActivityFeed = ({ feedToggle }) => {
+interface ActivityFeedProps {
+  feedToggle: boolean;
+}
+const ActivityFeed: React.FC<ActivityFeedProps> = ({ feedToggle }) => {
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {

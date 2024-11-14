@@ -1,0 +1,39 @@
+Date : 2024-11-14 00:05:59
+Directory : /Users/mphelps/climb_w_friends_v2/src
+Total : 7 files,  188 codes, 0 comments, -24 blanks, all 164 lines
+
+Languages
++----------------+------------+------------+------------+------------+------------+
+| language       | files      | code       | comment    | blank      | total      |
++----------------+------------+------------+------------+------------+------------+
+| TypeScript JSX |          7 |        188 |          0 |        -24 |        164 |
++----------------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                   | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                      |          7 |        188 |          0 |        -24 |        164 |
+| pages                                                                                                                  |          5 |        183 |          0 |        -22 |        161 |
+| pages/homeComponents                                                                                                   |          1 |          0 |          0 |         -3 |         -3 |
+| pages/mapComponents                                                                                                    |          4 |        183 |          0 |        -19 |        164 |
+| pages/mapComponents (Files)                                                                                            |          2 |         64 |          0 |         -5 |         59 |
+| pages/mapComponents/modalComponents                                                                                    |          2 |        119 |          0 |        -14 |        105 |
+| pages/mapComponents/modalComponents (Files)                                                                            |          1 |         51 |          0 |        -20 |         31 |
+| pages/mapComponents/modalComponents/filterModalComponents.tsx                                                          |          1 |         68 |          0 |          6 |         74 |
+| reusableComponents                                                                                                     |          2 |          5 |          0 |         -2 |          3 |
++------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| filename                                                                                                               | language       | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| /Users/mphelps/climb_w_friends_v2/src/pages/homeComponents/homeObjects.tsx                                             | TypeScript JSX |          0 |          0 |         -3 |         -3 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/mapObjects.tsx                                               | TypeScript JSX |         46 |          0 |          1 |         47 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/filterModal.tsx                              | TypeScript JSX |         51 |          0 |        -20 |         31 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/filterModalComponents.tsx/GradeDropDowns.tsx | TypeScript JSX |         68 |          0 |          6 |         74 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/search.tsx                                                   | TypeScript JSX |         18 |          0 |         -6 |         12 |
+| /Users/mphelps/climb_w_friends_v2/src/reusableComponents/downDrop.tsx                                                  | TypeScript JSX |          5 |          0 |         -1 |          4 |
+| /Users/mphelps/climb_w_friends_v2/src/reusableComponents/purpleButton.tsx                                              | TypeScript JSX |          0 |          0 |         -1 |         -1 |
+| Total                                                                                                                  |                |        188 |          0 |        -24 |        164 |
++------------------------------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+

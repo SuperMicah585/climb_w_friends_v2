@@ -71,7 +71,7 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
               <div className="font-semibold"> Tags</div>
               <div className="flex flex-wrap gap-2">
                 {tags.map((item) => (
-                  <Tooltip deleteItemCallBack={deleteTagCallBack} tag={item}>
+                  <Tooltip deleteItemCallBack={deleteTagCallBack} item={item}>
                     {' '}
                     <div className="flex cursor-pointer rounded-md border-2 border-neutral-600 bg-neutral-500 p-1 text-center text-sm hover:opacity-75">
                       {item.tag}{' '}

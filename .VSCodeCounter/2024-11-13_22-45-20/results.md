@@ -1,10 +1,10 @@
 # Summary
 
-Date : 2024-11-11 23:35:23
+Date : 2024-11-13 22:45:20
 
 Directory /Users/mphelps/climb_w_friends_v2/src
 
-Total : 32 files, 6050 codes, 105 comments, 282 blanks, all 6437 lines
+Total : 35 files, 3578 codes, 109 comments, 352 blanks, all 4039 lines
 
 Summary / [Details](details.md) / [Diff Summary](diff.md) / [Diff Details](diff-details.md)
 
@@ -12,7 +12,7 @@ Summary / [Details](details.md) / [Diff Summary](diff.md) / [Diff Details](diff-
 
 | language       | files |  code | comment | blank | total |
 | :------------- | ----: | ----: | ------: | ----: | ----: |
-| TypeScript JSX |    28 | 5,943 |     105 |   266 | 6,314 |
+| TypeScript JSX |    31 | 3,471 |     109 |   336 | 3,916 |
 | CSS            |     2 |   101 |       0 |    15 |   116 |
 | TypeScript     |     1 |     5 |       0 |     1 |     6 |
 | XML            |     1 |     1 |       0 |     0 |     1 |
@@ -21,18 +21,18 @@ Summary / [Details](details.md) / [Diff Summary](diff.md) / [Diff Details](diff-
 
 | path                                | files |  code | comment | blank | total |
 | :---------------------------------- | ----: | ----: | ------: | ----: | ----: |
-| .                                   |    32 | 6,050 |     105 |   282 | 6,437 |
+| .                                   |    35 | 3,578 |     109 |   352 | 4,039 |
 | . (Files)                           |     5 |   176 |      34 |    34 |   244 |
 | assets                              |     1 |     1 |       0 |     0 |     1 |
-| pages                               |    17 | 5,282 |      67 |   191 | 5,540 |
-| pages (Files)                       |     3 |   267 |      16 |    47 |   330 |
-| pages/homeComponents                |     5 |   814 |       1 |    36 |   851 |
-| pages/homeComponents (Files)        |     3 |   516 |       0 |    16 |   532 |
+| pages                               |    18 | 2,653 |      71 |   247 | 2,971 |
+| pages (Files)                       |     3 |   283 |      16 |    51 |   350 |
+| pages/homeComponents                |     5 |   814 |       1 |    39 |   854 |
+| pages/homeComponents (Files)        |     3 |   516 |       0 |    19 |   535 |
 | pages/homeComponents/mapsComponents |     2 |   298 |       1 |    20 |   319 |
-| pages/mapComponents                 |     9 | 4,201 |      50 |   108 | 4,359 |
-| pages/mapComponents (Files)         |     6 | 3,929 |      47 |    78 | 4,054 |
-| pages/mapComponents/modalComponents |     3 |   272 |       3 |    30 |   305 |
-| reusableComponents                  |     7 |   538 |       4 |    50 |   592 |
-| types                               |     2 |    53 |       0 |     7 |    60 |
+| pages/mapComponents                 |    10 | 1,556 |      54 |   157 | 1,767 |
+| pages/mapComponents (Files)         |     6 | 1,107 |      47 |    82 | 1,236 |
+| pages/mapComponents/modalComponents |     4 |   449 |       7 |    75 |   531 |
+| reusableComponents                  |     9 |   692 |       4 |    64 |   760 |
+| types                               |     2 |    56 |       0 |     7 |    63 |
 
 Summary / [Details](details.md) / [Diff Summary](diff.md) / [Diff Details](diff-details.md)

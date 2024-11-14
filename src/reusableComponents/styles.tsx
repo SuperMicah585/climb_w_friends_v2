@@ -325,9 +325,9 @@ export const threeLineDropDownIcon = (
 export const dropDownStyles: string =
   'flex items-center text-sm cursor-pointer hover:bg-zinc-300 hover:bg-opacity-25 p-2 text-white ';
 export const climbTypeDropDownStyle =
-  'bg-zinc-700 text-white flex font-semibold text-sm w-[84px] justify-center gap-1 items-center hover:opacity-75 cursor-pointer rounded-l-xl p-2 z-10';
+  'bg-zinc-700 text-white flex font-semibold text-sm w-[84px] justify-between gap-1 items-center hover:opacity-75 cursor-pointer rounded-l-xl p-2 z-10';
 export const stateDropDownStyle =
-  'bg-zinc-700 text-white font-semibold flex w-14 text-sm justify-center gap-1 items-center hover:opacity-75 cursor-pointer rounded-r-xl p-2 z-10';
+  'bg-zinc-700 text-white font-semibold flex w-14 text-sm justify-between gap-1 items-center hover:opacity-75 cursor-pointer rounded-r-xl p-2 z-10';
 
 export const basicDropDownStyleContainer = (width: string) =>
   `${width} border border-slate-500 text-white rounded-md bg-zinc-900 bg-opacity-90 max-h-48 overflow-y-scroll`;

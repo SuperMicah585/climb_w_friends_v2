@@ -16,8 +16,8 @@ const ModalSearch: React.FC<ModalSearchProps> = ({
   const [searchResults, setSearchResults] = useState('');
   const [dropDownToggle, setDropDownToggle] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState('Order Grade ASC');
-  const filterDropDownRef = useRef<HTMLDivElement | null>(null);
   const filterIconDownRef = useRef<HTMLDivElement | null>(null);
+  const filterDropDownRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
@@ -84,6 +84,7 @@ const ModalSearch: React.FC<ModalSearchProps> = ({
             setSelectedFilterCallBack={setSelectedFilterCallBack}
             filterTypes={filterTypes}
             downDropWidth={'w-40'}
+            ref={filterDropDownRef}
           />
         ) : null}
       </div>
@@ -91,12 +92,3 @@ const ModalSearch: React.FC<ModalSearchProps> = ({
   );
 };
 export default ModalSearch;
-
-/*
-    filterTypes:string[]
-    setSelectedFilterCallBack:(item:string)=>void
-    setDropDownToggleCalBack:(boolean:boolean)=>void
-    selectedFilter:string
-    downDropWidth:string
-
-*/

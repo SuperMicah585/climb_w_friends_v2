@@ -3,14 +3,13 @@ import {
   checkBadge,
   chatIcon,
   minusIcon,
-  tagIcon,
   addIcon,
   newWindowIcon,
 } from '../../reusableComponents/styles';
 import ModalSearch from './modalComponents/modalSearch';
 import ModalChat from './modalComponents/modalChat';
 import ZincModal from '../../reusableComponents/zincModal';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 type ClimbModalProps = {
   clickedFeatureClimbs: GeoJsonFeature[];
   closeModalCallBack: (trigger: boolean) => void;

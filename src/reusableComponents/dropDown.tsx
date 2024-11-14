@@ -76,7 +76,7 @@ const DropDown: React.FC<DropDownProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="relative flex flex-col items-center justify-center">
       <div
         ref={dropDownButtonRef}
         onClick={() => setDropDownItemsState((prev) => !prev)}
@@ -86,7 +86,7 @@ const DropDown: React.FC<DropDownProps> = ({
         {dropDownItemsState ? dropDownSvgOpen : dropDownSvgClosed}
       </div>
       {dropDownItemsState ? (
-        <div className="absolute top-11">
+        <div className="absolute top-11 z-10">
           {' '}
           <DropDownItems />{' '}
         </div>

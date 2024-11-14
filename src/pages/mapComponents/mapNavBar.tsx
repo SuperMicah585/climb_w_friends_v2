@@ -57,8 +57,9 @@ const MapNavBar: React.FC<MapNavBarProps> = ({
             {notificationSVG}{' '}
           </div>{' '}
           <div className="flex items-center gap-5 border-l pl-5">
-            {navBarOptions.map((item) => (
+            {navBarOptions.map((item, index) => (
               <Link
+                key={index}
                 className={`${navBarStateExpanded ? 'cursor-pointer' : 'pointer-events-none'}`}
                 to={`/maps`}
               >
