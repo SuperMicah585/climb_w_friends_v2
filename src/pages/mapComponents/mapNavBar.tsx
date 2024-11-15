@@ -1,5 +1,5 @@
 import {
-  backArrowIcon,
+  expandArrowIcon,
   filterIcon,
   tagIcon,
   notificationSVG,
@@ -76,7 +76,7 @@ const MapNavBar: React.FC<MapNavBarProps> = ({
           onClick={() => setNavBarStateExpanded((prev) => !prev)}
           className={`font-xl z-20 cursor-pointer stroke-2 text-white transition-transform duration-500 hover:text-violet-500 ${navBarStateExpanded ? 'rotate-180' : ''}`}
         >
-          {backArrowIcon}
+          {expandArrowIcon}
         </div>
       </div>
     </div>

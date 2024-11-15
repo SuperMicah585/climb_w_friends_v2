@@ -11,6 +11,7 @@ const Maps = () => {
   const [editMapTrigger, setEditMapTrigger] = useState(false);
   const [addMapTrigger, setAddMapTrigger] = useState(false);
   const [editMapObject, setEditMapObject] = useState<MapObject>({});
+
   const [mapId, setMapId] = useState<number>(0);
 
   const closeEditModalCallBack = () => {
@@ -51,8 +52,11 @@ const Maps = () => {
   return (
     <>
       <div className="border-box relative w-screen flex-grow bg-zinc-800 pb-20 pl-10 pr-10 pt-20">
-        <PurpleButton clickCallBack={AddMapButtonTrigger}>Add Map</PurpleButton>
-
+        <div className="absolute right-2 top-2">
+          <PurpleButton clickCallBack={AddMapButtonTrigger}>
+            Add Map
+          </PurpleButton>
+        </div>
         <div className="flex justify-center">
           <div className="grid max-w-[1800px] grid-cols-1 justify-center gap-5 md:grid-cols-2">
             {mapObject.map((item) => (

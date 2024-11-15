@@ -2,6 +2,7 @@ import ZincModal from '../../../reusableComponents/zincModal';
 import DownDrop from '../../../reusableComponents/downDrop';
 import Tooltip from '../../../reusableComponents/toolTip';
 import Input from '../../../reusableComponents/input';
+import PurpleButton from '../../../reusableComponents/purpleButton';
 import { useState, useRef, useEffect } from 'react';
 import SearchDropDown from '../../../reusableComponents/searchDropDown';
 import { Tags, friendsObject } from '../../../types/interfaces';
@@ -158,10 +159,10 @@ const FilterModal: React.FC<FilterModalProps> = ({
       maxWidth={'max-w-[500px]'}
       closeModalCallBack={closeTagModalCallBack}
     >
-      <div className="mt-10 flex h-10 h-full w-40 w-full flex-col gap-5">
-        <div className="flex flex-col gap-5">
+      <div className="relative flex h-full w-full flex-col pb-12">
+        <div className="mt-10 flex flex-grow flex-col gap-5 overflow-y-scroll">
           <div className="flex w-80 flex-col gap-2">
-            <div>Searchable Filters</div>
+            <div className="font-semibold text-white"> Add Filters</div>
             <div className="relative">
               <Input
                 ref={inputFilterRef}
@@ -194,11 +195,11 @@ const FilterModal: React.FC<FilterModalProps> = ({
               ) : null}
             </div>
           </div>
-          <div>Filter by Grade/Type</div>
 
+          <div className="font-semibold text-white">Filter by Grade/Type</div>
           <GradeDropDowns />
 
-          <div> Filters on Map</div>
+          <div className="font-semibold text-white"> Filters on Map</div>
           <div className="flex flex-wrap gap-2">
             {tagFiltersOnMap.map((item, index) => (
               <Tooltip deleteItemCallBack={deleteTagCallBack} item={item}>
@@ -215,11 +216,17 @@ const FilterModal: React.FC<FilterModalProps> = ({
             ))}
           </div>
         </div>
+
+        <div className="absolute bottom-0 right-0 flex h-12 w-full items-end justify-end">
+          <div className=" ">
+            <PurpleButton> Apply</PurpleButton>{' '}
+          </div>
+        </div>
       </div>
 
-      <div>
+      <div className="absolute">
         {toggleFilterDropDown ? (
-          <div className="w-content absolute top-[145px] z-10">
+          <div className="w-content absolute top-[125px] z-10">
             <SearchDropDown
               width={'w-80'}
               maxHeight={'max-h-48'}

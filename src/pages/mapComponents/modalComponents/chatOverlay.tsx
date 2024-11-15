@@ -37,15 +37,7 @@ const ModalChat: React.FC<ChatProps> = ({
   return (
     <>
       {displayChat ? (
-        <div
-          className="pointer-events-auto fixed z-10 flex max-w-[700px] flex-col items-start rounded-lg bg-zinc-900"
-          style={{
-            width: displayChat ? '50%' : '0', // Smoothly transition width
-            minWidth: displayChat ? '24rem' : '0',
-            height: displayChat ? '50%' : '0', // Smoothly transition width
-            minHeight: displayChat ? '24rem' : '0', // Optional for minimum width
-          }}
-        >
+        <div className="pointer-events-auto fixed z-10 flex h-1/2 min-h-96 w-1/2 min-w-96 max-w-[700px] flex-col items-start rounded-lg bg-zinc-900">
           <div className="flex w-full gap-5 border-b border-neutral-500 p-5 text-2xl font-semibold text-white">
             <div>{climbName}</div>
             <div className="white border-r"></div>

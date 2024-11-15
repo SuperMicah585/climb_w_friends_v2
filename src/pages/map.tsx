@@ -9,6 +9,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { ClimbsTableResponse, GeoJsonFeature, Tags } from '../types/interfaces';
 import TagModal from './mapComponents/modalComponents/modalTag';
 import FilterModal from './mapComponents/modalComponents/filterModal';
+import TagOverlay from './mapComponents/modalComponents/tagOverlay';
 
 import { exampleMapObjects } from './homeComponents/homeObjects';
 import {
@@ -26,6 +27,7 @@ type MapProps = {
 
 const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   const map = useRef<mapboxgl.Map>();
+  const [displayTagOverlay, setDisplayTagOverlay] = useState<boolean>(false);
   const mapContainer = useRef<HTMLDivElement>(null);
   const [selectedClimb, setSelectedClimb] =
     useState<ClimbsTableResponse | null>(null);
@@ -224,6 +226,8 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
           closeTagModalCallBack={closeFilterModalCallBack}
         />
       ) : null}
+
+      {displayTagOverlay ? <TagOverlay /> : null}
 
       <div className="h-screen w-screen" ref={mapContainer} />
     </>
