@@ -219,6 +219,19 @@ export const tagsObject = [
   { id: 5, tag: 'beta' },
 ];
 
+export const exampleTagOnClimb = [
+  { id: 1, tag: 'crimp', climbID: '118299770' },
+  { id: 1, tag: 'crimp', climbID: '106050599' },
+  { id: 1, tag: 'crimp', climbID: '110103763' },
+  { id: 1, tag: 'crimp', climbID: '118571310' },
+  { id: 1, tag: 'crimp', climbID: '111130499' },
+  { id: 2, tag: 'jug', climbID: '118299770' },
+  { id: 2, tag: 'jug', climbID: '106050599' },
+  { id: 2, tag: 'jug', climbID: '110103763' },
+  { id: 2, tag: 'jug', climbID: '118571310' },
+  { id: 2, tag: 'jug', climbID: '111130499' },
+];
+
 export const conversation = [
   { name: 'Micah', message: 'Hey everyone, how’s it going?' },
   {
