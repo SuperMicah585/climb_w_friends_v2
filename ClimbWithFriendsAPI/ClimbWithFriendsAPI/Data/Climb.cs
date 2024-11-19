@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
+using Newtonsoft.Json;
 using NetTopologySuite.Geometries;
 
 namespace ClimbWithFriendsAPI.Data
@@ -13,6 +14,8 @@ namespace ClimbWithFriendsAPI.Data
 
         //valuetuple, ideally stored as Point type in postgres
         private NetTopologySuite.Geometries.Point _coordinates;
+
+        [JsonIgnore]
         public NetTopologySuite.Geometries.Point Coordinates
         {
             get => _coordinates;
@@ -25,6 +28,13 @@ namespace ClimbWithFriendsAPI.Data
                 _coordinates = value;
             }
         }
+        // Add a custom property for simplified JSON serialization
+        [JsonProperty("coordinates")]
+        public double[] SimplifiedCoordinates
+        {
+            get => Coordinates != null ? new[] { Coordinates.X, Coordinates.Y } : null;
+        }
+
         public string Url { get; set; }
 
         public String ClimbType { get; set; } // Comma-separated string
