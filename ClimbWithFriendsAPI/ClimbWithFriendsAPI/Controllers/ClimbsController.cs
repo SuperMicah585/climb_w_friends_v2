@@ -24,7 +24,16 @@ namespace ClimbWithFriendsAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Climb>>> GetClimbs()
         {
-            return await _context.Climbs.ToListAsync();
+            var climbs = await _context.Climbs.ToListAsync();
+            foreach (var climb in climbs)
+            {
+                if (climb.Coordinates == null || double.IsNaN(climb.Coordinates.X) || double.IsNaN(climb.Coordinates.Y))
+                {
+                    Console.WriteLine($"Invalid Coordinates for ClimbId: {climb.ClimbId}");
+                }
+            }
+
+            return Ok(climbs);
         }
 
         // GET: api/Climbs/5

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ClimbWithFriendsAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClimbWithFriendsAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241119182253_removesrid")]
+    partial class removesrid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,12 +85,12 @@ namespace ClimbWithFriendsAPI.Migrations
                             ClimbName = "El Capitan",
                             ClimbType = "Trad,Big Wall",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=0;POINT (-119.638 37.733)"),
-                            CreatedAt = "2024-11-19T18:25:39.0582722Z",
+                            CreatedAt = "2024-11-19T18:22:53.2126616Z",
                             Description = "One of the most iconic climbs in the world.",
                             Location = "Yosemite National Park",
                             Pitches = 30,
                             Rating = "5.12d",
-                            UpdatedAt = "2024-11-19T18:25:39.0582744Z",
+                            UpdatedAt = "2024-11-19T18:22:53.2126831Z",
                             Url = "https://www.example.com/el-capitan"
                         },
                         new
@@ -96,12 +99,12 @@ namespace ClimbWithFriendsAPI.Migrations
                             ClimbName = "The Nose",
                             ClimbType = "Trad,Big Wall",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=0;POINT (-119.638 37.733)"),
-                            CreatedAt = "2024-11-19T18:25:39.0582748Z",
+                            CreatedAt = "2024-11-19T18:22:53.2126871Z",
                             Description = "A legendary climb with a rich history.",
                             Location = "Yosemite National Park",
                             Pitches = 31,
                             Rating = "5.14a",
-                            UpdatedAt = "2024-11-19T18:25:39.0582749Z",
+                            UpdatedAt = "2024-11-19T18:22:53.2127055Z",
                             Url = "https://www.example.com/the-nose"
                         },
                         new
@@ -110,12 +113,12 @@ namespace ClimbWithFriendsAPI.Migrations
                             ClimbName = "Moonlight Buttress",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=0;POINT (-113.026 37.274)"),
-                            CreatedAt = "2024-11-19T18:25:39.0582752Z",
+                            CreatedAt = "2024-11-19T18:22:53.2127086Z",
                             Description = "A stunning climb up a sandstone wall.",
                             Location = "Zion National Park",
                             Pitches = 9,
                             Rating = "5.12d",
-                            UpdatedAt = "2024-11-19T18:25:39.0582753Z",
+                            UpdatedAt = "2024-11-19T18:22:53.2127087Z",
                             Url = "https://www.example.com/moonlight-buttress"
                         });
                 });
