@@ -1,20 +1,34 @@
-import { GeoJsonFeature, ChatObject } from '../../types/interfaces';
+import { GeoJsonFeature, ChatObject, Tags } from '../../types/interfaces';
 import {
   checkBadge,
   chatIcon,
   minusIcon,
-  tagIcon,
   addIcon,
   newWindowIcon,
+  backArrowIcon,
+  expandArrowIcon,
+  dropDownStyles,
 } from '../../reusableComponents/styles';
 import ModalSearch from './modalComponents/modalSearch';
-import ModalChat from './modalComponents/modalChat';
+import ModalChat from './modalComponents/chatOverlay';
 import ZincModal from '../../reusableComponents/zincModal';
-import { useState, useEffect } from 'react';
+import TagInput from '../../reusableComponents/input';
+import SearchDropDown from '../../reusableComponents/searchDropDown';
+import Tooltip from '../../reusableComponents/toolTip';
+import { tagsObject, exampleTagOnClimb } from './mapObjects';
+import { useState, useEffect, useRef } from 'react';
 type ClimbModalProps = {
   clickedFeatureClimbs: GeoJsonFeature[];
   closeModalCallBack: (trigger: boolean) => void;
 };
+
+type TempDic = {
+  [key: string]: (Tags | null)[];
+};
+
+type deleteTagItem = [string, number];
+
+type ClimbTagItem = [Tags, string];
 const ClimbModal: React.FC<ClimbModalProps> = ({
   clickedFeatureClimbs,
   closeModalCallBack = () => {},
@@ -27,6 +41,20 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   const [climbNameForChat, setClimbNameForChat] = useState('');
   const [climbGradeForChat, setClimbGradeForChat] = useState('');
   const [climbChatForChat, setClimbChatForChat] = useState<ChatObject[]>([]);
+  const [tagInput, setTagInput] = useState<string>('');
+  const [configToggle, setConfigToggle] = useState<string>('');
+  const [dropDownToggle, setDropDownToggle] = useState<boolean>(false);
+  const [tagObject, setTagObject] = useState<Tags[]>([]);
+
+  const [featureTagObject, setFeatureTagObject] = useState<TempDic>({});
+
+  const tagInputRef = useRef(null);
+  const closeDropDownCallBack = (value: boolean) => {
+    setDropDownToggle(value);
+  };
+  const tagInputCallBack = (item: string) => {
+    setTagInput(item);
+  };
 
   const searchFilterCallBack = (data: string) => {
     setRouteFilterString(data);
@@ -35,10 +63,57 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   const sortStringCallBack = (data: string) => {
     setSortString(data);
   };
+  const handleTagSelect = (item: ClimbTagItem) => {
+    setFeatureTagObject((prev) => {
+      const newState = { ...prev };
+      const key = item[1];
+      const value = item[0];
+      if (newState[key]) {
+        newState[key] = [...newState[key], value];
+      } else {
+        newState[key] = [value];
+      }
+
+      return newState;
+    });
+  };
+
+  useEffect(() => {
+    setTagObject(tagsObject.filter((item) => item.tag.includes(tagInput)));
+  }, [tagInput]);
 
   const mp_page = (item: GeoJsonFeature) => {
     const url = `https://www.mountainproject.com/route/${item.id}/${encodeURIComponent(item.name)}`;
     window.open(url, '_blank'); // Open in a new tab
+  };
+
+  useEffect(() => {
+    setTagObject(tagsObject);
+  }, [tagsObject]);
+
+  useEffect(() => {
+    let tempDic: TempDic = {};
+
+    for (let item of clickedFeatureClimbs) {
+      tempDic[item.id] = exampleTagOnClimb.filter(
+        (tagItem) => tagItem.climbID === item.id,
+      );
+    }
+
+    setFeatureTagObject(tempDic);
+  }, [exampleTagOnClimb, clickedFeatureClimbs]);
+
+  const deleteTagCallBack = (item: deleteTagItem) => {
+    setFeatureTagObject((prev) => {
+      if (prev[item[0]] && prev[item[0]].length > 0) {
+        return {
+          ...prev,
+          [item[0]]: prev[item[0]].filter((tag) => tag?.id !== item[1]),
+        };
+      } else {
+        return prev;
+      }
+    });
   };
 
   return (
@@ -102,28 +177,120 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                   </div>
 
                   <div className="absolute bottom-2 right-2 flex items-center gap-2">
-                    <div className="cursor-pointer p-1 text-sm font-semibold text-neutral-200 hover:text-white">
-                      {' '}
-                      Tags{' '}
-                    </div>
-                    <div
-                      onClick={() => setisClimbTicked((prev) => !prev)}
-                      className={`cursor-pointer rounded-full p-1 hover:bg-slate-500 hover:opacity-75 ${isClimbTicked ? 'text-green-500' : 'text-neutral-500 hover:text-neutral-400'}`}
-                    >
-                      {checkBadge}
-                    </div>
-                    <div
-                      onClick={() => {
-                        setDisplayTrigger((prev) => prev + 1);
-                        setClimbNameForChat(item.name);
-                        setClimbGradeForChat(item.grade);
-                        setClimbChatForChat(item.conversation);
-                      }}
-                      className="cursor-pointer rounded-full p-1 text-blue-500 hover:bg-slate-500 hover:opacity-75"
-                    >
-                      {chatIcon}
-                    </div>
+                    {configToggle === item.id ? (
+                      <div className="flex h-12 items-center">
+                        <div
+                          onClick={() => setConfigToggle('')}
+                          className="text-white hover:cursor-pointer hover:text-violet-500"
+                        >
+                          {expandArrowIcon}{' '}
+                        </div>
+                        <div
+                          ref={tagInputRef}
+                          className="w-32 cursor-pointer p-1 text-sm font-semibold text-neutral-200 hover:text-white"
+                        >
+                          <TagInput
+                            setToggleSearchDropDown={closeDropDownCallBack}
+                            setPlaceHolder={'Add Tags'}
+                            handleSearch={tagInputCallBack}
+                            paddingLeft={'pl-2'}
+                          />
+                        </div>
+
+                        {dropDownToggle ? (
+                          <div className="w-content absolute left-6 top-[50px] z-10">
+                            <SearchDropDown
+                              maxHeight={'max-h-32'}
+                              width={'w-32'}
+                              dropDownStatus={dropDownToggle}
+                              inputRef={tagInputRef}
+                              closeDropDownCallBack={closeDropDownCallBack}
+                            >
+                              {tagObject.length > 0 ? (
+                                tagObject.filter(
+                                  (tagObj) =>
+                                    !featureTagObject[item.id]?.some(
+                                      (tag) => tag?.id === tagObj.id,
+                                    ),
+                                ).length > 0 ? (
+                                  tagObject
+                                    .filter(
+                                      (tagObj) =>
+                                        !featureTagObject[item.id]?.some(
+                                          (tag) => tag?.id === tagObj.id,
+                                        ),
+                                    )
+                                    .map((tagObj) => (
+                                      <div
+                                        onClick={() => {
+                                          handleTagSelect([tagObj, item.id]);
+                                          setDropDownToggle(false);
+                                        }}
+                                        className={dropDownStyles}
+                                        key={tagObj.id} // Use tagObj.id for unique keys
+                                      >
+                                        <div className="flex flex-col gap-2 p-2">
+                                          <div>
+                                            <div className="flex gap-2 font-semibold">
+                                              <div> {tagObj.tag} </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    ))
+                                ) : (
+                                  <div
+                                    onClick={() => {
+                                      setDropDownToggle(false);
+                                    }}
+                                    className="flex w-96 items-center p-2 text-sm text-white"
+                                  >
+                                    No Results
+                                  </div>
+                                )
+                              ) : (
+                                <div
+                                  onClick={() => {
+                                    setDropDownToggle(false);
+                                  }}
+                                  className="flex w-96 items-center p-2 text-sm text-white"
+                                >
+                                  No Results
+                                </div>
+                              )}
+                            </SearchDropDown>
+                          </div>
+                        ) : null}
+
+                        <div
+                          onClick={() => setisClimbTicked((prev) => !prev)}
+                          className={`cursor-pointer rounded-full p-1 hover:bg-slate-500 hover:opacity-75 ${isClimbTicked ? 'text-green-500' : 'text-neutral-500 hover:text-neutral-400'}`}
+                        >
+                          {checkBadge}
+                        </div>
+                        <div
+                          onClick={() => {
+                            setDisplayTrigger((prev) => prev + 1);
+                            setClimbNameForChat(item.name);
+                            setClimbGradeForChat(item.grade);
+                            setClimbChatForChat(item.conversation);
+                          }}
+                          className="cursor-pointer rounded-full p-1 text-blue-500 hover:bg-slate-500 hover:opacity-75"
+                        >
+                          {chatIcon}
+                        </div>
+                      </div>
+                    ) : (
+                      <div
+                        onClick={() => setConfigToggle(item.id)}
+                        className="flex h-12 items-center text-white hover:cursor-pointer hover:text-violet-500"
+                      >
+                        {' '}
+                        {backArrowIcon}{' '}
+                      </div>
+                    )}
                   </div>
+
                   {/* Main details section */}
                   <div className="flex gap-5 font-semibold text-white">
                     <div>{item.name}</div>
@@ -138,15 +305,31 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                     &gt; Olympic National Park &gt; Olympics & Pacific Coast
                     &gt; Washington
                   </div>
-                  <div className="mt-5 flex items-center gap-2 text-xs font-bold italic text-black">
+                  <div className="mt-2 flex items-center gap-2 text-xs font-bold text-white">
+                    Climbers:
                     {item.climber_names.map((item, index) => (
-                      <div
-                        key={index}
-                        className="rounded-md border-2 border-violet-500 p-1 text-white"
-                      >
+                      <div key={index} className="rounded-lg bg-violet-800 p-1">
                         {item}
                       </div>
                     ))}
+                  </div>
+                  <div className="mt-2 flex w-2/3 flex-wrap items-center gap-2 text-xs font-bold text-white">
+                    Tags:
+                    {featureTagObject[item.id]?.length > 0
+                      ? featureTagObject[item.id]?.map((tagsOnClimb) => (
+                          <Tooltip
+                            deleteItemCallBack={deleteTagCallBack}
+                            item={[item.id, tagsOnClimb?.id]}
+                          >
+                            <div
+                              key={tagsOnClimb?.id}
+                              className="rounded-md bg-green-800 p-1 text-white"
+                            >
+                              {tagsOnClimb?.tag}
+                            </div>
+                          </Tooltip>
+                        ))
+                      : null}
                   </div>
                 </div>
               ))}

@@ -1,13 +1,21 @@
 import ZincModal from '../../../reusableComponents/zincModal';
+import DownDrop from '../../../reusableComponents/downDrop';
 import Tooltip from '../../../reusableComponents/toolTip';
 import Input from '../../../reusableComponents/input';
+import PurpleButton from '../../../reusableComponents/purpleButton';
 import { useState, useRef, useEffect } from 'react';
 import SearchDropDown from '../../../reusableComponents/searchDropDown';
-import { Tags } from '../../../types/interfaces';
+import { Tags, friendsObject } from '../../../types/interfaces';
+import GradeDropDowns from './filterModalComponents.tsx/GradeDropDowns';
 import {
   dropDownStyles,
   threeLineDropDownIcon,
 } from '../../../reusableComponents/styles';
+
+import {
+  filterItems,
+  friendsOnMapExample,
+} from '../../mapComponents/mapObjects';
 
 interface FilterModalProps {
   closeTagModalCallBack: (value: boolean) => void;
@@ -22,8 +30,19 @@ const FilterModal: React.FC<FilterModalProps> = ({
     useState<boolean>(false);
   const inputFilterRef = useRef<HTMLInputElement | null>(null);
   const [tagsOnMount, setTagsOnMount] = useState<Tags[]>([]);
-  const [searchResults, setSearchResults] = useState<Tags[]>([]);
-  const [tagFiltersOnMap, setTagFiltersOnMap] = useState<Tags[]>([]);
+  const [searchResults, setSearchResults] = useState<Tags[] | friendsObject[]>(
+    [],
+  );
+  const [filtersOnMap, setFiltersOnMap] = useState<(Tags | friendsObject)[]>(
+    [],
+  );
+
+  const [friendsOnMap, setFriendsOnMap] =
+    useState<friendsObject[]>(friendsOnMapExample);
+  const [filterToggle, setFilterToggle] = useState<boolean>(false);
+  const [selectedFilter, setSelecetedFilter] = useState<string>('climber');
+  const filterIconRef = useRef<HTMLDivElement | null>(null);
+  const downDropRef = useRef<HTMLDivElement | null>(null);
 
   const handleSearch = (results: string) => {
     setSearchString(results);
@@ -33,26 +52,102 @@ const FilterModal: React.FC<FilterModalProps> = ({
     setToggleFilterDropDown(booleanValue);
   };
 
-  const handleClickedTag = (item: Tags) => {
-    //need to filter out duplicates
-    setTagFiltersOnMap((prev) => [...prev, item]);
+  const modifyFriendArray = (item: friendsObject) => {
+    setFriendsOnMap((prev) =>
+      prev.filter((prevItem) => item.id !== prevItem.id),
+    );
+  };
+
+  const modifyTagArray = (item: Tags) => {
+    setTagsOnMount((prev) =>
+      prev.filter((prevItem) => item.id !== prevItem.id),
+    );
+  };
+  const handleClickedTag = (item: Tags | friendsObject) => {
+    if ('tag' in item) {
+      modifyTagArray(item);
+    } else if ('userName' in item) {
+      modifyFriendArray(item);
+    }
+    setFiltersOnMap((prev) => [...prev, item]);
   };
 
   useEffect(() => {
-    let filteredTags = tagsOnMount.filter((number) =>
-      number.tag.includes(searchString),
-    );
-
-    setSearchResults(filteredTags);
-  }, [searchString, tagsOnMount]);
+    //if selectedFilter === 'climber'
+    //if  selectedFilter === 'tags'
+    if (selectedFilter === 'tag') {
+      let filteredTags = tagsOnMount.filter((item) =>
+        item.tag.includes(searchString),
+      );
+      setSearchResults(filteredTags);
+    } else if (selectedFilter === 'climber') {
+      let filteredClimber = friendsOnMap.filter(
+        (item) =>
+          item.firstName.includes(searchString) ||
+          item.lastName.includes(searchString) ||
+          item.userName.includes(searchString),
+      );
+      setSearchResults(filteredClimber);
+    }
+  }, [searchString, tagsOnMount, friendsOnMap, selectedFilter]);
 
   useEffect(() => {
     setTagsOnMount(tagsOnMap);
-  }, [tagsOnMount]);
+  }, []);
 
-  const deleteTagCallBack = (item: Tags) => {
-    console.log(item);
+  const deleteTagCallBack = (item: Tags | friendsObject) => {
+    const inputItemType = 'tag' in item ? 'tag' : 'friend';
+    if (inputItemType === 'tag') {
+      setTagsOnMount((prev) => [...prev, item as Tags]);
+    } else if (inputItemType === 'friend') {
+      setFriendsOnMap((prev) => [...prev, item as friendsObject]);
+    }
+    setFiltersOnMap((prev) =>
+      prev.filter((prevItem) => {
+        const prevItemType = 'tag' in prevItem ? 'tag' : 'friend';
+
+        if (inputItemType === 'tag' && prevItemType === 'tag') {
+          const condition = prevItem.id === item.id;
+          return !(condition && (prevItem as Tags).tag === (item as Tags).tag);
+        } else if (inputItemType === 'friend' && prevItemType === 'friend') {
+          const condition = prevItem.id === item.id;
+          return !(
+            condition &&
+            (prevItem as friendsObject).userName ===
+              (item as friendsObject).userName
+          );
+        } else {
+          return true;
+        }
+      }),
+    );
   };
+
+  const setSelectedFilterCallBack = (item: string) => {
+    setSelecetedFilter(item);
+  };
+
+  const setFilterToggleCallBack = (booleanValue: boolean) => {
+    setFilterToggle(booleanValue);
+  };
+
+  useEffect(() => {
+    const handleClick = (event: any) => {
+      if (
+        filterIconRef.current &&
+        !filterIconRef.current.contains(event.target) &&
+        downDropRef.current &&
+        !downDropRef.current.contains(event.target)
+      ) {
+        setFilterToggle(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClick);
+    };
+  }, []);
 
   //need to filter my climber(s)
   return (
@@ -61,44 +156,74 @@ const FilterModal: React.FC<FilterModalProps> = ({
       maxWidth={'max-w-[500px]'}
       closeModalCallBack={closeTagModalCallBack}
     >
-      <div className="mt-10 flex h-10 h-full w-40 w-full flex-col gap-5">
-        <div className="flex flex-col gap-5">
+      <div className="relative flex h-full w-full flex-col pb-12">
+        <div className="mt-10 flex flex-grow flex-col gap-5 overflow-y-scroll">
           <div className="flex w-80 flex-col gap-2">
-            <div>Searchable Filters</div>
+            <div className="font-semibold text-white"> Add Filters</div>
             <div className="relative">
               <Input
                 ref={inputFilterRef}
                 setToggleSearchDropDown={setToggleFilterDropDownCallBack}
-                setPlaceHolder={'Add Tags to Filter'}
+                setPlaceHolder={`Add ${selectedFilter} to Filter`}
                 handleSearch={handleSearch}
                 paddingLeft={'pl-2'}
               />
 
-              <div className="absolute right-2 top-2 flex cursor-pointer items-center justify-center rounded-full p-1 hover:bg-slate-500">
+              <div
+                ref={filterIconRef}
+                onClick={() => setFilterToggle((prev) => !prev)}
+                className="absolute right-2 top-2 flex cursor-pointer items-center justify-center rounded-full p-1 hover:bg-slate-500"
+              >
                 {threeLineDropDownIcon}
               </div>
+
+              {filterToggle ? (
+                <div className="absolute right-0 top-0">
+                  {' '}
+                  <DownDrop
+                    ref={downDropRef}
+                    selectedFilter={selectedFilter}
+                    downDropWidth={'w-40'}
+                    setDropDownToggleCallBack={setFilterToggleCallBack}
+                    filterTypes={filterItems}
+                    setSelectedFilterCallBack={setSelectedFilterCallBack}
+                  />{' '}
+                </div>
+              ) : null}
             </div>
           </div>
-          <div>Filter by Grade</div>
+
+          <div className="font-semibold text-white">Filter by Grade/Type</div>
+          <GradeDropDowns />
+
+          <div className="font-semibold text-white"> Filters on Map</div>
           <div className="flex flex-wrap gap-2">
-            {tagFiltersOnMap.map((item) => (
-              <Tooltip deleteItemCallBack={deleteTagCallBack} tag={item}>
+            {filtersOnMap.map((item, index) => (
+              <Tooltip deleteItemCallBack={deleteTagCallBack} item={item}>
                 {' '}
                 <div
-                  key={item.id}
+                  key={index}
                   className="flex cursor-pointer rounded-md border-2 border-neutral-600 bg-neutral-500 p-1 text-center text-sm hover:opacity-75"
                 >
-                  {item.tag}{' '}
+                  {'firstName' in item
+                    ? item.firstName + ' ' + item.lastName
+                    : item.tag}
                 </div>{' '}
               </Tooltip>
             ))}
           </div>
         </div>
+
+        <div className="absolute bottom-0 right-0 flex h-12 w-full items-end justify-end">
+          <div className=" ">
+            <PurpleButton> Apply</PurpleButton>{' '}
+          </div>
+        </div>
       </div>
 
-      <div>
+      <div className="absolute">
         {toggleFilterDropDown ? (
-          <div className="w-content absolute top-[145px]">
+          <div className="w-content absolute top-[125px] z-10">
             <SearchDropDown
               width={'w-80'}
               maxHeight={'max-h-48'}
@@ -107,17 +232,22 @@ const FilterModal: React.FC<FilterModalProps> = ({
               closeDropDownCallBack={setToggleFilterDropDownCallBack}
             >
               {searchResults.length > 0 ? (
-                searchResults.map((item) => (
+                searchResults.map((item, index) => (
                   <div
                     onClick={() => {
                       handleClickedTag(item);
                       setToggleFilterDropDown(false);
                     }}
                     className={dropDownStyles}
-                    key={item.id}
+                    key={index}
                   >
                     <div className="flex flex-col gap-2 p-2">
-                      <div> {item.tag} </div>
+                      <div>
+                        {' '}
+                        {'firstName' in item
+                          ? item.firstName + ' ' + item.lastName
+                          : item.tag}{' '}
+                      </div>
                     </div>
                   </div>
                 ))

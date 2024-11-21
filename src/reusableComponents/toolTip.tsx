@@ -3,13 +3,13 @@ import { useState, useRef, useEffect } from 'react';
 import { closeIcon, triangleIcon } from './styles';
 interface TooltipProps {
   children: React.ReactNode;
-  tag: Tags;
+  item: any;
   deleteItemCallBack: (item: any) => void;
 }
 
 const Tooltip: React.FC<TooltipProps> = ({
   children,
-  tag,
+  item,
   deleteItemCallBack,
 }) => {
   const [popUpShow, setpopUpShow] = useState(false);
@@ -46,7 +46,7 @@ const Tooltip: React.FC<TooltipProps> = ({
         >
           <div
             onClick={() => {
-              deleteItemCallBack(tag);
+              deleteItemCallBack(item);
               setpopUpShow(false);
             }}
             className="transform cursor-pointer rounded-md bg-zinc-950 text-violet-500 text-white"

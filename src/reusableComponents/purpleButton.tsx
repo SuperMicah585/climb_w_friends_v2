@@ -1,5 +1,5 @@
 interface purpleButtonProps {
-  clickCallBack: any;
+  clickCallBack?: any;
   children: React.ReactNode;
 }
 const PurpleButton: React.FC<purpleButtonProps> = ({
@@ -8,8 +8,8 @@ const PurpleButton: React.FC<purpleButtonProps> = ({
 }) => {
   return (
     <div
-      onClick={() => clickCallBack()}
-      className="absolute right-2 top-2 cursor-pointer rounded-lg bg-violet-500 p-2 font-semibold text-zinc-900 hover:opacity-75"
+      onClick={clickCallBack ? () => clickCallBack() : undefined}
+      className="cursor-pointer rounded-lg bg-violet-500 p-2 font-semibold text-zinc-900 hover:opacity-75"
     >
       {children}
     </div>
