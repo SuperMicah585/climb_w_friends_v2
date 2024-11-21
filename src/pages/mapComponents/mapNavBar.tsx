@@ -3,6 +3,7 @@ import {
   filterIcon,
   tagIcon,
   notificationSVG,
+  globeIcon,
 } from '../../reusableComponents/styles';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -10,8 +11,10 @@ interface MapNavBarProps {
   children: React.ReactNode;
   feedToggleCallBack: () => void;
   tagToggleCallBack: () => void;
+  allClimbsCallBack: () => void;
   feedToggle: boolean;
   tagToggle: boolean;
+  allClimbsToggle: boolean;
   filterModalDisplay: boolean;
   filterToggleCallBack: () => void;
 }
@@ -19,7 +22,9 @@ const MapNavBar: React.FC<MapNavBarProps> = ({
   feedToggleCallBack,
   tagToggleCallBack,
   filterToggleCallBack,
+  allClimbsCallBack,
   filterModalDisplay,
+  allClimbsToggle,
   feedToggle,
   tagToggle,
   children,
@@ -55,6 +60,13 @@ const MapNavBar: React.FC<MapNavBarProps> = ({
           >
             {' '}
             {notificationSVG}{' '}
+          </div>{' '}
+          <div
+            onClick={() => allClimbsCallBack()}
+            className={`cursor-pointer ${allClimbsToggle ? 'border-violet-500 fill-none text-violet-500' : 'border-slate-500 fill-none'} z-10 rounded-full border border-slate-500 p-2 opacity-90 shadow-lg hover:bg-slate-500 hover:bg-opacity-75`}
+          >
+            {' '}
+            {globeIcon}{' '}
           </div>{' '}
           <div className="flex items-center gap-5 border-l pl-5">
             {navBarOptions.map((item, index) => (
