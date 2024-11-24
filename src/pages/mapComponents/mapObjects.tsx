@@ -232,6 +232,13 @@ export const exampleTagOnClimb = [
   { id: 2, tag: 'jug', climbID: '111130499' },
 ];
 
+export const micah = {
+  name: 'Micah',
+  id: 1,
+  email: 'micahphlps@gmail.com',
+  userName: 'phelpsm4',
+};
+
 export const conversation = [
   { name: 'Micah', message: 'Hey everyone, how’s it going?' },
   {

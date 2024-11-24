@@ -161,7 +161,6 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
 
   useEffect(() => {
     if (mapLoaded) {
-      console.log('inside');
       shapeColors(map, 2);
     }
   }, [mapLoaded]);

@@ -287,6 +287,8 @@ const shapeColorHelperFunction = (
   }
 };
 
+export const filterClimbsOnMap = () => {};
+
 export const shapeColors = (map: any, climberCountTotal: number) => {
   testData.features.forEach((feature, index) => {
     switch (feature.geometry.type) {

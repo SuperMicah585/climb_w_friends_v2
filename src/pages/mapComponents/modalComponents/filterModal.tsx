@@ -221,7 +221,13 @@ const FilterModal: React.FC<FilterModalProps> = ({
         </div>
 
         <div className="absolute bottom-0 right-0 flex h-12 w-full items-end justify-end">
-          <div onClick={() => setFilterFunctions(filtersOnMap)} className=" ">
+          <div
+            onClick={() => {
+              setFilterFunctions(filtersOnMap);
+              closeTagModalCallBack(false);
+            }}
+            className=" "
+          >
             <PurpleButton> Apply</PurpleButton>{' '}
           </div>
         </div>
