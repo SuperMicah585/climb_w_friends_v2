@@ -7,6 +7,7 @@ import { useState, useRef, useEffect } from 'react';
 import SearchDropDown from '../../../reusableComponents/searchDropDown';
 import { Tags, friendsObject } from '../../../types/interfaces';
 import GradeDropDowns from './filterModalComponents.tsx/GradeDropDowns';
+import { useFilterContext } from '../../filterProvider';
 import {
   dropDownStyles,
   threeLineDropDownIcon,
@@ -25,6 +26,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
   closeTagModalCallBack,
   tagsOnMap,
 }) => {
+  const { setFilterFunctions, filters } = useFilterContext();
   const [searchString, setSearchString] = useState<string>('');
   const [toggleFilterDropDown, setToggleFilterDropDown] =
     useState<boolean>(false);
@@ -149,6 +151,10 @@ const FilterModal: React.FC<FilterModalProps> = ({
     };
   }, []);
 
+  useEffect(() => {
+    setFiltersOnMap(filters);
+  }, [filters]);
+
   //need to filter my climber(s)
   return (
     <ZincModal
@@ -215,7 +221,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
         </div>
 
         <div className="absolute bottom-0 right-0 flex h-12 w-full items-end justify-end">
-          <div className=" ">
+          <div onClick={() => setFilterFunctions(filtersOnMap)} className=" ">
             <PurpleButton> Apply</PurpleButton>{' '}
           </div>
         </div>

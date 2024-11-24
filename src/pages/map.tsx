@@ -1,5 +1,5 @@
 // Import Mapbox GL, and CSS
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import mapboxgl from 'mapbox-gl';
 import Search from './mapComponents/search';
 import ActivityFeed from './mapComponents/activityFeed';

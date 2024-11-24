@@ -1,10 +1,11 @@
 import Map from './pages/map';
-
+import React from 'react';
+import { FilterProvider } from './pages/filterProvider';
 function App() {
   return (
-    <div>
+    <FilterProvider>
       <Map zoomLevel={2} />
-    </div>
+    </FilterProvider>
   );
 }
 
