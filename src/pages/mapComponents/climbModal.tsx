@@ -1,4 +1,9 @@
-import { GeoJsonFeature, ChatObject, Tags } from '../../types/interfaces';
+import {
+  GeoJsonFeature,
+  ChatObject,
+  Tags,
+  Micah,
+} from '../../types/interfaces';
 import {
   checkBadge,
   chatIcon,
@@ -15,7 +20,7 @@ import ZincModal from '../../reusableComponents/zincModal';
 import TagInput from '../../reusableComponents/input';
 import SearchDropDown from '../../reusableComponents/searchDropDown';
 import Tooltip from '../../reusableComponents/toolTip';
-import { tagsObject, exampleTagOnClimb } from './mapObjects';
+import { tagsObject, exampleTagOnClimb, micah } from './mapObjects';
 import { useState, useEffect, useRef } from 'react';
 type ClimbModalProps = {
   clickedFeatureClimbs: GeoJsonFeature[];
@@ -33,7 +38,6 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   clickedFeatureClimbs,
   closeModalCallBack = () => {},
 }) => {
-  const [isClimbAdded, setIsClimbAdded] = useState<boolean>(false);
   const [routeFilterString, setRouteFilterString] = useState<string>('');
   const [sortString, setSortString] = useState('Order Grade ASC');
   const [isClimbTicked, setisClimbTicked] = useState(false);
@@ -45,6 +49,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   const [configToggle, setConfigToggle] = useState<string>('');
   const [dropDownToggle, setDropDownToggle] = useState<boolean>(false);
   const [tagObject, setTagObject] = useState<Tags[]>([]);
+  const [climbObject, setClimbObject] = useState<GeoJsonFeature[]>([]);
 
   const [featureTagObject, setFeatureTagObject] = useState<TempDic>({});
 
@@ -63,6 +68,36 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   const sortStringCallBack = (data: string) => {
     setSortString(data);
   };
+
+  const removeOrAddClimb = (id: string, name: string, action: string) => {
+    if (action === 'remove') {
+      setClimbObject((prev) =>
+        prev.map((item) =>
+          item.id === id
+            ? {
+                ...item,
+                climber_names: item.climber_names.filter(
+                  (climber) => climber !== name,
+                ),
+              }
+            : item,
+        ),
+      );
+    }
+
+    if (action === 'add') {
+      setClimbObject((prev) =>
+        prev.map((item) =>
+          item.id === id
+            ? {
+                ...item,
+                climber_names: [...item.climber_names, name],
+              }
+            : item,
+        ),
+      );
+    }
+  };
   const handleTagSelect = (item: ClimbTagItem) => {
     setFeatureTagObject((prev) => {
       const newState = { ...prev };
@@ -77,6 +112,11 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
       return newState;
     });
   };
+
+  useEffect(() => {
+    console.log(clickedFeatureClimbs);
+    setClimbObject(clickedFeatureClimbs);
+  }, [clickedFeatureClimbs]);
 
   useEffect(() => {
     setTagObject(tagsObject.filter((item) => item.tag.includes(tagInput)));
@@ -94,14 +134,14 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   useEffect(() => {
     let tempDic: TempDic = {};
 
-    for (let item of clickedFeatureClimbs) {
+    for (let item of climbObject) {
       tempDic[item.id] = exampleTagOnClimb.filter(
         (tagItem) => tagItem.climbID === item.id,
       );
     }
 
     setFeatureTagObject(tempDic);
-  }, [exampleTagOnClimb, clickedFeatureClimbs]);
+  }, [exampleTagOnClimb, climbObject]);
 
   const deleteTagCallBack = (item: deleteTagItem) => {
     setFeatureTagObject((prev) => {
@@ -141,7 +181,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
 
         <div>
           <div className="w-full rounded-md bg-zinc-900">
-            {clickedFeatureClimbs
+            {climbObject
               .filter((item: GeoJsonFeature) =>
                 item.name
                   .toLowerCase()
@@ -170,10 +210,20 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                     {newWindowIcon}{' '}
                   </div>
                   <div
-                    onClick={() => setIsClimbAdded((prev) => !prev)}
-                    className={`absolute right-2 top-2 cursor-pointer rounded-full p-1 hover:bg-slate-500 hover:opacity-75 ${isClimbAdded ? 'text-red-300' : 'text-green-300'}`}
+                    onClick={() =>
+                      removeOrAddClimb(
+                        item.id,
+                        micah.name,
+                        item.climber_names.includes(micah.name)
+                          ? 'remove'
+                          : 'add',
+                      )
+                    }
+                    className={`absolute right-2 top-2 cursor-pointer rounded-full p-1 hover:bg-slate-500 hover:opacity-75 ${item.climber_names.includes(micah.name) ? 'text-red-300' : 'text-green-300'}`}
                   >
-                    {isClimbAdded ? minusIcon : addIcon}
+                    {item.climber_names.includes(micah.name)
+                      ? minusIcon
+                      : addIcon}
                   </div>
 
                   <div className="absolute bottom-2 right-2 flex items-center gap-2">

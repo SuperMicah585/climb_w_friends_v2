@@ -2,6 +2,7 @@ import ZincModal from '../../../reusableComponents/zincModal';
 import { useEffect, useState } from 'react';
 import { Tags } from '../../../types/interfaces';
 import Tooltip from '../../../reusableComponents/toolTip';
+import PurpleButton from '../../../reusableComponents/purpleButton';
 
 interface AddMapComponentInterface {
   closeTagModalCallBack: (value: boolean) => void;
@@ -83,6 +84,12 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
           </div>
         </div>
         <div className="flex-grow"> </div>
+        <div
+          onClick={() => closeTagModalCallBack(false)}
+          className="flex justify-end"
+        >
+          <PurpleButton> Apply</PurpleButton>
+        </div>
       </div>
     </ZincModal>
   );

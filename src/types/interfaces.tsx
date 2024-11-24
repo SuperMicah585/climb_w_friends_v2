@@ -13,6 +13,13 @@ export interface ClimbsTableResponse {
   'Area Longitude': number;
 }
 
+export interface Micah {
+  name: string;
+  id: number;
+  email: string;
+  userName: string;
+}
+
 export interface Tags {
   id: number;
   tag: string;
