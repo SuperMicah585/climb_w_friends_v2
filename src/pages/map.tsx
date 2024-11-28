@@ -11,8 +11,11 @@ import TagModal from './mapComponents/modalComponents/modalTag';
 import FilterModal from './mapComponents/modalComponents/filterModal';
 import TagOverlay from './mapComponents/modalComponents/tagOverlay';
 import AllClimbsModal from './mapComponents/allClimbsModal';
+import AddClimbModal from './mapComponents/addClimbModal';
 
 import { exampleMapObjects } from './homeComponents/homeObjects';
+import { usStateDictionary } from './mapComponents/mapObjects';
+
 import {
   createMarker,
   createClimbingShapes,
@@ -41,6 +44,8 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     GeoJsonFeature[]
   >([]);
 
+  const [addClimbsModalDisplay, setAddClimbsModalDisplay] = useState(false);
+
   const [tags, setTags] = useState<Tags[]>([{ id: 0, tag: '' }]);
   const [
     clickedFeatureModalTriggerBoolean,
@@ -52,13 +57,28 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   const [allClimbsModalDisplay, setAllClimbsModalDisplay] =
     useState<boolean>(false);
   const [feedToggle, setFeedToggle] = useState<boolean>(false);
+  const [climbTypeDropDownValue, setclimbTypeDropDown] =
+    useState<string>('Boulder');
 
+  const [stateDropDownName, setStateDropDownName] = useState<string>('WA');
+
+  const climbTypeDropDownValueCallBack = (value: string) => {
+    setclimbTypeDropDown(value);
+  };
+
+  const stateDropDownNameCallBack = (value: string) => {
+    setStateDropDownName(value);
+  };
   const feedToggleCallBack = () => {
     setFeedToggle((prev) => !prev);
   };
 
   const allClimbsCallBack = () => {
     setAllClimbsModalDisplay((prev) => !prev);
+  };
+
+  const closeAddClimbsModalCallBack = (trigger: boolean) => {
+    setAddClimbsModalDisplay(trigger);
   };
 
   const newTagCallBack = (data: Tags) => {
@@ -210,7 +230,13 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
         <div className="flex w-full items-center justify-start gap-5">
           <div className="z-10 max-w-96 flex-grow">
             {' '}
-            <Search selectedClimbCallBack={selectedClimbCallBack} />{' '}
+            <Search
+              stateDropDownName={stateDropDownName}
+              climbTypeDropDownValue={climbTypeDropDownValue}
+              stateDropDownNameCallBack={stateDropDownNameCallBack}
+              climbTypeDropDownValueCallBack={climbTypeDropDownValueCallBack}
+              closeAddClimbsModalCallBack={closeAddClimbsModalCallBack}
+            />{' '}
           </div>
         </div>
       </MapNavBar>
@@ -237,6 +263,15 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
           closeTagModalCallBack={closeFilterModalCallBack}
         />
       ) : null}
+
+      {addClimbsModalDisplay ? (
+        <AddClimbModal
+          routeType={climbTypeDropDownValue}
+          location={usStateDictionary[stateDropDownName]}
+          closeAddClimbsModalCallBack={closeAddClimbsModalCallBack}
+        />
+      ) : null}
+
       {allClimbsModalDisplay ? (
         <AllClimbsModal closeModalCallBack={closeAllClimbsModalCallBack} />
       ) : null}
