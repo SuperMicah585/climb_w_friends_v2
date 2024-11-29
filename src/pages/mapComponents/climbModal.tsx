@@ -1,4 +1,4 @@
-import { GeoJsonFeature, ChatObject, Tags } from '../../types/interfaces';
+import { GeoJsonFeature, ChatObject, Tags,ClimbModalProps,TempDic,deleteTagItem,ClimbTagItem } from '../../types/interfaces';
 import {
   minusIcon,
   addIcon,
@@ -10,19 +10,8 @@ import ZincModal from '../../reusableComponents/zincModal';
 import Tooltip from '../../reusableComponents/toolTip';
 import { tagsObject, exampleTagOnClimb, micah } from './mapObjects';
 import { useState, useEffect } from 'react';
-import ClimbModalBar from './climbModalBar';
-type ClimbModalProps = {
-  clickedFeatureClimbs: GeoJsonFeature[];
-  closeModalCallBack: (trigger: boolean) => void;
-};
+import ClimbModalBar from '../../reusableComponents/climbModalBar';
 
-type TempDic = {
-  [key: string]: (Tags | null)[];
-};
-
-type deleteTagItem = [string, number];
-
-type ClimbTagItem = [Tags, string];
 const ClimbModal: React.FC<ClimbModalProps> = ({
   clickedFeatureClimbs,
   closeModalCallBack = () => {},
@@ -248,7 +237,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                     &gt; Olympic National Park &gt; Olympics & Pacific Coast
                     &gt; Washington
                   </div>
-                  <div className="mt-2 flex items-center gap-2 text-xs font-bold text-white">
+                  <div className="mt-2 flex items-center h-7 gap-2 text-xs font-bold text-white">
                     Climbers:
                     {item.climber_names.map((item, index) => (
                       <div key={index} className="rounded-lg bg-violet-800 p-1">
@@ -256,7 +245,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                       </div>
                     ))}
                   </div>
-                  <div className="mt-2 flex w-2/3 flex-wrap items-center gap-2 text-xs font-bold text-white">
+                  <div className="mt-2 flex w-2/3 flex-wrap h-7 items-center gap-2 text-xs font-bold text-white">
                     Tags:
                     {featureTagObject[item.id]?.length > 0
                       ? featureTagObject[item.id]?.map((tagsOnClimb) => (

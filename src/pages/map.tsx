@@ -81,17 +81,8 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     setAddClimbsModalDisplay(trigger);
   };
 
-  const newTagCallBack = (data: Tags) => {
-    setTags((prev) => {
-      // Check if the tag already exists in the array
-      const tagExists = prev.some((tagObj) => tagObj.tag === data.tag);
-
-      // If it doesn't exist, add it to the array, otherwise return the existing array
-      if (!tagExists && data.tag.length > 0) {
-        return [...prev, data];
-      }
-      return prev;
-    });
+  const newTagCallBack = (data: Tags[]) => {
+    setTags(data);
   };
 
   const tagToggleCallBack = () => {
@@ -100,10 +91,6 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
 
   const filterToggleCallBack = () => {
     setFilterModalDisplay(true);
-  };
-
-  const selectedClimbCallBack = (climbData: ClimbsTableResponse) => {
-    setSelectedClimb(climbData);
   };
 
   const closeModalCallBack = (trigger: boolean) => {
@@ -129,9 +116,6 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     setClickedFeatureClimbs((prev) => [...prev, ...climbData]);
   };
 
-  const deleteTagCallBack = (item) => {
-    setTags((prev) => prev.filter((tagObj) => tagObj.id !== item.id));
-  };
 
   useEffect(() => {
     setTags(exampleMapObjects[0].tags);
@@ -250,7 +234,6 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
 
       {tagModalDisplay ? (
         <TagModal
-          deleteTagCallBack={deleteTagCallBack}
           newTagCallBack={newTagCallBack}
           tags={tags}
           closeTagModalCallBack={closeTagModalCallBack}

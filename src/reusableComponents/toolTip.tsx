@@ -62,7 +62,7 @@ const Tooltip: React.FC<TooltipProps> = ({
       <div
         ref={tagRef}
         onClick={() => setpopUpShow((prev) => !prev)}
-        className={`cursor-pointer ${popUpShow ? 'rounded-lg border-violet-500' : ''} border-2 border-transparent`}
+        className={`cursor-pointer border-2 border-transparent`}
       >
         {children}
       </div>

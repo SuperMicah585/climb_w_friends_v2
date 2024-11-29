@@ -5,11 +5,11 @@ import {
   backArrowIcon,
   expandArrowIcon,
   dropDownStyles,
-} from '../../reusableComponents/styles';
+} from './styles';
 
-import { ChatObject, GeoJsonFeature, Tags } from '../../types/interfaces';
-import SearchDropDown from '../../reusableComponents/searchDropDown';
-import TagInput from '../../reusableComponents/input';
+import { ChatObject, GeoJsonFeature, Tags } from '../types/interfaces';
+import SearchDropDown from './searchDropDown';
+import TagInput from './input';
 import { useState, useRef } from 'react';
 type ClimbTagItem = [Tags, string];
 
