@@ -17,6 +17,7 @@ interface MapNavBarProps {
   allClimbsToggle: boolean;
   filterModalDisplay: boolean;
   filterToggleCallBack: () => void;
+
 }
 const MapNavBar: React.FC<MapNavBarProps> = ({
   feedToggleCallBack,

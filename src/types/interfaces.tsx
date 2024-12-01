@@ -19,10 +19,7 @@ export interface AddClimbsModalProps {
   closeAddClimbsModalCallBack: (trigger: boolean) => void;
 }
 
-export type ClimbModalProps = {
-  clickedFeatureClimbs: GeoJsonFeature[];
-  closeModalCallBack: (trigger: boolean) => void;
-};
+
 
 export type TempDic = {
   [key: string]: (Tags | null)[];

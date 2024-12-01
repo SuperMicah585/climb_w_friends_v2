@@ -28,6 +28,16 @@ mapboxgl.accessToken = import.meta.env.VITE_MAP_BOX_KEY;
 type MapProps = {
   zoomLevel: number;
 };
+/*
+notes:
+Mess with dropdown position so that is does not get in the way
+Clicking on check will trigger dropDown that will give following options
+
+1) Quick Send
+OR
+2) Send with Additional information -> open an overlay similar to chat where user can add additional information related to send
+
+*/
 
 const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   const map = useRef<mapboxgl.Map>();
@@ -36,6 +46,8 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   const [selectedClimb, setSelectedClimb] =
     useState<ClimbsTableResponse | null>(null);
 
+
+  const [tickDisplayTrigger,setTickDisplayTrigger] = useState<number>(0)
   const [currentMarker, setCurrentMarker] = useState<any>(null);
   const [polygonOrCircleDisplay, setpolygonOrCircleDisplay] =
     useState<boolean>(false);
@@ -62,6 +74,11 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
 
   const [stateDropDownName, setStateDropDownName] = useState<string>('WA');
 
+
+
+
+
+  
   const climbTypeDropDownValueCallBack = (value: string) => {
     setclimbTypeDropDown(value);
   };
@@ -210,6 +227,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
         filterToggleCallBack={filterToggleCallBack}
         feedToggleCallBack={feedToggleCallBack}
         tagToggleCallBack={tagToggleCallBack}
+        
       >
         <div className="flex w-full items-center justify-start gap-5">
           <div className="z-10 max-w-96 flex-grow">

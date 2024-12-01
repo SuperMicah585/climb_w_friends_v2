@@ -31,7 +31,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
 
 
   const inputRef = useRef(null);
-
+console.log(climbsArray)
   const setClimbNameForChatCallBack = (climbName: string) => {
     setClimbNameForChat(climbName);
   };
@@ -105,7 +105,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
   };
 
   const handleClimbSelect = (item: ClimbsTableResponse) => {
-    setClimbsArray((prev) => [...prev, item]);
+    setClimbsArray((prev) => [...prev, {...item,climber_names:["Micah"]}]);
   };
 
   const handleTagSelect = (item: ClimbTagItem) => {
@@ -136,6 +136,16 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
 
   }
 
+  /*
+  useEffect(()=>{
+
+    setClimbsArray(prev=>prev.filter((mapItem)=>
+    mapItem.climber_names.length===0?true:false))
+
+  },[climbsArray])
+
+  */
+//()=>{handleRemoveClimb(item)}
   //<div className = 'text-5xl w-full'>{location} | {routeType} </div>
   return (
     <ZincModal
@@ -222,13 +232,8 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
                     {newWindowIcon}{' '}
                   </div>
 
-                  <div
-                    onClick ={()=>{handleRemoveClimb(item)}}
-                    className='absolute right-2 top-2 cursor-pointer rounded-full p-1 hover:bg-slate-500 hover:opacity-75 text-red-300'
-                  >
-                    {minusIcon}
-                  </div>
-            <div className="flex gap-5 font-semibold text-white">
+   
+            <div className="flex gap-5 mt-5 font-semibold text-white">
               <div>{item.name}</div>
               <div className="white border-r"></div>
               <div>{item.grade}</div>
@@ -242,7 +247,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
                     Climbers:
                  
                       <div className="rounded-lg bg-violet-800 p-1">
-                        Micah
+                        {item.climber_names.map((item)=>item)}
                       </div>
                  
                   </div>
@@ -275,6 +280,8 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
                     setClimbChatForChatCallBack={setClimbChatForChatCallBack}
                     chatDisplayTriggerCallBack={chatDisplayTriggerCallBack}
                     tagInputCallBack={tagInputCallBack}
+                    setClimbObject={setClimbsArray}
+                    
                   />
           </div>
         ))}

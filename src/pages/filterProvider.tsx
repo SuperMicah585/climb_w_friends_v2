@@ -1,8 +1,9 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext,useRef } from 'react';
 import { Tags, friendsObject } from '../types/interfaces';
 interface FilterContextType {
   filters: (Tags | friendsObject)[];
   setFilterFunctions: (newFilters: (Tags | friendsObject)[]) => void;
+
 }
 
 const FilterContext = createContext<FilterContextType | undefined>(undefined);

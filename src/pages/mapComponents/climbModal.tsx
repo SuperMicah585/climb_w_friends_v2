@@ -1,4 +1,4 @@
-import { GeoJsonFeature, ChatObject, Tags,ClimbModalProps,TempDic,deleteTagItem,ClimbTagItem } from '../../types/interfaces';
+import { GeoJsonFeature, ChatObject, Tags,TempDic,deleteTagItem,ClimbTagItem } from '../../types/interfaces';
 import {
   minusIcon,
   addIcon,
@@ -9,8 +9,13 @@ import ModalChat from './modalComponents/chatOverlay';
 import ZincModal from '../../reusableComponents/zincModal';
 import Tooltip from '../../reusableComponents/toolTip';
 import { tagsObject, exampleTagOnClimb, micah } from './mapObjects';
-import { useState, useEffect } from 'react';
+import { useState, useEffect,RefObject } from 'react';
 import ClimbModalBar from '../../reusableComponents/climbModalBar';
+export type ClimbModalProps = {
+  clickedFeatureClimbs: GeoJsonFeature[];
+  closeModalCallBack: (trigger: boolean) => void;
+
+};
 
 const ClimbModal: React.FC<ClimbModalProps> = ({
   clickedFeatureClimbs,
@@ -25,12 +30,14 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   const [tagInput, setTagInput] = useState<string>('');
   const [tagObject, setTagObject] = useState<Tags[]>([]);
   const [climbObject, setClimbObject] = useState<GeoJsonFeature[]>([]);
+  //const [tickDropDownToggle,setTickDropDownToggle] = useState<boolean>(false)
 
   const [featureTagObject, setFeatureTagObject] = useState<TempDic>({});
 
   const setClimbNameForChatCallBack = (climbName: string) => {
     setClimbNameForChat(climbName);
   };
+
 
   const setClimbGradeForChatCallBack = (climbGrade: string) => {
     setClimbGradeForChat(climbGrade);
@@ -56,35 +63,6 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
     setSortString(data);
   };
 
-  const removeOrAddClimb = (id: string, name: string, action: string) => {
-    if (action === 'remove') {
-      setClimbObject((prev) =>
-        prev.map((item) =>
-          item.id === id
-            ? {
-                ...item,
-                climber_names: item.climber_names.filter(
-                  (climber) => climber !== name,
-                ),
-              }
-            : item,
-        ),
-      );
-    }
-
-    if (action === 'add') {
-      setClimbObject((prev) =>
-        prev.map((item) =>
-          item.id === id
-            ? {
-                ...item,
-                climber_names: [...item.climber_names, name],
-              }
-            : item,
-        ),
-      );
-    }
-  };
   const handleTagSelect = (item: ClimbTagItem) => {
     setFeatureTagObject((prev) => {
       const newState = { ...prev };
@@ -101,7 +79,6 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   };
 
   useEffect(() => {
-    console.log(clickedFeatureClimbs);
     setClimbObject(clickedFeatureClimbs);
   }, [clickedFeatureClimbs]);
 
@@ -196,35 +173,27 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                     {' '}
                     {newWindowIcon}{' '}
                   </div>
-                  <div
-                    onClick={() =>
-                      removeOrAddClimb(
-                        item.id,
-                        micah.name,
-                        item.climber_names.includes(micah.name)
-                          ? 'remove'
-                          : 'add',
-                      )
-                    }
-                    className={`absolute right-2 top-2 cursor-pointer rounded-full p-1 hover:bg-slate-500 hover:opacity-75 ${item.climber_names.includes(micah.name) ? 'text-red-300' : 'text-green-300'}`}
-                  >
-                    {item.climber_names.includes(micah.name)
-                      ? minusIcon
-                      : addIcon}
-                  </div>
+
                   {/* climbObject, tagObject, handleTagSelect, featureTagObject*/}
                   <ClimbModalBar
                     featureTagObject={featureTagObject}
                     handleTagSelect={handleTagSelect}
                     tagObject={tagObject}
                     climbObject={item}
+                    setClimbObject = {setClimbObject}
                     setClimbNameForChatCallBack={setClimbNameForChatCallBack}
                     setClimbGradeForChatCallBack={setClimbGradeForChatCallBack}
                     setClimbChatForChatCallBack={setClimbChatForChatCallBack}
                     chatDisplayTriggerCallBack={chatDisplayTriggerCallBack}
                     tagInputCallBack={tagInputCallBack}
+   
+       
+
                   />
-                  <div className="flex gap-5 font-semibold text-white">
+     
+                  
+                  
+                  <div className="flex mt-5 gap-5 font-semibold text-white">
                     <div>{item.name}</div>
                     <div className="white border-r"></div>
                     <div>{item.grade}</div>
