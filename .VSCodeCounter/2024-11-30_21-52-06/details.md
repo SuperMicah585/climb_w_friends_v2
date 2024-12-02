@@ -1,10 +1,10 @@
 # Details
 
-Date : 2024-11-17 21:55:27
+Date : 2024-11-30 21:52:06
 
 Directory /Users/mphelps/climb_w_friends_v2/src
 
-Total : 37 files, 3966 codes, 109 comments, 346 blanks, all 4421 lines
+Total : 42 files, 4455 codes, 139 comments, 459 blanks, all 5053 lines
 
 [Summary](results.md) / Details / [Diff Summary](diff.md) / [Diff Details](diff-details.md)
 
@@ -13,10 +13,11 @@ Total : 37 files, 3966 codes, 109 comments, 346 blanks, all 4421 lines
 | filename                                                                                                                                                                      | language       | code | comment | blank | total |
 | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------- | ---: | ------: | ----: | ----: |
 | [src/App.css](/src/App.css)                                                                                                                                                   | CSS            |   37 |       0 |     6 |    43 |
-| [src/App.tsx](/src/App.tsx)                                                                                                                                                   | TypeScript JSX |    9 |      32 |     4 |    45 |
+| [src/App.tsx](/src/App.tsx)                                                                                                                                                   | TypeScript JSX |   11 |      32 |     3 |    46 |
 | [src/assets/react.svg](/src/assets/react.svg)                                                                                                                                 | XML            |    1 |       0 |     0 |     1 |
 | [src/index.css](/src/index.css)                                                                                                                                               | CSS            |   64 |       0 |     9 |    73 |
 | [src/main.tsx](/src/main.tsx)                                                                                                                                                 | TypeScript JSX |   21 |       1 |     3 |    25 |
+| [src/pages/filterProvider.tsx](/src/pages/filterProvider.tsx)                                                                                                                 | TypeScript JSX |   28 |       0 |     8 |    36 |
 | [src/pages/home.tsx](/src/pages/home.tsx)                                                                                                                                     | TypeScript JSX |   11 |       0 |     1 |    12 |
 | [src/pages/homeComponents/homeObjects.tsx](/src/pages/homeComponents/homeObjects.tsx)                                                                                         | TypeScript JSX |  377 |       0 |     2 |   379 |
 | [src/pages/homeComponents/maps.tsx](/src/pages/homeComponents/maps.tsx)                                                                                                       | TypeScript JSX |  113 |       0 |    10 |   123 |
@@ -24,30 +25,34 @@ Total : 37 files, 3966 codes, 109 comments, 346 blanks, all 4421 lines
 | [src/pages/homeComponents/mapsComponents/editModal.tsx](/src/pages/homeComponents/mapsComponents/editModal.tsx)                                                               | TypeScript JSX |  222 |       0 |    15 |   237 |
 | [src/pages/homeComponents/navBar.tsx](/src/pages/homeComponents/navBar.tsx)                                                                                                   | TypeScript JSX |   30 |       0 |     4 |    34 |
 | [src/pages/login.tsx](/src/pages/login.tsx)                                                                                                                                   | TypeScript JSX |   81 |      10 |    13 |   104 |
-| [src/pages/map.tsx](/src/pages/map.tsx)                                                                                                                                       | TypeScript JSX |  194 |       6 |    38 |   238 |
+| [src/pages/map.tsx](/src/pages/map.tsx)                                                                                                                                       | TypeScript JSX |  223 |      14 |    51 |   288 |
 | [src/pages/mapComponents/activityFeed.tsx](/src/pages/mapComponents/activityFeed.tsx)                                                                                         | TypeScript JSX |   62 |       1 |     9 |    72 |
-| [src/pages/mapComponents/climbModal.tsx](/src/pages/mapComponents/climbModal.tsx)                                                                                             | TypeScript JSX |  316 |       1 |    26 |   343 |
-| [src/pages/mapComponents/mapLayers.tsx](/src/pages/mapComponents/mapLayers.tsx)                                                                                               | TypeScript JSX |  297 |      45 |    28 |   370 |
-| [src/pages/mapComponents/mapNavBar.tsx](/src/pages/mapComponents/mapNavBar.tsx)                                                                                               | TypeScript JSX |   83 |       0 |     3 |    86 |
-| [src/pages/mapComponents/mapObjects.tsx](/src/pages/mapComponents/mapObjects.tsx)                                                                                             | TypeScript JSX |  456 |       0 |    12 |   468 |
+| [src/pages/mapComponents/addClimbModal.tsx](/src/pages/mapComponents/addClimbModal.tsx)                                                                                       | TypeScript JSX |  249 |      11 |    38 |   298 |
+| [src/pages/mapComponents/allClimbsModal.tsx](/src/pages/mapComponents/allClimbsModal.tsx)                                                                                     | TypeScript JSX |   26 |       0 |     4 |    30 |
+| [src/pages/mapComponents/climbModal.tsx](/src/pages/mapComponents/climbModal.tsx)                                                                                             | TypeScript JSX |  207 |       2 |    35 |   244 |
+| [src/pages/mapComponents/mapLayers.tsx](/src/pages/mapComponents/mapLayers.tsx)                                                                                               | TypeScript JSX |  298 |      45 |    29 |   372 |
+| [src/pages/mapComponents/mapNavBar.tsx](/src/pages/mapComponents/mapNavBar.tsx)                                                                                               | TypeScript JSX |   95 |       0 |     4 |    99 |
+| [src/pages/mapComponents/mapObjects.tsx](/src/pages/mapComponents/mapObjects.tsx)                                                                                             | TypeScript JSX |  462 |       0 |    13 |   475 |
 | [src/pages/mapComponents/modalComponents/chatOverlay.tsx](/src/pages/mapComponents/modalComponents/chatOverlay.tsx)                                                           | TypeScript JSX |   89 |       1 |     9 |    99 |
-| [src/pages/mapComponents/modalComponents/filterModal.tsx](/src/pages/mapComponents/modalComponents/filterModal.tsx)                                                           | TypeScript JSX |  247 |       3 |    23 |   273 |
+| [src/pages/mapComponents/modalComponents/filterModal.tsx](/src/pages/mapComponents/modalComponents/filterModal.tsx)                                                           | TypeScript JSX |  258 |       3 |    24 |   285 |
 | [src/pages/mapComponents/modalComponents/filterModalComponents.tsx/GradeDropDowns.tsx](/src/pages/mapComponents/modalComponents/filterModalComponents.tsx/GradeDropDowns.tsx) | TypeScript JSX |   67 |       0 |     6 |    73 |
 | [src/pages/mapComponents/modalComponents/modalSearch.tsx](/src/pages/mapComponents/modalComponents/modalSearch.tsx)                                                           | TypeScript JSX |   82 |       1 |    12 |    95 |
-| [src/pages/mapComponents/modalComponents/modalTag.tsx](/src/pages/mapComponents/modalComponents/modalTag.tsx)                                                                 | TypeScript JSX |   79 |       2 |    10 |    91 |
+| [src/pages/mapComponents/modalComponents/modalTag.tsx](/src/pages/mapComponents/modalComponents/modalTag.tsx)                                                                 | TypeScript JSX |   97 |       4 |    14 |   115 |
 | [src/pages/mapComponents/modalComponents/tagOverlay.tsx](/src/pages/mapComponents/modalComponents/tagOverlay.tsx)                                                             | TypeScript JSX |   16 |       0 |     2 |    18 |
-| [src/pages/mapComponents/search.tsx](/src/pages/mapComponents/search.tsx)                                                                                                     | TypeScript JSX |  138 |       0 |    15 |   153 |
+| [src/pages/mapComponents/search.tsx](/src/pages/mapComponents/search.tsx)                                                                                                     | TypeScript JSX |   51 |       5 |     2 |    58 |
+| [src/pages/mapComponents/tickClimbsComponent.tsx](/src/pages/mapComponents/tickClimbsComponent.tsx)                                                                           | TypeScript JSX |   29 |       0 |    13 |    42 |
 | [src/reusableComponents/chatInput.tsx](/src/reusableComponents/chatInput.tsx)                                                                                                 | TypeScript JSX |   34 |       0 |     4 |    38 |
+| [src/reusableComponents/climbModalBar.tsx](/src/reusableComponents/climbModalBar.tsx)                                                                                         | TypeScript JSX |  242 |       3 |    26 |   271 |
 | [src/reusableComponents/downDrop.tsx](/src/reusableComponents/downDrop.tsx)                                                                                                   | TypeScript JSX |   51 |       0 |     2 |    53 |
 | [src/reusableComponents/dropDown.tsx](/src/reusableComponents/dropDown.tsx)                                                                                                   | TypeScript JSX |   89 |       0 |     9 |    98 |
 | [src/reusableComponents/input.tsx](/src/reusableComponents/input.tsx)                                                                                                         | TypeScript JSX |   38 |       0 |     8 |    46 |
 | [src/reusableComponents/purpleButton.tsx](/src/reusableComponents/purpleButton.tsx)                                                                                           | TypeScript JSX |   18 |       0 |     1 |    19 |
 | [src/reusableComponents/searchDropDown.tsx](/src/reusableComponents/searchDropDown.tsx)                                                                                       | TypeScript JSX |   44 |       0 |     6 |    50 |
-| [src/reusableComponents/styles.tsx](/src/reusableComponents/styles.tsx)                                                                                                       | TypeScript JSX |  316 |       0 |    21 |   337 |
+| [src/reusableComponents/styles.tsx](/src/reusableComponents/styles.tsx)                                                                                                       | TypeScript JSX |  332 |       0 |    22 |   354 |
 | [src/reusableComponents/toolTip.tsx](/src/reusableComponents/toolTip.tsx)                                                                                                     | TypeScript JSX |   65 |       2 |     6 |    73 |
 | [src/reusableComponents/zincModal.tsx](/src/reusableComponents/zincModal.tsx)                                                                                                 | TypeScript JSX |   42 |       2 |     5 |    49 |
 | [src/supaBaseClient.tsx](/src/supaBaseClient.tsx)                                                                                                                             | TypeScript JSX |   45 |       1 |    12 |    58 |
 | [src/types/Posts.ts](/src/types/Posts.ts)                                                                                                                                     | TypeScript     |    5 |       0 |     1 |     6 |
-| [src/types/interfaces.tsx](/src/types/interfaces.tsx)                                                                                                                         | TypeScript JSX |   51 |       0 |     6 |    57 |
+| [src/types/interfaces.tsx](/src/types/interfaces.tsx)                                                                                                                         | TypeScript JSX |   67 |       0 |    13 |    80 |
 
 [Summary](results.md) / Details / [Diff Summary](diff.md) / [Diff Details](diff-details.md)

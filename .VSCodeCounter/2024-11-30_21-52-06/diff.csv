@@ -1,0 +1,10 @@
+"filename", "language", "TypeScript JSX", "comment", "blank", "total"
+"/Users/mphelps/climb_w_friends_v2/src/pages/filterProvider.tsx", "TypeScript JSX", 0, 0, 1, 1
+"/Users/mphelps/climb_w_friends_v2/src/pages/map.tsx", "TypeScript JSX", 1, 10, 7, 18
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/addClimbModal.tsx", "TypeScript JSX", -4, 10, 1, 7
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/climbModal.tsx", "TypeScript JSX", -40, 1, 8, -31
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/mapNavBar.tsx", "TypeScript JSX", 0, 0, 1, 1
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/tickClimbsComponent.tsx", "TypeScript JSX", 29, 0, 13, 42
+"/Users/mphelps/climb_w_friends_v2/src/reusableComponents/climbModalBar.tsx", "TypeScript JSX", 81, 3, 19, 103
+"/Users/mphelps/climb_w_friends_v2/src/types/interfaces.tsx", "TypeScript JSX", -4, 0, 1, -3
+"Total", "-", 63, 24, 51, 138

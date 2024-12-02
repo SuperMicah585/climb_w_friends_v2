@@ -3,15 +3,15 @@ import { useState, useEffect, useRef, useContext } from 'react';
 import mapboxgl from 'mapbox-gl';
 import Search from './mapComponents/search';
 import ActivityFeed from './mapComponents/activityFeed';
-import ClimbModal from './mapComponents/climbModal';
+import ClimbModal from './mapComponents/modalComponents/climbModal';
 import MapNavBar from './mapComponents/mapNavBar';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { ClimbsTableResponse, GeoJsonFeature, Tags } from '../types/interfaces';
 import TagModal from './mapComponents/modalComponents/modalTag';
 import FilterModal from './mapComponents/modalComponents/filterModal';
 import TagOverlay from './mapComponents/modalComponents/tagOverlay';
-import AllClimbsModal from './mapComponents/allClimbsModal';
-import AddClimbModal from './mapComponents/addClimbModal';
+import AllClimbsModal from './mapComponents/modalComponents/allClimbsModal';
+import AddClimbModal from './mapComponents/modalComponents/addClimbModal';
 
 import { exampleMapObjects } from './homeComponents/homeObjects';
 import { usStateDictionary } from './mapComponents/mapObjects';
@@ -46,8 +46,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   const [selectedClimb, setSelectedClimb] =
     useState<ClimbsTableResponse | null>(null);
 
-
-  const [tickDisplayTrigger,setTickDisplayTrigger] = useState<number>(0)
+  const [tickDisplayTrigger, setTickDisplayTrigger] = useState<number>(0);
   const [currentMarker, setCurrentMarker] = useState<any>(null);
   const [polygonOrCircleDisplay, setpolygonOrCircleDisplay] =
     useState<boolean>(false);
@@ -74,11 +73,6 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
 
   const [stateDropDownName, setStateDropDownName] = useState<string>('WA');
 
-
-
-
-
-  
   const climbTypeDropDownValueCallBack = (value: string) => {
     setclimbTypeDropDown(value);
   };
@@ -132,7 +126,6 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   ) => {
     setClickedFeatureClimbs((prev) => [...prev, ...climbData]);
   };
-
 
   useEffect(() => {
     setTags(exampleMapObjects[0].tags);
@@ -227,7 +220,6 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
         filterToggleCallBack={filterToggleCallBack}
         feedToggleCallBack={feedToggleCallBack}
         tagToggleCallBack={tagToggleCallBack}
-        
       >
         <div className="flex w-full items-center justify-start gap-5">
           <div className="z-10 max-w-96 flex-grow">

@@ -6,14 +6,14 @@ import {
   expandArrowIcon,
   dropDownStyles,
   minusIcon,
-  addIcon
+  addIcon,
 } from './styles';
 
-import { ChatObject, GeoJsonFeature, Tags,Micah } from '../types/interfaces';
+import { ChatObject, GeoJsonFeature, Tags, Micah } from '../types/interfaces';
 import SearchDropDown from './searchDropDown';
-import {  micah } from '../pages/mapComponents/mapObjects';
+import { micah } from '../pages/mapComponents/mapObjects';
 import TagInput from './input';
-import { useState, useRef,useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import TickClimbsComponent from '../pages/mapComponents/tickClimbsComponent';
 
 import { useFilterContext } from '../pages/filterProvider';
@@ -29,9 +29,8 @@ interface ClimbModalBarProps {
   setClimbNameForChatCallBack: (climbName: string) => void;
   setClimbGradeForChatCallBack: (climbGrade: string) => void;
   setClimbChatForChatCallBack: (climbConversation: ChatObject[]) => void;
-  setClimbObject:React.Dispatch<React.SetStateAction<GeoJsonFeature[]>>;
-
-
+  setClimbObject: React.Dispatch<React.SetStateAction<GeoJsonFeature[]>>;
+  setTickOverlayDisplayTrigger: React.Dispatch<React.SetStateAction<number>>;
 }
 type TempDic = {
   [key: string]: (Tags | null)[];
@@ -48,40 +47,36 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
   setClimbGradeForChatCallBack,
   setClimbChatForChatCallBack,
   setClimbObject,
-
+  setTickOverlayDisplayTrigger,
 }) => {
   const [dropDownToggle, setDropDownToggle] = useState<boolean>(false);
   const [isClimbTicked, setisClimbTicked] = useState(false);
   const [configToggle, setConfigToggle] = useState<string>('');
-  const [dropDownItemsState,setDropDownItemsState] = useState<boolean>(false)
+  const [dropDownItemsState, setDropDownItemsState] = useState<boolean>(false);
   const tagInputRef = useRef(null);
+
   const closeDropDownCallBack = (value: boolean) => {
     setDropDownToggle(value);
   };
-  
 
-  
-  const tickButtonRef = useRef<HTMLDivElement>(null)
-  const tickButtonDropDown = useRef<HTMLDivElement>(null)
+  const tickButtonRef = useRef<HTMLDivElement>(null);
+  const tickButtonDropDown = useRef<HTMLDivElement>(null);
 
-  const setDropDownItemsStateCallBack = (value:boolean)=>{
-
-    setDropDownItemsState(false)
-  }
+  const setDropDownItemsStateCallBack = (value: boolean) => {
+    setDropDownItemsState(false);
+  };
 
   const handleClickOutside = (event: any) => {
     if (
-      
       tickButtonDropDown.current &&
       tickButtonRef.current &&
       !tickButtonDropDown.current.contains(event.target) &&
       !tickButtonRef.current.contains(event.target)
     ) {
-      
       setDropDownItemsState(false);
     }
 
-   // else{setDropDownItemsState(true)}
+    // else{setDropDownItemsState(true)}
   };
 
   useEffect(() => {
@@ -90,15 +85,14 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [tickButtonDropDown,tickButtonRef]);
+  }, [tickButtonDropDown, tickButtonRef]);
 
   const removeOrAddClimb = (id: string, name: string, action: string) => {
-   /* setClimbsArray(prev=>prev.filter((mapItem)=>
+    /* setClimbsArray(prev=>prev.filter((mapItem)=>
     mapItem.climber_names.length===0?true:false))*/
     if (action === 'remove') {
-      setClimbObject((prev) => 
-    { 
-     const tmpArray = prev.map((item) =>
+      setClimbObject((prev) => {
+        const tmpArray = prev.map((item) =>
           item.id === id
             ? {
                 ...item,
@@ -107,13 +101,12 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
                 ),
               }
             : item,
-        )
-    
-        return tmpArray.filter((mapItem)=>
-    mapItem.climber_names.length===0?false:true)
-          }
+        );
 
-      );
+        return tmpArray.filter((mapItem) =>
+          mapItem.climber_names.length === 0 ? false : true,
+        );
+      });
     }
 
     if (action === 'add') {
@@ -131,7 +124,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
   };
 
   return (
-    <div className="absolute top-0 right-2 flex items-center gap-2">
+    <div className="absolute right-2 top-0 flex items-center gap-2">
       {configToggle === climbObject.id ? (
         <div className="flex h-12 items-center">
           <div
@@ -218,8 +211,10 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
           ) : null}
 
           <div
-            ref = {tickButtonRef}
-            onClick={() => {setDropDownItemsState((prev) => !prev)}}
+            ref={tickButtonRef}
+            onClick={() => {
+              setDropDownItemsState((prev) => !prev);
+            }}
             className={`cursor-pointer rounded-full p-1 hover:bg-slate-500 hover:opacity-75 ${isClimbTicked ? 'text-green-500' : 'text-neutral-500 hover:text-neutral-400'}`}
           >
             {checkBadge}
@@ -227,7 +222,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
           <div
             onClick={() => {
               chatDisplayTriggerCallBack();
-              setClimbNameForChatCallBack(climbObject.name);
+              setClimbNameForChatCallBack(climbObject.name); //also used for ticks. Change name to be more accurate
               setClimbGradeForChatCallBack(climbObject.grade);
               setClimbChatForChatCallBack(climbObject.conversation);
             }}
@@ -235,25 +230,33 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
           >
             {chatIcon}
           </div>
-          <div ref = {tickButtonDropDown}> 
-          <TickClimbsComponent setDropDownItemsStateCallBack = {setDropDownItemsStateCallBack} setisClimbTicked = {setisClimbTicked} setDropDownItemsState = {dropDownItemsState}/>
+          <div ref={tickButtonDropDown}>
+            <TickClimbsComponent
+              setClimbGradeForChatCallBack={setClimbGradeForChatCallBack}
+              setClimbNameForChatCallBack={setClimbNameForChatCallBack}
+              setTickOverlayDisplayTrigger={setTickOverlayDisplayTrigger}
+              climbObject={climbObject}
+              setDropDownItemsStateCallBack={setDropDownItemsStateCallBack}
+              setisClimbTicked={setisClimbTicked}
+              setDropDownItemsState={dropDownItemsState}
+            />
           </div>
           <div
-                    onClick={() =>
-                      removeOrAddClimb(
-                        climbObject.id,
-                        micah.name,
-                        climbObject.climber_names.includes(micah.name)
-                          ? 'remove'
-                          : 'add',
-                      )
-                    }
-                    className={`cursor-pointer rounded-full p-1 hover:bg-slate-500 hover:opacity-75 ${climbObject.climber_names.includes(micah.name) ? 'text-red-300' : 'text-green-300'}`}
-                  >
-                    {climbObject.climber_names.includes(micah.name)
-                      ? minusIcon
-                      : addIcon}
-                  </div>
+            onClick={() =>
+              removeOrAddClimb(
+                climbObject.id,
+                micah.name,
+                climbObject.climber_names.includes(micah.name)
+                  ? 'remove'
+                  : 'add',
+              )
+            }
+            className={`cursor-pointer rounded-full p-1 hover:bg-slate-500 hover:opacity-75 ${climbObject.climber_names.includes(micah.name) ? 'text-red-300' : 'text-green-300'}`}
+          >
+            {climbObject.climber_names.includes(micah.name)
+              ? minusIcon
+              : addIcon}
+          </div>
         </div>
       ) : (
         <div

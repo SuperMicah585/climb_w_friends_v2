@@ -19,8 +19,6 @@ export interface AddClimbsModalProps {
   closeAddClimbsModalCallBack: (trigger: boolean) => void;
 }
 
-
-
 export type TempDic = {
   [key: string]: (Tags | null)[];
 };

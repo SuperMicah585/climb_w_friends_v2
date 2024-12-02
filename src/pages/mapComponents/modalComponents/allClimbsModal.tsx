@@ -1,7 +1,7 @@
 import ClimbModal from './climbModal';
-import { testData } from './mapObjects';
+import { testData } from '../mapObjects';
 import { useEffect, useState } from 'react';
-import { GeoJsonFeature } from '../../types/interfaces';
+import { GeoJsonFeature } from '../../../types/interfaces';
 interface AllClimbsProps {
   closeModalCallBack: (trigger: boolean) => void;
 }

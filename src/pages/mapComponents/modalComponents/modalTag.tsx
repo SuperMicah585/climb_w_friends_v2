@@ -6,7 +6,7 @@ import PurpleButton from '../../../reusableComponents/purpleButton';
 
 interface AddMapComponentInterface {
   closeTagModalCallBack: (value: boolean) => void;
-  newTagCallBack:(data:Tags[])=>void
+  newTagCallBack: (data: Tags[]) => void;
   tags: Tags[];
 }
 
@@ -14,10 +14,9 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
   closeTagModalCallBack,
   newTagCallBack,
   tags,
-
 }) => {
   const [tagName, setTagName] = useState<string>('');
-  const [modifiedTags,setModifiedTags] = useState(tags)
+  const [modifiedTags, setModifiedTags] = useState(tags);
 
   //generating random number to test id
 
@@ -44,7 +43,7 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
     });
   };
 
-  const deleteTagCallBack = (item:Tags) => {
+  const deleteTagCallBack = (item: Tags) => {
     setModifiedTags((prev) => prev.filter((tagObj) => tagObj.id !== item.id));
   };
 
@@ -102,7 +101,10 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
         </div>
         <div className="flex-grow"> </div>
         <div
-          onClick={() => {newTagCallBack(modifiedTags);closeTagModalCallBack(false)}}
+          onClick={() => {
+            newTagCallBack(modifiedTags);
+            closeTagModalCallBack(false);
+          }}
           className="flex justify-end"
         >
           <PurpleButton> Apply</PurpleButton>

@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
-import { backArrowIcon } from '../../../reusableComponents/styles';
-import ChatInput from '../../../reusableComponents/chatInput';
-import { ChatProps, ChatObject } from '../../../types/interfaces';
+import { backArrowIcon } from '../../reusableComponents/styles';
+import ChatInput from '../../reusableComponents/chatInput';
+import { ChatProps, ChatObject } from '../../types/interfaces';
 
 const ModalChat: React.FC<ChatProps> = ({
   displayTrigger,

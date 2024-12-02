@@ -1,20 +1,27 @@
-import { GeoJsonFeature, ChatObject, Tags,TempDic,deleteTagItem,ClimbTagItem } from '../../types/interfaces';
+import {
+  GeoJsonFeature,
+  ChatObject,
+  Tags,
+  TempDic,
+  deleteTagItem,
+  ClimbTagItem,
+} from '../../../types/interfaces';
 import {
   minusIcon,
   addIcon,
   newWindowIcon,
-} from '../../reusableComponents/styles';
-import ModalSearch from './modalComponents/modalSearch';
-import ModalChat from './modalComponents/chatOverlay';
-import ZincModal from '../../reusableComponents/zincModal';
-import Tooltip from '../../reusableComponents/toolTip';
-import { tagsObject, exampleTagOnClimb, micah } from './mapObjects';
-import { useState, useEffect,RefObject } from 'react';
-import ClimbModalBar from '../../reusableComponents/climbModalBar';
+} from '../../../reusableComponents/styles';
+import ModalSearch from './modalSearch';
+import ModalChat from '../chatOverlay';
+import ZincModal from '../../../reusableComponents/zincModal';
+import Tooltip from '../../../reusableComponents/toolTip';
+import { tagsObject, exampleTagOnClimb, micah } from '../mapObjects';
+import { useState, useEffect, RefObject } from 'react';
+import ClimbModalBar from '../../../reusableComponents/climbModalBar';
+import TickOverlay from '../tickOverlay';
 export type ClimbModalProps = {
   clickedFeatureClimbs: GeoJsonFeature[];
   closeModalCallBack: (trigger: boolean) => void;
-
 };
 
 const ClimbModal: React.FC<ClimbModalProps> = ({
@@ -30,6 +37,9 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   const [tagInput, setTagInput] = useState<string>('');
   const [tagObject, setTagObject] = useState<Tags[]>([]);
   const [climbObject, setClimbObject] = useState<GeoJsonFeature[]>([]);
+  const [tickOverlayDisplayTrigger, setTickOverlayDisplayTrigger] =
+    useState<number>(0);
+  const [tickinfo, setTickInfo] = useState({});
   //const [tickDropDownToggle,setTickDropDownToggle] = useState<boolean>(false)
 
   const [featureTagObject, setFeatureTagObject] = useState<TempDic>({});
@@ -37,7 +47,6 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   const setClimbNameForChatCallBack = (climbName: string) => {
     setClimbNameForChat(climbName);
   };
-
 
   const setClimbGradeForChatCallBack = (climbGrade: string) => {
     setClimbGradeForChat(climbGrade);
@@ -132,6 +141,13 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
           climbChat={climbChatForChat}
           displayTrigger={displayTrigger}
         />
+
+        <TickOverlay
+          displayTrigger={tickOverlayDisplayTrigger}
+          climbName={climbNameForChat}
+          climbGrade={climbGradeForChat}
+          tickInfo={tickinfo}
+        />
       </div>
       <ZincModal
         maxHeight={'max-h-[700px]'}
@@ -180,20 +196,16 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                     handleTagSelect={handleTagSelect}
                     tagObject={tagObject}
                     climbObject={item}
-                    setClimbObject = {setClimbObject}
+                    setClimbObject={setClimbObject}
                     setClimbNameForChatCallBack={setClimbNameForChatCallBack}
                     setClimbGradeForChatCallBack={setClimbGradeForChatCallBack}
                     setClimbChatForChatCallBack={setClimbChatForChatCallBack}
                     chatDisplayTriggerCallBack={chatDisplayTriggerCallBack}
                     tagInputCallBack={tagInputCallBack}
-   
-       
-
+                    setTickOverlayDisplayTrigger={setTickOverlayDisplayTrigger}
                   />
-     
-                  
-                  
-                  <div className="flex mt-5 gap-5 font-semibold text-white">
+
+                  <div className="mt-5 flex gap-5 font-semibold text-white">
                     <div>{item.name}</div>
                     <div className="white border-r"></div>
                     <div>{item.grade}</div>
@@ -206,7 +218,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                     &gt; Olympic National Park &gt; Olympics & Pacific Coast
                     &gt; Washington
                   </div>
-                  <div className="mt-2 flex items-center h-7 gap-2 text-xs font-bold text-white">
+                  <div className="mt-2 flex h-7 items-center gap-2 text-xs font-bold text-white">
                     Climbers:
                     {item.climber_names.map((item, index) => (
                       <div key={index} className="rounded-lg bg-violet-800 p-1">
@@ -214,7 +226,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                       </div>
                     ))}
                   </div>
-                  <div className="mt-2 flex w-2/3 flex-wrap h-7 items-center gap-2 text-xs font-bold text-white">
+                  <div className="mt-2 flex h-7 w-2/3 flex-wrap items-center gap-2 text-xs font-bold text-white">
                     Tags:
                     {featureTagObject[item.id]?.length > 0
                       ? featureTagObject[item.id]?.map((tagsOnClimb) => (
