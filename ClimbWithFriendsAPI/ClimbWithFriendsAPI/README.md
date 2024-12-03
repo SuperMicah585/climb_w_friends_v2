@@ -18,7 +18,9 @@
 
 
 
-Database Commands
+## Database Commands (using package manager console)
 
-Add-Migration insermigrationname
-Update-Database 
+```bash   
+   Add-Migration insermigrationname
+```bash   
+   Update-Database 
