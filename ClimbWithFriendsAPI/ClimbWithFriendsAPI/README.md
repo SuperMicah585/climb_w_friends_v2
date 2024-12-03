@@ -1,9 +1,9 @@
 # API Setup Guide
 
 ## Prerequisites
-- .NET SDK 8.0
-- PostgreSQL v16.0
-- postgis
+- [.Net SDK 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+- [PostgreSQL v16](https://www.postgresql.org/download/)
+- [PostGIS](https://postgis.net/documentation/getting_started/)
 
 ## Steps
 1. Restore Dependencies:
@@ -15,8 +15,6 @@
 3. Run program (Swagger should launch automatically)
    ```bash   
    dotnet run
-
-
 
 ## Database Commands (using package manager console)
 
