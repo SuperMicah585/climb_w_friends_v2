@@ -83,7 +83,7 @@ const DropDown: React.FC<DropDownProps> = ({
         className={dropDownButtonStyle}
       >
         {stateDropDownItem}
-        {dropDownItemsState ? dropDownSvgOpen : dropDownSvgClosed}
+        {dropDownItemsState ? dropDownSvgClosed : dropDownSvgOpen}
       </div>
       {dropDownItemsState ? (
         <div className="absolute top-11 z-10">

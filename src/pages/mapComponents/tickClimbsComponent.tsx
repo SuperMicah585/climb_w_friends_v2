@@ -20,12 +20,12 @@ const TickClimbsComponent: React.FC<TickClimbsComponent> = ({
   setTickOverlayDisplayTrigger,
   climbObject,
 }) => {
-  const filterTypes = ['Tick', 'Tick With Note'];
+  const filterTypes = ['Tick', 'Tick With Details'];
   const downDropRef = useRef<HTMLDivElement | null>(null);
 
   const setSelectedTickCallBack = (item: string) => {
     setisClimbTicked(true);
-    if (item === 'Tick With Note') {
+    if (item === 'Tick With Details') {
       setClimbGradeForChatCallBack(climbObject.grade);
       setClimbNameForChatCallBack(climbObject.name);
       setTickOverlayDisplayTrigger((prev) => prev + 1);

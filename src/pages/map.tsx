@@ -13,7 +13,7 @@ import TagOverlay from './mapComponents/modalComponents/tagOverlay';
 import AllClimbsModal from './mapComponents/modalComponents/allClimbsModal';
 import AddClimbModal from './mapComponents/modalComponents/addClimbModal';
 
-import { exampleMapObjects } from './homeComponents/homeObjects';
+import { exampleMapObjects } from './dashboardComponents/dashboardObjects';
 import { usStateDictionary } from './mapComponents/mapObjects';
 
 import {

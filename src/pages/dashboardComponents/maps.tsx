@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { exampleMapObjects, friendExample } from './homeObjects';
+import { exampleMapObjects, friendExample } from './dashboardObjects';
 import { MapObject, friendsObject } from '../../types/interfaces';
 import { verticalDotIcon } from '../../reusableComponents/styles';
 import { Link } from 'react-router-dom';

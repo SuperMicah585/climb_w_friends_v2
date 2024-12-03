@@ -114,7 +114,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
     }
 
     setFeatureTagObject(tempDic);
-  }, [exampleTagOnClimb, climbObject]);
+  }, [exampleTagOnClimb]);
 
   const deleteTagCallBack = (item: deleteTagItem) => {
     setFeatureTagObject((prev) => {

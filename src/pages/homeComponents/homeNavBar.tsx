@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import LoginButton from '../../reusableComponents/loginButton';
+import LogoutButton from '../../reusableComponents/logoutButton';
+import { useAuth0 } from '@auth0/auth0-react';
 
-const NavBar = () => {
-  const [currentPage, setCurrentPage] = useState<string>('Maps');
-  const navBarItems = ['Maps', 'Profile', 'Feed', 'About'];
-
+const HomeNavBar = () => {
+  const [currentPage, setCurrentPage] = useState<string>('');
+  const { user, isAuthenticated } = useAuth0();
+  const navBarItems = ['About', 'Usage', 'Work With Us'];
   return (
     <div className="relative flex min-h-20 w-screen items-center justify-center gap-40 border-b border-neutral-500 bg-zinc-800 font-semibold">
       <div className="absolute left-0 top-0 flex h-20 w-40 border-b border-neutral-500">
@@ -27,7 +30,11 @@ const NavBar = () => {
           </div>
         ))}
       </div>
+      <div className="absolute right-2">
+        {' '}
+        {isAuthenticated ? <LogoutButton /> : <LoginButton />}{' '}
+      </div>
     </div>
   );
 };
-export default NavBar;
+export default HomeNavBar;
