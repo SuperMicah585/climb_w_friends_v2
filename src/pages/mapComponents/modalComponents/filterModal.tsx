@@ -209,7 +209,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
                 {' '}
                 <div
                   key={index}
-                  className="flex cursor-pointer rounded-md border-2 border-neutral-600 bg-neutral-500 p-1 text-center text-sm hover:opacity-75"
+                  className={`flex cursor-pointer rounded-md ${'firstName' in item ? 'bg-violet-800' : 'bg-green-800'} p-1 text-center text-sm hover:opacity-75`}
                 >
                   {'firstName' in item
                     ? item.firstName + ' ' + item.lastName

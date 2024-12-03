@@ -6,8 +6,7 @@ import PurpleButton from '../../../reusableComponents/purpleButton';
 
 interface AddMapComponentInterface {
   closeTagModalCallBack: (value: boolean) => void;
-  newTagCallBack: (mapData: Tags) => void;
-  deleteTagCallBack: (tag: Tags) => void;
+  newTagCallBack: (data: Tags[]) => void;
   tags: Tags[];
 }
 
@@ -15,9 +14,9 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
   closeTagModalCallBack,
   newTagCallBack,
   tags,
-  deleteTagCallBack,
 }) => {
   const [tagName, setTagName] = useState<string>('');
+  const [modifiedTags, setModifiedTags] = useState(tags);
 
   //generating random number to test id
 
@@ -25,10 +24,27 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
     let min = 100;
     let max = 1000;
     let randomInt = Math.floor(Math.random() * (max - min + 1)) + min;
-    newTagCallBack({
+    newTag({
       id: randomInt,
       tag: tagName,
     });
+  };
+
+  const newTag = (data: Tags) => {
+    setModifiedTags((prev) => {
+      // Check if the tag already exists in the array
+      const tagExists = prev.some((tagObj) => tagObj.tag === data.tag);
+
+      // If it doesn't exist, add it to the array, otherwise return the existing array
+      if (!tagExists && data.tag.length > 0) {
+        return [...prev, data];
+      }
+      return prev;
+    });
+  };
+
+  const deleteTagCallBack = (item: Tags) => {
+    setModifiedTags((prev) => prev.filter((tagObj) => tagObj.id !== item.id));
   };
 
   const handleSubmit = (event: any) => {
@@ -71,10 +87,10 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
             <div className="flex flex-col gap-5">
               <div className="font-semibold"> Tags</div>
               <div className="flex flex-wrap gap-2">
-                {tags.map((item) => (
+                {modifiedTags.map((item) => (
                   <Tooltip deleteItemCallBack={deleteTagCallBack} item={item}>
                     {' '}
-                    <div className="flex cursor-pointer rounded-md border-2 border-neutral-600 bg-neutral-500 p-1 text-center text-sm hover:opacity-75">
+                    <div className="flex cursor-pointer rounded-md bg-green-800 p-1 text-center text-sm hover:opacity-75">
                       {item.tag}{' '}
                     </div>{' '}
                   </Tooltip>
@@ -85,7 +101,10 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
         </div>
         <div className="flex-grow"> </div>
         <div
-          onClick={() => closeTagModalCallBack(false)}
+          onClick={() => {
+            newTagCallBack(modifiedTags);
+            closeTagModalCallBack(false);
+          }}
           className="flex justify-end"
         >
           <PurpleButton> Apply</PurpleButton>

@@ -3,16 +3,19 @@ import { useState, useEffect, useRef, useContext } from 'react';
 import mapboxgl from 'mapbox-gl';
 import Search from './mapComponents/search';
 import ActivityFeed from './mapComponents/activityFeed';
-import ClimbModal from './mapComponents/climbModal';
+import ClimbModal from './mapComponents/modalComponents/climbModal';
 import MapNavBar from './mapComponents/mapNavBar';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { ClimbsTableResponse, GeoJsonFeature, Tags } from '../types/interfaces';
 import TagModal from './mapComponents/modalComponents/modalTag';
 import FilterModal from './mapComponents/modalComponents/filterModal';
 import TagOverlay from './mapComponents/modalComponents/tagOverlay';
-import AllClimbsModal from './mapComponents/allClimbsModal';
+import AllClimbsModal from './mapComponents/modalComponents/allClimbsModal';
+import AddClimbModal from './mapComponents/modalComponents/addClimbModal';
 
-import { exampleMapObjects } from './homeComponents/homeObjects';
+import { exampleMapObjects } from './dashboardComponents/dashboardObjects';
+import { usStateDictionary } from './mapComponents/mapObjects';
+
 import {
   createMarker,
   createClimbingShapes,
@@ -25,6 +28,16 @@ mapboxgl.accessToken = import.meta.env.VITE_MAP_BOX_KEY;
 type MapProps = {
   zoomLevel: number;
 };
+/*
+notes:
+Mess with dropdown position so that is does not get in the way
+Clicking on check will trigger dropDown that will give following options
+
+1) Quick Send
+OR
+2) Send with Additional information -> open an overlay similar to chat where user can add additional information related to send
+
+*/
 
 const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   const map = useRef<mapboxgl.Map>();
@@ -33,6 +46,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   const [selectedClimb, setSelectedClimb] =
     useState<ClimbsTableResponse | null>(null);
 
+  const [tickDisplayTrigger, setTickDisplayTrigger] = useState<number>(0);
   const [currentMarker, setCurrentMarker] = useState<any>(null);
   const [polygonOrCircleDisplay, setpolygonOrCircleDisplay] =
     useState<boolean>(false);
@@ -40,6 +54,8 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   const [clickedFeatureClimbs, setClickedFeatureClimbs] = useState<
     GeoJsonFeature[]
   >([]);
+
+  const [addClimbsModalDisplay, setAddClimbsModalDisplay] = useState(false);
 
   const [tags, setTags] = useState<Tags[]>([{ id: 0, tag: '' }]);
   const [
@@ -52,7 +68,18 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   const [allClimbsModalDisplay, setAllClimbsModalDisplay] =
     useState<boolean>(false);
   const [feedToggle, setFeedToggle] = useState<boolean>(false);
+  const [climbTypeDropDownValue, setclimbTypeDropDown] =
+    useState<string>('Boulder');
 
+  const [stateDropDownName, setStateDropDownName] = useState<string>('WA');
+
+  const climbTypeDropDownValueCallBack = (value: string) => {
+    setclimbTypeDropDown(value);
+  };
+
+  const stateDropDownNameCallBack = (value: string) => {
+    setStateDropDownName(value);
+  };
   const feedToggleCallBack = () => {
     setFeedToggle((prev) => !prev);
   };
@@ -61,17 +88,12 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     setAllClimbsModalDisplay((prev) => !prev);
   };
 
-  const newTagCallBack = (data: Tags) => {
-    setTags((prev) => {
-      // Check if the tag already exists in the array
-      const tagExists = prev.some((tagObj) => tagObj.tag === data.tag);
+  const closeAddClimbsModalCallBack = (trigger: boolean) => {
+    setAddClimbsModalDisplay(trigger);
+  };
 
-      // If it doesn't exist, add it to the array, otherwise return the existing array
-      if (!tagExists && data.tag.length > 0) {
-        return [...prev, data];
-      }
-      return prev;
-    });
+  const newTagCallBack = (data: Tags[]) => {
+    setTags(data);
   };
 
   const tagToggleCallBack = () => {
@@ -80,10 +102,6 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
 
   const filterToggleCallBack = () => {
     setFilterModalDisplay(true);
-  };
-
-  const selectedClimbCallBack = (climbData: ClimbsTableResponse) => {
-    setSelectedClimb(climbData);
   };
 
   const closeModalCallBack = (trigger: boolean) => {
@@ -107,10 +125,6 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     climbData,
   ) => {
     setClickedFeatureClimbs((prev) => [...prev, ...climbData]);
-  };
-
-  const deleteTagCallBack = (item) => {
-    setTags((prev) => prev.filter((tagObj) => tagObj.id !== item.id));
   };
 
   useEffect(() => {
@@ -210,7 +224,13 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
         <div className="flex w-full items-center justify-start gap-5">
           <div className="z-10 max-w-96 flex-grow">
             {' '}
-            <Search selectedClimbCallBack={selectedClimbCallBack} />{' '}
+            <Search
+              stateDropDownName={stateDropDownName}
+              climbTypeDropDownValue={climbTypeDropDownValue}
+              stateDropDownNameCallBack={stateDropDownNameCallBack}
+              climbTypeDropDownValueCallBack={climbTypeDropDownValueCallBack}
+              closeAddClimbsModalCallBack={closeAddClimbsModalCallBack}
+            />{' '}
           </div>
         </div>
       </MapNavBar>
@@ -224,7 +244,6 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
 
       {tagModalDisplay ? (
         <TagModal
-          deleteTagCallBack={deleteTagCallBack}
           newTagCallBack={newTagCallBack}
           tags={tags}
           closeTagModalCallBack={closeTagModalCallBack}
@@ -237,6 +256,15 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
           closeTagModalCallBack={closeFilterModalCallBack}
         />
       ) : null}
+
+      {addClimbsModalDisplay ? (
+        <AddClimbModal
+          routeType={climbTypeDropDownValue}
+          location={usStateDictionary[stateDropDownName]}
+          closeAddClimbsModalCallBack={closeAddClimbsModalCallBack}
+        />
+      ) : null}
+
       {allClimbsModalDisplay ? (
         <AllClimbsModal closeModalCallBack={closeAllClimbsModalCallBack} />
       ) : null}

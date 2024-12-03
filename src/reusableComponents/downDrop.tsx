@@ -4,7 +4,7 @@ interface FilterDropDownProps {
   filterTypes: string[];
   setSelectedFilterCallBack: (item: string) => void;
   setDropDownToggleCallBack: (booleanValue: boolean) => void;
-  selectedFilter: string;
+  selectedFilter?: string;
   downDropWidth: string;
 }
 const DownDrop = forwardRef<HTMLDivElement, FilterDropDownProps>(

@@ -1,17 +1,31 @@
 export interface ClimbsTableResponse {
-  ID: number;
-  Route: string;
+  id: number;
+  name: string;
   Location: string;
   URL: string;
   'AVG STARS': number;
   'Your Stars': number;
   'Route Type': string;
-  Rating: string;
+  grade: string;
   Pitches: number;
   Length: string;
   'Area Latitude': number;
   'Area Longitude': number;
 }
+
+export interface AddClimbsModalProps {
+  location: string;
+  routeType: string;
+  closeAddClimbsModalCallBack: (trigger: boolean) => void;
+}
+
+export type TempDic = {
+  [key: string]: (Tags | null)[];
+};
+
+export type deleteTagItem = [string, number];
+
+export type ClimbTagItem = [Tags, string];
 
 export interface Micah {
   name: string;

@@ -1,0 +1,51 @@
+Date : 2024-12-02 23:00:50
+Directory : /Users/mphelps/climb_w_friends_v2/src
+Total : 17 files,  18 codes, -8 comments, 2 blanks, all 12 lines
+
+Languages
++----------------+------------+------------+------------+------------+------------+
+| language       | files      | code       | comment    | blank      | total      |
++----------------+------------+------------+------------+------------+------------+
+| TypeScript JSX |         17 |         18 |         -8 |          2 |         12 |
++----------------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                           | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                              |         17 |         18 |         -8 |          2 |         12 |
+| . (Files)                                                                                      |          1 |         10 |          1 |          0 |         11 |
+| pages                                                                                          |         14 |        -20 |         -9 |         -6 |        -35 |
+| pages (Files)                                                                                  |          3 |        -58 |         -9 |         -9 |        -76 |
+| pages/dashboardComponents                                                                      |          5 |        818 |          1 |         36 |        855 |
+| pages/dashboardComponents (Files)                                                              |          3 |        520 |          0 |         16 |        536 |
+| pages/dashboardComponents/mapsComponents                                                       |          2 |        298 |          1 |         20 |        319 |
+| pages/homeComponents                                                                           |          6 |       -780 |         -1 |        -33 |       -814 |
+| pages/homeComponents (Files)                                                                   |          4 |       -482 |          0 |        -13 |       -495 |
+| pages/homeComponents/mapsComponents                                                            |          2 |       -298 |         -1 |        -20 |       -319 |
+| reusableComponents                                                                             |          2 |         28 |          0 |          8 |         36 |
++------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| filename                                                                                       | language       | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| /Users/mphelps/climb_w_friends_v2/src/main.tsx                                                 | TypeScript JSX |         10 |          1 |          0 |         11 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/dashboard.tsx                                      | TypeScript JSX |         14 |          0 |          1 |         15 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/dashboardObjects.tsx           | TypeScript JSX |        377 |          0 |          2 |        379 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/maps.tsx                       | TypeScript JSX |        113 |          0 |         10 |        123 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/mapsComponents/addMapModal.tsx | TypeScript JSX |         76 |          1 |          5 |         82 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/mapsComponents/editModal.tsx   | TypeScript JSX |        222 |          0 |         15 |        237 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/navBar.tsx                     | TypeScript JSX |         30 |          0 |          4 |         34 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/home.tsx                                           | TypeScript JSX |        -11 |          0 |         -1 |        -12 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/homeComponents/homeNavBar.tsx                      | TypeScript JSX |         38 |          0 |          3 |         41 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/homeComponents/homeObjects.tsx                     | TypeScript JSX |       -377 |          0 |         -2 |       -379 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/homeComponents/maps.tsx                            | TypeScript JSX |       -113 |          0 |        -10 |       -123 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/homeComponents/mapsComponents/addMapModal.tsx      | TypeScript JSX |        -76 |         -1 |         -5 |        -82 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/homeComponents/mapsComponents/editModal.tsx        | TypeScript JSX |       -222 |          0 |        -15 |       -237 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/homeComponents/navBar.tsx                          | TypeScript JSX |        -30 |          0 |         -4 |        -34 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/login.tsx                                          | TypeScript JSX |        -61 |         -9 |         -9 |        -79 |
+| /Users/mphelps/climb_w_friends_v2/src/reusableComponents/loginButton.tsx                       | TypeScript JSX |         12 |          0 |          4 |         16 |
+| /Users/mphelps/climb_w_friends_v2/src/reusableComponents/logoutButton.tsx                      | TypeScript JSX |         16 |          0 |          4 |         20 |
+| Total                                                                                          |                |         18 |         -8 |          2 |         12 |
++------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+

@@ -1,0 +1,6 @@
+@ClimbWithFriendsAPI_HostAddress = http://localhost:5074
+
+GET {{ClimbWithFriendsAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
