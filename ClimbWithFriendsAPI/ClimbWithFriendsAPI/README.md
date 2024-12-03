@@ -22,5 +22,5 @@
 
 ```bash   
    Add-Migration insermigrationname
-```bash   
+
    Update-Database 
