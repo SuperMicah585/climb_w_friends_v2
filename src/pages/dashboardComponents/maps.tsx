@@ -51,7 +51,7 @@ const Maps = () => {
   };
   return (
     <>
-      <div className="border-box relative w-screen flex-grow bg-zinc-800 pb-20 pl-10 pr-10 pt-20">
+      <div className="border-box relative w-screen flex-grow pb-20 pl-10 pr-10 pt-20 z-10">
         <div className="absolute right-2 top-2">
           <PurpleButton clickCallBack={AddMapButtonTrigger}>
             Add Map
