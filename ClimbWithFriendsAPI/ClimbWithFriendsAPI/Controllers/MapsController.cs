@@ -41,6 +41,25 @@ namespace ClimbWithFriendsAPI.Controllers
             return map;
         }
 
+        // GET: api/Maps/User/5
+        [HttpGet("User/{userId}")]
+        public async Task<ActionResult<IEnumerable<Map>>> GetMapsByUserId(int userId)
+        {
+            // Get maps associated with the user
+            var maps = await _context.MapToUsers
+                .Where(mu => mu.UserId == userId)
+                .Include(mu => mu.Map) // Ensure related maps are included
+                .Select(mu => mu.Map)  // Extract only the Map entities
+                .ToListAsync();
+
+            if (maps == null || maps.Count == 0)
+            {
+                return NotFound(new { Message = $"No maps found for UserId {userId}" });
+            }
+
+            return Ok(maps);
+        }
+
         // PUT: api/Maps/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
