@@ -52,10 +52,11 @@ namespace ClimbWithFriendsAPI.Controllers
                 .Select(mu => mu.Map)  // Extract only the Map entities
                 .ToListAsync();
 
-            if (maps == null || maps.Count == 0)
-            {
-                return NotFound(new { Message = $"No maps found for UserId {userId}" });
-            }
+            // if we want to return an error response. for now micah has requested an OK and empty list.
+            //if (maps == null || maps.Count == 0)
+            //{
+            //    return NotFound(new { Message = $"No maps found for UserId {userId}" });
+            //}
 
             return Ok(maps);
         }
