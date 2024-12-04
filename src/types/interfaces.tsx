@@ -61,11 +61,8 @@ export interface ChatObject {
 
 export interface MapObject {
   id: number;
-  name: string;
+  mapName: string;
   description: string;
-  totalClimbs: number;
-  tags: Tags[];
-  peopleOnMap: friendsObject[];
 }
 
 export interface friendsObject {

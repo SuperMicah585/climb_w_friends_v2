@@ -17,6 +17,17 @@ builder.Services.AddControllers()
         options.SerializerSettings.Converters.Add(new FeatureConverter());
     });
 
+// Enable CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()  // Allows all origins
+               .AllowAnyMethod()  // Allows any HTTP method (GET, POST, etc.)
+               .AllowAnyHeader(); // Allows any HTTP header
+    });
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -35,6 +46,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Enable CORS middleware
+app.UseCors("AllowAll");
 
 app.UseAuthorization();
 

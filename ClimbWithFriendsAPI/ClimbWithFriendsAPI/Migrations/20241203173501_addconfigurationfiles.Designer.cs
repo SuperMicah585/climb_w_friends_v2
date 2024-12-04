@@ -265,7 +265,7 @@ namespace ClimbWithFriendsAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MapsToUsers");
+                    b.ToTable("MapToUsers");
 
                     b.HasData(
                         new

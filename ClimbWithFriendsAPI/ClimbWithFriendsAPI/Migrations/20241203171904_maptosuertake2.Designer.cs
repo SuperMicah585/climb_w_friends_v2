@@ -215,7 +215,7 @@ namespace ClimbWithFriendsAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MapsToUsers");
+                    b.ToTable("MapToUsers");
                 });
 #pragma warning restore 612, 618
         }
