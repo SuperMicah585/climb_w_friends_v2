@@ -10,11 +10,7 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[ClimbWithFriendsAPI.Data.Climb, ClimbWithFriendsAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
+        "MediaTypes": ["text/plain", "application/json", "text/json"],
         "StatusCode": 200
       }
     ]
@@ -36,11 +32,7 @@
     "ReturnTypes": [
       {
         "Type": "ClimbWithFriendsAPI.Data.Climb",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
+        "MediaTypes": ["text/plain", "application/json", "text/json"],
         "StatusCode": 200
       }
     ]
@@ -62,11 +54,7 @@
     "ReturnTypes": [
       {
         "Type": "ClimbWithFriendsAPI.Data.Climb",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
+        "MediaTypes": ["text/plain", "application/json", "text/json"],
         "StatusCode": 200
       }
     ]
@@ -119,11 +107,7 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[ClimbWithFriendsAPI.Data.Feature, ClimbWithFriendsAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
+        "MediaTypes": ["text/plain", "application/json", "text/json"],
         "StatusCode": 200
       }
     ]
@@ -145,11 +129,7 @@
     "ReturnTypes": [
       {
         "Type": "ClimbWithFriendsAPI.Data.Feature",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
+        "MediaTypes": ["text/plain", "application/json", "text/json"],
         "StatusCode": 200
       }
     ]
@@ -171,11 +151,7 @@
     "ReturnTypes": [
       {
         "Type": "ClimbWithFriendsAPI.Data.Feature",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
+        "MediaTypes": ["text/plain", "application/json", "text/json"],
         "StatusCode": 200
       }
     ]
@@ -228,11 +204,7 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[ClimbWithFriendsAPI.Data.Map, ClimbWithFriendsAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
+        "MediaTypes": ["text/plain", "application/json", "text/json"],
         "StatusCode": 200
       }
     ]
@@ -254,11 +226,7 @@
     "ReturnTypes": [
       {
         "Type": "ClimbWithFriendsAPI.Data.Map",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
+        "MediaTypes": ["text/plain", "application/json", "text/json"],
         "StatusCode": 200
       }
     ]
@@ -280,11 +248,7 @@
     "ReturnTypes": [
       {
         "Type": "ClimbWithFriendsAPI.Data.Map",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
+        "MediaTypes": ["text/plain", "application/json", "text/json"],
         "StatusCode": 200
       }
     ]
@@ -343,11 +307,29 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[ClimbWithFriendsAPI.Data.Map, ClimbWithFriendsAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
+        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ClimbWithFriendsAPI.Controllers.MapsController",
+    "Method": "GetUsersByMapId",
+    "RelativePath": "api/Maps/Userlist/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[ClimbWithFriendsAPI.Data.Map, ClimbWithFriendsAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": ["text/plain", "application/json", "text/json"],
         "StatusCode": 200
       }
     ]

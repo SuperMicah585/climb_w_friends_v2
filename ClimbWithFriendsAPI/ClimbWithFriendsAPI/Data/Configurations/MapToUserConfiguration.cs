@@ -37,7 +37,7 @@ namespace YourProjectNamespace.Data.Configurations
 /*
 steps to make changes run on local postgress database 
 
-1) change all instances of PK_MapsToUsers to PK_MapToUsers
+1) change all instances of PK_MapsToUsers to PK_MapToUsers within .cs files
 
 2) Run the following SQL
 

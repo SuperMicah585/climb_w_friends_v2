@@ -60,9 +60,10 @@ export interface ChatObject {
 }
 
 export interface MapObject {
-  id: number;
+  mapId: number;
   mapName: string;
   description: string;
+  climbersOnMap?: string[];
 }
 
 export interface friendsObject {
