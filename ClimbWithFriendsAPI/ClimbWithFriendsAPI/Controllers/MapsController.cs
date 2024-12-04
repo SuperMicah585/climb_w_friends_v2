@@ -111,6 +111,12 @@ namespace ClimbWithFriendsAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Map>> PostMap(Map map)
         {
+            // Ensure the ID is not set by the client
+            map.MapId = 0; // Reset to default, ensuring database handles it
+
+            // Set default value
+            map.CreatedAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"); 
+            map.UpdatedAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"); 
             _context.Maps.Add(map);
             await _context.SaveChangesAsync();
 
