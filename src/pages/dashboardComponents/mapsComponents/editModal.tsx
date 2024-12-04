@@ -27,7 +27,7 @@ const EditModal: React.FC<EditModalProps> = ({
 }) => {
   const [toggleState, setToggleState] = useState(true);
   const [titleState, setTitleState] = useState<string>(
-    editMapObject?.name || '',
+    editMapObject?.mapName || '',
   );
   const [descriptionState, setDescriptionState] = useState<string>(
     editMapObject?.description || '',
@@ -41,6 +41,8 @@ const EditModal: React.FC<EditModalProps> = ({
   const inputDataCallBack = (data: string) => {
     setInputData(data);
   };
+
+  console.log(selectedFriends,'matching friends')
 
   const closeDropDownCallBack = (trigger: boolean) => {
     setToggleSearchDropDown(trigger);
@@ -56,8 +58,8 @@ const EditModal: React.FC<EditModalProps> = ({
           (item.userName?.includes(inputData) ||
             item.firstName?.includes(inputData) ||
             item.lastName?.includes(inputData)) &&
-          !editMapObject.peopleOnMap.some((person) => person.id === item.id) &&
-          !selectedFriends.some((person) => person.id === item.id)
+          !editMapObject.climbersOnMap?.some((person) => person.userId === item.userId) &&
+          !selectedFriends.some((person) => person.userId === item.userId)
         ) {
           tempArray.push(item);
         }
@@ -117,12 +119,12 @@ const EditModal: React.FC<EditModalProps> = ({
               {person.firstName}
             </div>
           ))}
-          {editMapObject.peopleOnMap?.map((person) => (
+          {editMapObject.climbersOnMap?.map((person) => (
             <div
-              key={person.id}
+              key={person.userId}
               className="flex rounded-lg bg-neutral-500 p-2 text-center font-semibold"
             >
-              {person.firstName}
+              {person.userId}
             </div>
           ))}
         </div>
@@ -210,12 +212,10 @@ const EditModal: React.FC<EditModalProps> = ({
           editPeopleOnMapCallBack(selectedFriends);
           closeModalCallBack(false);
           EditedClimbCallBack({
-            id: editMapObject.id,
-            tags: [],
-            name: titleState,
+            mapId: editMapObject.mapId,
+            mapName: titleState,
             description: descriptionState,
-            totalClimbs: editMapObject.totalClimbs,
-            peopleOnMap: editMapObject.peopleOnMap,
+            climbersOnMap: editMapObject.climbersOnMap,
           });
         }}
         className="ml-auto cursor-pointer rounded-lg bg-violet-500 p-2 font-semibold text-zinc-900 hover:opacity-75"

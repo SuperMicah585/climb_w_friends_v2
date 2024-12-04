@@ -61,6 +61,20 @@ namespace ClimbWithFriendsAPI.Controllers
             return Ok(maps);
         }
 
+                // GET: api/Maps/User/5
+        [HttpGet("Userlist/{id}")]
+        public async Task<ActionResult<IEnumerable<Map>>> GetUsersByMapId(int id)
+        {
+            // Get maps associated with the user
+        var users = await _context.MapToUsers
+            .Where(mu => mu.MapId == id)  // Filter by the given mapId
+            .ToListAsync();
+
+
+
+            return Ok(users);
+        }
+
         // PUT: api/Maps/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
