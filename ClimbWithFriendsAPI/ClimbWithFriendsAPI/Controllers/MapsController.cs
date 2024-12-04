@@ -43,7 +43,7 @@ namespace ClimbWithFriendsAPI.Controllers
 
         // GET: api/Maps/User/5
         [HttpGet("User/{userId}")]
-        public async Task<ActionResult<IEnumerable<Map>>> GetMapsByUserId(int userId)
+        public async Task<ActionResult<IEnumerable<Map>>> GetMapsByUserId(string userId)
         {
             // Get maps associated with the user
             var maps = await _context.MapToUsers

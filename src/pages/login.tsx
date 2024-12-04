@@ -40,4 +40,9 @@ Command Line Tools Installation Directory: /Library/PostgreSQL/16
 pgAdmin4 Installation Directory: /Library/PostgreSQL/16/pgAdmin 4
 Stack Builder Installation Directory: /Library/PostgreSQL/16
 Installation Log: /tmp/install-postgresql.log
+
+
+--
+
+http://localhost:5074/api/Maps/User/201
 */
