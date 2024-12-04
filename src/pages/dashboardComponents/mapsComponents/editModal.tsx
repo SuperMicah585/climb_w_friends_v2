@@ -42,7 +42,7 @@ const EditModal: React.FC<EditModalProps> = ({
     setInputData(data);
   };
 
-  console.log(selectedFriends,'matching friends')
+  console.log(selectedFriends, 'matching friends');
 
   const closeDropDownCallBack = (trigger: boolean) => {
     setToggleSearchDropDown(trigger);
@@ -58,7 +58,9 @@ const EditModal: React.FC<EditModalProps> = ({
           (item.userName?.includes(inputData) ||
             item.firstName?.includes(inputData) ||
             item.lastName?.includes(inputData)) &&
-          !editMapObject.climbersOnMap?.some((person) => person.userId === item.userId) &&
+          !editMapObject.climbersOnMap?.some(
+            (person) => person.userId === item.userId,
+          ) &&
           !selectedFriends.some((person) => person.userId === item.userId)
         ) {
           tempArray.push(item);
