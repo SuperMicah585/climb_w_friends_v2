@@ -48,6 +48,27 @@
   },
   {
     "ContainingType": "ClimbWithFriendsAPI.Controllers.MapsController",
+    "Method": "RemoveUserFromMap",
+    "RelativePath": "api/Maps/{mapId}/users/{userId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "mapId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ClimbWithFriendsAPI.Controllers.MapsController",
     "Method": "GetMapsByUserId",
     "RelativePath": "api/Maps/User/{userId}",
     "HttpMethod": "GET",

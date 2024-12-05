@@ -164,6 +164,50 @@ namespace ClimbWithFriendsAPI.Controllers
             return CreatedAtAction(nameof(AddUserToMap), new { mapId = mapId, userId = payload.UserId }, newAssociation);
         }
 
+        [HttpDelete("{mapId}/users/{userId}")]
+        public async Task<ActionResult> RemoveUserFromMap(int mapId, String userId)
+        {
+            // Validate input
+            if (mapId <= 0 || userId.Length == 0)
+            {
+                return BadRequest("Invalid mapId or userId.");
+            }
+
+            // Check if the map exists
+            var map = await _context.Maps.FindAsync(mapId);
+            if (map == null)
+            {
+                return NotFound($"Map with ID {mapId} does not exist.");
+            }
+
+            // Check if the association exists
+            var userAssociation = await _context.MapToUsers
+                .FirstOrDefaultAsync(mu => mu.MapId == mapId && mu.UserId == userId);
+
+            if (userAssociation == null)
+            {
+                return NotFound($"No association found for User ID {userId} on Map ID {mapId}.");
+            }
+
+            // Remove the user-to-map association
+            _context.MapToUsers.Remove(userAssociation);
+            await _context.SaveChangesAsync();
+
+            // Check if the map has any remaining users
+            var remainingUsers = await _context.MapToUsers
+                .AnyAsync(mu => mu.MapId == mapId);
+
+            if (!remainingUsers)
+            {
+                // No users left, delete the map
+                _context.Maps.Remove(map);
+                await _context.SaveChangesAsync();
+            }
+
+            return NoContent();
+        }
+
+
 
         //// DELETE: api/Maps/5
         //[HttpDelete("{id}")]
