@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ClimbWithFriendsAPI.Data;
+using ClimbWithFriendsAPI.DTOs;
 
 namespace ClimbWithFriendsAPI.Controllers
 {
@@ -20,26 +21,26 @@ namespace ClimbWithFriendsAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Maps
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Map>>> GetMaps()
-        {
-            return await _context.Maps.ToListAsync();
-        }
+        //// GET: api/Maps
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Map>>> GetMaps()
+        //{
+        //    return await _context.Maps.ToListAsync();
+        //}
 
-        // GET: api/Maps/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Map>> GetMap(int id)
-        {
-            var map = await _context.Maps.FindAsync(id);
+        //// GET: api/Maps/5
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Map>> GetMap(int id)
+        //{
+        //    var map = await _context.Maps.FindAsync(id);
 
-            if (map == null)
-            {
-                return NotFound();
-            }
+        //    if (map == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return map;
-        }
+        //    return map;
+        //}
 
         // GET: api/Maps/User/5
         [HttpGet("User/{userId}")]
@@ -75,36 +76,36 @@ namespace ClimbWithFriendsAPI.Controllers
             return Ok(users);
         }
 
-        // PUT: api/Maps/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutMap(int id, Map map)
-        {
-            if (id != map.MapId)
-            {
-                return BadRequest();
-            }
+        //// PUT: api/Maps/5
+        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutMap(int id, Map map)
+        //{
+        //    if (id != map.MapId)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            _context.Entry(map).State = EntityState.Modified;
+        //    _context.Entry(map).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MapExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!MapExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
         // POST: api/Maps
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -123,21 +124,62 @@ namespace ClimbWithFriendsAPI.Controllers
             return CreatedAtAction("GetMap", new { id = map.MapId }, map);
         }
 
-        // DELETE: api/Maps/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMap(int id)
+
+        // TODO: validate user exists before updating data. need to add user integration before we can do this though.
+        [HttpPost("{mapId}/users")]
+        public async Task<ActionResult> AddUserToMap(int mapId, [FromBody] MapToUserPayload payload)
         {
-            var map = await _context.Maps.FindAsync(id);
-            if (map == null)
+            // Validate the request payload
+            if (payload == null)
             {
-                return NotFound();
+                return BadRequest("Invalid request body. UserId must be provided and greater than zero.");
             }
 
-            _context.Maps.Remove(map);
+            // Check if the map exists
+            var mapExists = await _context.Maps.AnyAsync(m => m.MapId == mapId);
+            if (!mapExists)
+            {
+                return NotFound($"Map with ID {mapId} does not exist.");
+            }
+
+            // Check if the user is already associated with the map
+            var existingAssociation = await _context.MapToUsers
+                .AnyAsync(mu => mu.MapId == mapId && mu.UserId.Equals(payload.UserId));
+            if (existingAssociation)
+            {
+                return Conflict($"User with ID {payload.UserId} is already associated with map ID {mapId}.");
+            }
+
+            // Add the user-to-map association
+            var newAssociation = new MapToUser
+            {
+                MapId = mapId,
+                UserId = payload.UserId,
+                AssociatedAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")
+            };
+
+            _context.MapToUsers.Add(newAssociation);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return CreatedAtAction(nameof(AddUserToMap), new { mapId = mapId, userId = payload.UserId }, newAssociation);
         }
+
+
+        //// DELETE: api/Maps/5
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteMap(int id)
+        //{
+        //    var map = await _context.Maps.FindAsync(id);
+        //    if (map == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    _context.Maps.Remove(map);
+        //    await _context.SaveChangesAsync();
+
+        //    return NoContent();
+        //}
 
         private bool MapExists(int id)
         {

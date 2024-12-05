@@ -20,93 +20,93 @@ namespace ClimbWithFriendsAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Climbs
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Climb>>> GetClimbs()
-        {
-            var climbs = await _context.Climbs.ToListAsync();
-            foreach (var climb in climbs)
-            {
-                if (climb.Coordinates == null || double.IsNaN(climb.Coordinates.X) || double.IsNaN(climb.Coordinates.Y))
-                {
-                    Console.WriteLine($"Invalid Coordinates for ClimbId: {climb.ClimbId}");
-                }
-            }
+        //// GET: api/Climbs
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Climb>>> GetClimbs()
+        //{
+        //    var climbs = await _context.Climbs.ToListAsync();
+        //    foreach (var climb in climbs)
+        //    {
+        //        if (climb.Coordinates == null || double.IsNaN(climb.Coordinates.X) || double.IsNaN(climb.Coordinates.Y))
+        //        {
+        //            Console.WriteLine($"Invalid Coordinates for ClimbId: {climb.ClimbId}");
+        //        }
+        //    }
 
-            return Ok(climbs);
-        }
+        //    return Ok(climbs);
+        //}
 
-        // GET: api/Climbs/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Climb>> GetClimb(int id)
-        {
-            var climb = await _context.Climbs.FindAsync(id);
+        //// GET: api/Climbs/5
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Climb>> GetClimb(int id)
+        //{
+        //    var climb = await _context.Climbs.FindAsync(id);
 
-            if (climb == null)
-            {
-                return NotFound();
-            }
+        //    if (climb == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return climb;
-        }
+        //    return climb;
+        //}
 
-        // PUT: api/Climbs/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutClimb(int id, Climb climb)
-        {
-            if (id != climb.ClimbId)
-            {
-                return BadRequest();
-            }
+        //// PUT: api/Climbs/5
+        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutClimb(int id, Climb climb)
+        //{
+        //    if (id != climb.ClimbId)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            _context.Entry(climb).State = EntityState.Modified;
+        //    _context.Entry(climb).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ClimbExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!ClimbExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
-        // POST: api/Climbs
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Climb>> PostClimb(Climb climb)
-        {
-            _context.Climbs.Add(climb);
-            await _context.SaveChangesAsync();
+        //// POST: api/Climbs
+        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //[HttpPost]
+        //public async Task<ActionResult<Climb>> PostClimb(Climb climb)
+        //{
+        //    _context.Climbs.Add(climb);
+        //    await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetClimb", new { id = climb.ClimbId }, climb);
-        }
+        //    return CreatedAtAction("GetClimb", new { id = climb.ClimbId }, climb);
+        //}
 
-        // DELETE: api/Climbs/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteClimb(int id)
-        {
-            var climb = await _context.Climbs.FindAsync(id);
-            if (climb == null)
-            {
-                return NotFound();
-            }
+        //// DELETE: api/Climbs/5
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteClimb(int id)
+        //{
+        //    var climb = await _context.Climbs.FindAsync(id);
+        //    if (climb == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            _context.Climbs.Remove(climb);
-            await _context.SaveChangesAsync();
+        //    _context.Climbs.Remove(climb);
+        //    await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
         private bool ClimbExists(int id)
         {
