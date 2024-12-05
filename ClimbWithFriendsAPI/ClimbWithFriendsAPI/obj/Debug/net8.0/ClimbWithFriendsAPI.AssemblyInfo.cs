@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ClimbWithFriendsAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a86893200a58b5e18e8faaa1c7982a603fd5fb63")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1371138af09e5612e43137c9992acd32f59f0c0e")]
 [assembly: System.Reflection.AssemblyProductAttribute("ClimbWithFriendsAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ClimbWithFriendsAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

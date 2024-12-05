@@ -21,26 +21,26 @@ namespace ClimbWithFriendsAPI.Controllers
             _context = context;
         }
 
-        //// GET: api/Maps
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Map>>> GetMaps()
-        //{
-        //    return await _context.Maps.ToListAsync();
-        //}
+        // GET: api/Maps
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Map>>> GetMaps()
+        {
+            return await _context.Maps.ToListAsync();
+        }
 
-        //// GET: api/Maps/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Map>> GetMap(int id)
-        //{
-        //    var map = await _context.Maps.FindAsync(id);
+        // GET: api/Maps/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Map>> GetMap(int id)
+        {
+            var map = await _context.Maps.FindAsync(id);
 
-        //    if (map == null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (map == null)
+            {
+                return NotFound();
+            }
 
-        //    return map;
-        //}
+            return map;
+        }
 
         // GET: api/Maps/User/5
         [HttpGet("User/{userId}")]
