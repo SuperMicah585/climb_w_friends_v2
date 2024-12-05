@@ -1,21 +1,32 @@
 {
   "format": 1,
   "restore": {
-    "/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/ClimbWithFriendsAPI.csproj": {}
+    "C:\\Users\\benla\\Desktop\\climb_w_friends_v2\\ClimbWithFriendsAPI\\ClimbWithFriendsAPI\\ClimbWithFriendsAPI.csproj": {}
   },
   "projects": {
-    "/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/ClimbWithFriendsAPI.csproj": {
+    "C:\\Users\\benla\\Desktop\\climb_w_friends_v2\\ClimbWithFriendsAPI\\ClimbWithFriendsAPI\\ClimbWithFriendsAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/ClimbWithFriendsAPI.csproj",
+        "projectUniqueName": "C:\\Users\\benla\\Desktop\\climb_w_friends_v2\\ClimbWithFriendsAPI\\ClimbWithFriendsAPI\\ClimbWithFriendsAPI.csproj",
         "projectName": "ClimbWithFriendsAPI",
-        "projectPath": "/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/ClimbWithFriendsAPI.csproj",
-        "packagesPath": "/Users/mphelps/.nuget/packages/",
-        "outputPath": "/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/obj/",
+        "projectPath": "C:\\Users\\benla\\Desktop\\climb_w_friends_v2\\ClimbWithFriendsAPI\\ClimbWithFriendsAPI\\ClimbWithFriendsAPI.csproj",
+        "packagesPath": "C:\\Users\\benla\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\benla\\Desktop\\climb_w_friends_v2\\ClimbWithFriendsAPI\\ClimbWithFriendsAPI\\obj\\",
         "projectStyle": "PackageReference",
-        "configFilePaths": ["/Users/mphelps/.nuget/NuGet/NuGet.Config"],
-        "originalTargetFrameworks": ["net8.0"],
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\benla\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -25,7 +36,9 @@
           }
         },
         "warningProperties": {
-          "warnAsError": ["NU1605"]
+          "warnAsError": [
+            "NU1605"
+          ]
         },
         "restoreAuditProperties": {
           "enableAudit": "true",
@@ -95,7 +108,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.404/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
