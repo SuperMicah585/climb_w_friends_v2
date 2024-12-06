@@ -12,10 +12,10 @@ import FilterModal from './mapComponents/modalComponents/filterModal';
 import TagOverlay from './mapComponents/modalComponents/tagOverlay';
 import AllClimbsModal from './mapComponents/modalComponents/allClimbsModal';
 import AddClimbModal from './mapComponents/modalComponents/addClimbModal';
-
+import { useAuth0 } from '@auth0/auth0-react';
 import { exampleMapObjects } from './dashboardComponents/dashboardObjects';
 import { usStateDictionary } from './mapComponents/mapObjects';
-
+import LogoutButton from '../reusableComponents/logoutButton';
 import {
   createMarker,
   createClimbingShapes,
@@ -72,6 +72,14 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     useState<string>('Boulder');
 
   const [stateDropDownName, setStateDropDownName] = useState<string>('WA');
+
+  const {
+    getAccessTokenSilently,
+    user,
+    isAuthenticated,
+    loginWithRedirect,
+    isLoading,
+  } = useAuth0();
 
   const climbTypeDropDownValueCallBack = (value: string) => {
     setclimbTypeDropDown(value);
@@ -157,6 +165,12 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   }, []);
 
   useEffect(() => {
+    if (!isAuthenticated && !isLoading) {
+      loginWithRedirect();
+    }
+  }, [isAuthenticated, isLoading, loginWithRedirect]);
+
+  useEffect(() => {
     const onLoadHandler = () => {
       setMapLoaded(true); // Map has finished loading
     };
@@ -234,6 +248,10 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
           </div>
         </div>
       </MapNavBar>
+      <div className="absolute right-5 top-4 z-10">
+        {' '}
+        <LogoutButton />{' '}
+      </div>
       <ActivityFeed feedToggle={feedToggle} />
       {clickedFeatureModalTriggerBoolean ? (
         <ClimbModal

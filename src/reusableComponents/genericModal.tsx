@@ -5,12 +5,18 @@ type ModalProps = {
   children: React.ReactNode;
   maxHeight: string;
   maxWidth: string;
+  bgColor?: string;
+  opacityColor?: string;
+  closeButtonColor?: string;
 };
 
 const ZincModal: React.FC<ModalProps> = ({
   closeModalCallBack,
   maxHeight,
   maxWidth,
+  bgColor,
+  opacityColor,
+  closeButtonColor,
   children,
 }) => {
   useEffect(() => {
@@ -22,21 +28,21 @@ const ZincModal: React.FC<ModalProps> = ({
       document.body.style.overflow = '';
     };
   }, []);
-
+  console.log(bgColor, 'hi');
   return (
     <div
       onClick={() => closeModalCallBack(false)}
-      className="bg-blur-md fixed z-10 flex h-screen w-screen items-center justify-center bg-zinc-500 bg-opacity-75"
+      className={`bg-blur-md fixed z-10 flex h-screen w-screen items-center justify-center ${opacityColor ? opacityColor : 'bg-zinc-500'} bg-opacity-75`}
     >
       <div
         onClick={(event) => event.stopPropagation()}
-        className={`shadow-opacity-50 relative flex h-1/2 min-h-96 w-1/2 min-w-96 ${maxHeight + ' ' + maxWidth} flex-col items-start gap-2 overflow-y-scroll rounded-lg bg-zinc-900 pb-5 pl-5 pr-5 pt-5 shadow-sm shadow-violet-200`}
+        className={`shadow-opacity-50 relative flex h-1/2 min-h-96 w-1/2 min-w-96 ${maxHeight + ' ' + maxWidth} flex-col items-start gap-2 overflow-y-scroll rounded-lg ${bgColor ? bgColor : 'bg-zinc-900'} pb-5 pl-5 pr-5 pt-5 shadow-sm shadow-violet-200`}
       >
         {children}
 
         <div
           onClick={() => closeModalCallBack(false)}
-          className="absolute right-2 top-2 cursor-pointer rounded-full p-1 text-white hover:bg-slate-500 hover:opacity-75"
+          className={`absolute right-2 top-2 cursor-pointer rounded-full p-1 ${closeButtonColor ? closeButtonColor : 'text-white'}`}
         >
           {' '}
           {closeIcon}{' '}

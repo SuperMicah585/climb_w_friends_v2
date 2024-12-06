@@ -1,8 +1,8 @@
-import ZincModal from '../../../reusableComponents/zincModal';
+import ZincModal from '../../../reusableComponents/genericModal';
 import { useEffect, useState } from 'react';
 import { Tags } from '../../../types/interfaces';
 import Tooltip from '../../../reusableComponents/toolTip';
-import PurpleButton from '../../../reusableComponents/purpleButton';
+import PurpleButton from '../../../reusableComponents/genericButton';
 
 interface AddMapComponentInterface {
   closeTagModalCallBack: (value: boolean) => void;
@@ -75,11 +75,8 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
                   />
                 </form>
 
-                <div
-                  onClick={() => buttonClickCallBack()}
-                  className="flex cursor-pointer rounded-lg bg-violet-500 p-2 text-sm font-semibold text-zinc-900 hover:opacity-75"
-                >
-                  Add Tag
+                <div onClick={() => buttonClickCallBack()}>
+                  <PurpleButton> Add Tag </PurpleButton>
                 </div>
               </div>
             </div>

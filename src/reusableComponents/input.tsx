@@ -5,16 +5,23 @@ interface InputComponentProps {
   setToggleSearchDropDown?: (value: boolean) => void; // Optional
   paddingLeft: string;
   setPlaceHolder?: string;
+  bgColor?: string;
 }
 
 const InputComponent = forwardRef<HTMLInputElement, InputComponentProps>(
   (
-    { handleSearch, setToggleSearchDropDown, paddingLeft, setPlaceHolder },
+    {
+      handleSearch,
+      setToggleSearchDropDown,
+      paddingLeft,
+      setPlaceHolder,
+      bgColor,
+    },
     ref,
   ) => {
     const [query, setQuery] = useState<string>('');
     const [debouncedQuery, setDebouncedQuery] = useState<string>(query);
-
+    console.log(bgColor, 'sdfsdfsdfsd');
     useEffect(() => {
       const handler = setTimeout(() => {
         setDebouncedQuery(query);
@@ -36,7 +43,7 @@ const InputComponent = forwardRef<HTMLInputElement, InputComponentProps>(
         onChange={(e) => setQuery(e.target.value)}
         type="text"
         placeholder={`${setPlaceHolder ? setPlaceHolder : 'Search for Climbs'}`}
-        className={`rounded-xl bg-zinc-900 bg-opacity-90 text-white ${paddingLeft} w-full flex-grow border border-slate-500 p-3 shadow-lg focus:outline-none focus:ring-1 focus:ring-violet-500`}
+        className={`rounded-xl ${bgColor ? bgColor + ' ' + 'border-black text-black' : 'border-slate-500 bg-zinc-900 text-white'} bg-opacity-90 ${paddingLeft} w-full flex-grow border p-3 focus:outline-none focus:ring-1 focus:ring-violet-500`}
       />
     );
   },

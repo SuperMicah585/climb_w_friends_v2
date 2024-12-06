@@ -1,8 +1,8 @@
-import ZincModal from '../../../reusableComponents/zincModal';
+import ZincModal from '../../../reusableComponents/genericModal';
 import DownDrop from '../../../reusableComponents/downDrop';
 import Tooltip from '../../../reusableComponents/toolTip';
 import Input from '../../../reusableComponents/input';
-import PurpleButton from '../../../reusableComponents/purpleButton';
+import PurpleButton from '../../../reusableComponents/genericButton';
 import { useState, useRef, useEffect } from 'react';
 import SearchDropDown from '../../../reusableComponents/searchDropDown';
 import { Tags, friendsObject } from '../../../types/interfaces';

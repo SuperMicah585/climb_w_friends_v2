@@ -67,7 +67,7 @@ export interface MapObject {
 }
 
 export interface friendsObject {
-  id: number;
+  userId: number;
   firstName: string;
   lastName: string;
   email: string;
