@@ -1,6 +1,9 @@
-import ZincModal from '../../../reusableComponents/zincModal';
+import ZincModal from '../../../reusableComponents/genericModal';
 import { useState } from 'react';
 import { MapObject } from '../../../types/interfaces';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 interface AddMapComponentInterface {
   closeAddModalCallBack: (value: boolean) => void;
   newMapCallBack: (mapData: MapObject) => void;
@@ -12,63 +15,111 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
 }) => {
   const [titleState, setTitleState] = useState<string>('');
   const [descriptionState, setDescriptionState] = useState<string>('');
+  const [titleInputValid, setTitleInputValid] = useState<boolean>(true);
+  const [descriptionInputValid, setDescriptionInputValid] =
+    useState<boolean>(true);
 
-  //generating random number to test id
-  let min = 100;
-  let max = 1000;
-  let randomInt = Math.floor(Math.random() * (max - min + 1)) + min;
-  const buttonClickCallBack = () => {
-    newMapCallBack({
-      id: randomInt,
-      name: titleState,
-      description: descriptionState,
-      totalClimbs: 0,
-      tags: [],
-      peopleOnMap: [
-        {
-          id: randomInt,
-          firstName: 'Micah',
-          lastName: 'Phelps',
-          email: 'micahphlps@gmail.com',
-          userName: 'mphelps',
-        },
-      ],
-    });
+
+    const handleButtonClick = () => {
+
+      let min = 100;
+      let max = 1000;
+      let randomInt = Math.floor(Math.random() * (max - min + 1)) + min;
+
+        if (
+          titleState.length >= 6 &&
+          titleState.length <= 29 &&
+          descriptionState.length >= 6 &&
+          descriptionState.length <= 249
+        ) {
+          closeAddModalCallBack(false);
+          newMapCallBack({
+            mapId: randomInt,
+            mapName: titleState,
+            description: descriptionState,
+            climbersOnMap: [
+              {
+                id: randomInt,
+                firstName: 'Micah',
+                lastName: 'Phelps',
+                email: 'micahphlps@gmail.com',
+                userName: 'mphelps',
+              },
+            ],
+          });
+
+    };
+  }
+
+
+  const notify = (displayMesage:string) => toast.error(displayMesage);
+  const checkInput = () => {
+    if (titleState.length <6 || titleState.length>29) {
+      
+      notify('Title must be between 5 and 30 characters')
+      setTitleInputValid(false);
+    }
+
+    if (descriptionState.length < 6 || descriptionState.length>249 ) {
+      console.log(descriptionState.length,"sdfsdfsdf")
+      notify('Description must be between 5 and 250 characters')
+      setDescriptionInputValid(false);
+    }
   };
 
+  //generating random number to test id
+
+
   return (
+    <>
+    <ToastContainer />
+    
     <ZincModal
       maxHeight={'max-h-[500px]'}
       maxWidth={'max-w-[500px]'}
+      opacityColor={'bg-zinc-700'}
+      bgColor={'bg-zinc-50'}
       closeModalCallBack={closeAddModalCallBack}
+      closeButtonColor={'text-black'}
     >
       <div className="flex h-full w-full flex-col">
         <div className="mt-8 flex flex-col gap-10 overflow-y-scroll p-1">
           <div className="flex flex-col gap-5">
-            <div className="font-semibold"> Title</div>
+            <div className="font-semibold text-black"> Title</div>
             <textarea
-              onChange={(e) => setTitleState(e.target.value)}
+              onChange={(e) => {
+                setTitleInputValid(true);
+                setTitleState(e.target.value);
+              }}
               value={titleState}
-              className="text-thin h-12 w-full rounded-lg bg-zinc-950 p-2 text-sm focus:outline-none focus:ring-1 focus:ring-violet-500"
+              placeholder="Add a Title to Your Map"
+              className={`text-thin h-16 w-full rounded-md bg-white ${!titleInputValid ? 'border-2 border-red-500' : 'border border-black'} p-2 text-sm text-black focus:outline-none focus:ring-1 focus:ring-violet-500`}
             ></textarea>
           </div>
 
           <div className="flex flex-col gap-5">
-            <div className="font-semibold"> Description</div>
+            <div className="font-semibold text-black"> Description</div>
             <textarea
-              onChange={(e) => setDescriptionState(e.target.value)}
+              onChange={(e) => {
+                setDescriptionInputValid(true);
+                setDescriptionState(e.target.value);
+              }}
               value={descriptionState}
-              className="text-thin h-20 w-full rounded-lg bg-zinc-950 p-2 text-sm focus:outline-none focus:ring-1 focus:ring-violet-500"
+              placeholder="Add a Description to Your Map"
+              className={`text-thin h-20 w-full rounded-md bg-white ${!descriptionInputValid ? 'border-2 border-red-500' : 'border border-black'} p-2 text-sm text-black focus:outline-none focus:ring-1 focus:ring-violet-500`}
             ></textarea>
           </div>
         </div>
         <div className="flex-grow"> </div>
-        <div className="h-26 flex w-full flex-col justify-center bg-zinc-900">
+        <div className="h-26 flex w-full flex-col justify-center bg-white">
           <div
-            className="ml-auto mt-2 inline-flex cursor-pointer rounded-lg bg-violet-500 p-2 font-semibold text-zinc-900 hover:opacity-75"
+            className="ml-auto cursor-pointer rounded-full bg-violet-500 p-2 pl-5 pr-5 font-bold text-white hover:opacity-75"
             onClick={() => {
-              buttonClickCallBack();
-              closeAddModalCallBack(false);
+
+
+              handleButtonClick();
+                checkInput();
+              
             }}
           >
             Submit
@@ -76,6 +127,7 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
         </div>
       </div>
     </ZincModal>
+    </>
   );
 };
 export default AddMapComponent;

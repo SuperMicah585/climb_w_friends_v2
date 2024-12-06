@@ -102,7 +102,7 @@ export const minusIcon = (
 export const closeIcon = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    fill="none"
+    fill="currentColor"
     viewBox="0 0 24 24"
     strokeWidth="1.5"
     stroke="currentColor"
@@ -220,11 +220,11 @@ export const addUserIcon = (
 export const verticalDotIcon = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    fill="none"
+    fill="currentColor"
     viewBox="0 0 24 24"
-    strokeWidth="2.0"
+    strokeWidth="3.0"
     stroke="currentColor"
-    className="size-6"
+    className="size-7"
   >
     <path
       strokeLinecap="round"

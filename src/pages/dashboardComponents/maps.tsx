@@ -5,9 +5,10 @@ import { verticalDotIcon } from '../../reusableComponents/styles';
 import { Link } from 'react-router-dom';
 import AddMapComponent from './mapsComponents/addMapModal';
 import EditModal from './mapsComponents/editModal';
-import PurpleButton from '../../reusableComponents/purpleButton';
+import PurpleButton from '../../reusableComponents/genericButton';
 import { useAuth0 } from '@auth0/auth0-react';
 import { retrieveMapsAndUsers } from './utilityFunctions';
+import { submitAirplane } from '../../reusableComponents/styles';
 const Maps = () => {
   const [mapObject, setMapObject] = useState<MapObject[]>([]);
   const [editMapTrigger, setEditMapTrigger] = useState(false);
@@ -83,51 +84,71 @@ const Maps = () => {
   };
   return (
     <>
-      <div className="border-box relative z-10 w-screen flex-grow pb-20 pl-10 pr-10 pt-20">
-        <div className="absolute right-2 top-2">
-          <PurpleButton clickCallBack={AddMapButtonTrigger}>
-            Add Map
-          </PurpleButton>
-        </div>
+      <div className="absolute top-80 z-10 flex w-full items-center justify-center">
+        <PurpleButton
+          paddingLeft={'pl-5'}
+          paddingRight={'pr-5'}
+          roundedCorners={'rounded-full'}
+          color={'bg-green-600'}
+          clickCallBack={AddMapButtonTrigger}
+        >
+          <div className="text-3xl text-white"> Add Map</div>
+        </PurpleButton>
+      </div>
+      <div className="border-box relative z-10 w-screen flex-grow pb-10 pl-10 pr-10">
         <div className="flex justify-center">
-          <div className="grid max-w-[1800px] grid-cols-1 justify-center gap-5 md:grid-cols-2">
-            {mapObject.map((item) => (
-              <div
-                key={item.mapId}
-                className="relative min-w-[350px] max-w-[600px]"
-              >
-                <Link to={`/maps/${item.mapId}`}>
-                  <div className="flex h-full flex-col items-start justify-start gap-5 rounded-lg border border-transparent bg-zinc-900 p-16 text-white shadow-sm shadow-violet-200 hover:cursor-pointer hover:border-neutral-500 hover:bg-opacity-75">
+          <div className="flex flex-col">
+            <div className="mt-5 grid max-w-[1800px] grid-cols-1 justify-center gap-5 md:grid-cols-2">
+              {/*bg-gradient-to-br from-zinc-950 to-zinc-800*/}
+              {mapObject.map((item, index) => (
+                <div
+                  key={item.mapId}
+                  className="relative min-w-[350px] max-w-[600px]"
+                >
+                  <div
+                    className={`flex h-full flex-col items-start justify-start gap-5 rounded-lg border-2 border-transparent bg-zinc-600 p-16 text-white shadow-sm shadow-zinc-500`}
+                  >
                     <div className="flex items-center gap-5">
-                      <div className="text-xl font-bold"> {item.mapName} </div>
-                      <div className="font-semibold text-violet-500">
+                      <div className="text-2xl font-bold"> {item.mapName} </div>
+                      <div className="font-semibold text-violet-400">
                         {' '}
                         {'null'} climbs{' '}
                       </div>
-                      <div className="font-semibold text-green-500">
+                      <div className="font-semibold text-green-400">
                         {' '}
                         {item.climbersOnMap?.length} climbers{' '}
                       </div>
                     </div>
-                    <div className="text-thin text-xs">
+                    <div className="text-thin text-sm">
                       {' '}
                       {item.description}{' '}
                     </div>
+
+                    <div className="absolute bottom-2 right-2 flex w-full justify-end">
+                      <Link to={`/maps/${item.mapId}`}>
+                        {' '}
+                        <div className="rounded-full bg-white pb-1 pl-2 pr-2 pt-1 text-black hover:opacity-75">
+                          {' '}
+                          {submitAirplane}
+                        </div>
+                      </Link>
+                    </div>
                   </div>
-                </Link>
-                <div
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    setEditMapTrigger(true);
-                    setEditMapObject(item);
-                    setMapId(item.mapId);
-                  }}
-                  className="absolute right-2 top-2 cursor-pointer rounded-full p-1 hover:bg-slate-500 hover:opacity-50"
-                >
-                  {verticalDotIcon}{' '}
+
+                  <div
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setEditMapTrigger(true);
+                      setEditMapObject(item);
+                      setMapId(item.mapId);
+                    }}
+                    className="absolute right-2 top-2 cursor-pointer rounded-full p-1 text-white hover:bg-neutral-500 hover:opacity-75"
+                  >
+                    {verticalDotIcon}{' '}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>

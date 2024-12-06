@@ -26,5 +26,7 @@ dist-ssr
 *.sln
 *.sw?
 .vs/
+bin/
+obj/
 
 **/appsettings.json

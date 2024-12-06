@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { backArrowIcon } from '../../reusableComponents/styles';
 import ChatInput from '../../reusableComponents/chatInput';
 import { ChatObject } from '../../types/interfaces';
-import PurpleButton from '../../reusableComponents/purpleButton';
+import PurpleButton from '../../reusableComponents/genericButton';
 
 interface TickOverlayProps {
   displayTrigger: number;

@@ -46,7 +46,7 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({ feedToggle }) => {
 
   return feedToggle ? (
     <Draggable>
-      <div className="absolute right-1 top-1 z-10 flex cursor-grab flex-col items-center justify-center rounded-lg border border-slate-500 bg-zinc-900 bg-opacity-90 pb-3 pt-3 text-white">
+      <div className="absolute right-5 top-20 z-10 flex cursor-grab flex-col items-center justify-center rounded-lg border border-slate-500 bg-zinc-900 bg-opacity-90 pb-3 pt-3 text-white">
         <div className="flex h-80 flex-col items-center gap-5 overflow-y-scroll pl-5 pr-5">
           <ul className="flex flex-col gap-2 pl-2 text-white">
             {posts.map((post) => (

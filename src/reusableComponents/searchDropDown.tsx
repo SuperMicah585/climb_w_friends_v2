@@ -6,6 +6,9 @@ interface DropDownProps {
   dropDownStatus: boolean;
   maxHeight: string;
   width: string;
+  bgColor?: string;
+  textColor?: string;
+  bgOpacity?: string;
 }
 
 const SearchDropDown: React.FC<DropDownProps> = ({
@@ -14,6 +17,9 @@ const SearchDropDown: React.FC<DropDownProps> = ({
   inputRef,
   maxHeight,
   width,
+  bgColor,
+  textColor,
+  bgOpacity,
   children,
 }) => {
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -40,7 +46,7 @@ const SearchDropDown: React.FC<DropDownProps> = ({
   return dropDownStatus ? (
     <div
       ref={dropdownRef}
-      className={`${maxHeight + ' ' + width} overflow-hidden overflow-y-scroll rounded-md border border-slate-500 bg-zinc-900 bg-opacity-90`}
+      className={`${maxHeight + ' ' + width} overflow-hidden overflow-y-scroll rounded-md ${textColor ? textColor : 'text-white'} ${bgColor ? bgColor + ' ' + 'shadow-lg' : 'border border-slate-500 bg-zinc-900'} ${bgOpacity ? bgOpacity : 'bg-opacity-90'}`}
     >
       {children}
     </div>

@@ -13,7 +13,7 @@ import {
 } from '../../../reusableComponents/styles';
 import ModalSearch from './modalSearch';
 import ModalChat from '../chatOverlay';
-import ZincModal from '../../../reusableComponents/zincModal';
+import ZincModal from '../../../reusableComponents/genericModal';
 import Tooltip from '../../../reusableComponents/toolTip';
 import { tagsObject, exampleTagOnClimb, micah } from '../mapObjects';
 import { useState, useEffect, RefObject } from 'react';

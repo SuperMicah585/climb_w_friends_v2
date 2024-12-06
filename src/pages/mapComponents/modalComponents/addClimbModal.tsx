@@ -11,10 +11,10 @@ import {
 import { ClimbsTableResponse } from '../../../types/interfaces';
 import InputComponent from '../../../reusableComponents/input';
 import SearchDropDown from '../../../reusableComponents/searchDropDown';
-import ZincModal from '../../../reusableComponents/zincModal';
+import ZincModal from '../../../reusableComponents/genericModal';
 import { useState, useRef, useEffect } from 'react';
 import { dropDownStyles } from '../../../reusableComponents/styles';
-import PurpleButton from '../../../reusableComponents/purpleButton';
+import PurpleButton from '../../../reusableComponents/genericButton';
 import ClimbModalBar from '../../../reusableComponents/climbModalBar';
 import { tagsObject, exampleTagOnClimb, micah } from '../mapObjects';
 import Tooltip from '../../../reusableComponents/toolTip';

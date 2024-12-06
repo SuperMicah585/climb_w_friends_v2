@@ -1,8 +1,10 @@
-import ZincModal from '../../../reusableComponents/zincModal';
+import ZincModal from '../../../reusableComponents/genericModal';
 import { useEffect, useState } from 'react';
 import { Tags } from '../../../types/interfaces';
 import Tooltip from '../../../reusableComponents/toolTip';
-import PurpleButton from '../../../reusableComponents/purpleButton';
+import PurpleButton from '../../../reusableComponents/genericButton';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface AddMapComponentInterface {
   closeTagModalCallBack: (value: boolean) => void;
@@ -16,6 +18,7 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
   tags,
 }) => {
   const [tagName, setTagName] = useState<string>('');
+  const[tagNameValid,setTagNameValid] = useState(true)
   const [modifiedTags, setModifiedTags] = useState(tags);
 
   //generating random number to test id
@@ -43,6 +46,28 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
     });
   };
 
+  const notify = (displayMesage:string) => toast.error(displayMesage);
+  
+  const checkTagInput = () => {
+    if (
+      tagName.length >= 1 &&
+      tagName.length <= 10
+    ) {
+
+      if(modifiedTags.some((tagObj) => tagObj.tag === tagName)){
+        notify(`The name '${tagName}' already exists.`)
+      }
+      else{
+      buttonClickCallBack()
+      }
+    }
+    
+    else{
+      notify('Tags must be between 1 and 10 characters')
+      setTagNameValid(false);
+    }
+  };
+
   const deleteTagCallBack = (item: Tags) => {
     setModifiedTags((prev) => prev.filter((tagObj) => tagObj.id !== item.id));
   };
@@ -54,6 +79,8 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
   };
 
   return (
+    <>
+    <ToastContainer theme="dark"/>
     <ZincModal
       maxHeight={'max-h-[500px]'}
       maxWidth={'max-w-[500px]'}
@@ -75,11 +102,8 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
                   />
                 </form>
 
-                <div
-                  onClick={() => buttonClickCallBack()}
-                  className="flex cursor-pointer rounded-lg bg-violet-500 p-2 text-sm font-semibold text-zinc-900 hover:opacity-75"
-                >
-                  Add Tag
+                <div onClick={() => checkTagInput()}>
+                  <PurpleButton> Add Tag </PurpleButton>
                 </div>
               </div>
             </div>
@@ -111,6 +135,7 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
         </div>
       </div>
     </ZincModal>
+    </>
   );
 };
 export default AddMapComponent;

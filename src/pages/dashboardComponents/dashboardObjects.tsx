@@ -11,37 +11,37 @@ export const exampleMapObjects = [
       { id: 4, tag: 'sloper' },
       { id: 5, tag: 'beta' },
     ],
-    peopleOnMap: [
+    climbersOnMap: [
       {
-        id: 1,
+        userId: 1,
         firstName: 'Liam',
         lastName: 'Brown',
         email: 'liam.brown@example.com',
         userName: 'liamthelion',
       },
       {
-        id: 7,
+        userId: 7,
         firstName: 'James',
         lastName: 'Davis',
         email: 'james.davis@example.com',
         userName: 'jimmysport',
       },
       {
-        id: 3,
+        userId: 3,
         firstName: 'Noah',
         lastName: 'Williams',
         email: 'noah.wills@example.com',
         userName: 'noahwave',
       },
       {
-        id: 6,
+        userId: 6,
         firstName: 'Ava',
         lastName: 'Miller',
         email: 'ava.miller@example.com',
         userName: 'avamuse',
       },
       {
-        id: 2,
+        userId: 2,
         firstName: 'Emma',
         lastName: 'Johnson',
         email: 'emma.johnson@example.com',
