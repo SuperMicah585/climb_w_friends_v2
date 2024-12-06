@@ -1,6 +1,9 @@
 import ZincModal from '../../../reusableComponents/genericModal';
 import { useState } from 'react';
 import { MapObject } from '../../../types/interfaces';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 interface AddMapComponentInterface {
   closeAddModalCallBack: (value: boolean) => void;
   newMapCallBack: (mapData: MapObject) => void;
@@ -16,40 +19,61 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
   const [descriptionInputValid, setDescriptionInputValid] =
     useState<boolean>(true);
 
+
+    const handleButtonClick = () => {
+
+      let min = 100;
+      let max = 1000;
+      let randomInt = Math.floor(Math.random() * (max - min + 1)) + min;
+
+        if (
+          titleState.length >= 6 &&
+          titleState.length <= 29 &&
+          descriptionState.length >= 6 &&
+          descriptionState.length <= 249
+        ) {
+          closeAddModalCallBack(false);
+          newMapCallBack({
+            mapId: randomInt,
+            mapName: titleState,
+            description: descriptionState,
+            climbersOnMap: [
+              {
+                id: randomInt,
+                firstName: 'Micah',
+                lastName: 'Phelps',
+                email: 'micahphlps@gmail.com',
+                userName: 'mphelps',
+              },
+            ],
+          });
+
+    };
+  }
+
+
+  const notify = (displayMesage:string) => toast.error(displayMesage);
   const checkInput = () => {
-    if (titleState.length < 1) {
+    if (titleState.length <6 || titleState.length>29) {
+      
+      notify('Title must be between 5 and 30 characters')
       setTitleInputValid(false);
     }
 
-    if (descriptionState.length < 1) {
+    if (descriptionState.length < 6 || descriptionState.length>249 ) {
+      console.log(descriptionState.length,"sdfsdfsdf")
+      notify('Description must be between 5 and 250 characters')
       setDescriptionInputValid(false);
     }
   };
 
   //generating random number to test id
-  let min = 100;
-  let max = 1000;
-  let randomInt = Math.floor(Math.random() * (max - min + 1)) + min;
-  const buttonClickCallBack = () => {
-    if (titleState.length > 0 && descriptionState.length > 0) {
-      newMapCallBack({
-        mapId: randomInt,
-        mapName: titleState,
-        description: descriptionState,
-        climbersOnMap: [
-          {
-            id: randomInt,
-            firstName: 'Micah',
-            lastName: 'Phelps',
-            email: 'micahphlps@gmail.com',
-            userName: 'mphelps',
-          },
-        ],
-      });
-    }
-  };
+
 
   return (
+    <>
+    <ToastContainer />
+    
     <ZincModal
       maxHeight={'max-h-[500px]'}
       maxWidth={'max-w-[500px]'}
@@ -91,13 +115,11 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
           <div
             className="ml-auto cursor-pointer rounded-full bg-violet-500 p-2 pl-5 pr-5 font-bold text-white hover:opacity-75"
             onClick={() => {
-              buttonClickCallBack();
-              {
-                titleState.length > 0 && descriptionState.length > 0
-                  ? closeAddModalCallBack(false)
-                  : null;
-              }
-              checkInput();
+
+
+              handleButtonClick();
+                checkInput();
+              
             }}
           >
             Submit
@@ -105,6 +127,7 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
         </div>
       </div>
     </ZincModal>
+    </>
   );
 };
 export default AddMapComponent;

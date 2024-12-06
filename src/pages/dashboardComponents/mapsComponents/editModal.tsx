@@ -8,6 +8,8 @@ import { MapObject, friendsObject } from '../../../types/interfaces';
 import InputComponent from '../../../reusableComponents/input';
 import ZincModal from '../../../reusableComponents/genericModal';
 import SearchDropDown from '../../../reusableComponents/searchDropDown';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { useState, useRef, useEffect } from 'react';
 
@@ -45,12 +47,18 @@ const EditModal: React.FC<EditModalProps> = ({
     setInputData(data);
   };
 
+  const notify = (displayMesage:string) => toast.error(displayMesage);
+
   const checkInput = () => {
-    if (titleState.length < 1) {
+    if (titleState.length <6 || titleState.length>29) {
+      
+      notify('Title must be between 5 and 30 characters')
       setTitleInputValid(false);
     }
 
-    if (descriptionState.length < 1) {
+    if (descriptionState.length < 6 || descriptionState.length>249 ) {
+      console.log(descriptionState.length,"sdfsdfsdf")
+      notify('Description must be between 5 and 250 characters')
       setDescriptionInputValid(false);
     }
   };
@@ -86,6 +94,30 @@ const EditModal: React.FC<EditModalProps> = ({
       setMatchingFriends([]);
     }
   }, [inputData, selectedFriends]);
+
+  const handleButtonClick = () => {
+    if (toggleState === true) {
+      if (
+        titleState.length >= 6 &&
+        titleState.length <= 29 &&
+        descriptionState.length >= 6 &&
+        descriptionState.length <= 249
+      ) {
+        closeModalCallBack(false);
+        EditedClimbCallBack({
+          mapId: editMapObject.mapId,
+          mapName: titleState,
+          description: descriptionState,
+          climbersOnMap: editMapObject.climbersOnMap,
+        });
+        return null; // Nothing to render
+      }
+      return null; // Invalid input
+    } else {
+      editPeopleOnMapCallBack(selectedFriends);
+      return null;
+    }
+  };
 
   const changeMapMetaData = (
     <div className="flex flex-col gap-10">
@@ -162,6 +194,8 @@ const EditModal: React.FC<EditModalProps> = ({
   );
 
   return (
+    <>
+    <ToastContainer />
     <ZincModal
       maxHeight={'max-h-[500px]'}
       maxWidth={'max-w-[500px]'}
@@ -171,6 +205,7 @@ const EditModal: React.FC<EditModalProps> = ({
       closeButtonColor={'text-black'}
     >
       <div className="flex h-full w-full flex-col gap-5 overflow-y-scroll p-1">
+   
         <div className="flex justify-start">
           <div className="flex w-32 justify-between rounded-full bg-violet-500 p-2">
             <div
@@ -243,30 +278,18 @@ const EditModal: React.FC<EditModalProps> = ({
 
       <div
         onClick={() => {
-          editPeopleOnMapCallBack(selectedFriends);
-          {
-            titleState.length > 0 && descriptionState.length > 0
-              ? closeModalCallBack(false)
-              : null;
-          }
-          {
-            titleState.length > 0 && descriptionState.length > 0
-              ? EditedClimbCallBack({
-                  mapId: editMapObject.mapId,
-                  mapName: titleState,
-                  description: descriptionState,
-                  climbersOnMap: editMapObject.climbersOnMap,
-                })
-              : null;
-          }
+          
+
+          {handleButtonClick()
           checkInput();
-        }}
+        }}}
         className="ml-auto cursor-pointer rounded-full bg-violet-500 p-2 pl-5 pr-5 font-bold text-white hover:opacity-75"
       >
         {' '}
         Save{' '}
       </div>
     </ZincModal>
+    </>
   );
 };
 export default EditModal;
