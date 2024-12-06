@@ -25,5 +25,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.vs/
+bin/
+obj/
 
 **/appsettings.json
