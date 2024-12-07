@@ -63,7 +63,7 @@ export interface MapObject {
   mapId: number;
   mapName: string;
   description: string;
-  climbersOnMap?: string[];
+  climbersOnMap?: friendsObject[];
 }
 
 export interface friendsObject {

@@ -1,6 +1,7 @@
 import { MapObject, friendsObject } from '../../types/interfaces';
 
-const retrieveUsersOnMap = async (url: string) => {
+const retrieveUsersOnMap = async (mapId: number) => {
+  const url = `http://localhost:5074/api/Maps/Userlist/${mapId}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -16,17 +17,13 @@ const retrieveUsersOnMap = async (url: string) => {
   }
 };
 
-
-
 const retrieveMapsAndUsers = async (mapsJson: MapObject[] | undefined) => {
   if (mapsJson) {
     // Create a new array to store updated maps
     const updatedMaps = [...mapsJson];
 
     for (const [index, item] of mapsJson.entries()) {
-      const url = `http://localhost:5074/api/Maps/Userlist/${item.mapId}`;
-
-      const usersOnMap = await retrieveUsersOnMap(url);
+      const usersOnMap = await retrieveUsersOnMap(item.mapId);
 
       updatedMaps[index] = { ...item, climbersOnMap: usersOnMap };
     }

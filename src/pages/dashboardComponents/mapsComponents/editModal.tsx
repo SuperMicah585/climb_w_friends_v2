@@ -47,18 +47,17 @@ const EditModal: React.FC<EditModalProps> = ({
     setInputData(data);
   };
 
-  const notify = (displayMesage:string) => toast.error(displayMesage);
+  const notify = (displayMesage: string) => toast.error(displayMesage);
 
   const checkInput = () => {
-    if (titleState.length <6 || titleState.length>29) {
-      
-      notify('Title must be between 5 and 30 characters')
+    if (titleState.length < 6 || titleState.length > 29) {
+      notify('Title must be between 5 and 30 characters');
       setTitleInputValid(false);
     }
 
-    if (descriptionState.length < 6 || descriptionState.length>249 ) {
-      console.log(descriptionState.length,"sdfsdfsdf")
-      notify('Description must be between 5 and 250 characters')
+    if (descriptionState.length < 6 || descriptionState.length > 249) {
+      console.log(descriptionState.length, 'sdfsdfsdf');
+      notify('Description must be between 5 and 250 characters');
       setDescriptionInputValid(false);
     }
   };
@@ -195,100 +194,99 @@ const EditModal: React.FC<EditModalProps> = ({
 
   return (
     <>
-    <ToastContainer />
-    <ZincModal
-      maxHeight={'max-h-[500px]'}
-      maxWidth={'max-w-[500px]'}
-      opacityColor={'bg-zinc-700'}
-      bgColor={'bg-zinc-50'}
-      closeModalCallBack={closeModalCallBack}
-      closeButtonColor={'text-black'}
-    >
-      <div className="flex h-full w-full flex-col gap-5 overflow-y-scroll p-1">
-   
-        <div className="flex justify-start">
-          <div className="flex w-32 justify-between rounded-full bg-violet-500 p-2">
-            <div
-              onClick={() => setToggleState(true)}
-              className={`p-1 ${!toggleState ? 'opacity-25' : ''} flex cursor-pointer items-center justify-center rounded-xl bg-zinc-50 text-black hover:opacity-100`}
-            >
-              {' '}
-              {pencilIcon}{' '}
-            </div>
-            <div
-              onClick={() => setToggleState(false)}
-              className={`p-1 ${toggleState ? 'opacity-25' : ''} flex cursor-pointer items-center justify-center rounded-xl bg-zinc-50 text-black hover:opacity-100`}
-            >
-              {' '}
-              {addUserIcon}{' '}
-            </div>
-          </div>
-        </div>
-
-        {toggleState ? changeMapMetaData : addFriendstoMap}
-      </div>
-      {toggleSearchDropDown ? (
-        <div className="w-content absolute top-[195px]">
-          <SearchDropDown
-            width={'w-[295px]'}
-            maxHeight={'max-h-48'}
-            inputRef={inputRef}
-            closeDropDownCallBack={closeDropDownCallBack}
-            dropDownStatus={toggleSearchDropDown}
-            bgColor={'bg-white'}
-            textColor={'text-black'}
-            bgOpacity={'bg-opacity-100'}
-          >
-            {matchingFriends.length > 0 ? (
-              matchingFriends.map((item: any) => (
-                <div
-                  onClick={() => {
-                    setSelectedFriends((prev) => [...prev, item]);
-                    setToggleSearchDropDown(false);
-                  }}
-                  className={dropDownStyles}
-                  key={item.id}
-                >
-                  <div className="flex flex-col gap-2 p-2 text-black">
-                    <div>
-                      <div className="flex gap-1 font-semibold">
-                        <div> {item.firstName} </div>
-                        <div> {item.lastName} </div>
-                      </div>
-                    </div>
-
-                    <div className="text-xs font-thin">{item.userName}</div>
-                  </div>
-                </div>
-              ))
-            ) : (
+      <ToastContainer />
+      <ZincModal
+        maxHeight={'max-h-[500px]'}
+        maxWidth={'max-w-[500px]'}
+        opacityColor={'bg-zinc-700'}
+        bgColor={'bg-zinc-50'}
+        closeModalCallBack={closeModalCallBack}
+        closeButtonColor={'text-black'}
+      >
+        <div className="flex h-full w-full flex-col gap-5 overflow-y-scroll p-1">
+          <div className="flex justify-start">
+            <div className="flex w-32 justify-between rounded-full bg-violet-500 p-2">
               <div
-                onClick={() => {
-                  setToggleSearchDropDown(false);
-                }}
-                className="flex w-[295px] items-center p-2 text-sm text-black"
+                onClick={() => setToggleState(true)}
+                className={`p-1 ${!toggleState ? 'opacity-25' : ''} flex cursor-pointer items-center justify-center rounded-xl bg-zinc-50 text-black hover:opacity-100`}
               >
                 {' '}
-                No Results{' '}
+                {pencilIcon}{' '}
               </div>
-            )}
-          </SearchDropDown>
+              <div
+                onClick={() => setToggleState(false)}
+                className={`p-1 ${toggleState ? 'opacity-25' : ''} flex cursor-pointer items-center justify-center rounded-xl bg-zinc-50 text-black hover:opacity-100`}
+              >
+                {' '}
+                {addUserIcon}{' '}
+              </div>
+            </div>
+          </div>
+
+          {toggleState ? changeMapMetaData : addFriendstoMap}
         </div>
-      ) : null}
+        {toggleSearchDropDown ? (
+          <div className="w-content absolute top-[195px]">
+            <SearchDropDown
+              width={'w-[295px]'}
+              maxHeight={'max-h-48'}
+              inputRef={inputRef}
+              closeDropDownCallBack={closeDropDownCallBack}
+              dropDownStatus={toggleSearchDropDown}
+              bgColor={'bg-white'}
+              textColor={'text-black'}
+              bgOpacity={'bg-opacity-100'}
+            >
+              {matchingFriends.length > 0 ? (
+                matchingFriends.map((item: any) => (
+                  <div
+                    onClick={() => {
+                      setSelectedFriends((prev) => [...prev, item]);
+                      setToggleSearchDropDown(false);
+                    }}
+                    className={dropDownStyles}
+                    key={item.id}
+                  >
+                    <div className="flex flex-col gap-2 p-2 text-black">
+                      <div>
+                        <div className="flex gap-1 font-semibold">
+                          <div> {item.firstName} </div>
+                          <div> {item.lastName} </div>
+                        </div>
+                      </div>
 
-      <div
-        onClick={() => {
-          
+                      <div className="text-xs font-thin">{item.userName}</div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div
+                  onClick={() => {
+                    setToggleSearchDropDown(false);
+                  }}
+                  className="flex w-[295px] items-center p-2 text-sm text-black"
+                >
+                  {' '}
+                  No Results{' '}
+                </div>
+              )}
+            </SearchDropDown>
+          </div>
+        ) : null}
 
-          {handleButtonClick()
-          checkInput();
-        }}}
-        className="ml-auto cursor-pointer rounded-full bg-violet-500 p-2 pl-5 pr-5 font-bold text-white hover:opacity-75"
-      >
-        {' '}
-        Save{' '}
-      </div>
-    </ZincModal>
+        <div
+          onClick={() => {
+            {
+              handleButtonClick();
+              checkInput();
+            }
+          }}
+          className="ml-auto cursor-pointer rounded-full bg-violet-500 p-2 pl-5 pr-5 font-bold text-white hover:opacity-75"
+        >
+          {' '}
+          Save{' '}
+        </div>
+      </ZincModal>
     </>
   );
 };
