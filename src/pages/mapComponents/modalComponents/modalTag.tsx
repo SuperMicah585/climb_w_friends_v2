@@ -18,7 +18,7 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
   tags,
 }) => {
   const [tagName, setTagName] = useState<string>('');
-  const[tagNameValid,setTagNameValid] = useState(true)
+  const [tagNameValid, setTagNameValid] = useState(true);
   const [modifiedTags, setModifiedTags] = useState(tags);
 
   //generating random number to test id
@@ -46,25 +46,18 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
     });
   };
 
-  const notify = (displayMesage:string) => toast.error(displayMesage);
-  
-  const checkTagInput = () => {
-    if (
-      tagName.length >= 1 &&
-      tagName.length <= 10
-    ) {
+  const notify = (displayMesage: string) => toast.error(displayMesage);
 
-      if(modifiedTags.some((tagObj) => tagObj.tag === tagName)){
-        setTagNameValid(false)
-        notify(`The name '${tagName}' already exists.`)
+  const checkTagInput = () => {
+    if (tagName.length >= 1 && tagName.length <= 10) {
+      if (modifiedTags.some((tagObj) => tagObj.tag === tagName)) {
+        setTagNameValid(false);
+        notify(`The name '${tagName}' already exists.`);
+      } else {
+        buttonClickCallBack();
       }
-      else{
-      buttonClickCallBack()
-      }
-    }
-    
-    else{
-      notify('Tags must be between 1 and 10 characters')
+    } else {
+      notify('Tags must be between 1 and 10 characters');
       setTagNameValid(false);
     }
   };
@@ -81,61 +74,64 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
 
   return (
     <>
-    <ToastContainer theme="dark"/>
-    <ZincModal
-      maxHeight={'max-h-[500px]'}
-      maxWidth={'max-w-[500px]'}
-      closeModalCallBack={closeTagModalCallBack}
-    >
-      <div className="flex h-full w-full flex-col">
-        <div className="mt-8 flex flex-col gap-10 overflow-y-scroll p-1">
-          <div className="flex flex-col gap-10">
-            <div className="flex flex-col gap-5">
-              <div className="font-semibold"> Add Tag</div>
+      <ToastContainer theme="dark" />
+      <ZincModal
+        maxHeight={'max-h-[500px]'}
+        maxWidth={'max-w-[500px]'}
+        closeModalCallBack={closeTagModalCallBack}
+      >
+        <div className="flex h-full w-full flex-col">
+          <div className="mt-8 flex flex-col gap-10 overflow-y-scroll p-1">
+            <div className="flex flex-col gap-10">
+              <div className="flex flex-col gap-5">
+                <div className="font-semibold"> Add Tag</div>
 
-              <div className="flex items-center gap-5">
-                <form onSubmit={handleSubmit}>
-                  <input
-                    onChange={(e) => {setTagNameValid(true);setTagName(e.target.value)}}
-                    placeholder="Type to Add Tag"
-                    value={tagName}
-                    className={`text-thin w-48 rounded-lg ${!tagNameValid?'border-red-500':'border-transparent'} bg-zinc-950 p-2 border-2 text-sm focus:outline-none focus:ring-1 focus:ring-violet-500`}
-                  />
-                </form>
+                <div className="flex items-center gap-5">
+                  <form onSubmit={handleSubmit}>
+                    <input
+                      onChange={(e) => {
+                        setTagNameValid(true);
+                        setTagName(e.target.value);
+                      }}
+                      placeholder="Type to Add Tag"
+                      value={tagName}
+                      className={`text-thin w-48 rounded-lg ${!tagNameValid ? 'border-red-500' : 'border-transparent'} border-2 bg-zinc-950 p-2 text-sm focus:outline-none focus:ring-1 focus:ring-violet-500`}
+                    />
+                  </form>
 
-                <div onClick={() => checkTagInput()}>
-                  <PurpleButton> Add Tag </PurpleButton>
+                  <div onClick={() => checkTagInput()}>
+                    <PurpleButton> Add Tag </PurpleButton>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-5">
+                <div className="font-semibold"> Tags</div>
+                <div className="flex flex-wrap gap-2">
+                  {modifiedTags.map((item) => (
+                    <Tooltip deleteItemCallBack={deleteTagCallBack} item={item}>
+                      {' '}
+                      <div className="flex cursor-pointer rounded-md bg-green-800 p-1 text-center text-sm hover:opacity-75">
+                        {item.tag}{' '}
+                      </div>{' '}
+                    </Tooltip>
+                  ))}
                 </div>
               </div>
             </div>
-
-            <div className="flex flex-col gap-5">
-              <div className="font-semibold"> Tags</div>
-              <div className="flex flex-wrap gap-2">
-                {modifiedTags.map((item) => (
-                  <Tooltip deleteItemCallBack={deleteTagCallBack} item={item}>
-                    {' '}
-                    <div className="flex cursor-pointer rounded-md bg-green-800 p-1 text-center text-sm hover:opacity-75">
-                      {item.tag}{' '}
-                    </div>{' '}
-                  </Tooltip>
-                ))}
-              </div>
-            </div>
+          </div>
+          <div className="flex-grow"> </div>
+          <div
+            onClick={() => {
+              newTagCallBack(modifiedTags);
+              closeTagModalCallBack(false);
+            }}
+            className="flex justify-end"
+          >
+            <PurpleButton> Apply</PurpleButton>
           </div>
         </div>
-        <div className="flex-grow"> </div>
-        <div
-          onClick={() => {
-            newTagCallBack(modifiedTags);
-            closeTagModalCallBack(false);
-          }}
-          className="flex justify-end"
-        >
-          <PurpleButton> Apply</PurpleButton>
-        </div>
-      </div>
-    </ZincModal>
+      </ZincModal>
     </>
   );
 };
