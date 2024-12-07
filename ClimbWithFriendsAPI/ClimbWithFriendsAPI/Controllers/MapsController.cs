@@ -136,11 +136,11 @@ namespace ClimbWithFriendsAPI.Controllers
             }
 
             // Check if the map exists
-            var mapExists = await _context.Maps.AnyAsync(m => m.MapId == mapId);
-            if (!mapExists)
-            {
-                return NotFound($"Map with ID {mapId} does not exist.");
-            }
+           var map = await _context.Maps.FindAsync(mapId);
+    if (map == null)
+    {
+        return NotFound($"Map with ID {mapId} does not exist.");
+    }
 
             // Check if the user is already associated with the map
             var existingAssociation = await _context.MapToUsers
@@ -161,7 +161,7 @@ namespace ClimbWithFriendsAPI.Controllers
             _context.MapToUsers.Add(newAssociation);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(AddUserToMap), new { mapId = mapId, userId = payload.UserId }, newAssociation);
+            return CreatedAtAction(nameof(AddUserToMap), new { userId = payload.UserId }, newAssociation);
         }
 
         [HttpDelete("{mapId}/users/{userId}")]
