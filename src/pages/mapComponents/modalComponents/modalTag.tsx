@@ -55,6 +55,7 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
     ) {
 
       if(modifiedTags.some((tagObj) => tagObj.tag === tagName)){
+        setTagNameValid(false)
         notify(`The name '${tagName}' already exists.`)
       }
       else{
@@ -95,10 +96,10 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
               <div className="flex items-center gap-5">
                 <form onSubmit={handleSubmit}>
                   <input
-                    onChange={(e) => setTagName(e.target.value)}
+                    onChange={(e) => {setTagNameValid(true);setTagName(e.target.value)}}
                     placeholder="Type to Add Tag"
                     value={tagName}
-                    className="text-thin w-48 rounded-lg bg-zinc-950 p-2 text-sm focus:outline-none focus:ring-1 focus:ring-violet-500"
+                    className={`text-thin w-48 rounded-lg ${!tagNameValid?'border-red-500':'border-transparent'} bg-zinc-950 p-2 border-2 text-sm focus:outline-none focus:ring-1 focus:ring-violet-500`}
                   />
                 </form>
 

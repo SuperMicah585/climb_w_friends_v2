@@ -16,6 +16,8 @@ const retrieveUsersOnMap = async (url: string) => {
   }
 };
 
+
+
 const retrieveMapsAndUsers = async (mapsJson: MapObject[] | undefined) => {
   if (mapsJson) {
     // Create a new array to store updated maps

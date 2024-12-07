@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { exampleMapObjects, friendExample } from './dashboardObjects';
 import { MapObject, friendsObject } from '../../types/interfaces';
-import { verticalDotIcon } from '../../reusableComponents/styles';
+import { verticalDotIcon,minusIcon } from '../../reusableComponents/styles';
 import { Link } from 'react-router-dom';
 import AddMapComponent from './mapsComponents/addMapModal';
 import EditModal from './mapsComponents/editModal';
@@ -9,6 +9,8 @@ import PurpleButton from '../../reusableComponents/genericButton';
 import { useAuth0 } from '@auth0/auth0-react';
 import { retrieveMapsAndUsers } from './utilityFunctions';
 import { submitAirplane } from '../../reusableComponents/styles';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const Maps = () => {
   const [mapObject, setMapObject] = useState<MapObject[]>([]);
   const [editMapTrigger, setEditMapTrigger] = useState(false);
@@ -22,7 +24,8 @@ const Maps = () => {
   const [mapId, setMapId] = useState<number>(0);
 
   const { getAccessTokenSilently, user, isAuthenticated } = useAuth0();
-
+  const notifyError = (displayMesage:string) => toast.error(displayMesage);
+  const notifySuccess = (displayMesage:string) => toast.success(displayMesage);
   const closeEditModalCallBack = () => {
     setEditMapTrigger(false);
   };
@@ -31,7 +34,7 @@ const Maps = () => {
     setAddMapTrigger(value);
   };
 
-  console.log(mapObject);
+console.log(mapObject,"gsfsd")
 
   const editPeopleOnMapCallBack = (data: friendsObject[]) => {
     setMapObject((prev) =>
@@ -52,9 +55,61 @@ const Maps = () => {
 
       const mapsJson = await mapsResponse.json();
       const mapsWithUsers = await retrieveMapsAndUsers(mapsJson);
-      setMapObject(mapsWithUsers);
+      setMapObject(prev=>[...prev,...mapsWithUsers]);
     } catch (error: any) {
       console.error(error.message);
+    }
+  };
+
+  const addUserToMap = async (mapId:number, userId:string) => {
+    const payload = { UserId: userId };
+  
+    try {
+      const response = await fetch(`http://localhost:5074/api/Maps/${mapId}/users`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        notifySuccess('Map Joined Succesfully!')
+        console.log(data.map,"Sdfsd")
+        setMapObject(prev=>[...prev,data.map])
+      } else {
+        const error = await response.text();
+        notifyError('There was an issue joining the map.')
+        console.error('Error adding user to map:', error);
+      }
+    } catch (err) {
+      notifyError('There was an issue joining the map.')
+      console.error('Network error:', err);
+    }
+  };
+
+
+  const removeUserFromMap = async (mapId:number, userId:string) => {
+    try {
+      const response = await fetch(`http://localhost:5074/api/Maps/${mapId}/users/${userId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (response.ok) {
+        notifySuccess('Map removed sucessfully!')
+        setMapObject(prev=>prev.filter((mapItem)=>mapId===mapItem.mapId?false:true ))
+      } else {
+        const error = await response.text();
+        notifyError('There was an issue leaving the map.')
+        console.error('Error adding user to map:', error);
+      }
+    } catch (err) {
+      notifyError('There was an issue leaving the map.')
+      console.error('Network error:', err);
     }
   };
 
@@ -64,6 +119,24 @@ const Maps = () => {
       retriveMaps(url);
     }
   }, [user]);
+
+
+  useEffect(() => {
+    if (user?.sub) {
+      addUserToMap(105,user.sub)
+    }
+  }, [user]);
+
+
+const handleRemoveUserFromMap = (item:MapObject) =>{
+  if(user?.sub && item){
+  removeUserFromMap(item.mapId,user.sub)
+  }
+  else{
+    notifyError('There was an issue leaving the map.')
+    console.error('user or map not defined')
+  }
+}
 
   const newMapCallBack = (newMapObj: MapObject) => {
     setMapObject((prev) => [...prev, newMapObj]);
@@ -84,6 +157,7 @@ const Maps = () => {
   };
   return (
     <>
+    <ToastContainer/>
       <div className="absolute top-80 z-10 flex w-full items-center justify-center">
         <PurpleButton
           paddingLeft={'pl-5'}
@@ -105,6 +179,8 @@ const Maps = () => {
                   key={item.mapId}
                   className="relative min-w-[350px] max-w-[600px]"
                 >
+
+                  <div onClick = {()=>handleRemoveUserFromMap(item)} className = 'hover:opacity-75 cursor-pointer p-1 rounded-full hover:bg-neutral-500 absolute left-2 top-2 text-red-300'>{minusIcon} </div>
                   <div
                     className={`flex h-full flex-col items-start justify-start gap-5 rounded-lg border-2 border-transparent bg-zinc-600 p-16 text-white shadow-sm shadow-zinc-500`}
                   >
