@@ -207,6 +207,48 @@ namespace ClimbWithFriendsAPI.Controllers
             return NoContent();
         }
 
+        //Put Request to update a Map object. 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateMap(int id, [FromBody] UpdateMapDto updateMapDto)
+        {
+            if (updateMapDto == null)
+            {
+                return BadRequest("Request body cannot be null.");
+            }
+
+            var existingMap = await _context.Maps.FindAsync(id);
+
+            if (existingMap == null)
+            {
+                return NotFound($"Map with ID {id} not found.");
+            }
+
+            // Update the fields
+            if (!string.IsNullOrWhiteSpace(updateMapDto.MapName))
+            {
+                existingMap.MapName = updateMapDto.MapName;
+            }
+
+            if (!string.IsNullOrWhiteSpace(updateMapDto.Description))
+            {
+                existingMap.Description = updateMapDto.Description;
+            }
+
+            existingMap.UpdatedAt = DateTime.UtcNow.ToString("o"); // Update the timestamp
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+
+            return NoContent(); // 204 No Content for a successful update
+        }
+    
+
 
 
         //// DELETE: api/Maps/5
