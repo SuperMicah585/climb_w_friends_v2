@@ -6,3 +6,10 @@
     }
 
 }
+
+public class UpdateMapDto
+{
+    public string MapName { get; set; } // For updating MapName
+    public string Description { get; set; } // For updating Description
+}
+

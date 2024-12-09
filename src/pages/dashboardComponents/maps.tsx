@@ -7,7 +7,7 @@ import AddMapComponent from './mapsComponents/addMapModal';
 import EditModal from './mapsComponents/editModal';
 import PurpleButton from '../../reusableComponents/genericButton';
 import { useAuth0 } from '@auth0/auth0-react';
-import { retrieveMapsAndUsers, retrieveUsersOnMap } from './utilityFunctions';
+import { retrieveMapsAndUsers, retrieveUsersOnMap,editMap,addUserToMap,removeUserFromMap,createMap } from './utilityFunctions';
 import { submitAirplane } from '../../reusableComponents/styles';
 
 const Maps = () => {
@@ -41,161 +41,75 @@ const Maps = () => {
       ),
     );
   };
-
-  const retrieveMaps = async (url: string) => {
+//have to keep this function here
+  const retrieveMaps = async (userId: string) => {
     try {
-      const mapsResponse = await fetch(url);
+      const mapsResponse = await fetch(`http://localhost:5074/api/Maps/User/${userId}`);
+      
       if (!mapsResponse.ok) {
         throw new Error(`Response status: ${mapsResponse.status}`);
       }
 
       const mapsJson = await mapsResponse.json();
+      
       const mapsWithUsers = await retrieveMapsAndUsers(mapsJson);
+     
       setMapObject(mapsWithUsers);
     } catch (error: any) {
       console.error(error.message);
     }
   };
 
-  const addUserToMap = async (mapId: number, userId: string, type: string) => {
-    const payload = { UserId: userId };
 
-    try {
-      const response = await fetch(
-        `http://localhost:5074/api/Maps/${mapId}/users`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
-        },
-      );
-
-      if (response.ok) {
-        const data = await response.json(); // Safely parse JSON
-
-        /*tldr when user gets added to a map two things may happen
-
-1) User will join a map without any users. 
-When this happens we will take the map object and manuall create the key/array that contains the one climber for it on the frontend. This happens when createMap is called
-OR
-2) User will join an already created map. When this happens we must get the map objects and all of the users before the user is added. We will
-then add the user to the map on the client side.
-
-*/
-
-        if (data.map) {
-          if (type === 'mapCreate') {
-            data.map['climbersOnMap'] = [
-              {
-                userId: userId,
-                firstName: 'Micah',
-                lastName: 'Phelps',
-                email: 'micahphlps@gmail.com',
-                userName: 'phelpsm4',
-              },
-            ]; //code here will change once we get user table
-            setMapObject((prev) => [...prev, data.map]); // Update state with new map
-          }
-
-          //code here for when user gets added to an existing map
-        } else {
-          console.warn('Response does not contain "map" property:', data);
-        }
-      } else {
-        const error = await response.text();
-        console.error('Error joining the map:', error);
+  const newMapCallBack = async(newMapObj: MapObject) => {
+    if(user?.sub){
+    const mapObject = await createMap(newMapObj.mapName, newMapObj.description,user?.sub);
+    if(mapObject){
+      setMapObject((prev) => [...prev, mapObject.map]);
       }
-    } catch (err) {
-      console.error('Network error:', err);
     }
-  };
-
-  const removeUserFromMap = async (mapId: number, userId: string) => {
-    try {
-      const response = await fetch(
-        `http://localhost:5074/api/Maps/${mapId}/users/${userId}`,
-        {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-
-      if (response.ok) {
-        setMapObject((prev) =>
-          prev.filter((mapItem) => (mapId === mapItem.mapId ? false : true)),
-        );
-      } else {
-        const error = await response.text();
-        console.error('Error adding user to map:', error);
-      }
-    } catch (err) {
-      console.error('Network error:', err);
-    }
-  };
-
-  const newMapCallBack = (newMapObj: MapObject) => {
-    createMap(newMapObj.mapName, newMapObj.description);
-    //setMapObject((prev) => [...prev, newMapObj]);
-  };
-
-  const createMap = async (title: string, description: string) => {
-    try {
-      const response = await fetch(`http://localhost:5074/api/Maps/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          description,
-          mapName: title, // Ensure this matches backend expectations
-        }),
-      });
-
-      if (response.ok) {
-        const mapObject = await response.json(); // Safely parse JSON
-
-        if (mapObject && user?.sub) {
-          await addUserToMap(mapObject.mapId, user.sub, 'mapCreate');
-        } else {
-          console.error('Map object or user is not defined.');
-        }
-      } else {
-        const error = await response.text();
-        console.error('Error creating the map:', error);
-      }
-    } catch (err) {
-      console.error('Network error:', err);
+    else{
+      console.error("user not defined")
     }
   };
 
   useEffect(() => {
-    if (user) {
-      const url = `http://localhost:5074/api/Maps/User/${user?.sub}`;
-      retrieveMaps(url);
+
+    if (user?.sub) {
+      retrieveMaps(user.sub);
+    } else {
+      console.log(user)
+      console.error('User not found');
+    
     }
   }, [user]);
 
-  const handleRemoveUserFromMap = (item: MapObject) => {
+  const handleRemoveUserFromMap = async(item: MapObject) => {
     if (user?.sub && item) {
-      removeUserFromMap(item.mapId, user.sub);
+      const success = await removeUserFromMap(item.mapId, user.sub);
+      if(success){
+      setMapObject((prev) =>
+      prev.filter((mapItem) => (item.mapId === mapItem.mapId ? false : true)))
+      }
     } else {
       console.error('user or map not defined');
     }
   };
 
-  const EditedClimbCallBack = (item: any) => {
+  const EditedClimbCallBack = async(item: any) => {
+    //console.log(item,"sdfsdf")
+    const success = await editMap(item.mapName,item.description,item.mapId)
+    if(success){
+    
     setMapObject((prev) =>
       prev.map((mapItem) =>
-        mapItem.mapId === item.id
-          ? { ...mapItem, name: item.name, description: item.description }
+        mapItem.mapId === item.mapId
+          ? { ...mapItem, mapName: item.mapName, description: item.description }
           : mapItem,
       ),
     );
-  };
+  }
+};
 
   const AddMapButtonTrigger = () => {
     setAddMapTrigger(true);
