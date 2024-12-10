@@ -1,0 +1,13 @@
+"filename", "language", "TypeScript JSX", "comment", "blank", "total"
+"/Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/maps.tsx", "TypeScript JSX", 28, 10, 7, 45
+"/Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/mapsComponents/addMapModal.tsx", "TypeScript JSX", 12, 0, 0, 12
+"/Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/mapsComponents/editModal.tsx", "TypeScript JSX", 11, 0, 1, 12
+"/Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/utilityFunctions.tsx", "TypeScript JSX", 2, 0, 0, 2
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/addClimbModal.tsx", "TypeScript JSX", -3, -11, -1, -15
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/modalTag.tsx", "TypeScript JSX", 13, 0, -2, 11
+"/Users/mphelps/climb_w_friends_v2/src/reusableComponents/genericButton.tsx", "TypeScript JSX", -1, 0, 0, -1
+"/Users/mphelps/climb_w_friends_v2/src/reusableComponents/genericModal.tsx", "TypeScript JSX", -1, 0, 1, 0
+"/Users/mphelps/climb_w_friends_v2/src/reusableComponents/styles.tsx", "TypeScript JSX", 32, 0, 2, 34
+"/Users/mphelps/climb_w_friends_v2/src/reusableComponents/toastContainer.tsx", "TypeScript JSX", 53, 0, 8, 61
+"/Users/mphelps/climb_w_friends_v2/src/reusableComponents/toastNotification.tsx", "TypeScript JSX", 98, 3, 9, 110
+"Total", "-", 244, 2, 25, 271
