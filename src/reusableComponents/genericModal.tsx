@@ -28,7 +28,7 @@ const ZincModal: React.FC<ModalProps> = ({
       document.body.style.overflow = '';
     };
   }, []);
-  console.log(bgColor, 'hi');
+
   return (
     <div
       onClick={() => closeModalCallBack(false)}

@@ -1,10 +1,10 @@
 # Summary
 
-Date : 2024-12-06 20:06:07
+Date : 2024-12-08 21:39:06
 
 Directory /Users/mphelps/climb_w_friends_v2/src
 
-Total : 47 files, 5106 codes, 167 comments, 473 blanks, all 5746 lines
+Total : 47 files, 5191 codes, 170 comments, 477 blanks, all 5838 lines
 
 Summary / [Details](details.md) / [Diff Summary](diff.md) / [Diff Details](diff-details.md)
 
@@ -12,7 +12,7 @@ Summary / [Details](details.md) / [Diff Summary](diff.md) / [Diff Details](diff-
 
 | language       | files |  code | comment | blank | total |
 | :------------- | ----: | ----: | ------: | ----: | ----: |
-| TypeScript JSX |    43 | 4,999 |     167 |   457 | 5,623 |
+| TypeScript JSX |    43 | 5,084 |     170 |   461 | 5,715 |
 | CSS            |     2 |   101 |       0 |    15 |   116 |
 | TypeScript     |     1 |     5 |       0 |     1 |     6 |
 | XML            |     1 |     1 |       0 |     0 |     1 |
@@ -21,13 +21,13 @@ Summary / [Details](details.md) / [Diff Summary](diff.md) / [Diff Details](diff-
 
 | path                                                          | files |  code | comment | blank | total |
 | :------------------------------------------------------------ | ----: | ----: | ------: | ----: | ----: |
-| .                                                             |    47 | 5,106 |     167 |   473 | 5,746 |
+| .                                                             |    47 | 5,191 |     170 |   477 | 5,838 |
 | . (Files)                                                     |     5 |   188 |      35 |    33 |   256 |
 | assets                                                        |     1 |     1 |       0 |     0 |     1 |
-| pages                                                         |    27 | 3,811 |     125 |   341 | 4,277 |
+| pages                                                         |    27 | 3,896 |     128 |   345 | 4,369 |
 | pages (Files)                                                 |     4 |   392 |      36 |    63 |   491 |
-| pages/dashboardComponents                                     |     6 | 1,094 |      15 |    74 | 1,183 |
-| pages/dashboardComponents (Files)                             |     4 |   718 |      14 |    45 |   777 |
+| pages/dashboardComponents                                     |     6 | 1,179 |      18 |    78 | 1,275 |
+| pages/dashboardComponents (Files)                             |     4 |   803 |      17 |    49 |   869 |
 | pages/dashboardComponents/mapsComponents                      |     2 |   376 |       1 |    29 |   406 |
 | pages/homeComponents                                          |     1 |    40 |       0 |     4 |    44 |
 | pages/mapComponents                                           |    16 | 2,285 |      74 |   200 | 2,559 |

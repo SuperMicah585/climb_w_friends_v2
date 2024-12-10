@@ -264,7 +264,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
         <TagModal
           newTagCallBack={newTagCallBack}
           tags={tags}
-          closeTagModalCallBack={closeTagModalCallBack}
+          closelCallBack={closeTagModalCallBack}
         />
       ) : null}
 

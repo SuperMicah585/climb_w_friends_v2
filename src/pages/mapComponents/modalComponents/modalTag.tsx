@@ -3,24 +3,25 @@ import { useEffect, useState } from 'react';
 import { Tags } from '../../../types/interfaces';
 import Tooltip from '../../../reusableComponents/toolTip';
 import PurpleButton from '../../../reusableComponents/genericButton';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import ToastContainer from '../../../reusableComponents/toastContainer';
 
 interface AddMapComponentInterface {
-  closeTagModalCallBack: (value: boolean) => void;
+  closelCallBack: (value: boolean) => void;
   newTagCallBack: (data: Tags[]) => void;
   tags: Tags[];
 }
 
 const AddMapComponent: React.FC<AddMapComponentInterface> = ({
-  closeTagModalCallBack,
+  closelCallBack,
   newTagCallBack,
   tags,
 }) => {
   const [tagName, setTagName] = useState<string>('');
   const [tagNameValid, setTagNameValid] = useState(true);
   const [modifiedTags, setModifiedTags] = useState(tags);
-
+  const [toastTrigger, setToastTrigger] = useState(0);
+  const [toastType, setToastType] = useState('success');
+  const [toastMessage, setToastMessage] = useState('');
   //generating random number to test id
 
   const buttonClickCallBack = () => {
@@ -46,18 +47,23 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
     });
   };
 
-  const notify = (displayMesage: string) => toast.error(displayMesage);
-
   const checkTagInput = () => {
     if (tagName.length >= 1 && tagName.length <= 10) {
       if (modifiedTags.some((tagObj) => tagObj.tag === tagName)) {
         setTagNameValid(false);
-        notify(`The name '${tagName}' already exists.`);
+        setToastType('error');
+        setToastMessage(`The tag '${tagName}' already exists.`);
+        setToastTrigger((prev) => prev + 1);
       } else {
+        setToastType('success');
+        setToastMessage(`The tag '${tagName}' has been added.`);
+        setToastTrigger((prev) => prev + 1);
         buttonClickCallBack();
       }
     } else {
-      notify('Tags must be between 1 and 10 characters');
+      setToastType('error');
+      setToastMessage('Tags must be between 1 and 10 characters');
+      setToastTrigger((prev) => prev + 1);
       setTagNameValid(false);
     }
   };
@@ -74,11 +80,16 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
 
   return (
     <>
-      <ToastContainer theme="dark" />
+      <ToastContainer
+        trigger={toastTrigger}
+        mode="dark"
+        type={toastType}
+        message={toastMessage}
+      />
       <ZincModal
         maxHeight={'max-h-[500px]'}
         maxWidth={'max-w-[500px]'}
-        closeModalCallBack={closeTagModalCallBack}
+        closeModalCallBack={closelCallBack}
       >
         <div className="flex h-full w-full flex-col">
           <div className="mt-8 flex flex-col gap-10 overflow-y-scroll p-1">
@@ -124,7 +135,7 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
           <div
             onClick={() => {
               newTagCallBack(modifiedTags);
-              closeTagModalCallBack(false);
+              closelCallBack(false);
             }}
             className="flex justify-end"
           >

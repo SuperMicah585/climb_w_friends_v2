@@ -14,7 +14,6 @@ const PurpleButton: React.FC<purpleButtonProps> = ({
   roundedCorners,
   color,
 }) => {
-  console.log(paddingLeft);
   return (
     <div
       onClick={clickCallBack ? () => clickCallBack() : undefined}
