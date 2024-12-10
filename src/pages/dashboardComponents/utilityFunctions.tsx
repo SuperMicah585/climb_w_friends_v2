@@ -1,4 +1,6 @@
 import { MapObject } from '../../types/interfaces';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const retrieveUsersOnMap = async (mapId: number) => {
   const url = `http://localhost:5074/api/Maps/Userlist/${mapId}`;
@@ -35,7 +37,7 @@ const retrieveMapsAndUsers = async (mapsJson: MapObject[] | undefined) => {
 };
 
 //need to edit users on map in the future
-const editMap = async (title: string, description: string,id:number) => {
+const editMap = async (title: string, description: string, id: number) => {
   try {
     const response = await fetch(`http://localhost:5074/api/Maps/${id}`, {
       method: 'PUT',
@@ -49,19 +51,17 @@ const editMap = async (title: string, description: string,id:number) => {
     });
 
     if (response.ok) {
-      return true
-            
+      return true;
     } else {
       const error = await response.text();
       console.error('Error creating the map:', error);
-      return false
+      return false;
     }
   } catch (err) {
     console.error('Network error:', err);
-    return false
+    return false;
   }
 };
-
 
 const addUserToMap = async (mapId: number, userId: string, type: string) => {
   const payload = { UserId: userId };
@@ -103,25 +103,24 @@ then add the user to the map on the client side.
             },
           ]; //code here will change once we get user table
           //setMapObject((prev) => [...prev, data.map]); // Update state with new map
-          return data
-        }
-        else{
-          return false
+          return data;
+        } else {
+          return false;
         }
 
         //code here for when user gets added to an existing map
       } else {
         console.warn('Response does not contain "map" property:', data);
-        return false
+        return false;
       }
     } else {
       const error = await response.text();
       console.error('Error joining the map:', error);
-      return false
+      return false;
     }
   } catch (err) {
     console.error('Network error:', err);
-    return false
+    return false;
   }
 };
 
@@ -138,20 +137,23 @@ const removeUserFromMap = async (mapId: number, userId: string) => {
     );
 
     if (response.ok) {
-        return true
-  
+      return true;
     } else {
       const error = await response.text();
       console.error('Error adding user to map:', error);
-      return false
+      return false;
     }
   } catch (err) {
     console.error('Network error:', err);
-    return false
+    return false;
   }
 };
 
-const createMap = async (title: string, description: string,userID:string) => {
+const createMap = async (
+  title: string,
+  description: string,
+  userID: string,
+) => {
   try {
     const response = await fetch(`http://localhost:5074/api/Maps/`, {
       method: 'POST',
@@ -168,24 +170,34 @@ const createMap = async (title: string, description: string,userID:string) => {
       const mapObject = await response.json(); // Safely parse JSON
 
       if (mapObject && userID) {
-        const mapData = await addUserToMap(mapObject.mapId, userID, 'mapCreate');
-        if(mapData){
-          return mapData
+        const mapData = await addUserToMap(
+          mapObject.mapId,
+          userID,
+          'mapCreate',
+        );
+        if (mapData) {
+          return mapData;
         }
-        
       } else {
         console.error('Map object or user is not defined.');
-        return false
+        return false;
       }
     } else {
       const error = await response.text();
       console.error('Error creating the map:', error);
-      return false
+      return false;
     }
   } catch (err) {
     console.error('Network error:', err);
-    return false
+    return false;
   }
 };
 
-export { retrieveMapsAndUsers, retrieveUsersOnMap,editMap,addUserToMap,removeUserFromMap,createMap };
+export {
+  retrieveMapsAndUsers,
+  retrieveUsersOnMap,
+  editMap,
+  addUserToMap,
+  removeUserFromMap,
+  createMap,
+};

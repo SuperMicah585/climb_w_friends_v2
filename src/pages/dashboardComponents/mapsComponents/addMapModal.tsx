@@ -1,8 +1,8 @@
 import ZincModal from '../../../reusableComponents/genericModal';
 import { useState } from 'react';
 import { MapObject } from '../../../types/interfaces';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import GenericToast from '../../../reusableComponents/toastNotification';
+import ToastContainer from '../../../reusableComponents/toastContainer';
 
 interface AddMapComponentInterface {
   closeAddModalCallBack: (value: boolean) => void;
@@ -16,6 +16,9 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
   const [titleState, setTitleState] = useState<string>('');
   const [descriptionState, setDescriptionState] = useState<string>('');
   const [titleInputValid, setTitleInputValid] = useState<boolean>(true);
+  const [toastTrigger, setToastTrigger] = useState(0);
+  const [toastType, setToastType] = useState('success');
+  const [toastMessage, setToastMessage] = useState('');
   const [descriptionInputValid, setDescriptionInputValid] =
     useState<boolean>(true);
 
@@ -35,17 +38,21 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
     }
   };
 
-  const notify = (displayMesage: string) => toast.error(displayMesage);
   const checkInput = () => {
     if (titleState.length < 6 || titleState.length > 29) {
-      notify('Title must be between 5 and 30 characters');
+      setToastType('error');
+      setToastMessage('Title must be between 5 and 30 characters');
+      setToastTrigger((prev) => prev + 1);
       setTitleInputValid(false);
     }
 
     if (descriptionState.length < 6 || descriptionState.length > 249) {
-      console.log(descriptionState.length, 'sdfsdfsdf');
-      notify('Description must be between 5 and 250 characters');
-      setDescriptionInputValid(false);
+      setTimeout(() => {
+        setToastType('error');
+        setToastMessage('Description must be between 5 and 250 characters');
+        setToastTrigger((prev) => prev + 1);
+        setDescriptionInputValid(false);
+      }, 50); // Slight delay to prevent batching
     }
   };
 
@@ -53,7 +60,12 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer
+        trigger={toastTrigger}
+        mode={'light'}
+        type={toastType}
+        message={toastMessage}
+      />
 
       <ZincModal
         maxHeight={'max-h-[500px]'}

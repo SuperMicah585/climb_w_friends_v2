@@ -8,8 +8,7 @@ import { MapObject, friendsObject } from '../../../types/interfaces';
 import InputComponent from '../../../reusableComponents/input';
 import ZincModal from '../../../reusableComponents/genericModal';
 import SearchDropDown from '../../../reusableComponents/searchDropDown';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import ToastContainer from '../../../reusableComponents/toastContainer';
 
 import { useState, useRef, useEffect } from 'react';
 
@@ -37,6 +36,9 @@ const EditModal: React.FC<EditModalProps> = ({
   const [inputData, setInputData] = useState<string>('');
   const [matchingFriends, setMatchingFriends] = useState<friendsObject[]>([]);
   const [selectedFriends, setSelectedFriends] = useState<friendsObject[]>([]);
+  const [toastTrigger, setToastTrigger] = useState(0);
+  const [toastType, setToastType] = useState('success');
+  const [toastMessage, setToastMessage] = useState('');
   const [titleInputValid, setTitleInputValid] = useState<boolean>(true);
   const [descriptionInputValid, setDescriptionInputValid] =
     useState<boolean>(true);
@@ -47,18 +49,22 @@ const EditModal: React.FC<EditModalProps> = ({
     setInputData(data);
   };
 
-  const notify = (displayMesage: string) => toast.error(displayMesage);
-
   const checkInput = () => {
     if (titleState.length < 6 || titleState.length > 29) {
-      notify('Title must be between 5 and 30 characters');
+      setToastType('error');
+      setToastMessage('Title must be between 5 and 30 characters');
+      setToastTrigger((prev) => prev + 1);
+
       setTitleInputValid(false);
     }
 
     if (descriptionState.length < 6 || descriptionState.length > 249) {
-      console.log(descriptionState.length, 'sdfsdfsdf');
-      notify('Description must be between 5 and 250 characters');
-      setDescriptionInputValid(false);
+      setTimeout(() => {
+        setToastType('error');
+        setToastMessage('Description must be between 5 and 250 characters');
+        setToastTrigger((prev) => prev + 1);
+        setDescriptionInputValid(false);
+      }, 50);
     }
   };
 
@@ -109,6 +115,7 @@ const EditModal: React.FC<EditModalProps> = ({
           description: descriptionState,
           climbersOnMap: editMapObject.climbersOnMap,
         });
+
         return null; // Nothing to render
       }
       return null; // Invalid input
@@ -194,7 +201,12 @@ const EditModal: React.FC<EditModalProps> = ({
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer
+        trigger={toastTrigger}
+        mode={'light'}
+        type={toastType}
+        message={toastMessage}
+      />
       <ZincModal
         maxHeight={'max-h-[500px]'}
         maxWidth={'max-w-[500px]'}

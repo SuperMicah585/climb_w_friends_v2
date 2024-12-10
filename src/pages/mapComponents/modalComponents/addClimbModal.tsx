@@ -137,21 +137,6 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
     window.open(url, '_blank'); // Open in a new tab
   };
 
-  const handleRemoveClimb = (item: ClimbsTableResponse) => {
-    setClimbsArray((prev) => prev.filter((mapItem) => mapItem.id !== item.id));
-  };
-
-  /*
-  useEffect(()=>{
-
-    setClimbsArray(prev=>prev.filter((mapItem)=>
-    mapItem.climber_names.length===0?true:false))
-
-  },[climbsArray])
-
-  */
-  //()=>{handleRemoveClimb(item)}
-  //<div className = 'text-5xl w-full'>{location} | {routeType} </div>
   return (
     <>
       <div
