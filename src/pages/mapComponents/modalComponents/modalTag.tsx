@@ -34,7 +34,7 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
 
   useEffect(() => {
     const retrieveTagsOnMap = async (mapId: number) => {
-      const url = `http://localhost:5074/api/Maps/Tags/${mapId}`;
+      const url = `http://localhost:5074/api/Tags/ByMap/${mapId}`;
       try {
         const response = await fetch(url);
         if (!response.ok) {

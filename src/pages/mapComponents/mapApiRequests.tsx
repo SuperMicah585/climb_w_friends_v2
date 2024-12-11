@@ -1,6 +1,6 @@
 const createTag = async (TagName: string, mapId: number) => {
   try {
-    const response = await fetch(`http://localhost:5074/api/Maps/Tags`, {
+    const response = await fetch(`http://localhost:5074/api/Tags`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -12,7 +12,7 @@ const createTag = async (TagName: string, mapId: number) => {
 
     if (response.ok) {
       const tagObject = await response.json(); // Safely parse JSON
-      console.log(tagObject);
+
       if (tagObject && mapId) {
         const mapToTag = await addTagToMap(tagObject.tagId, mapId);
         if (mapToTag) {
@@ -35,20 +35,16 @@ const createTag = async (TagName: string, mapId: number) => {
 };
 
 const addTagToMap = async (tagId: number, mapId: number) => {
-  const payload = { TagId: tagId };
-  console.log(tagId, mapId, 'sdfsdfsdfsdfsd');
+  const payload = { MapId: mapId };
 
   try {
-    const response = await fetch(
-      `http://localhost:5074/api/Maps/${mapId}/Tags`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
+    const response = await fetch(`http://localhost:5074/api/Tags/${tagId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    );
+      body: JSON.stringify(payload),
+    });
 
     if (response.ok) {
       const data = await response.json(); // Safely parse JSON
@@ -70,7 +66,7 @@ const addTagToMap = async (tagId: number, mapId: number) => {
 const removeTagFromMap = async (mapId: number, tagId: number) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Maps/${mapId}/Tags/${tagId}`,
+      `http://localhost:5074/api/Tags/${tagId}/Maps/${mapId}`,
       {
         method: 'DELETE',
         headers: {
