@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClimbWithFriendsAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class NewMigration : Migration
+    public partial class AddMapToTag : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -77,6 +77,42 @@ namespace ClimbWithFriendsAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Tags",
+                columns: table => new
+                {
+                    TagId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TagName = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    CreatedAt = table.Column<string>(type: "text", nullable: true),
+                    UpdatedAt = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tags", x => x.TagId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MapToTags",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    MapId = table.Column<int>(type: "integer", nullable: false),
+                    TagId = table.Column<int>(type: "integer", nullable: false),
+                    AssociatedAt = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MapToTags", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MapToTags_Maps_MapId",
+                        column: x => x.MapId,
+                        principalTable: "Maps",
+                        principalColumn: "MapId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MapToUsers",
                 columns: table => new
                 {
@@ -102,9 +138,9 @@ namespace ClimbWithFriendsAPI.Migrations
                 columns: new[] { "ClimbId", "ClimbName", "ClimbType", "Coordinates", "CreatedAt", "Description", "Location", "Pitches", "Rating", "UpdatedAt", "Url" },
                 values: new object[,]
                 {
-                    { 1, "El Capitan", "Trad,Big Wall", (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-119.638 37.733)"), "2024-12-06T23:43:30.2346390Z", "One of the most iconic climbs in the world.", "Yosemite National Park", 30, "5.12d", "2024-12-06T23:43:30.2346420Z", "https://www.example.com/el-capitan" },
-                    { 2, "The Nose", "Trad,Big Wall", (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-119.638 37.733)"), "2024-12-06T23:43:30.2346430Z", "A legendary climb with a rich history.", "Yosemite National Park", 31, "5.14a", "2024-12-06T23:43:30.2346430Z", "https://www.example.com/the-nose" },
-                    { 3, "Moonlight Buttress", "Trad", (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-113.026 37.274)"), "2024-12-06T23:43:30.2346440Z", "A stunning climb up a sandstone wall.", "Zion National Park", 9, "5.12d", "2024-12-06T23:43:30.2346450Z", "https://www.example.com/moonlight-buttress" }
+                    { 1, "El Capitan", "Trad,Big Wall", (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-119.638 37.733)"), "2024-12-10T22:10:51.6835040Z", "One of the most iconic climbs in the world.", "Yosemite National Park", 30, "5.12d", "2024-12-10T22:10:51.6835070Z", "https://www.example.com/el-capitan" },
+                    { 2, "The Nose", "Trad,Big Wall", (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-119.638 37.733)"), "2024-12-10T22:10:51.6835090Z", "A legendary climb with a rich history.", "Yosemite National Park", 31, "5.14a", "2024-12-10T22:10:51.6835090Z", "https://www.example.com/the-nose" },
+                    { 3, "Moonlight Buttress", "Trad", (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-113.026 37.274)"), "2024-12-10T22:10:51.6835190Z", "A stunning climb up a sandstone wall.", "Zion National Park", 9, "5.12d", "2024-12-10T22:10:51.6835190Z", "https://www.example.com/moonlight-buttress" }
                 });
 
             migrationBuilder.InsertData(
@@ -120,6 +156,31 @@ namespace ClimbWithFriendsAPI.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Tags",
+                columns: new[] { "TagId", "CreatedAt", "TagName", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 101, "2024-11-01T09:00:00Z", "woop", "2024-11-10T09:00:00Z" },
+                    { 102, "2024-11-02T10:00:00Z", "hype", "2024-11-11T10:00:00Z" },
+                    { 103, "2024-11-03T11:00:00Z", "blue", "2024-11-12T11:00:00Z" },
+                    { 104, "2024-11-04T12:00:00Z", "great", "2024-11-13T12:00:00Z" },
+                    { 105, "2024-11-05T13:00:00Z", "amazing", "2024-11-14T13:00:00Z" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "MapToTags",
+                columns: new[] { "Id", "AssociatedAt", "MapId", "TagId" },
+                values: new object[,]
+                {
+                    { 1, "2024-12-01T10:00:00Z", 101, 101 },
+                    { 2, "2024-12-02T11:00:00Z", 102, 102 },
+                    { 3, "2024-12-03T12:00:00Z", 103, 103 },
+                    { 4, "2024-12-02T12:00:00Z", 104, 104 },
+                    { 5, "2024-12-03T14:00:00Z", 101, 102 },
+                    { 6, "2024-12-04T15:00:00Z", 105, 105 }
+                });
+
+            migrationBuilder.InsertData(
                 table: "MapToUsers",
                 columns: new[] { "Id", "AssociatedAt", "MapId", "UserId" },
                 values: new object[,]
@@ -131,6 +192,11 @@ namespace ClimbWithFriendsAPI.Migrations
                     { 5, "2024-12-03T14:00:00Z", 101, "google-oauth2|112911737438637748824" },
                     { 6, "2024-12-04T15:00:00Z", 105, "google-oauth2|112911737438637748824" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MapToTags_MapId",
+                table: "MapToTags",
+                column: "MapId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MapToUsers_MapId",
@@ -148,7 +214,13 @@ namespace ClimbWithFriendsAPI.Migrations
                 name: "Features");
 
             migrationBuilder.DropTable(
+                name: "MapToTags");
+
+            migrationBuilder.DropTable(
                 name: "MapToUsers");
+
+            migrationBuilder.DropTable(
+                name: "Tags");
 
             migrationBuilder.DropTable(
                 name: "Maps");

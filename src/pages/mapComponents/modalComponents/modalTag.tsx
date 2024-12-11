@@ -4,52 +4,57 @@ import { Tags } from '../../../types/interfaces';
 import Tooltip from '../../../reusableComponents/toolTip';
 import PurpleButton from '../../../reusableComponents/genericButton';
 import ToastContainer from '../../../reusableComponents/toastContainer';
+import { createTag, removeTagFromMap } from '../mapApiRequests';
 
 interface AddMapComponentInterface {
   closelCallBack: (value: boolean) => void;
-  newTagCallBack: (data: Tags[]) => void;
-  tags: Tags[];
+  mapId: number;
 }
 
 const AddMapComponent: React.FC<AddMapComponentInterface> = ({
   closelCallBack,
-  newTagCallBack,
-  tags,
+  mapId,
 }) => {
   const [tagName, setTagName] = useState<string>('');
   const [tagNameValid, setTagNameValid] = useState(true);
-  const [modifiedTags, setModifiedTags] = useState(tags);
+  const [modifiedTags, setModifiedTags] = useState<Tags[]>([]);
   const [toastTrigger, setToastTrigger] = useState(0);
   const [toastType, setToastType] = useState('success');
   const [toastMessage, setToastMessage] = useState('');
   //generating random number to test id
 
-  const buttonClickCallBack = () => {
-    let min = 100;
-    let max = 1000;
-    let randomInt = Math.floor(Math.random() * (max - min + 1)) + min;
-    newTag({
-      id: randomInt,
-      tag: tagName,
-    });
-  };
-
-  const newTag = (data: Tags) => {
+  const newTag = async () => {
+    const addTag = await createTag(tagName, mapId);
+    console.log(addTag);
+    //Request to DB will be created
     setModifiedTags((prev) => {
-      // Check if the tag already exists in the array
-      const tagExists = prev.some((tagObj) => tagObj.tag === data.tag);
-
-      // If it doesn't exist, add it to the array, otherwise return the existing array
-      if (!tagExists && data.tag.length > 0) {
-        return [...prev, data];
-      }
-      return prev;
+      return [...prev, addTag];
     });
   };
+
+  useEffect(() => {
+    const retrieveTagsOnMap = async (mapId: number) => {
+      const url = `http://localhost:5074/api/Maps/Tags/${mapId}`;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+
+        const json = await response.json();
+        console.log(json, 'response!');
+        // Update the specific object at the given index in the array
+        setModifiedTags(json);
+      } catch (error: any) {
+        console.error(error.message);
+      }
+    };
+    retrieveTagsOnMap(mapId);
+  }, [mapId]);
 
   const checkTagInput = () => {
     if (tagName.length >= 1 && tagName.length <= 10) {
-      if (modifiedTags.some((tagObj) => tagObj.tag === tagName)) {
+      if (modifiedTags?.some((tagObj) => tagObj.tagName === tagName)) {
         setTagNameValid(false);
         setToastType('error');
         setToastMessage(`The tag '${tagName}' already exists.`);
@@ -58,7 +63,7 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
         setToastType('success');
         setToastMessage(`The tag '${tagName}' has been added.`);
         setToastTrigger((prev) => prev + 1);
-        buttonClickCallBack();
+        newTag();
       }
     } else {
       setToastType('error');
@@ -68,13 +73,26 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
     }
   };
 
-  const deleteTagCallBack = (item: Tags) => {
-    setModifiedTags((prev) => prev.filter((tagObj) => tagObj.id !== item.id));
+  const deleteTagCallBack = async (item: Tags) => {
+    const deleteTag = await removeTagFromMap(mapId, item?.tagId);
+    if (deleteTag) {
+      setToastType('success');
+      setToastMessage(`The tag '${item.tagName}' has been deleted.`);
+      setToastTrigger((prev) => prev + 1);
+
+      setModifiedTags((prev) =>
+        prev?.filter((tagObj) => tagObj.tagId !== item.tagId),
+      );
+    } else {
+      setToastType('error');
+      setToastMessage(`There was an issue deleting the tag '${item.tagName}'.`);
+      setToastTrigger((prev) => prev + 1);
+    }
   };
 
   const handleSubmit = (event: any) => {
     event.preventDefault(); // Prevent the default form submission
-    buttonClickCallBack();
+    newTag();
     // Add any additional actions here, like sending data to an API
   };
 
@@ -119,11 +137,14 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
               <div className="flex flex-col gap-5">
                 <div className="font-semibold"> Tags</div>
                 <div className="flex flex-wrap gap-2">
-                  {modifiedTags.map((item) => (
+                  {modifiedTags?.map((item) => (
                     <Tooltip deleteItemCallBack={deleteTagCallBack} item={item}>
                       {' '}
-                      <div className="flex cursor-pointer rounded-md bg-green-800 p-1 text-center text-sm hover:opacity-75">
-                        {item.tag}{' '}
+                      <div
+                        key={item.tagId}
+                        className="flex cursor-pointer rounded-md bg-green-800 p-1 text-center text-sm hover:opacity-75"
+                      >
+                        {item.tagName}{' '}
                       </div>{' '}
                     </Tooltip>
                   ))}
@@ -134,12 +155,12 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
           <div className="flex-grow"> </div>
           <div
             onClick={() => {
-              newTagCallBack(modifiedTags);
+              // newTagCallBack(modifiedTags);
               closelCallBack(false);
             }}
             className="flex justify-end"
           >
-            <PurpleButton> Apply</PurpleButton>
+            <PurpleButton> Close</PurpleButton>
           </div>
         </div>
       </ZincModal>

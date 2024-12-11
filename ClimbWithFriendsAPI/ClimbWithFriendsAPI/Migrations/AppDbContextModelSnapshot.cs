@@ -88,12 +88,12 @@ namespace ClimbWithFriendsAPI.Migrations
                             ClimbName = "El Capitan",
                             ClimbType = "Trad,Big Wall",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-119.638 37.733)"),
-                            CreatedAt = "2024-12-06T23:43:30.2346390Z",
+                            CreatedAt = "2024-12-10T22:10:51.6835040Z",
                             Description = "One of the most iconic climbs in the world.",
                             Location = "Yosemite National Park",
                             Pitches = 30,
                             Rating = "5.12d",
-                            UpdatedAt = "2024-12-06T23:43:30.2346420Z",
+                            UpdatedAt = "2024-12-10T22:10:51.6835070Z",
                             Url = "https://www.example.com/el-capitan"
                         },
                         new
@@ -102,12 +102,12 @@ namespace ClimbWithFriendsAPI.Migrations
                             ClimbName = "The Nose",
                             ClimbType = "Trad,Big Wall",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-119.638 37.733)"),
-                            CreatedAt = "2024-12-06T23:43:30.2346430Z",
+                            CreatedAt = "2024-12-10T22:10:51.6835090Z",
                             Description = "A legendary climb with a rich history.",
                             Location = "Yosemite National Park",
                             Pitches = 31,
                             Rating = "5.14a",
-                            UpdatedAt = "2024-12-06T23:43:30.2346430Z",
+                            UpdatedAt = "2024-12-10T22:10:51.6835090Z",
                             Url = "https://www.example.com/the-nose"
                         },
                         new
@@ -116,12 +116,12 @@ namespace ClimbWithFriendsAPI.Migrations
                             ClimbName = "Moonlight Buttress",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-113.026 37.274)"),
-                            CreatedAt = "2024-12-06T23:43:30.2346440Z",
+                            CreatedAt = "2024-12-10T22:10:51.6835190Z",
                             Description = "A stunning climb up a sandstone wall.",
                             Location = "Zion National Park",
                             Pitches = 9,
                             Rating = "5.12d",
-                            UpdatedAt = "2024-12-06T23:43:30.2346450Z",
+                            UpdatedAt = "2024-12-10T22:10:51.6835190Z",
                             Url = "https://www.example.com/moonlight-buttress"
                         });
                 });
@@ -240,6 +240,75 @@ namespace ClimbWithFriendsAPI.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ClimbWithFriendsAPI.Data.MapToTag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AssociatedAt")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("MapId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TagId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MapId");
+
+                    b.ToTable("MapToTags", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AssociatedAt = "2024-12-01T10:00:00Z",
+                            MapId = 101,
+                            TagId = 101
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AssociatedAt = "2024-12-02T11:00:00Z",
+                            MapId = 102,
+                            TagId = 102
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AssociatedAt = "2024-12-03T12:00:00Z",
+                            MapId = 103,
+                            TagId = 103
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AssociatedAt = "2024-12-02T12:00:00Z",
+                            MapId = 104,
+                            TagId = 104
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AssociatedAt = "2024-12-03T14:00:00Z",
+                            MapId = 101,
+                            TagId = 102
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AssociatedAt = "2024-12-04T15:00:00Z",
+                            MapId = 105,
+                            TagId = 105
+                        });
+                });
+
             modelBuilder.Entity("ClimbWithFriendsAPI.Data.MapToUser", b =>
                 {
                     b.Property<int>("Id")
@@ -308,6 +377,78 @@ namespace ClimbWithFriendsAPI.Migrations
                             MapId = 105,
                             UserId = "google-oauth2|112911737438637748824"
                         });
+                });
+
+            modelBuilder.Entity("ClimbWithFriendsAPI.Data.Tag", b =>
+                {
+                    b.Property<int>("TagId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("TagId"));
+
+                    b.Property<string>("CreatedAt")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TagName")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<string>("UpdatedAt")
+                        .HasColumnType("text");
+
+                    b.HasKey("TagId");
+
+                    b.ToTable("Tags");
+
+                    b.HasData(
+                        new
+                        {
+                            TagId = 101,
+                            CreatedAt = "2024-11-01T09:00:00Z",
+                            TagName = "woop",
+                            UpdatedAt = "2024-11-10T09:00:00Z"
+                        },
+                        new
+                        {
+                            TagId = 102,
+                            CreatedAt = "2024-11-02T10:00:00Z",
+                            TagName = "hype",
+                            UpdatedAt = "2024-11-11T10:00:00Z"
+                        },
+                        new
+                        {
+                            TagId = 103,
+                            CreatedAt = "2024-11-03T11:00:00Z",
+                            TagName = "blue",
+                            UpdatedAt = "2024-11-12T11:00:00Z"
+                        },
+                        new
+                        {
+                            TagId = 104,
+                            CreatedAt = "2024-11-04T12:00:00Z",
+                            TagName = "great",
+                            UpdatedAt = "2024-11-13T12:00:00Z"
+                        },
+                        new
+                        {
+                            TagId = 105,
+                            CreatedAt = "2024-11-05T13:00:00Z",
+                            TagName = "amazing",
+                            UpdatedAt = "2024-11-14T13:00:00Z"
+                        });
+                });
+
+            modelBuilder.Entity("ClimbWithFriendsAPI.Data.MapToTag", b =>
+                {
+                    b.HasOne("ClimbWithFriendsAPI.Data.Map", "Map")
+                        .WithMany()
+                        .HasForeignKey("MapId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Map");
                 });
 
             modelBuilder.Entity("ClimbWithFriendsAPI.Data.MapToUser", b =>

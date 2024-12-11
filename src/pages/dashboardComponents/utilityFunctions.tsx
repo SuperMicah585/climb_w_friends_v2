@@ -1,6 +1,5 @@
 import { MapObject } from '../../types/interfaces';
 
-
 const retrieveUsersOnMap = async (mapId: number) => {
   const url = `http://localhost:5074/api/Maps/Userlist/${mapId}`;
   try {

@@ -35,8 +35,10 @@ export interface Micah {
 }
 
 export interface Tags {
-  id: number;
-  tag: string;
+  id?: number;
+  tagId: number;
+  tagName: string;
+  associatedAt?: string;
 }
 export interface GeoJsonFeature {
   id: string;

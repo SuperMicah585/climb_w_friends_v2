@@ -23,7 +23,7 @@ if (root !== null) {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Login />} />
-            <Route path="/Maps/1" element={<App />} />
+            <Route path="/Maps/:id" element={<App />} />
             <Route path="/Maps" element={<Home />} />
           </Routes>
         </BrowserRouter>
