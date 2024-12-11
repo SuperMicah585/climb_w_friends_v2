@@ -15,7 +15,7 @@ public class UpdateMapDto
 
 public class MapToTagPayload
 {
-    public int TagId { get; set; } // For updating Description
+    public int MapId { get; set; } // For updating Description
 }
 
 
