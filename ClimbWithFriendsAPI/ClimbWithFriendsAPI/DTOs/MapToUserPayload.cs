@@ -13,3 +13,10 @@ public class UpdateMapDto
     public string Description { get; set; } // For updating Description
 }
 
+public class MapToTagPayload
+{
+    public int TagId { get; set; } // For updating Description
+}
+
+
+

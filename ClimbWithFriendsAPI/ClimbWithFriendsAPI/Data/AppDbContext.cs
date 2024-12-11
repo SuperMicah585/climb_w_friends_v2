@@ -25,11 +25,15 @@ namespace ClimbWithFriendsAPI.Data
         public DbSet<MapToUser> MapToUsers { get; set; }
         public DbSet<Feature> Features { get; set; }
         public DbSet<Climb> Climbs { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<MapToTag> MapToTags { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new MapConfiguration());
             modelBuilder.ApplyConfiguration(new MapToUserConfiguration());
             modelBuilder.ApplyConfiguration(new ClimbConfiguration());
+            modelBuilder.ApplyConfiguration(new TagConfiguration());
+            modelBuilder.ApplyConfiguration(new MapToTagConfiguration());
             base.OnModelCreating(modelBuilder);
         }
      }

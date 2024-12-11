@@ -15,6 +15,7 @@ import AddClimbModal from './mapComponents/modalComponents/addClimbModal';
 import { useAuth0 } from '@auth0/auth0-react';
 import { exampleMapObjects } from './dashboardComponents/dashboardObjects';
 import { usStateDictionary } from './mapComponents/mapObjects';
+import { useParams } from 'react-router-dom';
 import LogoutButton from '../reusableComponents/logoutButton';
 import {
   createMarker,
@@ -45,7 +46,8 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const [selectedClimb, setSelectedClimb] =
     useState<ClimbsTableResponse | null>(null);
-
+  const { id } = useParams();
+  const mapIdNumber = Number(id);
   const [tickDisplayTrigger, setTickDisplayTrigger] = useState<number>(0);
   const [currentMarker, setCurrentMarker] = useState<any>(null);
   const [polygonOrCircleDisplay, setpolygonOrCircleDisplay] =
@@ -57,7 +59,6 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
 
   const [addClimbsModalDisplay, setAddClimbsModalDisplay] = useState(false);
 
-  const [tags, setTags] = useState<Tags[]>([{ id: 0, tag: '' }]);
   const [
     clickedFeatureModalTriggerBoolean,
     setClickedFeatureModalTriggerBoolean,
@@ -100,10 +101,6 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     setAddClimbsModalDisplay(trigger);
   };
 
-  const newTagCallBack = (data: Tags[]) => {
-    setTags(data);
-  };
-
   const tagToggleCallBack = () => {
     setTagModalDisplay(true);
   };
@@ -134,10 +131,6 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   ) => {
     setClickedFeatureClimbs((prev) => [...prev, ...climbData]);
   };
-
-  useEffect(() => {
-    setTags(exampleMapObjects[0].tags);
-  }, [exampleMapObjects]);
 
   useEffect(() => {
     if (mapContainer.current) {
@@ -261,11 +254,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
       ) : null}
 
       {tagModalDisplay ? (
-        <TagModal
-          newTagCallBack={newTagCallBack}
-          tags={tags}
-          closelCallBack={closeTagModalCallBack}
-        />
+        <TagModal mapId={mapIdNumber} closelCallBack={closeTagModalCallBack} />
       ) : null}
 
       {filterModalDisplay ? (
