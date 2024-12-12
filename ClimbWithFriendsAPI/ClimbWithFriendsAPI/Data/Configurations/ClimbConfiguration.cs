@@ -1,7 +1,9 @@
-﻿using ClimbWithFriendsAPI.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NetTopologySuite.Geometries;
+using System.Globalization;
+using ClimbWithFriendsAPI.Data;
+using CsvHelper;
 
 namespace YourProjectNamespace.Data.Configurations
 {
@@ -9,6 +11,7 @@ namespace YourProjectNamespace.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Climb> builder)
         {
+            // Define table structure and constraints
             builder.HasKey(c => c.ClimbId);
 
             builder.Property(c => c.ClimbName).IsRequired().HasMaxLength(100);
@@ -18,53 +21,42 @@ namespace YourProjectNamespace.Data.Configurations
             builder.Property(c => c.ClimbType).HasMaxLength(100);
             builder.Property(c => c.Rating).HasMaxLength(50);
             builder.Property(c => c.Pitches).IsRequired();
-            builder.Property(c => c.Description).HasMaxLength(1000);
 
-            // Seed Data
-            builder.HasData(
-                new Climb
+            // Dynamically load seed data from a CSV file
+            var climbs = LoadClimbDataFromCsv("Data/Configurations/climb_data.csv");
+            builder.HasData(climbs);
+        }
+
+        private List<Climb> LoadClimbDataFromCsv(string filePath)
+        {
+            var climbs = new List<Climb>();
+
+            using (var reader = new StreamReader(filePath))
+            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+            {
+                // Define the CSV data structure
+                csv.Context.RegisterClassMap<ClimbCsvMap>();
+
+                var records = csv.GetRecords<ClimbCsvRecord>();
+                foreach (var record in records)
                 {
-                    ClimbId = 1,
-                    ClimbName = "El Capitan",
-                    Location = "Yosemite National Park",
-                    Coordinates = new Point(-119.638, 37.733) { SRID = 4326 },
-                    Url = "https://www.example.com/el-capitan",
-                    ClimbType = "Trad,Big Wall",
-                    Rating = "5.12d",
-                    Pitches = 30,
-                    Description = "One of the most iconic climbs in the world.",
-                    CreatedAt = DateTime.UtcNow.ToString("o"),
-                    UpdatedAt = DateTime.UtcNow.ToString("o")
-                },
-                new Climb
-                {
-                    ClimbId = 2,
-                    ClimbName = "The Nose",
-                    Location = "Yosemite National Park",
-                    Coordinates = new Point(-119.638, 37.733) { SRID = 4326 },
-                    Url = "https://www.example.com/the-nose",
-                    ClimbType = "Trad,Big Wall",
-                    Rating = "5.14a",
-                    Pitches = 31,
-                    Description = "A legendary climb with a rich history.",
-                    CreatedAt = DateTime.UtcNow.ToString("o"),
-                    UpdatedAt = DateTime.UtcNow.ToString("o")
-                },
-                new Climb
-                {
-                    ClimbId = 3,
-                    ClimbName = "Moonlight Buttress",
-                    Location = "Zion National Park",
-                    Coordinates = new Point(-113.026, 37.274) { SRID = 4326 },
-                    Url = "https://www.example.com/moonlight-buttress",
-                    ClimbType = "Trad",
-                    Rating = "5.12d",
-                    Pitches = 9,
-                    Description = "A stunning climb up a sandstone wall.",
-                    CreatedAt = DateTime.UtcNow.ToString("o"),
-                    UpdatedAt = DateTime.UtcNow.ToString("o")
+                    climbs.Add(new Climb
+                    {
+                        ClimbId = record.Id,
+                        ClimbName = record.Name,
+                        Location = record.Location,
+                        Coordinates = new Point(record.AreaLongitude, record.AreaLatitude) { SRID = 4326 },
+                        Url = record.Url,
+                        ClimbType = record.RouteType,
+                        Rating = record.Grade,
+                        Pitches = record.Pitches,
+                        CreatedAt = DateTime.UtcNow.ToString("o"),
+                        UpdatedAt = DateTime.UtcNow.ToString("o")
+                    });
                 }
-            );
+            }
+
+            return climbs;
         }
     }
 }

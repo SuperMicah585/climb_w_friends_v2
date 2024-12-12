@@ -9,7 +9,13 @@ import {
   addIcon,
 } from './styles';
 
-import { ChatObject, GeoJsonFeature, Tags, Micah } from '../types/interfaces';
+import {
+  ChatObject,
+  ClimbsTableResponse,
+  GeoJsonFeature,
+  Tags,
+  Micah,
+} from '../types/interfaces';
 import SearchDropDown from './searchDropDown';
 import { micah } from '../pages/mapComponents/mapObjects';
 import TagInput from './input';
@@ -17,11 +23,11 @@ import { useState, useRef, useEffect } from 'react';
 import TickClimbsComponent from '../pages/mapComponents/tickClimbsComponent';
 
 import { useFilterContext } from '../pages/filterProvider';
-type ClimbTagItem = [Tags, string];
+type ClimbTagItem = [Tags, number];
 
 interface ClimbModalBarProps {
   tagInputCallBack: (item: string) => void;
-  climbObject: GeoJsonFeature;
+  climbObject: ClimbsTableResponse;
   tagObject: Tags[];
   handleTagSelect: (item: ClimbTagItem) => void;
   featureTagObject: TempDic;
@@ -29,7 +35,7 @@ interface ClimbModalBarProps {
   setClimbNameForChatCallBack: (climbName: string) => void;
   setClimbGradeForChatCallBack: (climbGrade: string) => void;
   setClimbChatForChatCallBack: (climbConversation: ChatObject[]) => void;
-  setClimbObject: React.Dispatch<React.SetStateAction<GeoJsonFeature[]>>;
+  setClimbObject: React.Dispatch<React.SetStateAction<ClimbsTableResponse[]>>;
   setTickOverlayDisplayTrigger: React.Dispatch<React.SetStateAction<number>>;
 }
 type TempDic = {
@@ -51,7 +57,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
 }) => {
   const [dropDownToggle, setDropDownToggle] = useState<boolean>(false);
   const [isClimbTicked, setisClimbTicked] = useState(false);
-  const [configToggle, setConfigToggle] = useState<string>('');
+  const [configToggle, setConfigToggle] = useState<number>(0);
   const [dropDownItemsState, setDropDownItemsState] = useState<boolean>(false);
   const tagInputRef = useRef(null);
 
@@ -87,13 +93,13 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
     };
   }, [tickButtonDropDown, tickButtonRef]);
 
-  const removeOrAddClimb = (id: string, name: string, action: string) => {
+  const removeOrAddClimb = (id: number, name: string, action: string) => {
     /* setClimbsArray(prev=>prev.filter((mapItem)=>
     mapItem.climber_names.length===0?true:false))*/
     if (action === 'remove') {
       setClimbObject((prev) => {
         const tmpArray = prev.map((item) =>
-          item.id === id
+          item.climbId === id
             ? {
                 ...item,
                 climber_names: item.climber_names.filter(
@@ -112,7 +118,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
     if (action === 'add') {
       setClimbObject((prev) =>
         prev.map((item) =>
-          item.id === id
+          item.climbId === id
             ? {
                 ...item,
                 climber_names: [...item.climber_names, name],
@@ -125,10 +131,10 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
 
   return (
     <div className="absolute right-2 top-0 flex items-center gap-2">
-      {configToggle === climbObject.id ? (
+      {configToggle === climbObject.climbId ? (
         <div className="flex h-12 items-center">
           <div
-            onClick={() => setConfigToggle('')}
+            onClick={() => setConfigToggle(0)}
             className="text-white hover:cursor-pointer hover:text-violet-500"
           >
             {expandArrowIcon}{' '}
@@ -157,30 +163,30 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
                 {tagObject.length > 0 ? (
                   tagObject.filter(
                     (tagObj) =>
-                      !featureTagObject[climbObject.id]?.some(
-                        (tag) => tag?.id === tagObj.id,
+                      !featureTagObject[climbObject.climbId]?.some(
+                        (tag) => tag?.tagId === tagObj.tagId,
                       ),
                   ).length > 0 ? (
                     tagObject
                       .filter(
                         (tagObj) =>
-                          !featureTagObject[climbObject.id]?.some(
-                            (tag) => tag?.id === tagObj.id,
+                          !featureTagObject[climbObject.climbId]?.some(
+                            (tag) => tag?.tagId === tagObj.tagId,
                           ),
                       )
                       .map((tagObj) => (
                         <div
                           onClick={() => {
-                            handleTagSelect([tagObj, climbObject.id]);
+                            handleTagSelect([tagObj, climbObject.climbId]);
                             setDropDownToggle(false);
                           }}
                           className={dropDownStyles}
-                          key={tagObj.id} // Use tagObj.id for unique keys
+                          key={tagObj.tagId} // Use tagObj.id for unique keys
                         >
                           <div className="flex flex-col gap-2 p-2">
                             <div>
                               <div className="flex gap-2 font-semibold">
-                                <div> {tagObj.tag} </div>
+                                <div> {tagObj.tagName} </div>
                               </div>
                             </div>
                           </div>
@@ -222,8 +228,8 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
           <div
             onClick={() => {
               chatDisplayTriggerCallBack();
-              setClimbNameForChatCallBack(climbObject.name); //also used for ticks. Change name to be more accurate
-              setClimbGradeForChatCallBack(climbObject.grade);
+              setClimbNameForChatCallBack(climbObject.climbName); //also used for ticks. Change name to be more accurate
+              setClimbGradeForChatCallBack(climbObject.rating);
               setClimbChatForChatCallBack(climbObject.conversation);
             }}
             className="cursor-pointer rounded-full p-1 text-blue-500 hover:bg-slate-500 hover:opacity-75"
@@ -244,7 +250,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
           <div
             onClick={() =>
               removeOrAddClimb(
-                climbObject.id,
+                climbObject.climbId,
                 micah.name,
                 climbObject.climber_names.includes(micah.name)
                   ? 'remove'
@@ -260,7 +266,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
         </div>
       ) : (
         <div
-          onClick={() => setConfigToggle(climbObject.id)}
+          onClick={() => setConfigToggle(climbObject.climbId)}
           className="flex h-12 items-center text-white hover:cursor-pointer hover:text-violet-500"
         >
           {' '}

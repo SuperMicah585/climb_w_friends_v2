@@ -20,6 +20,20 @@ namespace ClimbWithFriendsAPI.Controllers
             _context = context;
         }
 
+    //api/Climbs/mic
+        [HttpGet("ListClimbs/{name}")]
+        public async Task<ActionResult<IEnumerable<Climb>>> GetClimbsByName(String name)
+        {
+            // Get maps associated with the user
+        var users = await _context.Climbs
+            .Where(c => c.ClimbName.Contains(name))  // Filter by the given mapId
+            .ToListAsync();
+
+
+
+            return Ok(users);
+        }
+
         //// GET: api/Climbs
         //[HttpGet]
         //public async Task<ActionResult<IEnumerable<Climb>>> GetClimbs()

@@ -88,4 +88,20 @@ const removeTagFromMap = async (mapId: number, tagId: number) => {
   }
 };
 
-export { createTag, removeTagFromMap };
+const retrieveClimbs = async (searchString: string) => {
+  const url = `http://localhost:5074/api/Climbs/ListClimbs/${searchString}`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const json = await response.json();
+    // Update the specific object at the given index in the array
+    return json;
+  } catch (error: any) {
+    console.error(error.message);
+  }
+};
+
+export { retrieveClimbs, createTag, removeTagFromMap };

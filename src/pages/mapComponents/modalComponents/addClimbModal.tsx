@@ -7,8 +7,8 @@ import {
   deleteTagItem,
   ClimbTagItem,
   TempDic,
+  ClimbsTableResponse,
 } from '../../../types/interfaces';
-import { ClimbsTableResponse } from '../../../types/interfaces';
 import InputComponent from '../../../reusableComponents/input';
 import SearchDropDown from '../../../reusableComponents/searchDropDown';
 import ZincModal from '../../../reusableComponents/genericModal';
@@ -16,15 +16,16 @@ import { useState, useRef, useEffect } from 'react';
 import { dropDownStyles } from '../../../reusableComponents/styles';
 import PurpleButton from '../../../reusableComponents/genericButton';
 import ClimbModalBar from '../../../reusableComponents/climbModalBar';
-import { tagsObject, exampleTagOnClimb, micah } from '../mapObjects';
 import Tooltip from '../../../reusableComponents/toolTip';
 import { newWindowIcon, minusIcon } from '../../../reusableComponents/styles';
 import TickOverlay from '../tickOverlay';
+import { retrieveClimbs } from '../mapApiRequests';
 
 const AddClimbModal: React.FC<AddClimbsModalProps> = ({
   closeAddClimbsModalCallBack,
   location,
   routeType,
+  mapId,
 }) => {
   const [searchResults, setsearchResults] = useState<ClimbsTableResponse[]>([]);
   const [toggleSearchDropDown, setToggleSearchDropDown] =
@@ -32,6 +33,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
   const [climbsArray, setClimbsArray] = useState<ClimbsTableResponse[]>([]);
   const [featureTagObject, setFeatureTagObject] = useState<TempDic>({});
   const [tagObject, setTagObject] = useState<Tags[]>([]);
+  const [tagsOnMount, setTagsOnMount] = useState<Tags[]>([]);
   const [tagInput, setTagInput] = useState<string>('');
   const [climbNameForChat, setClimbNameForChat] = useState('');
   const [displayTrigger, setDisplayTrigger] = useState(0);
@@ -64,7 +66,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
       if (prev[item[0]] && prev[item[0]].length > 0) {
         return {
           ...prev,
-          [item[0]]: prev[item[0]].filter((tag) => tag?.id !== item[1]),
+          [item[0]]: prev[item[0]].filter((tag) => tag?.tagId !== item[1]),
         };
       } else {
         return prev;
@@ -77,11 +79,26 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
   };
 
   useEffect(() => {
-    setTagObject(tagsObject);
-  }, [tagsObject]);
+    const retrieveTagsOnMap = async (mapId: number) => {
+      const url = `http://localhost:5074/api/Tags/ByMap/${mapId}`;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+
+        const json = await response.json();
+        // Update the specific object at the given index in the array
+        setTagsOnMount(json);
+      } catch (error: any) {
+        console.error(error.message);
+      }
+    };
+    retrieveTagsOnMap(mapId);
+  }, [mapId]);
 
   useEffect(() => {
-    setTagObject(tagsObject.filter((item) => item.tag.includes(tagInput)));
+    setTagObject(tagsOnMount.filter((item) => item.tagName.includes(tagInput)));
   }, [tagInput]);
 
   const setToggleSearchDropDownCallBack = (booleanValue: boolean) => {
@@ -93,18 +110,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
       return setsearchResults([]);
     }
 
-    const { data, error }: { data: ClimbsTableResponse[] | null; error: any } =
-      await supabase
-        .from('climbs_test')
-        .select('*')
-        .ilike('name', `%${query}%`)
-        .ilike('Location', `%${location}%`)
-        .ilike('Route Type', `%${routeType}%`)
-        .limit(10);
-    if (error) {
-      console.error('Error fetching climbs:', error);
-      return;
-    }
+    const data = await retrieveClimbs(query);
 
     if (data) {
       setsearchResults(data);
@@ -132,8 +138,8 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
     });
   };
 
-  const mp_page = (item: GeoJsonFeature) => {
-    const url = item.URL;
+  const mp_page = (item: ClimbsTableResponse) => {
+    const url = item.url;
     window.open(url, '_blank'); // Open in a new tab
   };
 
@@ -181,7 +187,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
                 searchResults
                   .filter((item) =>
                     climbsArray.length > 0
-                      ? !climbsArray.some((x) => x.id === item.id)
+                      ? !climbsArray.some((x) => x.climbId === item.climbId)
                       : true,
                   )
                   .map((item) => (
@@ -191,21 +197,21 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
                         setToggleSearchDropDown(false);
                       }}
                       className={dropDownStyles}
-                      key={item.id}
+                      key={item.climbId}
                     >
                       <div className="flex flex-col gap-2 p-2">
                         <div>
                           <div className="flex gap-2 font-semibold">
-                            <div> {item.name} </div>
-                            <div> {item.grade} </div>
+                            <div> {item.climbName} </div>
+                            <div> {item.rating} </div>
                           </div>
                           <div className="text-xs font-thin italic">
                             {' '}
-                            {item['Route Type']}{' '}
+                            {item.climbType}{' '}
                           </div>
                         </div>
 
-                        <div className="text-xs font-thin">{item.Location}</div>
+                        <div className="text-xs font-thin">{item.location}</div>
                       </div>
                     </div>
                   ))
@@ -227,7 +233,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
         <div className="flex w-full flex-col overflow-y-scroll pb-12">
           {climbsArray.map((item) => (
             <div
-              key={item.id}
+              key={item.climbId}
               className="relative mt-5 flex flex-col gap-2 rounded-md bg-zinc-800 p-10 text-black shadow-sm shadow-violet-200"
             >
               <div
@@ -239,14 +245,12 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
               </div>
 
               <div className="mt-5 flex gap-5 font-semibold text-white">
-                <div>{item.name}</div>
+                <div>{item.climbName}</div>
                 <div className="white border-r"></div>
-                <div>{item.grade}</div>
+                <div>{item.rating}</div>
               </div>
-              <div className="text-sm italic text-white">
-                {item['Route Type']}
-              </div>
-              <div className="text-xs text-white">{item.Location}</div>
+              <div className="text-sm italic text-white">{item.climbType}</div>
+              <div className="text-xs text-white">{item.location}</div>
 
               <div className="mt-2 flex h-7 items-center gap-2 text-xs font-bold text-white">
                 Climbers:
@@ -257,17 +261,17 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
 
               <div className="mt-2 flex h-7 w-2/3 flex-wrap items-center gap-2 text-xs font-bold text-white">
                 Tags:
-                {featureTagObject[item.id]?.length > 0
-                  ? featureTagObject[item.id]?.map((tagsOnClimb) => (
+                {featureTagObject[item.climbId]?.length > 0
+                  ? featureTagObject[item.climbId]?.map((tagsOnClimb) => (
                       <Tooltip
                         deleteItemCallBack={deleteTagCallBack}
-                        item={[item.id, tagsOnClimb?.id]}
+                        item={[item.climbId, tagsOnClimb?.tagId]}
                       >
                         <div
-                          key={tagsOnClimb?.id}
+                          key={tagsOnClimb?.tagId}
                           className="rounded-md bg-green-800 p-1 text-white"
                         >
-                          {tagsOnClimb?.tag}
+                          {tagsOnClimb?.tagName}
                         </div>
                       </Tooltip>
                     ))

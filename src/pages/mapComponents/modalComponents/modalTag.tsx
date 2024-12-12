@@ -25,7 +25,7 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
 
   const newTag = async () => {
     const addTag = await createTag(tagName, mapId);
-    console.log(addTag);
+
     //Request to DB will be created
     setModifiedTags((prev) => {
       return [...prev, addTag];
@@ -42,7 +42,6 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
         }
 
         const json = await response.json();
-        console.log(json, 'response!');
         // Update the specific object at the given index in the array
         setModifiedTags(json);
       } catch (error: any) {
@@ -138,12 +137,13 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
                 <div className="font-semibold"> Tags</div>
                 <div className="flex flex-wrap gap-2">
                   {modifiedTags?.map((item) => (
-                    <Tooltip deleteItemCallBack={deleteTagCallBack} item={item}>
+                    <Tooltip
+                      key={item.tagId}
+                      deleteItemCallBack={deleteTagCallBack}
+                      item={item}
+                    >
                       {' '}
-                      <div
-                        key={item.tagId}
-                        className="flex cursor-pointer rounded-md bg-green-800 p-1 text-center text-sm hover:opacity-75"
-                      >
+                      <div className="flex cursor-pointer rounded-md bg-green-800 p-1 text-center text-sm hover:opacity-75">
                         {item.tagName}{' '}
                       </div>{' '}
                     </Tooltip>
