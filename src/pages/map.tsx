@@ -269,6 +269,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
           routeType={climbTypeDropDownValue}
           location={usStateDictionary[stateDropDownName]}
           closeAddClimbsModalCallBack={closeAddClimbsModalCallBack}
+          mapId={mapIdNumber}
         />
       ) : null}
 

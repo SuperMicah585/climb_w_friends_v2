@@ -1,22 +1,22 @@
 export interface ClimbsTableResponse {
-  id: number;
-  name: string;
-  Location: string;
-  URL: string;
-  'AVG STARS': number;
-  'Your Stars': number;
-  'Route Type': string;
-  grade: string;
-  Pitches: number;
-  Length: string;
-  'Area Latitude': number;
-  'Area Longitude': number;
+  climbId: number;
+  climbName: string;
+  location: string;
+  url: string;
+  avgStars: number;
+  climbType: string;
+  rating: string;
+  pitches: number;
+  areaLatitude: number;
+  areaLongitude: number;
+  coordinates: number[];
 }
 
 export interface AddClimbsModalProps {
   location: string;
   routeType: string;
   closeAddClimbsModalCallBack: (trigger: boolean) => void;
+  mapId: number;
 }
 
 export type TempDic = {
@@ -25,7 +25,7 @@ export type TempDic = {
 
 export type deleteTagItem = [string, number];
 
-export type ClimbTagItem = [Tags, string];
+export type ClimbTagItem = [Tags, number];
 
 export interface Micah {
   name: string;
@@ -41,10 +41,10 @@ export interface Tags {
   associatedAt?: string;
 }
 export interface GeoJsonFeature {
-  id: string;
+  climbId: string;
   climber_names: string[];
-  name: string;
-  grade: string;
+  climbName: string;
+  rating: string;
   tags: Tags[];
   conversation: ChatObject[];
 }

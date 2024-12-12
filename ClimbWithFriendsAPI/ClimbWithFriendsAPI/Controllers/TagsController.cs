@@ -21,7 +21,7 @@ namespace ClimbWithFriendsAPI.Controllers
             _context = context;
         }
 
-                public async Task<ActionResult<Map>> GetTag(int id)
+                public async Task<ActionResult<Tag>> GetTag(int id)
             {
                 var tag = await _context.Tags.FindAsync(id);
                 if (tag == null)
@@ -32,10 +32,10 @@ namespace ClimbWithFriendsAPI.Controllers
             }
 
         [HttpGet("ByMap/{id}")]
-        public async Task<ActionResult<IEnumerable<Tag>>> GetTagsByMapId(int id)
+        public async Task<ActionResult<IEnumerable<Tag>>> GetTagsBy(int id)
         {
             var tags = await _context.MapToTags
-                .Where(mt => mt.MapId == id) // Filter by the given mapId
+                .Where(mt => mt. == id) // Filter by the given 
                 .Join(_context.Tags,         // Join with the Tags table
                     mt => mt.TagId,           // MapToTags.TagId
                     t => t.TagId,             // Tags.TagId
@@ -74,16 +74,16 @@ namespace ClimbWithFriendsAPI.Controllers
             }
 
             // Check if the map exists
-           var map = await _context.Maps.FindAsync(payload.MapId);
+           var map = await _context.Maps.FindAsync(payload.);
     if (map == null)
     {
-        return NotFound($"Map with ID {payload.MapId} does not exist.");
+        return NotFound($"Map with ID {payload.} does not exist.");
     }
 
             // Add the user-to-map association
             var newAssociation = new MapToTag
             {
-                MapId = payload.MapId,
+                 = payload.,
                 TagId = tagId,
                 AssociatedAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")
             };
@@ -95,13 +95,13 @@ namespace ClimbWithFriendsAPI.Controllers
         }
 
 
-[HttpDelete("{tagId}/Maps/{mapId}")]
-public async Task<ActionResult> RemoveTagFromMap(int mapId, int tagId)
+[HttpDelete("{tagId}/Maps/{}")]
+public async Task<ActionResult> RemoveTagFromMap(int , int tagId)
 {
     // Validate input
-    if (mapId <= 0 || tagId<=0)
+    if ( <= 0 || tagId<=0)
     {
-        return BadRequest("Invalid mapId or tagId.");
+        return BadRequest("Invalid  or tagId.");
     }
 
     // Check if the tag-map association exists
@@ -114,7 +114,7 @@ public async Task<ActionResult> RemoveTagFromMap(int mapId, int tagId)
     // If both are null, nothing to delete
     if (tagMapAssociation == null && tagAssociation == null)
     {
-        return NotFound($"No association found for Tag ID {tagId} on Map ID {mapId}.");
+        return NotFound($"No association found for Tag ID {tagId} on Map ID {}.");
     }
 
     // Remove the entities if they exist

@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v8.0": {
       "ClimbWithFriendsAPI/1.0.0": {
         "dependencies": {
+          "CsvHelper": "33.0.1",
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "8.0.11",
           "Microsoft.EntityFrameworkCore": "8.0.10",
           "Microsoft.EntityFrameworkCore.Tools": "8.0.10",
@@ -20,6 +21,14 @@
         },
         "runtime": {
           "ClimbWithFriendsAPI.dll": {}
+        }
+      },
+      "CsvHelper/33.0.1": {
+        "runtime": {
+          "lib/net8.0/CsvHelper.dll": {
+            "assemblyVersion": "33.0.0.0",
+            "fileVersion": "33.0.1.24"
+          }
         }
       },
       "Humanizer/2.14.1": {
@@ -1796,6 +1805,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "CsvHelper/33.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-fev4lynklAU2A9GVMLtwarkwaanjSYB4wUqO2nOJX5hnzObORzUqVLe+bDYCUyIIRQM4o5Bsq3CcyJR89iMmEQ==",
+      "path": "csvhelper/33.0.1",
+      "hashPath": "csvhelper.33.0.1.nupkg.sha512"
     },
     "Humanizer/2.14.1": {
       "type": "package",

@@ -46,7 +46,7 @@ const SearchDropDown: React.FC<DropDownProps> = ({
   return dropDownStatus ? (
     <div
       ref={dropdownRef}
-      className={`${maxHeight + ' ' + width} overflow-hidden overflow-y-scroll rounded-md ${textColor ? textColor : 'text-white'} ${bgColor ? bgColor + ' ' + 'shadow-lg' : 'border border-slate-500 bg-zinc-900'} ${bgOpacity ? bgOpacity : 'bg-opacity-90'}`}
+      className={`${maxHeight + ' ' + width} overflow-hidden overflow-y-scroll rounded-md ${textColor ? textColor : 'text-white'} ${bgColor ? bgColor + ' ' + 'shadow-lg' : 'border border-slate-500 bg-zinc-900'} ${bgOpacity ? bgOpacity : ''}`}
     >
       {children}
     </div>

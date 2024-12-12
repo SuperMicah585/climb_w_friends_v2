@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "CfNSaR2pQ6s=",
+  "dgSpecHash": "vTVFh53ccbc=",
   "success": true,
   "projectFilePath": "/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/ClimbWithFriendsAPI.csproj",
   "expectedPackageFiles": [
+    "/Users/mphelps/.nuget/packages/csvhelper/33.0.1/csvhelper.33.0.1.nupkg.sha512",
     "/Users/mphelps/.nuget/packages/humanizer/2.14.1/humanizer.2.14.1.nupkg.sha512",
     "/Users/mphelps/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/Users/mphelps/.nuget/packages/humanizer.core.af/2.14.1/humanizer.core.af.2.14.1.nupkg.sha512",

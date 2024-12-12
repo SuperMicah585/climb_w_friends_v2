@@ -494,3 +494,4 @@ C:/Users/benla/Desktop/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAP
 /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/obj/Debug/net8.0/ClimbWithFriendsAPI.pdb
 /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/obj/Debug/net8.0/ClimbWithFriendsAPI.genruntimeconfig.cache
 /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/obj/Debug/net8.0/ref/ClimbWithFriendsAPI.dll
+/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/bin/Debug/net8.0/CsvHelper.dll
