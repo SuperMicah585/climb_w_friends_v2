@@ -89,7 +89,7 @@ const removeTagFromMap = async (mapId: number, tagId: number) => {
 };
 
 const retrieveClimbs = async (searchString: string) => {
-  const url = `http://localhost:5074/api/Climbs/ListClimbs/${searchString}`;
+  const url = `http://localhost:5074/api/Climbs/List/${searchString}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -104,4 +104,20 @@ const retrieveClimbs = async (searchString: string) => {
   }
 };
 
-export { retrieveClimbs, createTag, removeTagFromMap };
+const retrieveFeatures = async (mapId: number) => {
+  const url = `http://localhost:5074/api/Features/ByMap/${mapId}`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const json = await response.json();
+    // Update the specific object at the given index in the array
+    return json;
+  } catch (error: any) {
+    console.error(error.message);
+  }
+};
+
+export { retrieveClimbs, createTag, removeTagFromMap, retrieveFeatures };

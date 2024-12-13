@@ -53,6 +53,13 @@ public class TagConfiguration : IEntityTypeConfiguration<Tag>
                 TagId = 105,
                 CreatedAt = "2024-11-05T13:00:00Z",
                 UpdatedAt = "2024-11-14T13:00:00Z"
+            },
+            new Tag
+            {
+                TagName = "coolio",
+                TagId = 106,
+                CreatedAt = "2024-11-05T13:00:00Z",
+                UpdatedAt = "2024-11-14T13:00:00Z"
             }
         );
     }

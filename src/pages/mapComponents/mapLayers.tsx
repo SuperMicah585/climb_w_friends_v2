@@ -1,8 +1,11 @@
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { testData } from './mapObjects';
 import * as turf from '@turf/turf';
-import { ClimbsTableResponse, GeoJsonFeature } from '../../types/interfaces';
+import {
+  ClimbsTableResponse,
+  GeoJsonFeature,
+  GeoJsonObject,
+} from '../../types/interfaces';
 
 export const createMarker = (
   lat: number,
@@ -53,25 +56,27 @@ export const createMarker = (
 export const createClimbingShapes = (
   map: any,
   clickedFeatureClimbCallBack: (climbData: GeoJsonFeature[]) => void,
+  features: GeoJsonObject,
 ) => {
   map.current?.on('load', () => {
-    displayLayersInitial(map, clickedFeatureClimbCallBack);
+    displayLayersInitial(map, clickedFeatureClimbCallBack, features);
   });
 };
 
 const displayLayersInitial = (
   map: any,
   clickedFeatureClimbCallBack: (climbData: GeoJsonFeature[]) => void,
+  features: GeoJsonObject,
 ) => {
   // Only add the source once
   if (!map.current?.getSource('geojson-data')) {
     map.current?.addSource('geojson-data', {
       type: 'geojson',
-      data: testData, // Your GeoJSON data
+      data: features, // Your GeoJSON data
     });
   }
 
-  testData.features.forEach((feature, index) => {
+  features.features.forEach((feature, index) => {
     const fillLayerId = `geojson-fill-layer-${index}`;
     const circleLayerId = `geojson-circle-layer-${index}`;
     const layerId = `geojson-layer-${index}`;
@@ -95,7 +100,6 @@ const displayLayersInitial = (
                   },
                   properties: {
                     climbs: feature.properties.climbs,
-                    total_climbers: feature.properties.total_climbers,
                   },
                 },
               ],
@@ -129,7 +133,6 @@ const displayLayersInitial = (
                   },
                   properties: {
                     climbs: feature.properties.climbs,
-                    total_climbers: feature.properties.total_climbers,
                   },
                 },
               ],
@@ -164,7 +167,6 @@ const displayLayersInitial = (
                   },
                   properties: {
                     climbs: feature.properties.climbs,
-                    total_climbers: feature.properties.total_climbers,
                   },
                 },
               ],
@@ -237,7 +239,6 @@ const displayLayersInitial = (
                   },
                   properties: {
                     climbs: feature.properties.climbs,
-                    total_climbers: feature.properties.total_climbers,
                   },
                 },
               ],
@@ -261,6 +262,7 @@ const displayLayersInitial = (
   });
 };
 
+/*
 const shapeColorHelperFunction = (
   climberCountTotal: number,
   climberonFeatureArray: GeoJsonFeature[],
@@ -268,7 +270,7 @@ const shapeColorHelperFunction = (
   //could take a while
   const climberSet = new Set();
   for (const item of climberonFeatureArray) {
-    for (const climber of item.climber_names) {
+    for (const climber of item?.climber_names) {
       climberSet.add(climber);
     }
   }
@@ -286,9 +288,9 @@ const shapeColorHelperFunction = (
     return 'purple';
   }
 };
-
+*/
 export const filterClimbsOnMap = () => {};
-
+/*
 export const shapeColors = (map: any, climberCountTotal: number) => {
   testData.features.forEach((feature, index) => {
     switch (feature.geometry.type) {
@@ -328,9 +330,13 @@ export const shapeColors = (map: any, climberCountTotal: number) => {
     }
   });
 };
-
-export const updateLayerVisibility = (map: any, displayBoolean: boolean) => {
-  testData.features.forEach((feature, index) => {
+*/
+export const updateLayerVisibility = (
+  map: any,
+  displayBoolean: boolean,
+  geoJsonObject: GeoJsonObject,
+) => {
+  geoJsonObject.features.forEach((feature, index) => {
     if (feature.geometry.type === 'Polygon') {
       const fillLayerId = `geojson-fill-layer-${index}`;
       const circleLayerId = `geojson-circle-layer-${index}`;

@@ -32,6 +32,7 @@ const GradeDropDowns = () => {
           dropDownItems={climbTypeForFilter}
           initDropDownItem={'None'}
           dropDownWidth={'w-[84px] '}
+          dropDownHeight={'max-h-32'}
         />
       </div>
       {currentClimbType !== 'None' && (
@@ -47,6 +48,7 @@ const GradeDropDowns = () => {
             }
             initDropDownItem={currentClimbType === 'Boulder' ? 'V1' : '5.9'}
             dropDownWidth={'w-[84px] '}
+            dropDownHeight={'max-h-32'}
           />
         </div>
       )}
@@ -63,6 +65,7 @@ const GradeDropDowns = () => {
             }
             initDropDownItem={currentClimbType === 'Boulder' ? 'V1' : '5.9'}
             dropDownWidth={'w-[84px] '}
+            dropDownHeight={'max-h-32'}
           />
         </div>
       )}

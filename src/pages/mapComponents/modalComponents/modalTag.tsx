@@ -143,7 +143,7 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
                       item={item}
                     >
                       {' '}
-                      <div className="flex cursor-pointer rounded-md bg-green-800 p-1 text-center text-sm hover:opacity-75">
+                      <div className="flex cursor-pointer rounded-md border-2 border-green-900 bg-green-600 p-1 text-center text-sm hover:opacity-75">
                         {item.tagName}{' '}
                       </div>{' '}
                     </Tooltip>

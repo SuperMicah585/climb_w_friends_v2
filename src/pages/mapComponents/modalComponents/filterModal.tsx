@@ -20,11 +20,11 @@ import {
 
 interface FilterModalProps {
   closeTagModalCallBack: (value: boolean) => void;
-  tagsOnMap: Tags[];
+  mapId: number;
 }
 const FilterModal: React.FC<FilterModalProps> = ({
   closeTagModalCallBack,
-  tagsOnMap,
+  mapId,
 }) => {
   const { setFilterFunctions, filters } = useFilterContext();
   const [searchString, setSearchString] = useState<string>('');
@@ -62,11 +62,11 @@ const FilterModal: React.FC<FilterModalProps> = ({
 
   const modifyTagArray = (item: Tags) => {
     setTagsOnMount((prev) =>
-      prev.filter((prevItem) => item.id !== prevItem.id),
+      prev.filter((prevItem) => item.tagId !== prevItem.tagId),
     );
   };
   const handleClickedTag = (item: Tags | friendsObject) => {
-    if ('tag' in item) {
+    if ('tagName' in item) {
       modifyTagArray(item);
     } else if ('userName' in item) {
       modifyFriendArray(item);
@@ -79,7 +79,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
     //if  selectedFilter === 'tags'
     if (selectedFilter === 'tag') {
       let filteredTags = tagsOnMount.filter((item) =>
-        item.tag.includes(searchString),
+        item.tagName.includes(searchString),
       );
       setSearchResults(filteredTags);
     } else if (selectedFilter === 'climber') {
@@ -94,23 +94,40 @@ const FilterModal: React.FC<FilterModalProps> = ({
   }, [searchString, tagsOnMount, friendsOnMap, selectedFilter]);
 
   useEffect(() => {
-    setTagsOnMount(tagsOnMap);
-  }, []);
+    const retrieveTagsOnMap = async (mapId: number) => {
+      const url = `http://localhost:5074/api/Tags/ByMap/${mapId}`;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+
+        const json = await response.json();
+        // Update the specific object at the given index in the array
+        setTagsOnMount(json);
+      } catch (error: any) {
+        console.error(error.message);
+      }
+    };
+    retrieveTagsOnMap(mapId);
+  }, [mapId]);
 
   const deleteTagCallBack = (item: Tags | friendsObject) => {
-    const inputItemType = 'tag' in item ? 'tag' : 'friend';
-    if (inputItemType === 'tag') {
+    const inputItemType = 'tagName' in item ? 'tagName' : 'friend';
+    if (inputItemType === 'tagName') {
       setTagsOnMount((prev) => [...prev, item as Tags]);
     } else if (inputItemType === 'friend') {
       setFriendsOnMap((prev) => [...prev, item as friendsObject]);
     }
     setFiltersOnMap((prev) =>
       prev.filter((prevItem) => {
-        const prevItemType = 'tag' in prevItem ? 'tag' : 'friend';
+        const prevItemType = 'tagName' in prevItem ? 'tagName' : 'friend';
 
-        if (inputItemType === 'tag' && prevItemType === 'tag') {
-          const condition = prevItem.id === item.id;
-          return !(condition && (prevItem as Tags).tag === (item as Tags).tag);
+        if (inputItemType === 'tagName' && prevItemType === 'tagName') {
+          const condition = prevItem.tagId === item.tagId;
+          return !(
+            condition && (prevItem as Tags).tagName === (item as Tags).tagName
+          );
         } else if (inputItemType === 'friend' && prevItemType === 'friend') {
           const condition = prevItem.id === item.id;
           return !(
@@ -209,11 +226,11 @@ const FilterModal: React.FC<FilterModalProps> = ({
                 {' '}
                 <div
                   key={index}
-                  className={`flex cursor-pointer rounded-md ${'firstName' in item ? 'bg-violet-800' : 'bg-green-800'} p-1 text-center text-sm hover:opacity-75`}
+                  className={`flex cursor-pointer rounded-md ${'firstName' in item ? 'border-violet-900 bg-violet-600' : 'border-green-900 bg-green-600'} border-2 p-1 text-center text-sm hover:opacity-75`}
                 >
                   {'firstName' in item
                     ? item.firstName + ' ' + item.lastName
-                    : item.tag}
+                    : item.tagName}
                 </div>{' '}
               </Tooltip>
             ))}
@@ -258,7 +275,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
                         {' '}
                         {'firstName' in item
                           ? item.firstName + ' ' + item.lastName
-                          : item.tag}{' '}
+                          : item.tagName}{' '}
                       </div>
                     </div>
                   </div>

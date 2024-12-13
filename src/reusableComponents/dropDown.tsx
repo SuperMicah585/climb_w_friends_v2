@@ -12,6 +12,7 @@ interface DropDownProps {
   selectedDropDownItemCallBack: (item: string) => void;
   dropDownButtonStyle: string;
   dropDownWidth: string;
+  dropDownHeight?: string;
 }
 const DropDown: React.FC<DropDownProps> = ({
   dropDownItems,
@@ -19,6 +20,7 @@ const DropDown: React.FC<DropDownProps> = ({
   initDropDownItem,
   dropDownButtonStyle,
   dropDownWidth,
+  dropDownHeight,
 }) => {
   const [dropDownItemsState, setDropDownItemsState] = useState<boolean>(false);
   const [stateDropDownItem, setStateDropDownItem] = useState<string>('');
@@ -53,7 +55,7 @@ const DropDown: React.FC<DropDownProps> = ({
     return (
       <div
         ref={dropDownItemsRef}
-        className={basicDropDownStyleContainer(dropDownWidth)}
+        className={basicDropDownStyleContainer(dropDownWidth, dropDownHeight)}
       >
         {dropDownItems.map((item) =>
           item !== stateDropDownItem ? (

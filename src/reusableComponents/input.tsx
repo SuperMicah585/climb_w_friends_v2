@@ -21,7 +21,7 @@ const InputComponent = forwardRef<HTMLInputElement, InputComponentProps>(
   ) => {
     const [query, setQuery] = useState<string>('');
     const [debouncedQuery, setDebouncedQuery] = useState<string>(query);
-    console.log(bgColor, 'sdfsdfsdfsd');
+
     useEffect(() => {
       const handler = setTimeout(() => {
         setDebouncedQuery(query);

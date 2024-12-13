@@ -1,23 +1,46 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.Linq; // For FirstOrDefault
+using NetTopologySuite.Geometries; // Requires NetTopologySuite for geometry support
+using Newtonsoft.Json; // For JSON serialization
 
 namespace ClimbWithFriendsAPI.Data
 {
     public class Feature
     {
-        public int Id { get; set; }
+        public int FeatureId { get; set; }
+        public int MapId { get; set; }
+        public string Type { get; set; }
 
-        // Geometry properties for storing latitude and longitude
-        public decimal Latitude { get; set; }
-        public decimal Longitude { get; set; }
+        // Backing field for coordinates
+        private List<Point> _coordinatesList;
 
-        // Properties for climb data
-        public string ClimbId { get; set; }
-        public string ClimbName { get; set; }
-        public string Grade { get; set; }
-        public List<string> ClimberNames { get; set; }
+        // Ignoring the coordinates list in JSON output
+        [JsonIgnore]
+        public List<Point> CoordinatesList
+        {
+            get => _coordinatesList;
+            set => _coordinatesList = value ?? new List<Point>();
+        }
+
+        // SimplifiedCoordinates will be included in JSON output
+        [JsonProperty("coordinates")]
+        public double[] SimplifiedCoordinates
+        {
+            get
+            {
+                var simplifiedCoords = _coordinatesList?.FirstOrDefault() is Point firstPoint
+                    ? new[] { firstPoint.X, firstPoint.Y }
+                    : null;
+
+                // Print statement for testing
+       
+
+                return simplifiedCoords;
+            }
+        }
+
+        public List<int> Climbs { get; set; }
         public string CreatedAt { get; set; }
         public string UpdatedAt { get; set; }
-
-
     }
 }
