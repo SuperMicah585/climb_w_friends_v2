@@ -40,13 +40,24 @@ export interface Tags {
   tagName: string;
   associatedAt?: string;
 }
+
+export interface GeoJsonObject {
+  type: string;
+  features: GeoJsonFeature[];
+}
 export interface GeoJsonFeature {
-  climbId: string;
-  climber_names: string[];
-  climbName: string;
-  rating: string;
-  tags: Tags[];
-  conversation: ChatObject[];
+  geometry: Geometry;
+  properties: Properties;
+  type: string;
+}
+
+interface Properties {
+  climbs: number[];
+}
+
+interface Geometry {
+  coordinates: number[];
+  type: string;
 }
 
 export interface ChatProps {

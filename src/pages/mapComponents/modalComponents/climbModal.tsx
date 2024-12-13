@@ -6,27 +6,24 @@ import {
   deleteTagItem,
   ClimbTagItem,
 } from '../../../types/interfaces';
-import {
-  minusIcon,
-  addIcon,
-  newWindowIcon,
-} from '../../../reusableComponents/styles';
+import { newWindowIcon } from '../../../reusableComponents/styles';
 import ModalSearch from './modalSearch';
 import ModalChat from '../chatOverlay';
 import ZincModal from '../../../reusableComponents/genericModal';
 import Tooltip from '../../../reusableComponents/toolTip';
-import { tagsObject, exampleTagOnClimb, micah } from '../mapObjects';
-import { useState, useEffect, RefObject } from 'react';
+import { useState, useEffect } from 'react';
 import ClimbModalBar from '../../../reusableComponents/climbModalBar';
 import TickOverlay from '../tickOverlay';
 export type ClimbModalProps = {
   clickedFeatureClimbs: GeoJsonFeature[];
   closeModalCallBack: (trigger: boolean) => void;
+  mapId: number;
 };
 
 const ClimbModal: React.FC<ClimbModalProps> = ({
   clickedFeatureClimbs,
   closeModalCallBack = () => {},
+  mapId,
 }) => {
   const [routeFilterString, setRouteFilterString] = useState<string>('');
   const [sortString, setSortString] = useState('Order Grade ASC');
@@ -40,7 +37,8 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   const [tickOverlayDisplayTrigger, setTickOverlayDisplayTrigger] =
     useState<number>(0);
   const [tickinfo, setTickInfo] = useState({});
-  //const [tickDropDownToggle,setTickDropDownToggle] = useState<boolean>(false)
+  const [tagsOnMount, setTagsOnMount] = useState<Tags[]>([]);
+  console.log(clickedFeatureClimbs, 'clicked climbs');
 
   const [featureTagObject, setFeatureTagObject] = useState<TempDic>({});
 
@@ -92,7 +90,13 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   }, [clickedFeatureClimbs]);
 
   useEffect(() => {
-    setTagObject(tagsObject.filter((item) => item.tag.includes(tagInput)));
+    if (tagInput.length > 0) {
+      setTagObject(
+        tagsOnMount.filter((item) => item.tagName.includes(tagInput)),
+      );
+    } else {
+      setTagObject(tagsOnMount);
+    }
   }, [tagInput]);
 
   const mp_page = (item: GeoJsonFeature) => {
@@ -101,20 +105,25 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   };
 
   useEffect(() => {
-    setTagObject(tagsObject);
-  }, [tagsObject]);
+    const retrieveTagsOnMap = async (mapId: number) => {
+      const url = `http://localhost:5074/api/Tags/ByMap/${mapId}`;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
 
-  useEffect(() => {
-    let tempDic: TempDic = {};
+        const json = await response.json();
+        // Update the specific object at the given index in the array
 
-    for (let item of climbObject) {
-      tempDic[item.id] = exampleTagOnClimb.filter(
-        (tagItem) => tagItem.climbID === item.id,
-      );
-    }
-
-    setFeatureTagObject(tempDic);
-  }, [exampleTagOnClimb]);
+        setTagsOnMount(json);
+        setTagObject(json);
+      } catch (error: any) {
+        console.error(error.message);
+      }
+    };
+    retrieveTagsOnMap(mapId);
+  }, [mapId]);
 
   const deleteTagCallBack = (item: deleteTagItem) => {
     setFeatureTagObject((prev) => {
@@ -163,23 +172,23 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
           <div className="w-full rounded-md bg-zinc-900">
             {climbObject
               .filter((item: GeoJsonFeature) =>
-                item.name
+                item?.climbName
                   .toLowerCase()
                   .includes(routeFilterString.toLowerCase()),
               )
 
               .sort((a, b) => {
                 if (sortString === 'Order Route ASC') {
-                  return a.name.localeCompare(b.name); // Sort alphabetically by name
+                  return a.climbName.localeCompare(b.climbName); // Sort alphabetically by name
                 } else if (sortString === 'Order Route DESC') {
-                  return b.name.localeCompare(a.name); // Sort in reverse alphabetical order
+                  return b.climbName.localeCompare(a.climbName); // Sort in reverse alphabetical order
                 }
                 return 0;
               })
 
               .map((item: GeoJsonFeature) => (
                 <div
-                  key={item.id}
+                  key={item.climbId}
                   className="relative mt-5 flex flex-col gap-2 rounded-md bg-zinc-800 p-10 text-black shadow-sm shadow-violet-200"
                 >
                   <div
@@ -206,9 +215,9 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                   />
 
                   <div className="mt-5 flex gap-5 font-semibold text-white">
-                    <div>{item.name}</div>
+                    <div>{item.climbId}</div>
                     <div className="white border-r"></div>
-                    <div>{item.grade}</div>
+                    <div>{item.climbId}</div>
                   </div>
 
                   <div className="text-sm italic text-white">Sport</div>
@@ -218,27 +227,30 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                     &gt; Olympic National Park &gt; Olympics & Pacific Coast
                     &gt; Washington
                   </div>
-                  <div className="mt-2 flex h-7 items-center gap-2 text-xs font-bold text-white">
+                  <div className="mt-2 flex h-8 items-center gap-2 text-xs font-bold text-white">
                     Climbers:
                     {item.climber_names.map((item, index) => (
-                      <div key={index} className="rounded-lg bg-violet-800 p-1">
+                      <div
+                        key={index}
+                        className="rounded-md border-2 border-violet-900 bg-violet-600 p-1"
+                      >
                         {item}
                       </div>
                     ))}
                   </div>
-                  <div className="mt-2 flex h-7 w-2/3 flex-wrap items-center gap-2 text-xs font-bold text-white">
+                  <div className="mt-2 flex h-8 w-2/3 flex-wrap items-center gap-2 text-xs font-bold text-white">
                     Tags:
-                    {featureTagObject[item.id]?.length > 0
-                      ? featureTagObject[item.id]?.map((tagsOnClimb) => (
+                    {featureTagObject[item.climbId]?.length > 0
+                      ? featureTagObject[item.climbId]?.map((tagsOnClimb) => (
                           <Tooltip
                             deleteItemCallBack={deleteTagCallBack}
-                            item={[item.id, tagsOnClimb?.id]}
+                            item={[item.climbId, tagsOnClimb?.tagId]}
                           >
                             <div
                               key={tagsOnClimb?.id}
-                              className="rounded-md bg-green-800 p-1 text-white"
+                              className="rounded-md border-2 border-green-900 bg-green-600 p-1 text-white"
                             >
-                              {tagsOnClimb?.tag}
+                              {tagsOnClimb?.tagName}
                             </div>
                           </Tooltip>
                         ))

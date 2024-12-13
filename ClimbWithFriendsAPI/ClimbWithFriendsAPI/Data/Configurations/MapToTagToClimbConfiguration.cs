@@ -4,14 +4,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace YourProjectNamespace.Data.Configurations
 {
-    public class MapToTagConfiguration : IEntityTypeConfiguration<MapToTag>
+    public class MapToTagToClimbConfiguration : IEntityTypeConfiguration<MapToTagToClimb>
     {
-        public void Configure(EntityTypeBuilder<MapToTag> builder)
+        public void Configure(EntityTypeBuilder<MapToTagToClimb> builder)
         {
             builder.HasKey(mt => mt.Id);
 
             builder.Property(mt => mt.MapId).IsRequired();
             builder.Property(mt => mt.TagId).IsRequired();
+            builder.Property(mt => mt.ClimbId).IsRequired();
             builder.Property(mt => mt.AssociatedAt).IsRequired();
 
             // Define relationship
@@ -19,20 +20,21 @@ namespace YourProjectNamespace.Data.Configurations
                    .WithMany() // Assuming no back-reference in Map
                    .HasForeignKey(mt => mt.MapId);
 
-            builder.ToTable("MapToTags");
+            builder.ToTable("MapToTagsToCimbs");
 
             // Seed Data
             builder.HasData(
-                new MapToTag { Id = 1, MapId = 101, TagId = 101, AssociatedAt = "2024-12-01T10:00:00Z" },
-                new MapToTag { Id = 2, MapId = 102, TagId = 102, AssociatedAt = "2024-12-02T11:00:00Z" },
-                new MapToTag { Id = 3, MapId = 103, TagId = 103, AssociatedAt = "2024-12-03T12:00:00Z" },
-                new MapToTag { Id = 4, MapId = 104, TagId = 104, AssociatedAt = "2024-12-02T12:00:00Z" },
-                new MapToTag { Id = 5, MapId = 101, TagId = 102, AssociatedAt = "2024-12-03T14:00:00Z" },
-                new MapToTag { Id = 6, MapId = 105, TagId = 105, AssociatedAt = "2024-12-04T15:00:00Z" }
+                new MapToTagToClimb { Id = 1, MapId = 101, ClimbId = 6, TagId = 101, AssociatedAt = "2024-12-01T10:00:00Z" },
+                new MapToTagToClimb { Id = 2, MapId = 101, ClimbId = 5, TagId = 102, AssociatedAt = "2024-12-01T10:00:00Z" },
+                new MapToTagToClimb { Id = 3, MapId = 101, ClimbId = 4, TagId = 103, AssociatedAt = "2024-12-01T10:00:00Z" },
+                new MapToTagToClimb { Id = 4, MapId = 101, ClimbId = 3, TagId = 104, AssociatedAt = "2024-12-01T10:00:00Z" },
+                new MapToTagToClimb { Id = 5, MapId = 101, ClimbId = 2, TagId = 105, AssociatedAt = "2024-12-01T10:00:00Z" },
+                new MapToTagToClimb { Id = 6, MapId = 101, ClimbId = 1, TagId = 106, AssociatedAt = "2024-12-01T10:00:00Z" }
             );
         }
     }
 }
+
 
 
 

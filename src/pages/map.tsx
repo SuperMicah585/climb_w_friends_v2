@@ -6,7 +6,12 @@ import ActivityFeed from './mapComponents/activityFeed';
 import ClimbModal from './mapComponents/modalComponents/climbModal';
 import MapNavBar from './mapComponents/mapNavBar';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { ClimbsTableResponse, GeoJsonFeature, Tags } from '../types/interfaces';
+import {
+  ClimbsTableResponse,
+  GeoJsonFeature,
+  Tags,
+  GeoJsonObject,
+} from '../types/interfaces';
 import TagModal from './mapComponents/modalComponents/modalTag';
 import FilterModal from './mapComponents/modalComponents/filterModal';
 import TagOverlay from './mapComponents/modalComponents/tagOverlay';
@@ -21,8 +26,9 @@ import {
   createMarker,
   createClimbingShapes,
   updateLayerVisibility,
-  shapeColors,
+  //shapeColors,
 } from './mapComponents/mapLayers';
+import { retrieveFeatures } from './mapComponents/mapApiRequests';
 // Set Mapbox access token
 mapboxgl.accessToken = import.meta.env.VITE_MAP_BOX_KEY;
 
@@ -48,7 +54,6 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     useState<ClimbsTableResponse | null>(null);
   const { id } = useParams();
   const mapIdNumber = Number(id);
-  const [tickDisplayTrigger, setTickDisplayTrigger] = useState<number>(0);
   const [currentMarker, setCurrentMarker] = useState<any>(null);
   const [polygonOrCircleDisplay, setpolygonOrCircleDisplay] =
     useState<boolean>(false);
@@ -58,7 +63,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   >([]);
 
   const [addClimbsModalDisplay, setAddClimbsModalDisplay] = useState(false);
-
+  const [geoJsonObject, setGeoJsonObject] = useState<GeoJsonObject | {}>({});
   const [
     clickedFeatureModalTriggerBoolean,
     setClickedFeatureModalTriggerBoolean,
@@ -152,7 +157,13 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
       }
     });
 
-    createClimbingShapes(map, clickedFeatureClimbCallBack);
+    const renderFeatures = async () => {
+      const features = await retrieveFeatures(mapIdNumber);
+      createClimbingShapes(map, clickedFeatureClimbCallBack, features);
+      setGeoJsonObject(features);
+    };
+
+    renderFeatures();
     map.current?.addControl(new mapboxgl.NavigationControl(), 'bottom-left');
     return () => map.current?.remove(); // Clean up on unmount
   }, []);
@@ -179,13 +190,13 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
       }
     };
   }, []); // Only run once on mount
-
+  /*
   useEffect(() => {
     if (mapLoaded) {
       shapeColors(map, 2);
     }
   }, [mapLoaded]);
-
+*/
   useEffect(() => {
     if (selectedClimb && map?.current) {
       if (currentMarker) {
@@ -193,9 +204,9 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
       }
 
       const newMarker = createMarker(
-        selectedClimb['Area Latitude'],
-        selectedClimb['Area Longitude'],
-        selectedClimb.Route,
+        selectedClimb.areaLatitude,
+        selectedClimb.areaLongitude,
+        selectedClimb.climbName,
         map.current,
       );
 
@@ -204,10 +215,10 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   }, [selectedClimb]);
 
   useEffect(() => {
-    if (mapLoaded) {
-      updateLayerVisibility(map, polygonOrCircleDisplay);
+    if (mapLoaded && 'type' in geoJsonObject) {
+      updateLayerVisibility(map, polygonOrCircleDisplay, geoJsonObject);
     }
-  }, [polygonOrCircleDisplay, mapLoaded]);
+  }, [polygonOrCircleDisplay, mapLoaded, geoJsonObject]);
 
   useEffect(() => {
     // setClickedFeatureModalTrigger(prev=>prev+1)
@@ -250,6 +261,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
         <ClimbModal
           closeModalCallBack={closeModalCallBack}
           clickedFeatureClimbs={clickedFeatureClimbs}
+          mapId={mapIdNumber}
         />
       ) : null}
 
@@ -259,7 +271,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
 
       {filterModalDisplay ? (
         <FilterModal
-          tagsOnMap={tags}
+          mapId={mapIdNumber}
           closeTagModalCallBack={closeFilterModalCallBack}
         />
       ) : null}

@@ -380,8 +380,11 @@ export const climbTypeDropDownStyle =
 export const stateDropDownStyle =
   'bg-zinc-700 text-white font-semibold flex w-14 text-sm justify-between gap-1 items-center hover:opacity-75 cursor-pointer rounded-r-xl p-2 z-10';
 
-export const basicDropDownStyleContainer = (width: string) =>
-  `${width} border border-slate-500 text-white rounded-md bg-zinc-900 bg-opacity-90 max-h-48 overflow-y-scroll`;
+export const basicDropDownStyleContainer = (
+  width: string,
+  height: string = 'max-h-48',
+) =>
+  `${width} border border-slate-500 text-white rounded-md bg-zinc-900 bg-opacity-90 ${height} overflow-y-scroll`;
 
 export const searchDropDownStyleContainer =
   'w-14 border border-slate-500 rounded-md bg-zinc-900 bg-opacity-90 w-96 overflow-hidden max-h-48 overflow-y-scroll';

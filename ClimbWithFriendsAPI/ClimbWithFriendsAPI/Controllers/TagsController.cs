@@ -32,10 +32,10 @@ namespace ClimbWithFriendsAPI.Controllers
             }
 
         [HttpGet("ByMap/{id}")]
-        public async Task<ActionResult<IEnumerable<Tag>>> GetTagsBy(int id)
+        public async Task<ActionResult<IEnumerable<Tag>>> GetTagsByMapId(int id)
         {
-            var tags = await _context.MapToTags
-                .Where(mt => mt. == id) // Filter by the given 
+            var tags = await _context.MapToTagToClimbs
+                .Where(mt => mt.MapId == id) // Filter by the given mapId
                 .Join(_context.Tags,         // Join with the Tags table
                     mt => mt.TagId,           // MapToTags.TagId
                     t => t.TagId,             // Tags.TagId
@@ -74,38 +74,38 @@ namespace ClimbWithFriendsAPI.Controllers
             }
 
             // Check if the map exists
-           var map = await _context.Maps.FindAsync(payload.);
+           var map = await _context.Maps.FindAsync(payload.MapId);
     if (map == null)
     {
-        return NotFound($"Map with ID {payload.} does not exist.");
+        return NotFound($"Map with ID {payload.MapId} does not exist.");
     }
 
             // Add the user-to-map association
-            var newAssociation = new MapToTag
+            var newAssociation = new MapToTagToClimb
             {
-                 = payload.,
+                MapId = payload.MapId,
                 TagId = tagId,
                 AssociatedAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")
             };
 
-            _context.MapToTags.Add(newAssociation);
+            _context.MapToTagToClimbs.Add(newAssociation);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(AddTagToMap), new { tagId = tagId }, newAssociation);
         }
 
 
-[HttpDelete("{tagId}/Maps/{}")]
-public async Task<ActionResult> RemoveTagFromMap(int , int tagId)
+[HttpDelete("{tagId}/Maps/{mapId}")]
+public async Task<ActionResult> RemoveTagFromMap(int mapId, int tagId)
 {
     // Validate input
-    if ( <= 0 || tagId<=0)
+    if (mapId <= 0 || tagId<=0)
     {
-        return BadRequest("Invalid  or tagId.");
+        return BadRequest("Invalid mapId or tagId.");
     }
 
     // Check if the tag-map association exists
-    var tagMapAssociation = await _context.MapToTags
+    var tagMapAssociation = await _context.MapToTagToClimbs
         .FirstOrDefaultAsync(mt => mt.TagId == tagId);
 
     // Check if the tag itself exists
@@ -114,13 +114,13 @@ public async Task<ActionResult> RemoveTagFromMap(int , int tagId)
     // If both are null, nothing to delete
     if (tagMapAssociation == null && tagAssociation == null)
     {
-        return NotFound($"No association found for Tag ID {tagId} on Map ID {}.");
+        return NotFound($"No association found for Tag ID {tagId} on Map ID {mapId}.");
     }
 
     // Remove the entities if they exist
     if (tagMapAssociation != null)
     {
-        _context.MapToTags.Remove(tagMapAssociation);
+        _context.MapToTagToClimbs.Remove(tagMapAssociation);
     }
 
     if (tagAssociation != null)

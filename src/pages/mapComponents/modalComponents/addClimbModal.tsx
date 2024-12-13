@@ -44,7 +44,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
   const [tickinfo, setTickInfo] = useState({});
 
   const inputRef = useRef(null);
-  console.log(climbsArray);
+
   const setClimbNameForChatCallBack = (climbName: string) => {
     setClimbNameForChat(climbName);
   };
@@ -89,7 +89,9 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
 
         const json = await response.json();
         // Update the specific object at the given index in the array
+
         setTagsOnMount(json);
+        setTagObject(json);
       } catch (error: any) {
         console.error(error.message);
       }
@@ -98,7 +100,13 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
   }, [mapId]);
 
   useEffect(() => {
-    setTagObject(tagsOnMount.filter((item) => item.tagName.includes(tagInput)));
+    if (tagInput.length > 0) {
+      setTagObject(
+        tagsOnMount.filter((item) => item.tagName.includes(tagInput)),
+      );
+    } else {
+      setTagObject(tagsOnMount);
+    }
   }, [tagInput]);
 
   const setToggleSearchDropDownCallBack = (booleanValue: boolean) => {
@@ -252,14 +260,14 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
               <div className="text-sm italic text-white">{item.climbType}</div>
               <div className="text-xs text-white">{item.location}</div>
 
-              <div className="mt-2 flex h-7 items-center gap-2 text-xs font-bold text-white">
+              <div className="mt-2 flex h-8 items-center gap-2 text-xs font-bold text-white">
                 Climbers:
-                <div className="rounded-lg bg-violet-800 p-1">
+                <div className="rounded-md border-2 border-violet-900 bg-violet-600 p-1">
                   {item.climber_names.map((item) => item)}
                 </div>
               </div>
 
-              <div className="mt-2 flex h-7 w-2/3 flex-wrap items-center gap-2 text-xs font-bold text-white">
+              <div className="mt-2 flex h-8 w-2/3 flex-wrap items-center gap-2 text-xs font-bold text-white">
                 Tags:
                 {featureTagObject[item.climbId]?.length > 0
                   ? featureTagObject[item.climbId]?.map((tagsOnClimb) => (
@@ -269,7 +277,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
                       >
                         <div
                           key={tagsOnClimb?.tagId}
-                          className="rounded-md bg-green-800 p-1 text-white"
+                          className="rounded-md border-2 border-green-900 bg-green-600 p-1 text-white"
                         >
                           {tagsOnClimb?.tagName}
                         </div>

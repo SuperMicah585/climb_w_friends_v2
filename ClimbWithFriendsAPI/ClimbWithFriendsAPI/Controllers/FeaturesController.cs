@@ -41,6 +41,52 @@ namespace ClimbWithFriendsAPI.Controllers
         //    return feature;
         //}
 
+        ///Get: api/Features/ByMap/{mapId}
+[HttpGet("ByMap/{mapId}")]
+public async Task<ActionResult> ListFeatures(int mapId)
+{
+    // Initialize the GeoJSON shell
+    var geoJsonShell = new
+    {
+        type = "FeatureCollection",
+        features = new List<object>()
+    };
+
+    // Fetch the features associated with the given mapId
+    var features = await _context.Features
+                                .Where(f => f.MapId == mapId)
+                                .ToListAsync();
+
+    // Loop through each feature and add it to the GeoJSON structure
+    foreach (var feature in features)
+    {
+        var featureObject = new
+        {
+            Type = "Feature",
+            Properties = new
+            {
+                climbs = feature.Climbs
+            },
+            Geometry = new
+            {
+                type = "Point", // Assuming Point geometry type, adjust as needed
+                coordinates = feature.SimplifiedCoordinates // Adjusted to use the SimplifiedCoordinates property
+            }
+        };
+
+        geoJsonShell.features.Add(featureObject);
+    }
+
+    return Ok(geoJsonShell);
+}
+
+
+    
+}
+
+
+
+
         //// PUT: api/Features/5
         //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         //[HttpPut("{id}")]
@@ -99,9 +145,9 @@ namespace ClimbWithFriendsAPI.Controllers
         //    return NoContent();
         //}
 
-        private bool FeatureExists(int id)
-        {
-            return _context.Features.Any(e => e.Id == id);
-        }
+     //   private bool FeatureExists(int FeatureId)
+       // {
+         //   return _context.Features.Any(e => e.FeatureId == featureId);
+        //}
     }
-}
+

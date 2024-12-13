@@ -9,20 +9,13 @@ import {
   addIcon,
 } from './styles';
 
-import {
-  ChatObject,
-  ClimbsTableResponse,
-  GeoJsonFeature,
-  Tags,
-  Micah,
-} from '../types/interfaces';
+import { ChatObject, ClimbsTableResponse, Tags } from '../types/interfaces';
 import SearchDropDown from './searchDropDown';
 import { micah } from '../pages/mapComponents/mapObjects';
 import TagInput from './input';
 import { useState, useRef, useEffect } from 'react';
 import TickClimbsComponent from '../pages/mapComponents/tickClimbsComponent';
 
-import { useFilterContext } from '../pages/filterProvider';
 type ClimbTagItem = [Tags, number];
 
 interface ClimbModalBarProps {
