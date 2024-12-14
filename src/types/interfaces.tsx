@@ -51,6 +51,11 @@ export interface GeoJsonFeature {
   type: string;
 }
 
+export interface ClimbWithDependencies {
+  climb: ClimbsTableResponse;
+  tags: Tags[];
+}
+
 interface Properties {
   climbs: number[];
 }

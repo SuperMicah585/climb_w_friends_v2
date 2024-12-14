@@ -76,6 +76,8 @@ const displayLayersInitial = (
     });
   }
 
+  console.log(features, 'features');
+
   features.features.forEach((feature, index) => {
     const fillLayerId = `geojson-fill-layer-${index}`;
     const circleLayerId = `geojson-circle-layer-${index}`;

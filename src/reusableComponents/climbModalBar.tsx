@@ -9,7 +9,12 @@ import {
   addIcon,
 } from './styles';
 
-import { ChatObject, ClimbsTableResponse, Tags } from '../types/interfaces';
+import {
+  ChatObject,
+  ClimbsTableResponse,
+  Tags,
+  ClimbWithDependencies,
+} from '../types/interfaces';
 import SearchDropDown from './searchDropDown';
 import { micah } from '../pages/mapComponents/mapObjects';
 import TagInput from './input';
@@ -28,7 +33,7 @@ interface ClimbModalBarProps {
   setClimbNameForChatCallBack: (climbName: string) => void;
   setClimbGradeForChatCallBack: (climbGrade: string) => void;
   setClimbChatForChatCallBack: (climbConversation: ChatObject[]) => void;
-  setClimbObject: React.Dispatch<React.SetStateAction<ClimbsTableResponse[]>>;
+  setClimbObject: React.Dispatch<React.SetStateAction<ClimbWithDependencies[]>>;
   setTickOverlayDisplayTrigger: React.Dispatch<React.SetStateAction<number>>;
 }
 type TempDic = {
@@ -92,10 +97,10 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
     if (action === 'remove') {
       setClimbObject((prev) => {
         const tmpArray = prev.map((item) =>
-          item.climbId === id
+          item.climb.climbId === id
             ? {
                 ...item,
-                climber_names: item.climber_names.filter(
+                climber_names: item?.climber_names.filter(
                   (climber) => climber !== name,
                 ),
               }
@@ -103,7 +108,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
         );
 
         return tmpArray.filter((mapItem) =>
-          mapItem.climber_names.length === 0 ? false : true,
+          mapItem?.climber_names.length === 0 ? false : true,
         );
       });
     }
@@ -111,10 +116,10 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
     if (action === 'add') {
       setClimbObject((prev) =>
         prev.map((item) =>
-          item.climbId === id
+          item.climb.climbId === id
             ? {
                 ...item,
-                climber_names: [...item.climber_names, name],
+                climber_names: [...item?.climber_names, name],
               }
             : item,
         ),
@@ -245,14 +250,14 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
               removeOrAddClimb(
                 climbObject.climbId,
                 micah.name,
-                climbObject.climber_names.includes(micah.name)
+                climbObject.climber_names?.includes(micah.name)
                   ? 'remove'
                   : 'add',
               )
             }
-            className={`cursor-pointer rounded-full p-1 hover:bg-slate-500 hover:opacity-75 ${climbObject.climber_names.includes(micah.name) ? 'text-red-300' : 'text-green-300'}`}
+            className={`cursor-pointer rounded-full p-1 hover:bg-slate-500 hover:opacity-75 ${climbObject.climber_names?.includes(micah.name) ? 'text-red-300' : 'text-green-300'}`}
           >
-            {climbObject.climber_names.includes(micah.name)
+            {climbObject.climber_names?.includes(micah.name)
               ? minusIcon
               : addIcon}
           </div>

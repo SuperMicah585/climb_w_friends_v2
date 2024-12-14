@@ -138,6 +138,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   };
 
   useEffect(() => {
+    console.log('inside');
     if (mapContainer.current) {
       map.current = new mapboxgl.Map({
         container: mapContainer.current, // Container for the map
@@ -286,7 +287,11 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
       ) : null}
 
       {allClimbsModalDisplay ? (
-        <AllClimbsModal closeModalCallBack={closeAllClimbsModalCallBack} />
+        <AllClimbsModal
+          mapId={mapIdNumber}
+          climbsObject={geoJsonObject}
+          closeModalCallBack={closeAllClimbsModalCallBack}
+        />
       ) : null}
 
       {displayTagOverlay ? <TagOverlay /> : null}
