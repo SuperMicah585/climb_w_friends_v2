@@ -19,15 +19,13 @@ if (root !== null) {
         redirect_uri: 'http://localhost:5173/maps',
       }}
     >
-      <StrictMode>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/Maps/:id" element={<App />} />
-            <Route path="/Maps" element={<Home />} />
-          </Routes>
-        </BrowserRouter>
-      </StrictMode>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/Maps/:id" element={<App />} />
+          <Route path="/Maps" element={<Home />} />
+        </Routes>
+      </BrowserRouter>
       ,
     </Auth0Provider>,
   );

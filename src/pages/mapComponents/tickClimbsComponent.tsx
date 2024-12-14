@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import DownDrop from '../../reusableComponents/downDrop';
-import { GeoJsonFeature } from '../../types/interfaces';
+import { GeoJsonFeature, ClimbWithDependencies } from '../../types/interfaces';
 
 interface TickClimbsComponent {
   setisClimbTicked: React.Dispatch<React.SetStateAction<boolean>>;
   setDropDownItemsState: boolean;
   setDropDownItemsStateCallBack: (value: boolean) => void;
-  climbObject: GeoJsonFeature;
+  climbObject: ClimbWithDependencies;
   setTickOverlayDisplayTrigger: React.Dispatch<React.SetStateAction<number>>;
   setClimbNameForChatCallBack: (climbName: string) => void;
   setClimbGradeForChatCallBack: (climbGrade: string) => void;
@@ -26,8 +26,8 @@ const TickClimbsComponent: React.FC<TickClimbsComponent> = ({
   const setSelectedTickCallBack = (item: string) => {
     setisClimbTicked(true);
     if (item === 'Tick With Details') {
-      setClimbGradeForChatCallBack(climbObject.grade);
-      setClimbNameForChatCallBack(climbObject.name);
+      setClimbGradeForChatCallBack(climbObject.climb.rating);
+      setClimbNameForChatCallBack(climbObject.climb.climbName);
       setTickOverlayDisplayTrigger((prev) => prev + 1);
     }
     //console.log(climbObject)

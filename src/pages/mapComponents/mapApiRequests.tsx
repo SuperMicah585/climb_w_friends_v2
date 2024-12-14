@@ -120,4 +120,26 @@ const retrieveFeatures = async (mapId: number) => {
   }
 };
 
-export { retrieveClimbs, createTag, removeTagFromMap, retrieveFeatures };
+const retrieveClimbDependencies = async (climbId: number) => {
+  const url = `http://localhost:5074/api/Climbs/${climbId}/Dependencies`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const json = await response.json();
+    // Update the specific object at the given index in the array
+    return json;
+  } catch (error: any) {
+    console.error(error.message);
+  }
+};
+
+export {
+  retrieveClimbs,
+  createTag,
+  removeTagFromMap,
+  retrieveFeatures,
+  retrieveClimbDependencies,
+};

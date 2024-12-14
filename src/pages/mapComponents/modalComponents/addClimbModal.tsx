@@ -117,6 +117,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
     if (query.length === 0) {
       return setsearchResults([]);
     }
+    console.log(query);
 
     const data = await retrieveClimbs(query);
 

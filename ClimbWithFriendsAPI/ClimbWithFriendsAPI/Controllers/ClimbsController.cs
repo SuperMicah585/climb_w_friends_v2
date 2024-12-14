@@ -25,16 +25,53 @@ namespace ClimbWithFriendsAPI.Controllers
         public async Task<ActionResult<IEnumerable<Climb>>> GetClimbsByName(String name)
         {
             // Get maps associated with the user
-var users = await _context.Climbs
-    .Where(c => c.ClimbName.Contains(name)) // Filter by the given mapId
-    .Take(5) // Limit the results to 20
-    .ToListAsync();
+    var users = await _context.Climbs
+        .Where(c => c.ClimbName.ToLower().Contains(name.ToLower())) // Case-insensitive search
+        .Take(5) // Limit the results to 20
+        .ToListAsync();
 
 
 
 
             return Ok(users);
         }
+
+[HttpGet("{climbId}/Dependencies")]
+public async Task<ActionResult<FeatureDependencies>> GetClimbDependenciesById(int climbId)
+{
+    // Step 1: Fetch the climb object
+    var climb = await _context.Climbs
+        .FirstOrDefaultAsync(c => c.ClimbId == climbId); // Get the climb
+
+    if (climb == null)
+    {
+        return NotFound($"Climb with ID {climbId} not found.");
+    }
+
+    // Step 2: Filter MapToTagToClimbs for the given climbId
+    var tagIds = await _context.MapToTagToClimbs
+        .Where(mt => mt.ClimbId == climbId)
+        .Select(mt => mt.TagId)
+        .ToListAsync(); // Extract TagIds
+
+    // Step 3: Get the tags associated with the filtered MapToTagToClimbs
+    var tags = await _context.Tags
+        .Where(t => tagIds.Contains(t.TagId))
+        .ToListAsync(); // Fetch matching tags
+
+    // Step 4: Combine the climb and tags into FeatureDependencies
+    var featureDependencies = new FeatureDependencies
+    {
+        Climb = climb,
+        Tags = tags // Include all tags in an array
+    };
+
+    return Ok(featureDependencies);
+}
+
+
+
+        
 
         //// GET: api/Climbs
         //[HttpGet]

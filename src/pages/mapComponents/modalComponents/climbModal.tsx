@@ -5,6 +5,7 @@ import {
   TempDic,
   deleteTagItem,
   ClimbTagItem,
+  ClimbWithDependencies,
 } from '../../../types/interfaces';
 import { newWindowIcon } from '../../../reusableComponents/styles';
 import ModalSearch from './modalSearch';
@@ -14,8 +15,9 @@ import Tooltip from '../../../reusableComponents/toolTip';
 import { useState, useEffect } from 'react';
 import ClimbModalBar from '../../../reusableComponents/climbModalBar';
 import TickOverlay from '../tickOverlay';
+import { retrieveClimbDependencies } from '../mapApiRequests';
 export type ClimbModalProps = {
-  clickedFeatureClimbs: GeoJsonFeature[];
+  clickedFeatureClimbs: number[];
   closeModalCallBack: (trigger: boolean) => void;
   mapId: number;
 };
@@ -33,12 +35,11 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   const [climbChatForChat, setClimbChatForChat] = useState<ChatObject[]>([]);
   const [tagInput, setTagInput] = useState<string>('');
   const [tagObject, setTagObject] = useState<Tags[]>([]);
-  const [climbObject, setClimbObject] = useState<GeoJsonFeature[]>([]);
+  const [climbObject, setClimbObject] = useState<ClimbWithDependencies[]>([]);
   const [tickOverlayDisplayTrigger, setTickOverlayDisplayTrigger] =
     useState<number>(0);
   const [tickinfo, setTickInfo] = useState({});
   const [tagsOnMount, setTagsOnMount] = useState<Tags[]>([]);
-  console.log(clickedFeatureClimbs, 'clicked climbs');
 
   const [featureTagObject, setFeatureTagObject] = useState<TempDic>({});
 
@@ -86,7 +87,23 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   };
 
   useEffect(() => {
-    setClimbObject(clickedFeatureClimbs);
+    const fetchClimbs = async () => {
+      try {
+        const results = await Promise.all(
+          clickedFeatureClimbs.map((climbId) =>
+            retrieveClimbDependencies(climbId),
+          ),
+        );
+
+        setClimbObject(results);
+      } catch (error) {
+        console.error('Error fetching climbs:', error);
+      }
+    };
+
+    if (clickedFeatureClimbs.length > 0) {
+      fetchClimbs();
+    }
   }, [clickedFeatureClimbs]);
 
   useEffect(() => {
@@ -99,9 +116,8 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
     }
   }, [tagInput]);
 
-  const mp_page = (item: GeoJsonFeature) => {
-    const url = `https://www.mountainproject.com/route/${item.id}/${encodeURIComponent(item.name)}`;
-    window.open(url, '_blank'); // Open in a new tab
+  const mp_page = (item: ClimbWithDependencies) => {
+    window.open(item.climb.url, '_blank'); // Open in a new tab
   };
 
   useEffect(() => {
@@ -171,24 +187,24 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
         <div>
           <div className="w-full rounded-md bg-zinc-900">
             {climbObject
-              .filter((item: GeoJsonFeature) =>
-                item?.climbName
+              .filter((item: ClimbWithDependencies) =>
+                item.climb?.climbName
                   .toLowerCase()
                   .includes(routeFilterString.toLowerCase()),
               )
 
               .sort((a, b) => {
                 if (sortString === 'Order Route ASC') {
-                  return a.climbName.localeCompare(b.climbName); // Sort alphabetically by name
+                  return a.climb?.climbName.localeCompare(b.climb?.climbName); // Sort alphabetically by name
                 } else if (sortString === 'Order Route DESC') {
-                  return b.climbName.localeCompare(a.climbName); // Sort in reverse alphabetical order
+                  return b.climb?.climbName.localeCompare(a.climb?.climbName); // Sort in reverse alphabetical order
                 }
                 return 0;
               })
 
-              .map((item: GeoJsonFeature) => (
+              .map((item: ClimbWithDependencies) => (
                 <div
-                  key={item.climbId}
+                  key={item.climb?.climbId}
                   className="relative mt-5 flex flex-col gap-2 rounded-md bg-zinc-800 p-10 text-black shadow-sm shadow-violet-200"
                 >
                   <div
@@ -204,7 +220,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                     featureTagObject={featureTagObject}
                     handleTagSelect={handleTagSelect}
                     tagObject={tagObject}
-                    climbObject={item}
+                    climbObject={item.climb}
                     setClimbObject={setClimbObject}
                     setClimbNameForChatCallBack={setClimbNameForChatCallBack}
                     setClimbGradeForChatCallBack={setClimbGradeForChatCallBack}
@@ -215,21 +231,21 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                   />
 
                   <div className="mt-5 flex gap-5 font-semibold text-white">
-                    <div>{item.climbId}</div>
+                    <div>{item.climb.climbName}</div>
                     <div className="white border-r"></div>
-                    <div>{item.climbId}</div>
+                    <div>{item.climb.rating}</div>
                   </div>
 
-                  <div className="text-sm italic text-white">Sport</div>
+                  <div className="text-sm italic text-white">
+                    {item.climb.climbType}
+                  </div>
 
                   <div className="text-xs text-white">
-                    Roadside Boulder &gt; Jefferson Lake &gt; Olympic Bouldering
-                    &gt; Olympic National Park &gt; Olympics & Pacific Coast
-                    &gt; Washington
+                    {item.climb.location}
                   </div>
                   <div className="mt-2 flex h-8 items-center gap-2 text-xs font-bold text-white">
                     Climbers:
-                    {item.climber_names.map((item, index) => (
+                    {item.climber_names?.map((item, index) => (
                       <div
                         key={index}
                         className="rounded-md border-2 border-violet-900 bg-violet-600 p-1"
@@ -240,17 +256,17 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                   </div>
                   <div className="mt-2 flex h-8 w-2/3 flex-wrap items-center gap-2 text-xs font-bold text-white">
                     Tags:
-                    {featureTagObject[item.climbId]?.length > 0
-                      ? featureTagObject[item.climbId]?.map((tagsOnClimb) => (
+                    {item.tags?.length > 0
+                      ? item.tags.map((tagsOnClimb) => (
                           <Tooltip
                             deleteItemCallBack={deleteTagCallBack}
-                            item={[item.climbId, tagsOnClimb?.tagId]}
+                            item={tagsOnClimb}
                           >
                             <div
-                              key={tagsOnClimb?.id}
+                              key={tagsOnClimb.tagId}
                               className="rounded-md border-2 border-green-900 bg-green-600 p-1 text-white"
                             >
-                              {tagsOnClimb?.tagName}
+                              {tagsOnClimb.tagName}
                             </div>
                           </Tooltip>
                         ))

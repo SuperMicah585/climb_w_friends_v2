@@ -43,4 +43,12 @@ namespace ClimbWithFriendsAPI.Data
         public string CreatedAt { get; set; }
         public string UpdatedAt { get; set; }
     }
+
+
+public class FeatureDependencies
+{
+    public List<Tag> Tags { get; set; } // Collection of tags
+    public Climb Climb { get; set; }    // Single climb
+}
+
 }
