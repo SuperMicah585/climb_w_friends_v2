@@ -4,6 +4,8 @@ using NetTopologySuite.Geometries;
 using YourProjectNamespace.Data.Configurations;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
+
+
 namespace ClimbWithFriendsAPI.Data
 {
     public class AppDbContext : DbContext
@@ -30,7 +32,8 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         public DbSet<Feature> Features { get; set; }
         public DbSet<Climb> Climbs { get; set; }
         public DbSet<Tag> Tags { get; set; }
-        public DbSet<MapToTagToClimb> MapToTagToClimbs { get; set; }
+        public DbSet<MapToTag> MapToTags { get; set; }
+        public DbSet<ClimbToTag> ClimbToTags { get; set; }
         public DbSet<MapToFeatureToClimb> MapToFeatureToClimbs { get; set; }
 protected override void OnModelCreating(ModelBuilder modelBuilder)
 {
@@ -39,7 +42,8 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
     modelBuilder.ApplyConfiguration(new MapToUserConfiguration());
     modelBuilder.ApplyConfiguration(new ClimbConfiguration());
     modelBuilder.ApplyConfiguration(new TagConfiguration());
-    modelBuilder.ApplyConfiguration(new MapToTagToClimbConfiguration());
+    modelBuilder.ApplyConfiguration(new MapToTagConfiguration());
+    modelBuilder.ApplyConfiguration(new ClimbToTagConfiguration());
     modelBuilder.ApplyConfiguration(new MapToFeatureToClimbConfiguration());
     modelBuilder.ApplyConfiguration(new FeatureConfiguration());
 

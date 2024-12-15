@@ -18,7 +18,11 @@ namespace ClimbWithFriendsAPI.Data
         public string? UpdatedAt { get; set; }
 
 
+
+        public ICollection<ClimbToTag>? ClimbToTags { get; set; }
+        public ICollection<MapToTag>? MapToTags { get; set; }
     }
 }
+
 
 //down the road discuss if we want to assign user id to created maps

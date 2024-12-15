@@ -1,0 +1,34 @@
+Date : 2024-12-13 18:05:38
+Directory : /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Migrations
+Total : 7 files,  4202 codes, -228 comments, 43 blanks, all 4017 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| C#       |          7 |      4,202 |       -228 |         43 |      4,017 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                        | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                           |          7 |      4,202 |       -228 |         43 |      4,017 |
+| . (Files)                                                                                                                   |          3 |      4,566 |          6 |        196 |      4,768 |
+| ..                                                                                                                          |          4 |       -364 |       -234 |       -153 |       -751 |
+| ../Controllers                                                                                                              |          4 |       -364 |       -234 |       -153 |       -751 |
++-----------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                                                    | language | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/ClimbsController.cs                   | C#       |        -57 |        -80 |        -33 |       -170 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/FeaturesController.cs                 | C#       |        -51 |        -74 |        -31 |       -156 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/MapsController.cs                     | C#       |       -157 |        -69 |        -61 |       -287 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/TagsController.cs                     | C#       |        -99 |        -11 |        -28 |       -138 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Migrations/20241213050016_AddFeatures.Designer.cs | C#       |      2,107 |          2 |         84 |      2,193 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Migrations/20241213050016_AddFeatures.cs          | C#       |        354 |          3 |         28 |        385 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Migrations/AppDbContextModelSnapshot.cs           | C#       |      2,105 |          1 |         84 |      2,190 |
+| Total                                                                                                                       |          |      4,202 |       -228 |         43 |      4,017 |
++-----------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

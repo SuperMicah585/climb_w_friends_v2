@@ -11,6 +11,8 @@ public class TagConfiguration : IEntityTypeConfiguration<Tag>
         builder.Property(t => t.TagName)
             .IsRequired()
             .HasMaxLength(10);
+
+
    
 
         // Seed data

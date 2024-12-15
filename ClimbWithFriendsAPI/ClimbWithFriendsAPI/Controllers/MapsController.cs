@@ -138,7 +138,7 @@ namespace ClimbWithFriendsAPI.Controllers
 
         // TODO: validate user exists before updating data. need to add user integration before we can do this though.
         [HttpPost("{mapId}/users")]
-        public async Task<ActionResult> AddUserToMap(int mapId, [FromBody] MapToUserPayload payload)
+        public async Task<ActionResult> AddUserToMap(int mapId, [FromBody] MapToUserDTO payload)
         {
             // Validate the request payload
             if (payload == null)

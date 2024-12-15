@@ -1,0 +1,17 @@
+"filename", "language", "C#", "comment", "blank", "total"
+"/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/AppDbContext.cs", "C#", 41, 5, 10, 56
+"/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Climb.cs", "C#", 70, 0, 8, 78
+"/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/ClimbConfiguration.cs", "C#", 52, 3, 8, 63
+"/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/FeatureConfiguration.cs", "C#", 97, 1, 6, 104
+"/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/MapConfiguration.cs", "C#", 57, 1, 5, 63
+"/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/MapToFeatureToClimbConfiguration.cs", "C#", 29, 2, 5, 36
+"/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/MapToTagToClimbConfiguration.cs", "C#", 29, 16, 11, 56
+"/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/MapToUserConfiguration.cs", "C#", 27, 16, 9, 52
+"/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/TagConfiguration.cs", "C#", 57, 1, 9, 67
+"/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Feature.cs", "C#", 39, 4, 12, 55
+"/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Map.cs", "C#", 15, 0, 3, 18
+"/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/MapToFeatureToClimb.cs", "C#", 12, 1, 4, 17
+"/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/MapToTagToClimb.cs", "C#", 12, 1, 4, 17
+"/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/MapToUser.cs", "C#", 11, 1, 3, 15
+"/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Tag.cs", "C#", 16, 1, 7, 24
+"Total", "-", 564, 53, 104, 721

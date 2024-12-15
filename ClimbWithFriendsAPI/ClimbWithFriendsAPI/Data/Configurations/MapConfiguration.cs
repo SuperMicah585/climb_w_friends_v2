@@ -15,6 +15,8 @@ public class MapConfiguration : IEntityTypeConfiguration<Map>
         builder.Property(m => m.Description)
             .HasMaxLength(500);
 
+
+
         // Seed data
         builder.HasData(
             new Map

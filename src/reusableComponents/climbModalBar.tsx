@@ -28,7 +28,7 @@ interface ClimbModalBarProps {
   climbObject: ClimbsTableResponse;
   tagObject: Tags[];
   handleTagSelect: (item: ClimbTagItem) => void;
-  featureTagObject: TempDic;
+  featureTagObject: Tags[];
   chatDisplayTriggerCallBack: () => void;
   setClimbNameForChatCallBack: (climbName: string) => void;
   setClimbGradeForChatCallBack: (climbGrade: string) => void;
@@ -161,14 +161,14 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
                 {tagObject.length > 0 ? (
                   tagObject.filter(
                     (tagObj) =>
-                      !featureTagObject[climbObject.climbId]?.some(
+                      !featureTagObject.some(
                         (tag) => tag?.tagId === tagObj.tagId,
                       ),
                   ).length > 0 ? (
                     tagObject
                       .filter(
                         (tagObj) =>
-                          !featureTagObject[climbObject.climbId]?.some(
+                          !featureTagObject.some(
                             (tag) => tag?.tagId === tagObj.tagId,
                           ),
                       )

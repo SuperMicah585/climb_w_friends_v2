@@ -1,6 +1,6 @@
 ﻿namespace ClimbWithFriendsAPI.DTOs
 {
-    public class MapToUserPayload
+    public class MapToUserDTO
     {
         public String UserId { get; set; }
     }
@@ -13,7 +13,7 @@ public class UpdateMapDto
     public string Description { get; set; } // For updating Description
 }
 
-public class MapToTagPayload
+public class MapToTagDTO
 {
     public int MapId { get; set; } // For updating Description
 }
