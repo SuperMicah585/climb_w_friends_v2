@@ -166,6 +166,7 @@ const retrieveFeatures = async (mapId: number) => {
     }
 
     const json = await response.json();
+   
     // Update the specific object at the given index in the array
     return json;
   } catch (error: any) {
@@ -189,6 +190,40 @@ const retrieveClimbDependencies = async (climbId: number) => {
   }
 };
 
+const retrieveFeatureDependencies = async (featureId: number) => {
+  const url = `http://localhost:5074/api/Features/${featureId}/Dependencies`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const json = await response.json();
+    // Update the specific object at the given index in the array
+    return json;
+  } catch (error: any) {
+    console.error(error.message);
+  }
+};
+
+const retrieveFeatureDependenciesByMap = async (mapId: number) => {
+  const url = `http://localhost:5074/api/Features/ByMapId/${mapId}/Dependencies`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const json = await response.json();
+    // Update the specific object at the given index in the array
+    return json;
+  } catch (error: any) {
+    console.error(error.message);
+  }
+};
+
+
+
 export {
   retrieveClimbs,
   createTag,
@@ -196,5 +231,7 @@ export {
   retrieveFeatures,
   retrieveClimbDependencies,
   addTagToClimb,
-  removeTagFromClimb
+  removeTagFromClimb,
+  retrieveFeatureDependencies,
+  retrieveFeatureDependenciesByMap
 };

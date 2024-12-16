@@ -1,31 +1,25 @@
 import ClimbModal from './climbModal';
 import { useEffect, useState } from 'react';
-import { GeoJsonObject, GeoJsonFeature } from '../../../types/interfaces';
+import { GeoJsonObject, GeoJsonFeature,ClimbWithDependencies } from '../../../types/interfaces';
+import { retrieveFeatureDependenciesByMap } from '../mapApiRequests';
 interface AllClimbsProps {
   closeModalCallBack: (trigger: boolean) => void;
-  climbsObject: GeoJsonObject | {};
   mapId: number;
 }
 const AllClimbsModal: React.FC<AllClimbsProps> = ({
   closeModalCallBack,
-  climbsObject,
   mapId,
 }) => {
-  const [climbsOnMap, setClimbsOnMap] = useState<number[] | []>([]);
+  const [climbsOnMap, setClimbsOnMap] = useState<ClimbWithDependencies[]>([]);
 
   useEffect(() => {
-    const arrayOfClimbs: number[] = [];
-    console.log(climbsObject);
-    if ('type' in climbsObject) {
-      climbsObject.features.forEach((feature: GeoJsonFeature) => {
-        feature.properties.climbs.forEach((climb) => {
-          arrayOfClimbs.push(climb);
-        });
-      });
+    const getClimbsWithDependencies = async()=>{
+     const results = await retrieveFeatureDependenciesByMap(mapId)
 
-      setClimbsOnMap(arrayOfClimbs);
+      setClimbsOnMap(results);
     }
-  }, [climbsObject]);
+    getClimbsWithDependencies()
+  }, [mapId]);
 
   return (
     <ClimbModal

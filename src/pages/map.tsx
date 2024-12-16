@@ -58,9 +58,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   const [polygonOrCircleDisplay, setpolygonOrCircleDisplay] =
     useState<boolean>(false);
   const [mapLoaded, setMapLoaded] = useState(false);
-  const [clickedFeatureClimbs, setClickedFeatureClimbs] = useState<
-    GeoJsonFeature[]
-  >([]);
+  const [clickedFeatureClimbs, setClickedFeatureClimbs] = useState<number>(-1);
 
   const [addClimbsModalDisplay, setAddClimbsModalDisplay] = useState(false);
   const [geoJsonObject, setGeoJsonObject] = useState<GeoJsonObject | {}>({});
@@ -115,7 +113,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   };
 
   const closeModalCallBack = (trigger: boolean) => {
-    setClickedFeatureClimbs([]);
+    setClickedFeatureClimbs(-1);
     setClickedFeatureModalTriggerBoolean(trigger);
   };
 
@@ -131,10 +129,8 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     setAllClimbsModalDisplay(trigger);
   };
 
-  const clickedFeatureClimbCallBack: (climbData: GeoJsonFeature[]) => void = (
-    climbData,
-  ) => {
-    setClickedFeatureClimbs((prev) => [...prev, ...climbData]);
+  const clickedFeatureClimbCallBack = (featureId: number) => {
+    setClickedFeatureClimbs(featureId);
   };
 
   useEffect(() => {
@@ -223,7 +219,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
 
   useEffect(() => {
     // setClickedFeatureModalTrigger(prev=>prev+1)
-    if (clickedFeatureClimbs.length > 0) {
+    if (clickedFeatureClimbs >= 0) {
       setClickedFeatureModalTriggerBoolean(true);
     }
   }, [clickedFeatureClimbs]);

@@ -63,6 +63,7 @@ public async Task<ActionResult> ListFeatures(int mapId)
         var featureObject = new
         {
             Type = "Feature",
+            id= feature.FeatureId,
             Properties = new
             {
                 climbs = feature.Climbs
@@ -78,6 +79,75 @@ public async Task<ActionResult> ListFeatures(int mapId)
     }
 
     return Ok(geoJsonShell);
+}
+
+
+
+[HttpGet("{featureId}/Dependencies")]
+public async Task<ActionResult<List<dencies>>> GetdenciesById(int featureId)
+{
+    try 
+    {
+        var dencies = await _context.MapToFeatureToClimbs
+            .Where(m => m.FeatureId == featureId)
+            .Select(m => m.ClimbId)
+            .Distinct()
+            .Select(climbId => new dencies
+            {
+                Climb = _context.Climbs.FirstOrDefault(c => c.ClimbId == climbId),
+                Tags = _context.ClimbToTags
+                    .Where(ct => ct.ClimbId == climbId)
+                    .Select(ct => _context.Tags.FirstOrDefault(t => t.TagId == ct.TagId))
+                    .ToList()
+            })
+            .ToListAsync();
+    
+        if (dencies == null || !dencies.Any())
+        {
+            return NotFound($"No dependencies found for feature {featureId}");
+        }
+
+        return Ok(dencies);
+    }
+    catch (Exception ex)
+    {
+        // Log the exception
+        return StatusCode(500, $"An error occurred while retrieving feature dependencies: {ex.Message}");
+    }
+}
+
+
+[HttpGet("ByMapId/{mapId}/Dependencies")]
+public async Task<ActionResult<List<dencies>>> GetdenciesByMapId(int mapId)
+{
+    try 
+    {
+        var dencies = await _context.MapToFeatureToClimbs
+            .Where(m => m.MapId == mapId)
+            .Select(m => m.ClimbId)
+            .Distinct()
+            .Select(climbId => new dencies
+            {
+                Climb = _context.Climbs.FirstOrDefault(c => c.ClimbId == climbId),
+                Tags = _context.ClimbToTags
+                    .Where(ct => ct.ClimbId == climbId)
+                    .Select(ct => _context.Tags.FirstOrDefault(t => t.TagId == ct.TagId))
+                    .ToList()
+            })
+            .ToListAsync();
+    
+        if (dencies == null || !dencies.Any())
+        {
+            return NotFound($"No dependencies found for map {mapId}");
+        }
+
+        return Ok(dencies);
+    }
+    catch (Exception ex)
+    {
+        // Log the exception
+        return StatusCode(500, $"An error occurred while retrieving feature dependencies: {ex.Message}");
+    }
 }
 
 
