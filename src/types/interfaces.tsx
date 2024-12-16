@@ -48,12 +48,14 @@ export interface GeoJsonObject {
 export interface GeoJsonFeature {
   geometry: Geometry;
   properties: Properties;
+  id: number;
   type: string;
 }
 
 export interface ClimbWithDependencies {
   climb: ClimbsTableResponse;
   tags: Tags[];
+  climbers:friendsObject[]
 }
 
 interface Properties {
@@ -85,7 +87,7 @@ export interface MapObject {
 }
 
 export interface friendsObject {
-  userId: number;
+  userId: string;
   firstName: string;
   lastName: string;
   email: string;

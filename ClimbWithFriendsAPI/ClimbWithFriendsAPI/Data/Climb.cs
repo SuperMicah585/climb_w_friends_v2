@@ -11,7 +11,8 @@
         public string ClimbName { get; set; }
         public string Location { get; set; }
         private NetTopologySuite.Geometries.Point _coordinates;
-
+        public ICollection<ClimbToTag> ClimbToTags { get; set; }
+        
         [JsonIgnore]
         public NetTopologySuite.Geometries.Point Coordinates
         {

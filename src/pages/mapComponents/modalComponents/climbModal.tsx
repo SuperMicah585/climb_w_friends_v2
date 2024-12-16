@@ -6,6 +6,7 @@ import {
   deleteTagItem,
   ClimbTagItem,
   ClimbWithDependencies,
+  
 } from '../../../types/interfaces';
 import { newWindowIcon } from '../../../reusableComponents/styles';
 import ModalSearch from './modalSearch';
@@ -15,9 +16,10 @@ import Tooltip from '../../../reusableComponents/toolTip';
 import { useState, useEffect } from 'react';
 import ClimbModalBar from '../../../reusableComponents/climbModalBar';
 import TickOverlay from '../tickOverlay';
-import { retrieveClimbDependencies } from '../mapApiRequests';
+import { useAuth0 } from '@auth0/auth0-react';
+import { retrieveClimbDependencies,addTagToClimb,removeTagFromClimb,retrieveFeatureDependencies } from '../mapApiRequests';
 export type ClimbModalProps = {
-  clickedFeatureClimbs: number[];
+  clickedFeatureClimbs: number | ClimbWithDependencies[];
   closeModalCallBack: (trigger: boolean) => void;
   mapId: number;
 };
@@ -41,7 +43,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   const [tickinfo, setTickInfo] = useState({});
   const [tagsOnMount, setTagsOnMount] = useState<Tags[]>([]);
 
-  const [featureTagObject, setFeatureTagObject] = useState<TempDic>({});
+
 
   const setClimbNameForChatCallBack = (climbName: string) => {
     setClimbNameForChat(climbName);
@@ -50,6 +52,8 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   const setClimbGradeForChatCallBack = (climbGrade: string) => {
     setClimbGradeForChat(climbGrade);
   };
+
+  const {user} = useAuth0();
 
   const setClimbChatForChatCallBack = (climbConversation: ChatObject[]) => {
     setClimbChatForChat(climbConversation);
@@ -71,37 +75,58 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
     setSortString(data);
   };
 
+  //console.log(climbObject,"Sdfsd")
   const handleTagSelect = (item: ClimbTagItem) => {
-    setFeatureTagObject((prev) => {
-      const newState = { ...prev };
-      const key = item[1];
-      const value = item[0];
-      if (newState[key]) {
-        newState[key] = [...newState[key], value];
-      } else {
-        newState[key] = [value];
+
+    setClimbObject((prev) => {
+      const newState = [ ...prev ];
+      
+      // Find the correct climbItem
+      const climbItem = newState.find(ci => ci.climb.climbId === item[1]);
+      
+      if (climbItem) {
+        // Ensure tags is an array before pushing
+
+        //item[1], (item[0].tagId)
+        if (!climbItem.tags) {
+          climbItem.tags = [];
+        }
+        //not waiting to make sure it updates correctly.
+        addTagToClimb(item[0].tagId,item[1])
+
+        climbItem.tags.push(item[0]);
       }
 
+
+  
       return newState;
     });
   };
 
   useEffect(() => {
+
     const fetchClimbs = async () => {
       try {
-        const results = await Promise.all(
-          clickedFeatureClimbs.map((climbId) =>
-            retrieveClimbDependencies(climbId),
-          ),
-        );
-
+        if (typeof clickedFeatureClimbs ==="number") {
+        const results = await retrieveFeatureDependencies(clickedFeatureClimbs)
         setClimbObject(results);
+        }
+
+        else{
+          setClimbObject(clickedFeatureClimbs)
+        }
       } catch (error) {
         console.error('Error fetching climbs:', error);
       }
     };
 
-    if (clickedFeatureClimbs.length > 0) {
+    if (typeof clickedFeatureClimbs ==="number") {
+      if(clickedFeatureClimbs >= 0){
+      fetchClimbs();
+      }
+    }
+
+    else{
       fetchClimbs();
     }
   }, [clickedFeatureClimbs]);
@@ -141,16 +166,17 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
     retrieveTagsOnMap(mapId);
   }, [mapId]);
 
-  const deleteTagCallBack = (item: deleteTagItem) => {
-    setFeatureTagObject((prev) => {
-      if (prev[item[0]] && prev[item[0]].length > 0) {
-        return {
-          ...prev,
-          [item[0]]: prev[item[0]].filter((tag) => tag?.id !== item[1]),
-        };
-      } else {
-        return prev;
-      }
+  const deleteTagCallBack = (item: Tags) => {
+    setClimbObject((prev) => {
+      // Return a new state array with the updated tags
+      return prev.map((dependenciesItem) => {
+        if (dependenciesItem.tags.find(tg => tg.tagId === item.tagId)) {
+          //dependenciesItem.climb.climbId && item.tagId
+          removeTagFromClimb(item.tagId,dependenciesItem.climb.climbId)
+          dependenciesItem.tags = dependenciesItem.tags.filter(tg => tg.tagId !== item.tagId);
+        }
+        return dependenciesItem;
+      });
     });
   };
 
@@ -217,10 +243,18 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
 
                   {/* climbObject, tagObject, handleTagSelect, featureTagObject*/}
                   <ClimbModalBar
-                    featureTagObject={featureTagObject}
+                    featureTagObject={item.tags}
                     handleTagSelect={handleTagSelect}
                     tagObject={tagObject}
                     climbObject={item.climb}
+                    climberObject={[{
+                      userId: user?.sub || '',
+                      email:user?.email || '',
+                      firstName:user?.given_name || '',
+                      lastName:user?.family_name || '',
+                      userName:user?.nickname || ''
+                    
+                    }]}//placeholder for real use data
                     setClimbObject={setClimbObject}
                     setClimbNameForChatCallBack={setClimbNameForChatCallBack}
                     setClimbGradeForChatCallBack={setClimbGradeForChatCallBack}
@@ -243,18 +277,18 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                   <div className="text-xs text-white">
                     {item.climb.location}
                   </div>
-                  <div className="mt-2 flex h-8 items-center gap-2 text-xs font-bold text-white">
+                  <div className="mt-2 flex min-h-8 items-center gap-2 text-xs font-bold text-white">
                     Climbers:
-                    {item.climber_names?.map((item, index) => (
+                    {item.climbers?.map((item, index) => (
                       <div
                         key={index}
                         className="rounded-md border-2 border-violet-900 bg-violet-600 p-1"
                       >
-                        {item}
+                        {item.firstName}
                       </div>
                     ))}
                   </div>
-                  <div className="mt-2 flex h-8 w-2/3 flex-wrap items-center gap-2 text-xs font-bold text-white">
+                  <div className="mt-2 flex min-h-8 w-2/3 flex-wrap items-center gap-2 text-xs font-bold text-white">
                     Tags:
                     {item.tags?.length > 0
                       ? item.tags.map((tagsOnClimb) => (

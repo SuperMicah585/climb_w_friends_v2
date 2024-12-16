@@ -52,7 +52,7 @@ const editMap = async (title: string, description: string, id: number) => {
       return true;
     } else {
       const error = await response.text();
-      console.error('Error creating the map:', error);
+      console.error(':', error);
       return false;
     }
   } catch (err) {
@@ -182,7 +182,7 @@ const createMap = async (
       }
     } else {
       const error = await response.text();
-      console.error('Error creating the map:', error);
+      console.error(':', error);
       return false;
     }
   } catch (err) {

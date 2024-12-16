@@ -1,11 +1,71 @@
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import * as turf from '@turf/turf';
+import ReactDOM from 'react-dom/client';
+import './popup.css'
+import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import {
   ClimbsTableResponse,
   GeoJsonFeature,
   GeoJsonObject,
 } from '../../types/interfaces';
+
+const data = [
+  {
+    name: 'V1',
+
+    Grades: 1,
+
+  },
+  {
+    name: 'V2',
+
+    Grades: 2,
+
+  },
+  {
+    name: 'V3',
+
+    Grades: 3,
+
+  },
+  {
+    name: 'V4',
+
+    Grades: 6,
+  
+  },
+  {
+    name: 'V5',
+ 
+    Grades: 2,
+
+  },
+  {
+    name: 'V6',
+  
+    Grades: 3,
+
+  },
+  {
+    name: 'V7',
+ 
+    Grades: 4,
+
+  },
+  {
+    name: 'V8',
+ 
+    Grades: 1,
+
+  },
+  {
+    name: 'V10',
+ 
+    Grades: 1,
+
+  },
+];
 
 export const createMarker = (
   lat: number,
@@ -55,7 +115,7 @@ export const createMarker = (
 
 export const createClimbingShapes = (
   map: any,
-  clickedFeatureClimbCallBack: (climbData: GeoJsonFeature[]) => void,
+  clickedFeatureClimbCallBack: (featureId: number) => void,
   features: GeoJsonObject,
 ) => {
   map.current?.on('load', () => {
@@ -65,7 +125,7 @@ export const createClimbingShapes = (
 
 const displayLayersInitial = (
   map: any,
-  clickedFeatureClimbCallBack: (climbData: GeoJsonFeature[]) => void,
+  clickedFeatureClimbCallBack: (featureId: number) => void,
   features: GeoJsonObject,
 ) => {
   // Only add the source once
@@ -76,7 +136,7 @@ const displayLayersInitial = (
     });
   }
 
-  console.log(features, 'features');
+
 
   features.features.forEach((feature, index) => {
     const fillLayerId = `geojson-fill-layer-${index}`;
@@ -100,8 +160,10 @@ const displayLayersInitial = (
                     coordinates: feature.geometry.coordinates,
                     //need to add property features
                   },
+                  id:feature.id,
                   properties: {
                     climbs: feature.properties.climbs,
+                    
                   },
                 },
               ],
@@ -109,12 +171,12 @@ const displayLayersInitial = (
           },
           filter: ['==', '$type', 'Point'],
           paint: {
-            'circle-color': 'blue',
-            'circle-radius': 6,
-            'circle-opacity': 0.5,
+            'circle-color': '#0047AB',
+            'circle-radius': 8,
+            'circle-opacity': 0.8,
           },
         });
-        addClickToFeature(map, layerId, clickedFeatureClimbCallBack);
+        addFeatureInteractions(map, layerId, clickedFeatureClimbCallBack);
         break;
 
       case 'LineString':
@@ -147,7 +209,7 @@ const displayLayersInitial = (
             'line-width': 2,
           },
         });
-        addClickToFeature(map, layerId, clickedFeatureClimbCallBack);
+        addFeatureInteractions(map, layerId, clickedFeatureClimbCallBack);
         break;
 
       case 'Polygon':
@@ -217,7 +279,7 @@ const displayLayersInitial = (
 
 
         */
-        addClickToFeature(map, fillLayerId, clickedFeatureClimbCallBack);
+addFeatureInteractions(map, fillLayerId, clickedFeatureClimbCallBack);
         // Circle layer for polygon (alternative representation)
         const centroid = turf.centroid(feature);
         const [longitude, latitude] = centroid.geometry.coordinates;
@@ -234,6 +296,7 @@ const displayLayersInitial = (
               features: [
                 {
                   type: 'Feature',
+                  featureId: feature.featureId,
                   geometry: {
                     type: 'Point',
                     coordinates: [longitude, latitude],
@@ -247,15 +310,15 @@ const displayLayersInitial = (
             },
           },
           paint: {
-            'circle-color': 'blue',
+            'circle-color': 'brown',
             'circle-radius': 14,
-            'circle-opacity': 0.5,
+            'circle-opacity': 0.8,
           },
           layout: {
             visibility: 'visible', // Initially visible
           },
         });
-        addClickToFeature(map, circleLayerId, clickedFeatureClimbCallBack);
+        addFeatureInteractions(map, circleLayerId, clickedFeatureClimbCallBack);
         break;
 
       default:
@@ -355,25 +418,126 @@ export const updateLayerVisibility = (
     }
   });
 };
-const addClickToFeature = (
+
+export const addFeatureInteractions = (
   map: any,
   id: string,
-  clickedFeatureClimbCallBack: (climbData: GeoJsonFeature[]) => void,
+  clickedFeatureClimbCallBack: (featureId:number) => void,
 ) => {
   // Ensure map and map.current are defined
   if (!map?.current) return;
 
+
+ 
+  
+  // Create a popup outside the event handlers so we can reuse it
+  const popup = new mapboxgl.Popup({
+    closeButton: false,
+    closeOnClick: false,
+    offset: 10
+  });
+// Declare this at the top level of your component or file
+let chartRoot: ReactDOM.Root | null = null;
+
+map.current.on('mouseenter', id, (e: mapboxgl.MapMouseEvent) => {
+  // Change cursor to pointer
+  map.current.getCanvas().style.cursor = 'pointer';
+  const features = e.features ? e.features[0] : null;
+  if (features && features.properties) {
+    popup
+      .setLngLat(e.lngLat)
+      .setHTML(`
+        <div class='flex flex-col gap-10 items-center justify-center'>
+          <div class='flex gap-2 font-semibold text-3xl justify-center'>
+            <div class="text-center text-white"><span>5</span> Climbers</div>
+            <div>|</div>
+            <div class="text-center">30 Climbs</div>
+          </div>
+          <div id="chart-container" class="w-full h-48"></div>
+        </div>
+      `)
+      .addClassName('popupClass')
+      .setMaxWidth("350px")
+      .addTo(map.current);
+  
+    // Ensure chart container is ready
+    const chartContainer = document.getElementById("chart-container");
+    if (chartContainer) {
+      // Unmount any existing root
+      if (chartRoot) {
+        chartRoot.unmount();
+      }
+
+      // Create a new root and render
+      chartRoot = ReactDOM.createRoot(chartContainer);
+      chartRoot.render(
+        <BarChart
+          width={310}
+          height={200}
+          data={data}
+          margin={{ top: 0, right: 20, bottom: 0, left: 0 }}
+        >
+          <CartesianGrid stroke="white" strokeDasharray="3 3" />
+          <XAxis stroke="white" dataKey="name" />
+          <YAxis stroke="white" />
+          <Tooltip />
+          <Legend align="left"/>
+          <Bar dataKey="Grades" fill="#8884d8" activeBar={<Rectangle fill="pink" stroke="blue" />} />
+        </BarChart>
+      );
+    }
+  }
+});
+
+// Optional: Add cleanup when popup closes or component unmounts
+map.current.on('mouseleave', id, () => {
+  if (chartRoot) {
+    chartRoot.unmount();
+    chartRoot = null;
+  }
+});
+  
+  // Optional: Add cleanup when popup closes
+  map.current.on('mouseleave', id, () => {
+    if (window.chartRoot) {
+      window.chartRoot.unmount();
+      window.chartRoot = null;
+    }
+  });
+
+
+
+  // Mouseleave event to reset cursor and remove popup
+  map.current.on('mouseleave', id, () => {
+    // Reset cursor
+    map.current.getCanvas().style.cursor = '';
+
+    // Remove popup
+    popup.remove();
+  });
+
+  // Onlick pass feature ID in get request to server. Server will then grab all climbs + dependency data for the climb and return to client
   map.current.on('click', id, (event: mapboxgl.MapLayerMouseEvent) => {
-    if (event.features && event.features[0]?.layer?.id === id) {
-      const properties = event.features[0].properties?.climbs;
-      if (properties) {
+
+
+      const features = event.features ? event.features[0] : null;
+      if (features && typeof features.id === 'number') {
         try {
-          const climbs = JSON.parse(properties);
-          clickedFeatureClimbCallBack(climbs);
+          clickedFeatureClimbCallBack(features.id);
         } catch (error) {
           console.error('Error parsing climbs property:', error);
         }
       }
-    }
+    
   });
+
+  // Return a cleanup function to remove event listeners
+  return () => {
+    if (map.current) {
+      map.current.off('mouseenter', id);
+      map.current.off('mouseleave', id);
+      map.current.off('click', id);
+      popup.remove();
+    }
+  };
 };

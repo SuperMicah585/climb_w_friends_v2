@@ -1,0 +1,9 @@
+"filename", "language", "C#", "comment", "blank", "total"
+"/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/ClimbsController.cs", "C#", -57, -80, -33, -170
+"/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/FeaturesController.cs", "C#", -51, -74, -31, -156
+"/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/MapsController.cs", "C#", -157, -69, -61, -287
+"/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/TagsController.cs", "C#", -99, -11, -28, -138
+"/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Migrations/20241213050016_AddFeatures.Designer.cs", "C#", 2107, 2, 84, 2193
+"/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Migrations/20241213050016_AddFeatures.cs", "C#", 354, 3, 28, 385
+"/Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Migrations/AppDbContextModelSnapshot.cs", "C#", 2105, 1, 84, 2190
+"Total", "-", 4202, -228, 43, 4017

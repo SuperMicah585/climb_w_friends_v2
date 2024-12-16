@@ -2,7 +2,12 @@
 export default {
   content: ['./src/**/*.{js,jsx}', './src/**/*.{ts,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        customGray: '#23272a', // Your custom color
+        clay: '#bf9d85'
+      },
+    },
   },
   plugins: [],
 };

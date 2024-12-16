@@ -48,8 +48,8 @@ public async Task<ActionResult<FeatureDependencies>> GetClimbDependenciesById(in
         return NotFound($"Climb with ID {climbId} not found.");
     }
 
-    // Step 2: Filter MapToTagToClimbs for the given climbId
-    var tagIds = await _context.MapToTagToClimbs
+    // Step 2: Filter for given ClimbId
+    var tagIds = await _context.ClimbToTags
         .Where(mt => mt.ClimbId == climbId)
         .Select(mt => mt.TagId)
         .ToListAsync(); // Extract TagIds

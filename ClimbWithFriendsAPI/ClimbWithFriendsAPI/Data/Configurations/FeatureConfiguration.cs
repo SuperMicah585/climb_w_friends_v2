@@ -19,6 +19,11 @@ public class FeatureConfiguration : IEntityTypeConfiguration<Feature>
 
         // Seed data
         builder.HasData(
+    
+    //there are already feautres on map
+    //
+    
+    
     new Feature
     {
         FeatureId = 1,

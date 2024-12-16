@@ -25,7 +25,7 @@ const createTag = async (TagName: string, mapId: number) => {
       }
     } else {
       const error = await response.text();
-      console.error('Error creating the map:', error);
+      console.error('Error creating the Tag:', error);
       return false;
     }
   } catch (err) {
@@ -35,15 +35,13 @@ const createTag = async (TagName: string, mapId: number) => {
 };
 
 const addTagToMap = async (tagId: number, mapId: number) => {
-  const payload = { MapId: mapId };
-
+  console.log(tagId,mapId)
   try {
-    const response = await fetch(`http://localhost:5074/api/Tags/${tagId}`, {
+    const response = await fetch(`http://localhost:5074/api/Tags/${tagId}/ToMap/${mapId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
+      }
     });
 
     if (response.ok) {
@@ -63,7 +61,62 @@ const addTagToMap = async (tagId: number, mapId: number) => {
   }
 };
 
+const addTagToClimb = async (tagId: number, climbId: number) => {
+
+
+
+  try {
+    const response = await fetch(`http://localhost:5074/api/Tags/${tagId}/ToClimb/${climbId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (response.ok) {
+      return true;
+    } else {
+      const error = await response.json(); // Try parsing the error JSON
+      console.warn('Failed to add tag:', error.message || error);
+      return false;
+    }
+  } catch (err) {
+    console.error('Network error:', err);
+    return false;
+  }
+};
+
+
+
+const removeTagFromClimb = async (tagId: number, climbId: number) => {
+
+  try {
+    const response = await fetch(`http://localhost:5074/api/Tags/${tagId}/FromClimb/${climbId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (response.ok) {
+
+
+      // Handle success case
+      return true;
+    } else {
+      // If the response is not OK, try to log the reason
+      const error = await response.json(); // Try parsing the error JSON
+      console.warn('Response indicates failure:', error.message || error);
+      return false;
+    }
+  } catch (err) {
+    console.error('Network error:', err);
+    return false;
+  }
+};
+
 const removeTagFromMap = async (mapId: number, tagId: number) => {
+  console.log(mapId,tagId,"Asdasd")
   try {
     const response = await fetch(
       `http://localhost:5074/api/Tags/${tagId}/Maps/${mapId}`,
@@ -113,6 +166,7 @@ const retrieveFeatures = async (mapId: number) => {
     }
 
     const json = await response.json();
+   
     // Update the specific object at the given index in the array
     return json;
   } catch (error: any) {
@@ -136,10 +190,48 @@ const retrieveClimbDependencies = async (climbId: number) => {
   }
 };
 
+const retrieveFeatureDependencies = async (featureId: number) => {
+  const url = `http://localhost:5074/api/Features/${featureId}/Dependencies`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const json = await response.json();
+    // Update the specific object at the given index in the array
+    return json;
+  } catch (error: any) {
+    console.error(error.message);
+  }
+};
+
+const retrieveFeatureDependenciesByMap = async (mapId: number) => {
+  const url = `http://localhost:5074/api/Features/ByMapId/${mapId}/Dependencies`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const json = await response.json();
+    // Update the specific object at the given index in the array
+    return json;
+  } catch (error: any) {
+    console.error(error.message);
+  }
+};
+
+
+
 export {
   retrieveClimbs,
   createTag,
   removeTagFromMap,
   retrieveFeatures,
   retrieveClimbDependencies,
+  addTagToClimb,
+  removeTagFromClimb,
+  retrieveFeatureDependencies,
+  retrieveFeatureDependenciesByMap
 };

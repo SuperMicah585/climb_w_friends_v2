@@ -245,7 +245,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
             }}
             className=" "
           >
-            <PurpleButton> Apply</PurpleButton>{' '}
+            <PurpleButton paddingLeft='pl-5' paddingRight='pr-5' roundedCorners='rounded-full'> Apply</PurpleButton>{' '}
           </div>
         </div>
       </div>
