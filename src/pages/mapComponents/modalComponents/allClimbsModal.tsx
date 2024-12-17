@@ -1,6 +1,10 @@
 import ClimbModal from './climbModal';
 import { useEffect, useState } from 'react';
-import { GeoJsonObject, GeoJsonFeature,ClimbWithDependencies } from '../../../types/interfaces';
+import {
+  GeoJsonObject,
+  GeoJsonFeature,
+  ClimbWithDependencies,
+} from '../../../types/interfaces';
 import { retrieveFeatureDependenciesByMap } from '../mapApiRequests';
 interface AllClimbsProps {
   closeModalCallBack: (trigger: boolean) => void;
@@ -13,12 +17,12 @@ const AllClimbsModal: React.FC<AllClimbsProps> = ({
   const [climbsOnMap, setClimbsOnMap] = useState<ClimbWithDependencies[]>([]);
 
   useEffect(() => {
-    const getClimbsWithDependencies = async()=>{
-     const results = await retrieveFeatureDependenciesByMap(mapId)
+    const getClimbsWithDependencies = async () => {
+      const results = await retrieveFeatureDependenciesByMap(mapId);
 
       setClimbsOnMap(results);
-    }
-    getClimbsWithDependencies()
+    };
+    getClimbsWithDependencies();
   }, [mapId]);
 
   return (

@@ -14,7 +14,7 @@ import {
   ClimbsTableResponse,
   Tags,
   ClimbWithDependencies,
-  friendsObject
+  friendsObject,
 } from '../types/interfaces';
 import SearchDropDown from './searchDropDown';
 import { micah } from '../pages/mapComponents/mapObjects';
@@ -30,7 +30,7 @@ interface ClimbModalBarProps {
   tagObject: Tags[];
   handleTagSelect: (item: ClimbTagItem) => void;
   featureTagObject: Tags[];
-  climberObject: friendsObject[]
+  climberObject: friendsObject[];
   chatDisplayTriggerCallBack: () => void;
   setClimbNameForChatCallBack: (climbName: string) => void;
   setClimbGradeForChatCallBack: (climbGrade: string) => void;
@@ -38,7 +38,6 @@ interface ClimbModalBarProps {
   setClimbObject: React.Dispatch<React.SetStateAction<ClimbWithDependencies[]>>;
   setTickOverlayDisplayTrigger: React.Dispatch<React.SetStateAction<number>>;
 }
-
 
 const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
   tagInputCallBack,
@@ -52,14 +51,14 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
   setClimbChatForChatCallBack,
   setClimbObject,
   setTickOverlayDisplayTrigger,
-  climberObject
+  climberObject,
 }) => {
   const [dropDownToggle, setDropDownToggle] = useState<boolean>(false);
   const [isClimbTicked, setisClimbTicked] = useState(false);
   const [configToggle, setConfigToggle] = useState<number>(0);
   const [dropDownItemsState, setDropDownItemsState] = useState<boolean>(false);
   const tagInputRef = useRef(null);
-  const {user} = useAuth0();
+  const { user } = useAuth0();
   const closeDropDownCallBack = (value: boolean) => {
     setDropDownToggle(value);
   };
@@ -95,9 +94,8 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
   const removeOrAddClimb = (id: number, action: string) => {
     /* setClimbsArray(prev=>prev.filter((mapItem)=>
     mapItem.climber_names.length===0?true:false))*/
-    console.log(id,"ASdas")
+    console.log(id, 'ASdas');
     if (action === 'remove') {
-   
       setClimbObject((prev) => {
         const tmpArray = prev.map((item) =>
           item.climb.climbId === id
@@ -119,21 +117,19 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
     if (action === 'add') {
       setClimbObject((prev) =>
         prev.map((item) =>
-          (item.climb.climbId === id && item.climbers)
+          item.climb.climbId === id && item.climbers
             ? {
                 ...item,
-                climbers: [...item?.climbers,
+                climbers: [
+                  ...item?.climbers,
 
                   {
                     userId: user?.sub || '',
-                    email:user?.email || '',
-                    firstName:user?.given_name || '',
-                    lastName:user?.family_name || '',
-                    userName:user?.nickname || ''
-                  
-                  }
-                
-                
+                    email: user?.email || '',
+                    firstName: user?.given_name || '',
+                    lastName: user?.family_name || '',
+                    userName: user?.nickname || '',
+                  },
                 ],
               }
             : item,
@@ -141,7 +137,6 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
       );
     }
   };
-
 
   return (
     <div className="absolute right-2 top-0 flex items-center gap-2">

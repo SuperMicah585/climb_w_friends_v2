@@ -84,15 +84,15 @@ public async Task<ActionResult> ListFeatures(int mapId)
 
 
 [HttpGet("{featureId}/Dependencies")]
-public async Task<ActionResult<List<dencies>>> GetdenciesById(int featureId)
+public async Task<ActionResult<List<FeatureDependencies>>> GetFeatureDependenciesById(int featureId)
 {
     try 
     {
-        var dencies = await _context.MapToFeatureToClimbs
+        var featureDependencies = await _context.MapToFeatureToClimbs
             .Where(m => m.FeatureId == featureId)
             .Select(m => m.ClimbId)
             .Distinct()
-            .Select(climbId => new dencies
+            .Select(climbId => new FeatureDependencies
             {
                 Climb = _context.Climbs.FirstOrDefault(c => c.ClimbId == climbId),
                 Tags = _context.ClimbToTags
@@ -102,12 +102,12 @@ public async Task<ActionResult<List<dencies>>> GetdenciesById(int featureId)
             })
             .ToListAsync();
     
-        if (dencies == null || !dencies.Any())
+        if (featureDependencies == null || !featureDependencies.Any())
         {
             return NotFound($"No dependencies found for feature {featureId}");
         }
 
-        return Ok(dencies);
+        return Ok(featureDependencies);
     }
     catch (Exception ex)
     {
@@ -118,15 +118,15 @@ public async Task<ActionResult<List<dencies>>> GetdenciesById(int featureId)
 
 
 [HttpGet("ByMapId/{mapId}/Dependencies")]
-public async Task<ActionResult<List<dencies>>> GetdenciesByMapId(int mapId)
+public async Task<ActionResult<List<FeatureDependencies>>> GetFeatureDependenciesByMapId(int mapId)
 {
     try 
     {
-        var dencies = await _context.MapToFeatureToClimbs
+        var featureDependencies = await _context.MapToFeatureToClimbs
             .Where(m => m.MapId == mapId)
             .Select(m => m.ClimbId)
             .Distinct()
-            .Select(climbId => new dencies
+            .Select(climbId => new FeatureDependencies
             {
                 Climb = _context.Climbs.FirstOrDefault(c => c.ClimbId == climbId),
                 Tags = _context.ClimbToTags
@@ -136,18 +136,71 @@ public async Task<ActionResult<List<dencies>>> GetdenciesByMapId(int mapId)
             })
             .ToListAsync();
     
-        if (dencies == null || !dencies.Any())
+        if (featureDependencies == null || !featureDependencies.Any())
         {
             return NotFound($"No dependencies found for map {mapId}");
         }
 
-        return Ok(dencies);
+        return Ok(featureDependencies);
     }
     catch (Exception ex)
     {
         // Log the exception
         return StatusCode(500, $"An error occurred while retrieving feature dependencies: {ex.Message}");
     }
+}
+
+
+[HttpGet("{featureId}/Aggregate_climbs")]
+public async Task<ActionResult> getGradeCounts(int featureId)
+{
+    try 
+    {
+var ClimbOnGrade = await _context.MapToFeatureToClimbs
+    .Where(m => m.FeatureId == featureId)
+    .Join(_context.Climbs, 
+          mapping => mapping.ClimbId, 
+          climb => climb.ClimbId, 
+          (mapping, climb) => climb)
+    .GroupBy(c => c.Rating)
+    .Select(g => new 
+    {
+        Rating = g.Key,
+        Count = g.Count()
+    })
+    .ToListAsync();
+
+    
+        if (ClimbOnGrade == null)
+        {
+            return NotFound($"No Climbs found for map {featureId}");
+        }
+
+        return Ok(new 
+{
+    GradeCounts = ClimbOnGrade,
+    TotalCount = await GetClimbCount(featureId) // Fix the invocation
+});
+    }
+    catch (Exception ex)
+    {
+        // Log the exception
+        return StatusCode(500, $"An error occurred while retrieving feature dependencies: {ex.Message}");
+    }
+}
+
+
+public async Task<int> GetClimbCount(int featureId)
+{
+    return await _context.MapToFeatureToClimbs
+        .Where(m => m.FeatureId == featureId)
+        .Join(
+            _context.Climbs,
+            mapping => mapping.ClimbId,
+            climb => climb.ClimbId,
+            (mapping, climb) => climb
+        )
+        .CountAsync(); // Return just the count
 }
 
 

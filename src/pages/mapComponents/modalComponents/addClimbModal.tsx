@@ -7,7 +7,7 @@ import {
   deleteTagItem,
   ClimbTagItem,
   ClimbsTableResponse,
-  ClimbWithDependencies
+  ClimbWithDependencies,
 } from '../../../types/interfaces';
 import InputComponent from '../../../reusableComponents/input';
 import SearchDropDown from '../../../reusableComponents/searchDropDown';
@@ -61,16 +61,18 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
     setDisplayTrigger((prev) => prev + 1);
   };
 
-  const {user} = useAuth0();
+  const { user } = useAuth0();
 
   const deleteTagCallBack = (item: Tags) => {
     setClimbsArray((prev) => {
       // Return a new state array with the updated tags
       return prev.map((dependenciesItem) => {
-        if (dependenciesItem.tags.find(tg => tg.tagId === item.tagId)) {
+        if (dependenciesItem.tags.find((tg) => tg.tagId === item.tagId)) {
           //dependenciesItem.climb.climbId && item.tagId
-  
-          dependenciesItem.tags = dependenciesItem.tags.filter(tg => tg.tagId !== item.tagId);
+
+          dependenciesItem.tags = dependenciesItem.tags.filter(
+            (tg) => tg.tagId !== item.tagId,
+          );
         }
         return dependenciesItem;
       });
@@ -131,32 +133,35 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
     }
   };
 
-  console.log(user)
+  console.log(user);
   const handleClimbSelect = (item: ClimbsTableResponse) => {
-    setClimbsArray((prev) => [...prev, 
+    setClimbsArray((prev) => [
+      ...prev,
       {
-      climb:item,
-      tags:[],
-      climbers:[{
-      userId: user?.sub || '',
-      email:user?.email || '',
-      firstName:user?.given_name || '',
-      lastName:user?.family_name || '',
-      userName:user?.nickname || ''}
-    
-    ]}]);
+        climb: item,
+        tags: [],
+        climbers: [
+          {
+            userId: user?.sub || '',
+            email: user?.email || '',
+            firstName: user?.given_name || '',
+            lastName: user?.family_name || '',
+            userName: user?.nickname || '',
+          },
+        ],
+      },
+    ]);
   };
 
-  console.log(climbsArray)
+  console.log(climbsArray);
 
   const handleTagSelect = (item: ClimbTagItem) => {
-
     setClimbsArray((prev) => {
-      const newState = [ ...prev ];
-      
+      const newState = [...prev];
+
       // Find the correct climbItem
-      const climbItem = newState.find(ci => ci.climb.climbId === item[1]);
-      
+      const climbItem = newState.find((ci) => ci.climb.climbId === item[1]);
+
       if (climbItem) {
         // Ensure tags is an array before pushing
 
@@ -165,13 +170,9 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
           climbItem.tags = [];
         }
 
-
-
         climbItem.tags.push(item[0]);
       }
 
-
-  
       return newState;
     });
   };
@@ -225,7 +226,9 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
                 searchResults
                   .filter((item) =>
                     climbsArray.length > 0
-                      ? !climbsArray.some((x) => x.climb.climbId === item.climbId)
+                      ? !climbsArray.some(
+                          (x) => x.climb.climbId === item.climbId,
+                        )
                       : true,
                   )
                   .map((item) => (
@@ -287,7 +290,9 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
                 <div className="white border-r"></div>
                 <div>{item.climb.rating}</div>
               </div>
-              <div className="text-sm italic text-white">{item.climb.climbType}</div>
+              <div className="text-sm italic text-white">
+                {item.climb.climbType}
+              </div>
               <div className="text-xs text-white">{item.climb.location}</div>
 
               <div className="mt-2 flex min-h-8 items-center gap-2 text-xs font-bold text-white">
@@ -300,27 +305,27 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
               <div className="mt-2 flex min-h-8 w-2/3 flex-wrap items-center gap-2 text-xs font-bold text-white">
                 Tags:
                 {item.tags?.length > 0
-                      ? item.tags.map((tagsOnClimb) => (
-                          <Tooltip
-                            deleteItemCallBack={deleteTagCallBack}
-                            item={tagsOnClimb}
-                          >
-                            <div
-                              key={tagsOnClimb.tagId}
-                              className="rounded-md border-2 border-green-900 bg-green-600 p-1 text-white"
-                            >
-                              {tagsOnClimb.tagName}
-                            </div>
-                          </Tooltip>
-                        ))
-                      : null}
+                  ? item.tags.map((tagsOnClimb) => (
+                      <Tooltip
+                        deleteItemCallBack={deleteTagCallBack}
+                        item={tagsOnClimb}
+                      >
+                        <div
+                          key={tagsOnClimb.tagId}
+                          className="rounded-md border-2 border-green-900 bg-green-600 p-1 text-white"
+                        >
+                          {tagsOnClimb.tagName}
+                        </div>
+                      </Tooltip>
+                    ))
+                  : null}
               </div>
               <ClimbModalBar
                 featureTagObject={item.tags}
                 handleTagSelect={handleTagSelect}
                 tagObject={tagObject}
                 climbObject={item.climb}
-                climberObject = {item.climbers}
+                climberObject={item.climbers}
                 setClimbNameForChatCallBack={setClimbNameForChatCallBack}
                 setClimbGradeForChatCallBack={setClimbGradeForChatCallBack}
                 setClimbChatForChatCallBack={setClimbChatForChatCallBack}
