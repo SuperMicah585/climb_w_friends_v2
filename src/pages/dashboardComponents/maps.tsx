@@ -32,7 +32,7 @@ const Maps = () => {
   });
   const [mapId, setMapId] = useState<number>(0);
 
-  const {user} = useAuth0();
+  const { user } = useAuth0();
 
   const closeEditModalCallBack = () => {
     setEditMapTrigger(false);
@@ -73,7 +73,7 @@ const Maps = () => {
     }
   };
 
-  console.log(user,"sdfsdfsd")
+  console.log(user, 'sdfsdfsd');
 
   const newMapCallBack = async (newMapObj: MapObject) => {
     if (user?.sub) {

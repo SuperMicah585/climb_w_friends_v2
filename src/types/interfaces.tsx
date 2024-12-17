@@ -55,7 +55,7 @@ export interface GeoJsonFeature {
 export interface ClimbWithDependencies {
   climb: ClimbsTableResponse;
   tags: Tags[];
-  climbers:friendsObject[]
+  climbers: friendsObject[];
 }
 
 interface Properties {

@@ -112,7 +112,7 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
           <div className="mt-8 flex flex-col gap-10 overflow-y-scroll p-1">
             <div className="flex flex-col gap-10">
               <div className="flex flex-col gap-5">
-                <div className="font-semibold text-lg text-white"> Add Tag</div>
+                <div className="text-lg font-semibold text-white"> Add Tag</div>
 
                 <div className="flex items-center gap-5">
                   <form onSubmit={handleSubmit}>
@@ -123,18 +123,27 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
                       }}
                       placeholder="Type to Add Tag"
                       value={tagName}
-                      className={`w-48 h-12 rounded-xl ${!tagNameValid ? 'border-red-500 border-2' : 'border border-slate-400'}  bg-zinc-900 p-2 text-lg focus:outline-none focus:ring-1 focus:ring-violet-500`}
+                      className={`h-12 w-48 rounded-xl ${!tagNameValid ? 'border-2 border-red-500' : 'border border-slate-400'} bg-zinc-900 p-2 text-lg focus:outline-none focus:ring-1 focus:ring-violet-500`}
                     />
                   </form>
 
                   <div onClick={() => checkTagInput()}>
-                    <PurpleButton paddingLeft='pl-5' paddingRight='pr-5' roundedCorners='rounded-full' > Add Tag </PurpleButton>
+                    <PurpleButton
+                      paddingBottom="pb-3"
+                      paddingTop="pt-3"
+                      paddingLeft="pl-5"
+                      paddingRight="pr-5"
+                      roundedCorners="rounded-full"
+                    >
+                      {' '}
+                      Add Tag{' '}
+                    </PurpleButton>
                   </div>
                 </div>
               </div>
 
               <div className="flex flex-col gap-5">
-                <div className="font-semibold text-lg text-white"> Tags</div>
+                <div className="text-lg font-semibold text-white"> Tags</div>
                 <div className="flex flex-wrap gap-2">
                   {modifiedTags?.map((item) => (
                     <Tooltip
@@ -153,15 +162,6 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
             </div>
           </div>
           <div className="flex-grow"> </div>
-          <div
-            onClick={() => {
-              // newTagCallBack(modifiedTags);
-              closelCallBack(false);
-            }}
-            className="flex justify-end"
-          >
-            <PurpleButton paddingLeft='pl-5' paddingRight='pr-5' roundedCorners='rounded-full'> Close</PurpleButton>
-          </div>
         </div>
       </ZincModal>
     </>

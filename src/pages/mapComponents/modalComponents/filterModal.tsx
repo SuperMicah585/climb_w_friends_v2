@@ -245,7 +245,16 @@ const FilterModal: React.FC<FilterModalProps> = ({
             }}
             className=" "
           >
-            <PurpleButton paddingLeft='pl-5' paddingRight='pr-5' roundedCorners='rounded-full'> Apply</PurpleButton>{' '}
+            <PurpleButton
+              paddingBottom="pb-3"
+              paddingTop="pt-3"
+              paddingLeft="pl-5"
+              paddingRight="pr-5"
+              roundedCorners="rounded-full"
+            >
+              {' '}
+              Apply
+            </PurpleButton>{' '}
           </div>
         </div>
       </div>

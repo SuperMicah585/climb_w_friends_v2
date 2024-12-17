@@ -5,7 +5,7 @@ export default {
     extend: {
       colors: {
         customGray: '#23272a', // Your custom color
-        clay: '#bf9d85'
+        clay: '#bf9d85',
       },
     },
   },

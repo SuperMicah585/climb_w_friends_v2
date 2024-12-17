@@ -35,14 +35,17 @@ const createTag = async (TagName: string, mapId: number) => {
 };
 
 const addTagToMap = async (tagId: number, mapId: number) => {
-  console.log(tagId,mapId)
+  console.log(tagId, mapId);
   try {
-    const response = await fetch(`http://localhost:5074/api/Tags/${tagId}/ToMap/${mapId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
+    const response = await fetch(
+      `http://localhost:5074/api/Tags/${tagId}/ToMap/${mapId}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
 
     if (response.ok) {
       const data = await response.json(); // Safely parse JSON
@@ -62,16 +65,16 @@ const addTagToMap = async (tagId: number, mapId: number) => {
 };
 
 const addTagToClimb = async (tagId: number, climbId: number) => {
-
-
-
   try {
-    const response = await fetch(`http://localhost:5074/api/Tags/${tagId}/ToClimb/${climbId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
+    const response = await fetch(
+      `http://localhost:5074/api/Tags/${tagId}/ToClimb/${climbId}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
 
     if (response.ok) {
       return true;
@@ -86,21 +89,19 @@ const addTagToClimb = async (tagId: number, climbId: number) => {
   }
 };
 
-
-
 const removeTagFromClimb = async (tagId: number, climbId: number) => {
-
   try {
-    const response = await fetch(`http://localhost:5074/api/Tags/${tagId}/FromClimb/${climbId}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
+    const response = await fetch(
+      `http://localhost:5074/api/Tags/${tagId}/FromClimb/${climbId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
 
     if (response.ok) {
-
-
       // Handle success case
       return true;
     } else {
@@ -116,7 +117,7 @@ const removeTagFromClimb = async (tagId: number, climbId: number) => {
 };
 
 const removeTagFromMap = async (mapId: number, tagId: number) => {
-  console.log(mapId,tagId,"Asdasd")
+  console.log(mapId, tagId, 'Asdasd');
   try {
     const response = await fetch(
       `http://localhost:5074/api/Tags/${tagId}/Maps/${mapId}`,
@@ -166,7 +167,7 @@ const retrieveFeatures = async (mapId: number) => {
     }
 
     const json = await response.json();
-   
+
     // Update the specific object at the given index in the array
     return json;
   } catch (error: any) {
@@ -222,7 +223,21 @@ const retrieveFeatureDependenciesByMap = async (mapId: number) => {
   }
 };
 
+const retrieveFeatureAggregate = async (featureId: number) => {
+  const url = `http://localhost:5074/api/Features/${featureId}/Aggregate_climbs`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
 
+    const json = await response.json();
+    // Update the specific object at the given index in the array
+    return json;
+  } catch (error: any) {
+    console.error(error.message);
+  }
+};
 
 export {
   retrieveClimbs,
@@ -233,5 +248,6 @@ export {
   addTagToClimb,
   removeTagFromClimb,
   retrieveFeatureDependencies,
-  retrieveFeatureDependenciesByMap
+  retrieveFeatureDependenciesByMap,
+  retrieveFeatureAggregate,
 };

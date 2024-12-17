@@ -6,7 +6,6 @@ import {
   deleteTagItem,
   ClimbTagItem,
   ClimbWithDependencies,
-  
 } from '../../../types/interfaces';
 import { newWindowIcon } from '../../../reusableComponents/styles';
 import ModalSearch from './modalSearch';
@@ -17,7 +16,12 @@ import { useState, useEffect } from 'react';
 import ClimbModalBar from '../../../reusableComponents/climbModalBar';
 import TickOverlay from '../tickOverlay';
 import { useAuth0 } from '@auth0/auth0-react';
-import { retrieveClimbDependencies,addTagToClimb,removeTagFromClimb,retrieveFeatureDependencies } from '../mapApiRequests';
+import {
+  retrieveClimbDependencies,
+  addTagToClimb,
+  removeTagFromClimb,
+  retrieveFeatureDependencies,
+} from '../mapApiRequests';
 export type ClimbModalProps = {
   clickedFeatureClimbs: number | ClimbWithDependencies[];
   closeModalCallBack: (trigger: boolean) => void;
@@ -43,8 +47,6 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   const [tickinfo, setTickInfo] = useState({});
   const [tagsOnMount, setTagsOnMount] = useState<Tags[]>([]);
 
-
-
   const setClimbNameForChatCallBack = (climbName: string) => {
     setClimbNameForChat(climbName);
   };
@@ -53,7 +55,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
     setClimbGradeForChat(climbGrade);
   };
 
-  const {user} = useAuth0();
+  const { user } = useAuth0();
 
   const setClimbChatForChatCallBack = (climbConversation: ChatObject[]) => {
     setClimbChatForChat(climbConversation);
@@ -77,13 +79,12 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
 
   //console.log(climbObject,"Sdfsd")
   const handleTagSelect = (item: ClimbTagItem) => {
-
     setClimbObject((prev) => {
-      const newState = [ ...prev ];
-      
+      const newState = [...prev];
+
       // Find the correct climbItem
-      const climbItem = newState.find(ci => ci.climb.climbId === item[1]);
-      
+      const climbItem = newState.find((ci) => ci.climb.climbId === item[1]);
+
       if (climbItem) {
         // Ensure tags is an array before pushing
 
@@ -92,41 +93,35 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
           climbItem.tags = [];
         }
         //not waiting to make sure it updates correctly.
-        addTagToClimb(item[0].tagId,item[1])
+        addTagToClimb(item[0].tagId, item[1]);
 
         climbItem.tags.push(item[0]);
       }
 
-
-  
       return newState;
     });
   };
 
   useEffect(() => {
-
     const fetchClimbs = async () => {
       try {
-        if (typeof clickedFeatureClimbs ==="number") {
-        const results = await retrieveFeatureDependencies(clickedFeatureClimbs)
-        setClimbObject(results);
-        }
-
-        else{
-          setClimbObject(clickedFeatureClimbs)
+        if (typeof clickedFeatureClimbs === 'number') {
+          const results =
+            await retrieveFeatureDependencies(clickedFeatureClimbs);
+          setClimbObject(results);
+        } else {
+          setClimbObject(clickedFeatureClimbs);
         }
       } catch (error) {
         console.error('Error fetching climbs:', error);
       }
     };
 
-    if (typeof clickedFeatureClimbs ==="number") {
-      if(clickedFeatureClimbs >= 0){
-      fetchClimbs();
+    if (typeof clickedFeatureClimbs === 'number') {
+      if (clickedFeatureClimbs >= 0) {
+        fetchClimbs();
       }
-    }
-
-    else{
+    } else {
       fetchClimbs();
     }
   }, [clickedFeatureClimbs]);
@@ -170,10 +165,12 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
     setClimbObject((prev) => {
       // Return a new state array with the updated tags
       return prev.map((dependenciesItem) => {
-        if (dependenciesItem.tags.find(tg => tg.tagId === item.tagId)) {
+        if (dependenciesItem.tags.find((tg) => tg.tagId === item.tagId)) {
           //dependenciesItem.climb.climbId && item.tagId
-          removeTagFromClimb(item.tagId,dependenciesItem.climb.climbId)
-          dependenciesItem.tags = dependenciesItem.tags.filter(tg => tg.tagId !== item.tagId);
+          removeTagFromClimb(item.tagId, dependenciesItem.climb.climbId);
+          dependenciesItem.tags = dependenciesItem.tags.filter(
+            (tg) => tg.tagId !== item.tagId,
+          );
         }
         return dependenciesItem;
       });
@@ -247,14 +244,15 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                     handleTagSelect={handleTagSelect}
                     tagObject={tagObject}
                     climbObject={item.climb}
-                    climberObject={[{
-                      userId: user?.sub || '',
-                      email:user?.email || '',
-                      firstName:user?.given_name || '',
-                      lastName:user?.family_name || '',
-                      userName:user?.nickname || ''
-                    
-                    }]}//placeholder for real use data
+                    climberObject={[
+                      {
+                        userId: user?.sub || '',
+                        email: user?.email || '',
+                        firstName: user?.given_name || '',
+                        lastName: user?.family_name || '',
+                        userName: user?.nickname || '',
+                      },
+                    ]} //placeholder for real use data
                     setClimbObject={setClimbObject}
                     setClimbNameForChatCallBack={setClimbNameForChatCallBack}
                     setClimbGradeForChatCallBack={setClimbGradeForChatCallBack}
