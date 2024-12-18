@@ -9,7 +9,7 @@ import { Tags, friendsObject } from '../../../types/interfaces';
 import GradeDropDowns from './filterModalComponents.tsx/GradeDropDowns';
 import { useFilterContext } from '../../filterProvider';
 import {
-  ,
+  dropDownStyles,
   threeLineDropDownIcon,
 } from '../../../reusableComponents/styles';
 
@@ -206,6 +206,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
                   <DownDrop
                     ref={downDropRef}
                     selectedFilter={selectedFilter}
+                    color = 'zinc'
                     downDropWidth={'w-40'}
                     setDropDownToggleCallBack={setFilterToggleCallBack}
                     filterTypes={filterItems}
@@ -276,7 +277,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
                       handleClickedTag(item);
                       setToggleFilterDropDown(false);
                     }}
-                    className={("gray")}
+                    className={dropDownStyles("zinc")}
                     key={index}
                   >
                     <div className="flex flex-col gap-2 p-2">

@@ -153,8 +153,6 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
     ]);
   };
 
-  console.log(climbsArray);
-
   const handleTagSelect = (item: ClimbTagItem) => {
     setClimbsArray((prev) => {
       const newState = [...prev];

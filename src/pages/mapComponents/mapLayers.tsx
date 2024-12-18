@@ -1,7 +1,7 @@
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import * as turf from '@turf/turf';
-import ReactDOM from 'react-dom/client';
+import * as ReactDOM from 'react-dom/client';
 import './popup.css';
 import { retrieveFeatureAggregate } from './mapApiRequests';
 import {
@@ -381,75 +381,90 @@ export const addFeatureInteractions = async (
     closeOnClick: false,
     offset: 10,
   });
-  // Declare these at the top level of your component
   let popupInstance: mapboxgl.Popup | null = null;
   let chartRoot: ReactDOM.Root | null = null;
-
+  let currentFeatureId: number | null = null;
+  
   map.current.on('mouseenter', id, (e: mapboxgl.MapMouseEvent) => {
-    // Remove any existing popup first
-    if (popupInstance) {
-      popupInstance.remove();
-    }
-
-    map.current.getCanvas().style.cursor = 'pointer';
     const features = e.features ? e.features[0] : null;
-
+  
     if (features && features.id !== undefined) {
+      const featureId = features.id as number;
+  
+      // If we're already displaying this feature's popup, do nothing
+      if (currentFeatureId === featureId) return;
+  
+      // Clear previous popup and chart
+      if (popupInstance) {
+        popupInstance.remove();
+        popupInstance = null;
+      }
+  
+      if (chartRoot) {
+        try {
+          chartRoot.unmount();
+          chartRoot = null;
+        } catch (error) {
+          console.warn('Error unmounting previous chart:', error);
+        }
+      }
+  
+      // Set current feature ID to prevent duplicate processing
+      currentFeatureId = featureId;
+  
+      map.current.getCanvas().style.cursor = 'pointer';
+  
       (async () => {
-        const popUpData = await retrieveFeatureAggregate(features.id as number);
-
-        // Create a new popup instance
-        popupInstance = new mapboxgl.Popup({
-          closeButton: false,
-          closeOnClick: false,
-          offset: 10,
-        });
-
-        // Prepare a unique container for the chart
-        const chartContainerId = `chart-container-${features.id}`;
-
-        popupInstance
-          .setLngLat(e.lngLat)
-          .setHTML(
-            `<div class='flex flex-col gap-5 items-center justify-center z-50'>
-            <div class="flex w-full items-start gap-5 font-bold">
-              <div class="flex flex-col gap-2 w-1/2 text-center rounded-md bg-customGray p-2 text-white">
-                <div class="text-neutral-200 font-thin"> CLIMBERS </div>
-                <div class="text-xl">5</div>
+        try {
+          const popUpData = await retrieveFeatureAggregate(featureId);
+  
+          // Check if the feature ID is still the same (prevent stale data)
+          if (currentFeatureId !== featureId) return;
+  
+          // Create a new popup instance
+          popupInstance = new mapboxgl.Popup({
+            closeButton: false,
+            closeOnClick: false,
+            offset: 10,
+          });
+  
+          // Prepare a unique container for the chart
+          const chartContainerId = `chart-container-${featureId}`;
+  
+          popupInstance
+            .setLngLat(e.lngLat)
+            .setHTML(
+              `<div class='flex flex-col gap-5 items-center justify-center z-50'>
+              <div class="flex w-full items-start gap-5 font-bold">
+                <div class="flex flex-col gap-2 w-1/2 text-center rounded-md bg-customGray p-2 text-white">
+                  <div class="text-neutral-200 font-thin"> CLIMBERS </div>
+                  <div class="text-xl">5</div>
+                </div>
+  
+                <div class="flex flex-col gap-2 w-1/2 text-center rounded-md bg-customGray p-2 text-white">
+                  <div class="text-neutral-200 font-thin"> CLIMBS </div>
+                  <div class="text-xl"> ${popUpData.totalCount} </div>
+                </div>
               </div>
-
-              <div class="flex flex-col gap-2 w-1/2 text-center rounded-md bg-customGray p-2 text-white">
-                <div class="text-neutral-200 font-thin"> CLIMBS </div>
-                <div class="text-xl"> ${popUpData.totalCount} </div>
+  
+              <div class="gap-5 items-center pt-2 justify-center rounded-md bg-customGray pb-2 flex flex-col 2"> 
+                <div class="text-white text-lg"> Climbs Per Grade </div>
+                <div id="${chartContainerId}" class="w-[260px] h-28"></div>
               </div>
-            </div>
-
-            <div class="gap-5 items-center pt-2 justify-center rounded-md bg-customGray pb-2 flex flex-col 2"> 
-              <div class="text-white text-lg"> Climbs Per Grade </div>
-              <div id="${chartContainerId}" class="w-[260px] h-28"></div>
-            </div>
-          </div>`,
-          )
-          .addClassName('popupClass')
-          .setMaxWidth('280px')
-          .addTo(map.current);
-
-        // Safely render chart
-        const chartContainer = document.getElementById(chartContainerId);
-        if (chartContainer) {
-          // Cleanup existing chart root if necessary
-          if (chartRoot) {
-            try {
-              chartRoot.unmount();
-            } catch (error) {
-              console.warn('Error unmounting previous chart:', error);
-            }
-          }
-
-          // Create new React root and render the chart
-          chartRoot = ReactDOM.createRoot(chartContainer);
-          chartRoot.render(
-            <BarChart
+            </div>`,
+            )
+            .addClassName('popupClass')
+            .setMaxWidth('280px')
+            .addTo(map.current);
+  
+          // Safely render chart
+          const chartContainer = document.getElementById(chartContainerId);
+ 
+          if (chartContainer) {
+            chartRoot = ReactDOM.createRoot(chartContainer);
+            console.log(chartRoot)
+            chartRoot.render(
+              <BarChart
               width={225}
               height={120}
               data={popUpData.gradeCounts}
@@ -463,25 +478,24 @@ export const addFeatureInteractions = async (
                 fill="#8884d8"
                 activeBar={<Rectangle fill="pink" stroke="blue" />}
               />
-            </BarChart>,
-          );
+            </BarChart>
+            );
+          }
+        } catch (error) {
+          console.error('Error processing feature:', error);
+          currentFeatureId = null;
         }
       })();
     }
   });
-
-  // Combine mouseleave events
+  
+  // Add mouseleave event to reset
   map.current.on('mouseleave', id, () => {
-    // Reset cursor
-    map.current.getCanvas().style.cursor = '';
-
-    // Remove popup
     if (popupInstance) {
       popupInstance.remove();
       popupInstance = null;
     }
-
-    // Unmount chart root if it exists
+  
     if (chartRoot) {
       try {
         chartRoot.unmount();
@@ -490,6 +504,9 @@ export const addFeatureInteractions = async (
         console.warn('Error unmounting chart:', error);
       }
     }
+  
+    currentFeatureId = null;
+    map.current.getCanvas().style.cursor = '';
   });
   // Onlick pass feature ID in get request to server. Server will then grab all climbs + dependency data for the climb and return to client
   map.current.on('click', id, (event: mapboxgl.MapLayerMouseEvent) => {
