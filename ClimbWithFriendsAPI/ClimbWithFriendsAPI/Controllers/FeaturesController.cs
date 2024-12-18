@@ -189,8 +189,8 @@ var ClimbOnGrade = await _context.MapToFeatureToClimbs
     }
 }
 
-
-public async Task<int> GetClimbCount(int featureId)
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public async Task<int> GetClimbCount(int featureId)
 {
     return await _context.MapToFeatureToClimbs
         .Where(m => m.FeatureId == featureId)
