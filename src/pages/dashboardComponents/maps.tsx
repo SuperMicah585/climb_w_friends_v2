@@ -73,8 +73,6 @@ const Maps = () => {
     }
   };
 
-  console.log(user, 'sdfsdfsd');
-
   const newMapCallBack = async (newMapObj: MapObject) => {
     if (user?.sub) {
       const mapObject = await createMap(
@@ -152,11 +150,6 @@ const Maps = () => {
       setToastType('success');
       setToastMessage('Map was edited sucessfully!');
       setToastTrigger((prev) => prev + 1);
-
-      /*
-notify('sdfsdkfnskdnfksjd')
-console.log('success')
-*/
     } else {
       ////----->Toast
       setToastType('error');
@@ -223,9 +216,8 @@ console.log('success')
                     <div className="absolute bottom-2 right-2 flex w-full justify-end">
                       <Link to={`/maps/${item.mapId}`}>
                         {' '}
-                        <div className="1 rounded-full bg-white pl-2 pr-2 pt-1 text-black hover:opacity-75">
-                          {' '}
-                          {submitAirplane}
+                        <div className="flex items-center justify-center rounded-full bg-white pb-1 pl-2 pr-2 pt-1 text-black hover:opacity-75">
+                          <div>{submitAirplane}</div>
                         </div>
                       </Link>
                     </div>

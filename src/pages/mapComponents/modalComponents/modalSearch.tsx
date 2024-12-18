@@ -72,7 +72,7 @@ const ModalSearch: React.FC<ModalSearchProps> = ({
         <div
           ref={filterIconDownRef}
           onClick={() => setDropDownToggle((prev) => !prev)}
-          className="absolute right-3 cursor-pointer rounded-full p-1 text-white hover:bg-slate-500 hover:opacity-75"
+          className="absolute right-3 cursor-pointer rounded-full p-1 text-white opacity-75 hover:bg-slate-500 hover:opacity-100"
         >
           {' '}
           {filterIcon}

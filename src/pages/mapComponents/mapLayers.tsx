@@ -50,7 +50,7 @@ export const createMarker = (
     .addTo(map);
 
   const marker = new mapboxgl.Marker({
-    color: '#bf9d85',
+    color: '#18181b',
   })
     .setLngLat([lng, lat])
     .setPopup(popup)
@@ -424,7 +424,7 @@ export const addFeatureInteractions = async (
               </div>
             </div>
 
-            <div class="gap-5 items-center pt-2 justify-center rounded-md bg-customGray flex flex-col 2"> 
+            <div class="gap-5 items-center pt-2 justify-center rounded-md bg-customGray pb-2 flex flex-col 2"> 
               <div class="text-white text-lg"> Climbs Per Grade </div>
               <div id="${chartContainerId}" class="w-[260px] h-28"></div>
             </div>

@@ -228,7 +228,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
               .map((item: ClimbWithDependencies) => (
                 <div
                   key={item.climb?.climbId}
-                  className="relative mt-5 flex flex-col gap-2 rounded-md bg-zinc-800 p-10 text-black shadow-sm shadow-violet-200"
+                  className="relative mt-5 flex flex-col gap-2 rounded-md bg-customGray p-10 text-black shadow-sm shadow-white"
                 >
                   <div
                     onClick={() => mp_page(item)}
@@ -296,7 +296,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                           >
                             <div
                               key={tagsOnClimb.tagId}
-                              className="rounded-md border-2 border-green-900 bg-green-600 p-1 text-white"
+                              className="rounded-md border-2 border-green-900 bg-green-600 p-1 text-white hover:opacity-75"
                             >
                               {tagsOnClimb.tagName}
                             </div>
