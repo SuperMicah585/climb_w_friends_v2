@@ -13,6 +13,7 @@ interface DropDownProps {
   dropDownButtonStyle: string;
   dropDownWidth: string;
   dropDownHeight?: string;
+  color?:string
 }
 const DropDown: React.FC<DropDownProps> = ({
   dropDownItems,
@@ -21,6 +22,7 @@ const DropDown: React.FC<DropDownProps> = ({
   dropDownButtonStyle,
   dropDownWidth,
   dropDownHeight,
+  color
 }) => {
   const [dropDownItemsState, setDropDownItemsState] = useState<boolean>(false);
   const [stateDropDownItem, setStateDropDownItem] = useState<string>('');
@@ -65,7 +67,7 @@ const DropDown: React.FC<DropDownProps> = ({
                 setDropDownItemsState(false);
                 selectedDropDownItemCallBack(item);
               }}
-              className={dropDownStyles}
+              className={color?dropDownStyles(color):dropDownStyles("gray")}
               key={item}
             >
               {' '}

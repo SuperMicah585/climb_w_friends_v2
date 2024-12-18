@@ -50,7 +50,7 @@ const NavBar = () => {
             onClick={() => {
               setCurrentPage(item);
             }}
-            className={`z-10 border-b-2 border-transparent font-extrabold hover:cursor-pointer hover:border-white ${currentPage === item ? 'border-white' : ''}`}
+            className={`z-10 border-b-4 border-transparent font-extrabold hover:cursor-pointer hover:border-white ${currentPage === item ? 'border-white' : ''}`}
           >
             {item}{' '}
           </div>
