@@ -188,7 +188,7 @@ console.log('success')
           <div className="text-3xl text-white"> Add Map</div>
         </PurpleButton>
       </div>
-      <div className="border-box relative z-10 w-screen flex-grow pb-10 pl-10 pr-10">
+      <div className="border-box 10 relative z-10 w-screen flex-grow pl-10 pr-10">
         <div className="flex justify-center">
           <div className="flex flex-col">
             <div className="mt-5 grid w-screen max-w-[1800px] grid-cols-1 gap-5 pl-10 pr-10 md:pl-20 md:pr-20 lg:grid-cols-2 lg:pl-40 lg:pr-40">
@@ -223,7 +223,7 @@ console.log('success')
                     <div className="absolute bottom-2 right-2 flex w-full justify-end">
                       <Link to={`/maps/${item.mapId}`}>
                         {' '}
-                        <div className="rounded-full bg-white pb-1 pl-2 pr-2 pt-1 text-black hover:opacity-75">
+                        <div className="1 rounded-full bg-white pl-2 pr-2 pt-1 text-black hover:opacity-75">
                           {' '}
                           {submitAirplane}
                         </div>
