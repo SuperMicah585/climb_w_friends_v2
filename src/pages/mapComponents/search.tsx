@@ -80,7 +80,7 @@ const Search: React.FC<SearchProps> = ({
           {searchToggle ? (
             <div
               onClick={() => closeAddClimbsModalCallBack(true)}
-              className={`w-full flex-grow cursor-pointer rounded-xl border border-slate-500 bg-zinc-900 bg-opacity-90 p-3 pl-40 text-neutral-400 shadow-lg hover:border-violet-500`}
+              className={`w-full flex-grow cursor-pointer rounded-xl border border-neutral-500 bg-zinc-900 bg-opacity-90 p-3 pl-40 text-neutral-400 shadow-lg hover:border-violet-500`}
             >
               Add Climbs To Map
             </div>

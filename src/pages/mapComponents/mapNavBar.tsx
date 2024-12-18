@@ -35,7 +35,7 @@ const MapNavBar: React.FC<MapNavBarProps> = ({
 
   return (
     <div
-      className={`absolute ${navBarStateExpanded ? 'w-screen' : 'w-[525px] rounded-r-lg'} left-0 top-0 z-10 flex items-center border-b border-r border-zinc-900 bg-zinc-900 bg-opacity-75 p-2 pr-5 transition-all duration-1000 hover:bg-opacity-100`}
+      className={`absolute ${navBarStateExpanded ? 'w-screen' : 'w-[505px] rounded-r-lg'} left-0 top-0 z-10 flex items-center border-b border-r border-zinc-900 bg-zinc-900 bg-opacity-75 p-2 pr-5 transition-all duration-1000 hover:bg-opacity-100`}
     >
       <div className="flex items-center">
         {children}
@@ -76,7 +76,7 @@ const MapNavBar: React.FC<MapNavBarProps> = ({
                 to={`/maps`}
               >
                 {' '}
-                <div className="border-b-2 border-transparent font-semibold text-white hover:border-violet-500">
+                <div className="border-b-4 border-transparent font-semibold text-white hover:border-violet-500">
                   {' '}
                   {item}
                 </div>

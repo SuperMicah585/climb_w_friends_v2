@@ -21,7 +21,7 @@ const GradeDropDowns = () => {
   };
 
   const climbButtonStyle =
-    'bg-zinc-800 border-slate-500 border text-white flex font-semibold text-sm w-[84px] justify-between gap-1 items-center hover:opacity-75 cursor-pointer rounded-lg p-2';
+    'bg-customGray border-slate-500 border text-white flex font-semibold text-sm w-[84px] justify-between gap-1 items-center hover:opacity-75 cursor-pointer rounded-lg p-2';
 
   return (
     <div className="flex items-end gap-5">
