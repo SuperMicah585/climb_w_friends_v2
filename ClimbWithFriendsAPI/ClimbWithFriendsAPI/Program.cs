@@ -36,9 +36,15 @@ builder.Services.AddSwaggerGen();
 // Register AppDbContext with dependency injection
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("databaseConnection")));
-
 var app = builder.Build();
 
+// Use EnsureCreated() to create the database and schema
+// DO NOT USE IN PRODUCTION
+using (var scope = app.Services.CreateScope())
+{
+    var appDbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    appDbContext.Database.EnsureCreated(); // Ensures the database and tables are created
+}
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
