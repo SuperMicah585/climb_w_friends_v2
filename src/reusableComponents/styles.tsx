@@ -390,8 +390,9 @@ export const switchIcon = (
   </svg>
 );
 
-export const dropDownStyles: string =
-  'flex items-center text-sm border-b border-zinc-900 bg-customGray cursor-pointer hover:bg-neutral-700 p-2 text-white ';
+export const dropDownStyles  = (style:string) =>{
+  return(style==="gray"?'flex items-center text-sm border-b border-zinc-900 bg-customGray cursor-pointer hover:bg-neutral-700 p-2 text-white ': 
+    'flex items-center text-sm border-b border-customGray bg-zinc-900 cursor-pointer hover:bg-neutral-700 p-2 text-white ')};
 export const climbTypeDropDownStyle =
   'bg-customGray text-white flex font-semibold text-sm w-[84px] justify-between gap-1 items-center cursor-pointer rounded-l-xl p-2 z-10';
 export const stateDropDownStyle =

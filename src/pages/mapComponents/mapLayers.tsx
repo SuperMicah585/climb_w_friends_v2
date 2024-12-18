@@ -34,7 +34,7 @@ export const createMarker = (
     .setHTML(
       `
 
-    <div class="w-full flex items-center justify-center flex-col gap-2 text-md font-semibold text-white p-2 mr-5">
+    <div class="w-full bg-customGray rounded-lg flex items-center justify-center flex-col gap-2 text-md font-semibold text-white p-2 mr-5">
     
     <div class="flex max-h-12 gap-2 text-lg">
     <div class="overflow-hidden text-ellipsis whitespace-nowrap w-full max-w-[200px]">${name}</div>
@@ -50,7 +50,7 @@ export const createMarker = (
     .addTo(map);
 
   const marker = new mapboxgl.Marker({
-    color: '#18181b',
+    color: '#23272a',
   })
     .setLngLat([lng, lat])
     .setPopup(popup)

@@ -2,7 +2,7 @@ import {
   addUserIcon,
   pencilIcon,
   closeIcon,
-  dropDownStyles,
+  ,
 } from '../../../reusableComponents/styles';
 import { MapObject, friendsObject } from '../../../types/interfaces';
 import InputComponent from '../../../reusableComponents/input';
@@ -256,7 +256,7 @@ const EditModal: React.FC<EditModalProps> = ({
                       setSelectedFriends((prev) => [...prev, item]);
                       setToggleSearchDropDown(false);
                     }}
-                    className={dropDownStyles}
+                    className={}
                     key={item.id}
                   >
                     <div className="flex flex-col gap-2 p-2 text-black">
