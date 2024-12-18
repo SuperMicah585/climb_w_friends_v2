@@ -11,54 +11,52 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
 } from 'recharts';
-import {
-  ClimbsTableResponse,
-  GeoJsonFeature,
-  GeoJsonObject,
-} from '../../types/interfaces';
+import { GeoJsonObject } from '../../types/interfaces';
+let currentMarker: mapboxgl.Marker | null = null;
 
 export const createMarker = (
   lat: number,
   lng: number,
   name: string,
+  location: string,
+  grade: string,
   map: any,
 ) => {
-  const popup = new mapboxgl.Popup()
+  if (currentMarker) {
+    currentMarker.remove();
+  }
+
+  const popup = new mapboxgl.Popup({
+    closeButton: false,
+  })
     .setLngLat([lng, lat])
     .setHTML(
       `
 
-    <div class="text-md font-semibold text-black p-2 mr-5">${name}</div>
-
+    <div class="w-full flex items-center justify-center flex-col gap-2 text-md font-semibold text-white p-2 mr-5">
+    
+    <div class="flex max-h-12 gap-2 text-lg">
+    <div class="overflow-hidden text-ellipsis whitespace-nowrap w-full max-w-[200px]">${name}</div>
+    <div> | </div>
+    <div>${grade} </div>
+</div>
+    <div class =  "font-thin opacity-75"> ${location}</div>
+    </div>
 `,
     )
+    .addClassName('popupClass')
+    .setMaxWidth('300px')
     .addTo(map);
 
-  const popupContent = popup
-    .getElement()
-    ?.querySelector('.mapboxgl-popup-content');
-
-  if (popupContent instanceof HTMLElement) {
-    popupContent.style.backgroundColor = 'white'; // Tailwind "yellow-200"
-    popupContent.style.color = '#374151'; // Tailwind "gray-700"
-    popupContent.style.padding = '15px';
-  }
-
-  const closeButton = popup
-    .getElement()
-    ?.querySelector('.mapboxgl-popup-close-button');
-  if (closeButton instanceof HTMLElement) {
-    closeButton.style.color = 'black';
-  }
-
-  const marker = new mapboxgl.Marker()
+  const marker = new mapboxgl.Marker({
+    color: '#bf9d85',
+  })
     .setLngLat([lng, lat])
     .setPopup(popup)
     .addTo(map);
+
+  currentMarker = marker;
 
   map.flyTo({ center: [lng, lat], zoom: 13 });
   marker.togglePopup();
@@ -413,7 +411,7 @@ export const addFeatureInteractions = async (
         popupInstance
           .setLngLat(e.lngLat)
           .setHTML(
-            `<div class='flex flex-col gap-5 items-center justify-center'>
+            `<div class='flex flex-col gap-5 items-center justify-center z-50'>
             <div class="flex w-full items-start gap-5 font-bold">
               <div class="flex flex-col gap-2 w-1/2 text-center rounded-md bg-customGray p-2 text-white">
                 <div class="text-neutral-200 font-thin"> CLIMBERS </div>
@@ -426,7 +424,7 @@ export const addFeatureInteractions = async (
               </div>
             </div>
 
-            <div class="gap-5 items-center pt-2 justify-center rounded-md bg-customGray flex flex-col pb-2"> 
+            <div class="gap-5 items-center pt-2 justify-center rounded-md bg-customGray flex flex-col 2"> 
               <div class="text-white text-lg"> Climbs Per Grade </div>
               <div id="${chartContainerId}" class="w-[260px] h-28"></div>
             </div>

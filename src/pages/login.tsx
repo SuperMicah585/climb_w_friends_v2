@@ -28,7 +28,7 @@ const AuthComponent: React.FC = () => {
               overflow: 'hidden', // Ensure no overflow
               textAlign: 'center', // Center the text
             }}
-            className="absolute z-10 mb-10 w-full font-black"
+            className="10 absolute z-10 w-full font-black"
           >
             {mainWords[0]}
           </div>
@@ -55,7 +55,7 @@ const AuthComponent: React.FC = () => {
               overflow: 'hidden', // Ensure no overflow
               textAlign: 'center', // Center the text
             }}
-            className="absolute z-10 mb-10 w-full font-black"
+            className="10 absolute z-10 w-full font-black"
           >
             {mainWords[1]}
           </div>
@@ -81,7 +81,7 @@ const AuthComponent: React.FC = () => {
               overflow: 'hidden', // Ensure no overflow
               textAlign: 'center', // Center the text
             }}
-            className="absolute z-10 mb-10 w-full font-black"
+            className="10 absolute z-10 w-full font-black"
           >
             {mainWords[2]}
           </div>

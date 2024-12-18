@@ -6,6 +6,7 @@ interface InputComponentProps {
   paddingLeft: string;
   setPlaceHolder?: string;
   bgColor?: string;
+  focusColor?: string;
 }
 
 const InputComponent = forwardRef<HTMLInputElement, InputComponentProps>(
@@ -16,6 +17,7 @@ const InputComponent = forwardRef<HTMLInputElement, InputComponentProps>(
       paddingLeft,
       setPlaceHolder,
       bgColor,
+      focusColor,
     },
     ref,
   ) => {
@@ -43,7 +45,7 @@ const InputComponent = forwardRef<HTMLInputElement, InputComponentProps>(
         onChange={(e) => setQuery(e.target.value)}
         type="text"
         placeholder={`${setPlaceHolder ? setPlaceHolder : 'Search for Climbs'}`}
-        className={`rounded-xl ${bgColor ? bgColor + ' ' + 'border-black text-black' : 'border-slate-500 bg-zinc-900 text-white'} bg-opacity-90 ${paddingLeft} w-full flex-grow border p-3 focus:outline-none focus:ring-1 focus:ring-violet-500`}
+        className={`rounded-xl ${bgColor ? bgColor + ' ' + 'border-black text-black' : 'border-slate-500 bg-zinc-900 text-white'} bg-opacity-90 ${paddingLeft} w-full flex-grow border p-3 focus:outline-none focus:ring-1 ${focusColor ? focusColor : 'focus:ring-violet-500'}`}
       />
     );
   },

@@ -35,12 +35,12 @@ const MapNavBar: React.FC<MapNavBarProps> = ({
 
   return (
     <div
-      className={`absolute ${navBarStateExpanded ? 'w-screen' : 'w-[460px] rounded-r-lg'} left-0 top-0 z-10 flex items-center border-b border-r border-zinc-900 bg-zinc-900 bg-opacity-75 p-2 pr-5 transition-all duration-1000 hover:bg-opacity-100`}
+      className={`absolute ${navBarStateExpanded ? 'w-screen' : 'w-[525px] rounded-r-lg'} left-0 top-0 z-10 flex items-center border-b border-r border-zinc-900 bg-zinc-900 bg-opacity-75 p-2 pr-5 transition-all duration-1000 hover:bg-opacity-100`}
     >
-      <div className="flex items-center gap-3">
+      <div className="flex items-center">
         {children}
         <div
-          className={`${navBarStateExpanded ? 'max-w-full pl-5 pr-5 opacity-100 duration-1000' : 'pointer-events-none max-w-0 opacity-0'} transition-max-height flex gap-5 font-semibold transition-opacity`}
+          className={`${navBarStateExpanded ? 'max-w-full pl-5 pr-5 opacity-100 duration-1000' : 'pointer-events-none ml-3 max-w-0 opacity-0'} transition-max-height flex gap-5 font-semibold transition-opacity`}
         >
           <div
             onClick={() => tagToggleCallBack()}

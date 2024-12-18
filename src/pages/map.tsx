@@ -1,24 +1,18 @@
 // Import Mapbox GL, and CSS
-import { useState, useEffect, useRef, useContext } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import Search from './mapComponents/search';
 import ActivityFeed from './mapComponents/activityFeed';
 import ClimbModal from './mapComponents/modalComponents/climbModal';
 import MapNavBar from './mapComponents/mapNavBar';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import {
-  ClimbsTableResponse,
-  GeoJsonFeature,
-  Tags,
-  GeoJsonObject,
-} from '../types/interfaces';
+import { ClimbsTableResponse, GeoJsonObject } from '../types/interfaces';
 import TagModal from './mapComponents/modalComponents/modalTag';
 import FilterModal from './mapComponents/modalComponents/filterModal';
 import TagOverlay from './mapComponents/modalComponents/tagOverlay';
 import AllClimbsModal from './mapComponents/modalComponents/allClimbsModal';
 import AddClimbModal from './mapComponents/modalComponents/addClimbModal';
 import { useAuth0 } from '@auth0/auth0-react';
-import { exampleMapObjects } from './dashboardComponents/dashboardObjects';
 import { usStateDictionary } from './mapComponents/mapObjects';
 import { useParams } from 'react-router-dom';
 import LogoutButton from '../reusableComponents/logoutButton';
@@ -35,16 +29,6 @@ mapboxgl.accessToken = import.meta.env.VITE_MAP_BOX_KEY;
 type MapProps = {
   zoomLevel: number;
 };
-/*
-notes:
-Mess with dropdown position so that is does not get in the way
-Clicking on check will trigger dropDown that will give following options
-
-1) Quick Send
-OR
-2) Send with Additional information -> open an overlay similar to chat where user can add additional information related to send
-
-*/
 
 const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   const map = useRef<mapboxgl.Map>();
@@ -74,6 +58,8 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   const [feedToggle, setFeedToggle] = useState<boolean>(false);
   const [climbTypeDropDownValue, setclimbTypeDropDown] =
     useState<string>('Boulder');
+
+  const [searchToggle, setSearchToggle] = useState(true);
 
   const [stateDropDownName, setStateDropDownName] = useState<string>('WA');
 
@@ -134,7 +120,6 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   };
 
   useEffect(() => {
-    console.log('inside');
     if (mapContainer.current) {
       map.current = new mapboxgl.Map({
         container: mapContainer.current, // Container for the map
@@ -187,13 +172,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
       }
     };
   }, []); // Only run once on mount
-  /*
-  useEffect(() => {
-    if (mapLoaded) {
-      shapeColors(map, 2);
-    }
-  }, [mapLoaded]);
-*/
+
   useEffect(() => {
     if (selectedClimb && map?.current) {
       if (currentMarker) {
@@ -204,6 +183,8 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
         selectedClimb.areaLatitude,
         selectedClimb.areaLongitude,
         selectedClimb.climbName,
+        selectedClimb.location,
+        selectedClimb.rating,
         map.current,
       );
 
@@ -225,7 +206,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   }, [clickedFeatureClimbs]);
 
   return (
-    <>
+    <div className="absolute">
       <MapNavBar
         allClimbsToggle={allClimbsModalDisplay}
         allClimbsCallBack={allClimbsCallBack}
@@ -236,15 +217,18 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
         feedToggleCallBack={feedToggleCallBack}
         tagToggleCallBack={tagToggleCallBack}
       >
-        <div className="flex w-full items-center justify-start gap-5">
-          <div className="z-10 max-w-96 flex-grow">
+        <div className="flex w-full items-center justify-start">
+          <div className="z-10 flex-grow">
             {' '}
             <Search
+              searchToggle={searchToggle}
+              setSearchToggle={setSearchToggle}
               stateDropDownName={stateDropDownName}
               climbTypeDropDownValue={climbTypeDropDownValue}
               stateDropDownNameCallBack={stateDropDownNameCallBack}
               climbTypeDropDownValueCallBack={climbTypeDropDownValueCallBack}
               closeAddClimbsModalCallBack={closeAddClimbsModalCallBack}
+              map={map.current}
             />{' '}
           </div>
         </div>
@@ -293,7 +277,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
       {displayTagOverlay ? <TagOverlay /> : null}
 
       <div className="h-screen w-screen" ref={mapContainer} />
-    </>
+    </div>
   );
 };
 
