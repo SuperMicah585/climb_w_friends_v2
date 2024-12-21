@@ -1,3 +1,4 @@
+import { ClimbWithDependencies } from "../../types/interfaces";
 const createTag = async (TagName: string, mapId: number) => {
   try {
     const response = await fetch(`http://localhost:5074/api/Tags`, {
@@ -159,6 +160,7 @@ const retrieveClimbs = async (searchString: string) => {
 };
 
 const retrieveFeatures = async (mapId: number) => {
+
   const url = `http://localhost:5074/api/Features/ByMap/${mapId}`;
   try {
     const response = await fetch(url);
@@ -167,7 +169,7 @@ const retrieveFeatures = async (mapId: number) => {
     }
 
     const json = await response.json();
-
+    console.log(json)
     // Update the specific object at the given index in the array
     return json;
   } catch (error: any) {
@@ -239,6 +241,37 @@ const retrieveFeatureAggregate = async (featureId: number) => {
   }
 };
 
+const addClimbsToMap = async(mapId:number,climbs:ClimbWithDependencies[]) => {
+
+
+  const climbingData = climbs.map((item) => ({
+    Coordinates: item.climb.coordinates,
+    ClimbId: item.climb.climbId
+}));
+
+console.log(climbingData,"sup")
+  try {
+    const response = await fetch(`http://localhost:5074/api/Features/Climbs/ToMap/${mapId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(climbingData)
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const buckets = await response.json();
+    console.log(buckets,"hi")
+} catch (error) {
+    console.error('Error sending climbing data:', error);
+    throw error;
+}
+
+}
+
 export {
   retrieveClimbs,
   createTag,
@@ -250,4 +283,5 @@ export {
   retrieveFeatureDependencies,
   retrieveFeatureDependenciesByMap,
   retrieveFeatureAggregate,
+  addClimbsToMap
 };

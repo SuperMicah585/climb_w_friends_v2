@@ -1,45 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.Linq; // For FirstOrDefault
-using NetTopologySuite.Geometries; // Requires NetTopologySuite for geometry support
+using NetTopologySuite;
+using NetTopologySuite.Features;
+using NetTopologySuite.Geometries;
 using Newtonsoft.Json; // For JSON serialization
+
 
 namespace ClimbWithFriendsAPI.Data
 {
     public class Feature
     {
+  
         public int FeatureId { get; set; }
+
+        public int TagId { get; set; }
         public int MapId { get; set; }
         public string Type { get; set; }
-
-        // Backing field for coordinates
-        private List<Point> _coordinatesList;
-
-        // Ignoring the coordinates list in JSON output
-        [JsonIgnore]
-        public List<Point> CoordinatesList
-        {
-            get => _coordinatesList;
-            set => _coordinatesList = value ?? new List<Point>();
-        }
-
-        // SimplifiedCoordinates will be included in JSON output
-        [JsonProperty("coordinates")]
-        public double[] SimplifiedCoordinates
-        {
-            get
-            {
-                var simplifiedCoords = _coordinatesList?.FirstOrDefault() is Point firstPoint
-                    ? new[] { firstPoint.X, firstPoint.Y }
-                    : null;
-
-                // Print statement for testing
-       
-
-                return simplifiedCoords;
-            }
-        }
-
-        public List<int> Climbs { get; set; }
         public string CreatedAt { get; set; }
         public string UpdatedAt { get; set; }
 
@@ -53,6 +29,55 @@ public class FeatureDependencies
     public Climb Climb { get; set; }    // Single climb
 }
 
+public class FeatureResult
+{
+    public Feature Feature { get; set; }
+    public ClimbResult Climbs { get; set; }
+}
+
+public class ClimbResult
+{
+    public List<int> ClimbIds { get; set; }
+    public List<double[]> Coordinates { get; set; }
+}
 
 
+//I need to get all featureID: [{"coordinates":[string,string]},climbId: number},{},{}...]
+
+public class ClimbData
+{
+    public double[] Coordinates { get; set; } // Coordinates as [longitude, latitude]
+    public int ClimbId {get;set;}
+}
+
+public class FeatureObject
+{
+    public string Type { get; set; } = "Feature"; // Default to "Feature"
+    public int Id { get; set; } // Assuming FeatureId is an integer
+    public FeatureProperties Properties { get; set; } = new FeatureProperties();
+    public FeatureGeometry Geometry { get; set; } = new FeatureGeometry();
+}
+
+public class FeatureProperties
+{
+    public List<string> Climbs { get; set; } = new List<string>(); // Assuming Climbs is a list of strings
+}
+
+public class FeatureGeometry
+{
+    public string Type { get; set; } = "Point"; // Default to "Point"
+    public List<double> Coordinates { get; set; } = new List<double>(); // Assuming coordinates is a list of doubles
+}
+
+public class GeoJsonShell
+{
+    public string Type { get; set; } = "FeatureCollection";
+    public List<object> Features { get; set; } = new List<object>();
+}
+
+public class Bucket
+{
+    public int FeatureId { get; set; }
+    public List<ClimbData> Climbs { get; set; }
+}
 }

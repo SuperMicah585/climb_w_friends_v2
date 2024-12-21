@@ -24,7 +24,7 @@
    after adding the authtoken via command line, run the following command
    ngrok http 5074
    ```
-3. Run program (Swagger should launch automatically)
+4. Run program (Swagger should launch automatically)
    ```bash
    dotnet run
    ```

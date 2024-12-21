@@ -20,13 +20,14 @@ import Tooltip from '../../../reusableComponents/toolTip';
 import { newWindowIcon, minusIcon } from '../../../reusableComponents/styles';
 import TickOverlay from '../tickOverlay';
 import { useAuth0 } from '@auth0/auth0-react';
-import { retrieveClimbs } from '../mapApiRequests';
+import { retrieveClimbs,addClimbsToMap } from '../mapApiRequests';
 
 const AddClimbModal: React.FC<AddClimbsModalProps> = ({
   closeAddClimbsModalCallBack,
   location,
   routeType,
   mapId,
+  setRenderFeatureTrigger
 }) => {
   const [searchResults, setsearchResults] = useState<ClimbsTableResponse[]>([]);
   const [toggleSearchDropDown, setToggleSearchDropDown] =
@@ -133,7 +134,12 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
     }
   };
 
-  console.log(user);
+  const handleModalSubmit = async()=>{
+
+    await addClimbsToMap(mapId,climbsArray)
+
+  }
+
   const handleClimbSelect = (item: ClimbsTableResponse) => {
     setClimbsArray((prev) => [
       ...prev,
@@ -152,8 +158,6 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
       },
     ]);
   };
-
-  console.log(climbsArray);
 
   const handleTagSelect = (item: ClimbTagItem) => {
     setClimbsArray((prev) => {
@@ -176,6 +180,10 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
       return newState;
     });
   };
+
+
+
+
 
   const mp_page = (item: ClimbsTableResponse) => {
     const url = item.url;
@@ -237,7 +245,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
                         handleClimbSelect(item);
                         setToggleSearchDropDown(false);
                       }}
-                      className={dropDownStyles}
+                      className={dropDownStyles('gray')}
                       key={item.climbId}
                     >
                       <div className="flex flex-col gap-2 p-2">
@@ -339,7 +347,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
         </div>
 
         <div
-          onClick={() => closeAddClimbsModalCallBack(false)}
+          onClick={() => {handleModalSubmit();closeAddClimbsModalCallBack(false);setRenderFeatureTrigger(prev=>prev+1)}}
           className="absolute bottom-0 right-5 flex h-16 w-full items-center justify-end bg-zinc-900"
         >
           <PurpleButton>Add Climbs</PurpleButton>

@@ -17,7 +17,6 @@ import {
   friendsObject,
 } from '../types/interfaces';
 import SearchDropDown from './searchDropDown';
-import { micah } from '../pages/mapComponents/mapObjects';
 import TagInput from './input';
 import { useState, useRef, useEffect } from 'react';
 import TickClimbsComponent from '../pages/mapComponents/tickClimbsComponent';
@@ -189,7 +188,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
                             handleTagSelect([tagObj, climbObject.climbId]);
                             setDropDownToggle(false);
                           }}
-                          className={dropDownStyles}
+                          className={dropDownStyles('zinc')}
                           key={tagObj.tagId} // Use tagObj.id for unique keys
                         >
                           <div className="flex flex-col gap-2 p-2">

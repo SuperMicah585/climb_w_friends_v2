@@ -1,7 +1,6 @@
 import { useState, useRef } from 'react';
 import { climbType, usStateAbbreviations } from './mapObjects';
 import DropDown from '../../reusableComponents/dropDown';
-import { switchIcon } from '../../reusableComponents/styles';
 import InputComponent from '../../reusableComponents/input';
 import SearchDropDown from '../../reusableComponents/searchDropDown';
 import { retrieveClimbs } from './mapApiRequests';
@@ -12,6 +11,7 @@ import {
   climbTypeDropDownStyle,
   stateDropDownStyle,
   dropDownStyles,
+  switchIcon,
 } from '../../reusableComponents/styles';
 /*
 Need to add callBack for both climb and state
@@ -113,7 +113,7 @@ const Search: React.FC<SearchProps> = ({
                             handleClimbSelect(item);
                             setSearchDrownDown(false);
                           }}
-                          className={dropDownStyles}
+                          className={dropDownStyles('gray')}
                           key={item.climbId}
                         >
                           <div className="flex flex-col gap-2 p-2">
