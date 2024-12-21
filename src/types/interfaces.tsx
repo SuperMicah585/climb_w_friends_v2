@@ -17,6 +17,7 @@ export interface AddClimbsModalProps {
   routeType: string;
   closeAddClimbsModalCallBack: (trigger: boolean) => void;
   mapId: number;
+  setRenderFeatureTrigger: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export type TempDic = {

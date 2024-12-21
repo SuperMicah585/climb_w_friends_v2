@@ -83,7 +83,7 @@ const ModalSearch: React.FC<ModalSearchProps> = ({
             setDropDownToggleCallBack={setDropDownToggleCallBack}
             setSelectedFilterCallBack={setSelectedFilterCallBack}
             filterTypes={filterTypes}
-            color='zinc'
+            color="zinc"
             downDropWidth={'w-40'}
             ref={filterDropDownRef}
           />

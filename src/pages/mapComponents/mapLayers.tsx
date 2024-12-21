@@ -74,18 +74,22 @@ export const createClimbingShapes = (
   });
 };
 
-const displayLayersInitial = (
+
+export const displayLayersInitial = (
   map: any,
   clickedFeatureClimbCallBack: (featureId: number) => void,
   features: GeoJsonObject,
 ) => {
   // Only add the source once
-  if (!map.current?.getSource('geojson-data')) {
+
+  if (!map?.current?.getSource('geojson-data')  ) {
+  
     map.current?.addSource('geojson-data', {
       type: 'geojson',
       data: features, // Your GeoJSON data
     });
   }
+
 
   features.features.forEach((feature, index) => {
     const fillLayerId = `geojson-fill-layer-${index}`;
@@ -93,6 +97,7 @@ const displayLayersInitial = (
     const layerId = `geojson-layer-${index}`;
 
     switch (feature.geometry.type) {
+  
       case 'Point':
         map.current?.addLayer({
           id: layerId,
@@ -106,7 +111,7 @@ const displayLayersInitial = (
                   type: 'Feature',
                   geometry: {
                     type: 'Point',
-                    coordinates: feature.geometry.coordinates,
+                    coordinates: feature.geometry.coordinates[0],
                     //need to add property features
                   },
                   id: feature.id,
@@ -366,6 +371,10 @@ export const updateLayerVisibility = (
     }
   });
 };
+//save all ID's within a set. When layers are refreshed loop through layers and unmount aech id within the set.
+
+
+
 
 export const addFeatureInteractions = async (
   map: any,
@@ -375,63 +384,66 @@ export const addFeatureInteractions = async (
   // Ensure map and map.current are defined
   if (!map?.current) return;
 
-  // Create a popup outside the event handlers so we can reuse it
+ //console.log(map.current._listeners,"hi");
+
   const popup = new mapboxgl.Popup({
     closeButton: false,
     closeOnClick: false,
     offset: 10,
   });
-  let popupInstance: mapboxgl.Popup | null = null;
-  let chartRoot: ReactDOM.Root | null = null;
+  
   let currentFeatureId: number | null = null;
+  let currentRoot: ReactDOM.Root | null = null;
   
+  const cleanupChart = () => {
+    if (currentRoot) {
+      try {
+        // Check if the container still exists before unmounting
+        const containerId = `chart-container-${currentFeatureId}`;
+        const container = document.getElementById(containerId);
+        
+        if (container) {
+          currentRoot.unmount();
+        }
+      } catch (error) {
+        console.warn('Error unmounting chart:', error);
+      } finally {
+        currentRoot = null;
+      }
+    }
+  };
+
+
+  //map.current.on is not being removed. moussenter,mouseleave,mouse click are persisting even after shape is removed.
+
   map.current.on('mouseenter', id, (e: mapboxgl.MapMouseEvent) => {
+
     const features = e.features ? e.features[0] : null;
-  
+
     if (features && features.id !== undefined) {
       const featureId = features.id as number;
-  
+
       // If we're already displaying this feature's popup, do nothing
       if (currentFeatureId === featureId) return;
-  
-      // Clear previous popup and chart
-      if (popupInstance) {
-        popupInstance.remove();
-        popupInstance = null;
-      }
-  
-      if (chartRoot) {
-        try {
-          chartRoot.unmount();
-          chartRoot = null;
-        } catch (error) {
-          console.warn('Error unmounting previous chart:', error);
-        }
-      }
-  
-      // Set current feature ID to prevent duplicate processing
+
+      // Clean up existing chart and popup
+      cleanupChart();
+      popup.remove();
+
+      // Set current feature ID
       currentFeatureId = featureId;
-  
       map.current.getCanvas().style.cursor = 'pointer';
-  
+
       (async () => {
         try {
           const popUpData = await retrieveFeatureAggregate(featureId);
-  
+
           // Check if the feature ID is still the same (prevent stale data)
           if (currentFeatureId !== featureId) return;
-  
-          // Create a new popup instance
-          popupInstance = new mapboxgl.Popup({
-            closeButton: false,
-            closeOnClick: false,
-            offset: 10,
-          });
-  
-          // Prepare a unique container for the chart
+
           const chartContainerId = `chart-container-${featureId}`;
-  
-          popupInstance
+          
+          popup
             .setLngLat(e.lngLat)
             .setHTML(
               `<div class='flex flex-col gap-5 items-center justify-center z-50'>
@@ -456,59 +468,57 @@ export const addFeatureInteractions = async (
             .addClassName('popupClass')
             .setMaxWidth('280px')
             .addTo(map.current);
-  
-          // Safely render chart
-          const chartContainer = document.getElementById(chartContainerId);
- 
-          if (chartContainer) {
-            chartRoot = ReactDOM.createRoot(chartContainer);
-            console.log(chartRoot)
-            chartRoot.render(
-              <BarChart
-              width={225}
-              height={120}
-              data={popUpData.gradeCounts}
-              margin={{ top: 0, right: 20, bottom: 0, left: 0 }}
-            >
-              <CartesianGrid stroke="white" strokeDasharray="3 3" />
-              <XAxis stroke="white" dataKey="rating" />
-              <YAxis stroke="white" />
-              <Bar
-                dataKey="count"
-                fill="#8884d8"
-                activeBar={<Rectangle fill="pink" stroke="blue" />}
-              />
-            </BarChart>
-            );
-          }
+
+          //hover even is happenning twice
+          console.log("hovering")
+          // Wait for the next tick to ensure the container is in the DOM
+          setTimeout(() => {
+            const chartContainer = document.getElementById(chartContainerId);
+            console.log(chartContainer)
+            if (chartContainer && currentFeatureId === featureId) {
+              // Only create a new root if we don't have one
+              if (!currentRoot) {
+          
+                currentRoot = ReactDOM.createRoot(chartContainer);
+              }
+              
+              // Always use render() to update the content
+              currentRoot.render(
+                <BarChart
+                  width={225}
+                  height={120}
+                  data={popUpData.gradeCounts}
+                  margin={{ top: 0, right: 20, bottom: 0, left: 0 }}
+                >
+                  <CartesianGrid stroke="white" strokeDasharray="3 3" />
+                  <XAxis stroke="white" dataKey="rating" />
+                  <YAxis stroke="white" />
+                  <Bar
+                    dataKey="count"
+                    fill="#8884d8"
+                    activeBar={<Rectangle fill="pink" stroke="blue" />}
+                  />
+                </BarChart>,
+              );
+            }
+          }, 0);
+
         } catch (error) {
           console.error('Error processing feature:', error);
           currentFeatureId = null;
+          cleanupChart();
         }
       })();
     }
   });
-  
-  // Add mouseleave event to reset
+
   map.current.on('mouseleave', id, () => {
-    if (popupInstance) {
-      popupInstance.remove();
-      popupInstance = null;
-    }
-  
-    if (chartRoot) {
-      try {
-        chartRoot.unmount();
-        chartRoot = null;
-      } catch (error) {
-        console.warn('Error unmounting chart:', error);
-      }
-    }
-  
+    cleanupChart();
+    popup.remove();
     currentFeatureId = null;
     map.current.getCanvas().style.cursor = '';
   });
-  // Onlick pass feature ID in get request to server. Server will then grab all climbs + dependency data for the climb and return to client
+
   map.current.on('click', id, (event: mapboxgl.MapLayerMouseEvent) => {
     const features = event.features ? event.features[0] : null;
     if (features && typeof features.id === 'number') {
@@ -520,12 +530,14 @@ export const addFeatureInteractions = async (
     }
   });
 
-  // Return a cleanup function to remove event listeners
+  // Return a cleanup function
   return () => {
+    console.log("cleanup")
     if (map.current) {
       map.current.off('mouseenter', id);
       map.current.off('mouseleave', id);
       map.current.off('click', id);
+      cleanupChart();
       popup.remove();
     }
   };

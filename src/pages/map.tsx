@@ -20,6 +20,7 @@ import {
   createMarker,
   createClimbingShapes,
   updateLayerVisibility,
+  displayLayersInitial,
   //shapeColors,
 } from './mapComponents/mapLayers';
 import { retrieveFeatures } from './mapComponents/mapApiRequests';
@@ -62,6 +63,8 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   const [searchToggle, setSearchToggle] = useState(true);
 
   const [stateDropDownName, setStateDropDownName] = useState<string>('WA');
+
+  const [renderFeatureTrigger,setRenderFeatureTrigger] = useState<number>(0)
 
   const {
     getAccessTokenSilently,
@@ -119,6 +122,79 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     setClickedFeatureClimbs(featureId);
   };
 
+
+  
+  function clearCustomLayers() {
+    if (!map?.current) return;
+
+    console.log(map.current._listeners,"hi");
+  
+    try {
+      const style = map.current.getStyle();
+      if (!style?.layers || !style?.sources) return;
+  
+      // Create a copy of layers array since we'll be modifying it during iteration
+      const layers = [...style.layers];
+  
+      // Remove all custom layers first
+      layers.forEach(layer => {
+        if (layer.id.startsWith('geojson') && map.current?.getLayer(layer.id)) {
+          
+          try {
+            // Remove event listeners before removing the layer
+     
+            map.current._listeners.click = []
+            map.current._listeners.mousemove = []
+            map.current._listeners.mouseout = []
+
+            console.log(map.current._listeners,"hi");
+            map.current.removeLayer(layer.id);
+          } catch (error) {
+            console.error(`Error removing layer ${layer.id}:`, error);
+          }
+        }
+      });
+  
+
+      // Remove all custom sources
+      Object.keys(style.sources).forEach(sourceId => {
+        if (sourceId.startsWith('geojson')) {
+          try {
+            // Double check if source still exists before removal
+            if (map.current?.getSource(sourceId)) {
+              map.current.removeSource(sourceId);
+            }
+          } catch (error) {
+            console.error(`Error removing source ${sourceId}:`, error);
+          }
+        }
+      });
+  
+    } catch (error) {
+      console.error('Error in clearCustomLayers:', error);
+    }
+  }
+
+
+  useEffect(()=>{
+if(renderFeatureTrigger>0){
+  clearCustomLayers()
+    const renderFeatures = async () => {
+
+      const features = await retrieveFeatures(mapIdNumber);
+      console.log(features)
+      displayLayersInitial(map, clickedFeatureClimbCallBack, features);
+      setGeoJsonObject(features);
+      
+    };
+
+    renderFeatures();
+    
+  }
+  },[renderFeatureTrigger])
+  
+  //const layers = map.current?.getStyle().layers;
+  //console.log(layers)
   useEffect(() => {
     if (mapContainer.current) {
       map.current = new mapboxgl.Map({
@@ -139,8 +215,10 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
       }
     });
 
+
     const renderFeatures = async () => {
       const features = await retrieveFeatures(mapIdNumber);
+
       createClimbingShapes(map, clickedFeatureClimbCallBack, features);
       setGeoJsonObject(features);
     };
@@ -263,6 +341,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
           location={usStateDictionary[stateDropDownName]}
           closeAddClimbsModalCallBack={closeAddClimbsModalCallBack}
           mapId={mapIdNumber}
+          setRenderFeatureTrigger = {setRenderFeatureTrigger}
         />
       ) : null}
 

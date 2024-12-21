@@ -188,7 +188,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
                             handleTagSelect([tagObj, climbObject.climbId]);
                             setDropDownToggle(false);
                           }}
-                          className={dropDownStyles("zinc")}
+                          className={dropDownStyles('zinc')}
                           key={tagObj.tagId} // Use tagObj.id for unique keys
                         >
                           <div className="flex flex-col gap-2 p-2">

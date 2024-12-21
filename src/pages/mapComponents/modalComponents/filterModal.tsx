@@ -206,7 +206,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
                   <DownDrop
                     ref={downDropRef}
                     selectedFilter={selectedFilter}
-                    color = 'zinc'
+                    color="zinc"
                     downDropWidth={'w-40'}
                     setDropDownToggleCallBack={setFilterToggleCallBack}
                     filterTypes={filterItems}
@@ -277,7 +277,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
                       handleClickedTag(item);
                       setToggleFilterDropDown(false);
                     }}
-                    className={dropDownStyles("zinc")}
+                    className={dropDownStyles('zinc')}
                     key={index}
                   >
                     <div className="flex flex-col gap-2 p-2">

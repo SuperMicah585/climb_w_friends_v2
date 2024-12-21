@@ -6,7 +6,7 @@ interface FilterDropDownProps {
   setDropDownToggleCallBack: (booleanValue: boolean) => void;
   selectedFilter?: string;
   downDropWidth: string;
-  color?:string
+  color?: string;
 }
 const DownDrop = forwardRef<HTMLDivElement, FilterDropDownProps>(
   (
@@ -16,7 +16,7 @@ const DownDrop = forwardRef<HTMLDivElement, FilterDropDownProps>(
       setDropDownToggleCallBack,
       selectedFilter,
       downDropWidth,
-      color
+      color,
     },
     ref,
   ) => {
@@ -33,7 +33,7 @@ const DownDrop = forwardRef<HTMLDivElement, FilterDropDownProps>(
                 setDropDownToggleCallBack(false);
                 setSelectedFilterCallBack(item);
               }}
-              className={color?dropDownStyles(color):dropDownStyles("gray")}
+              className={color ? dropDownStyles(color) : dropDownStyles('gray')}
             >
               <div className="flex-col">
                 <div> {item} </div>

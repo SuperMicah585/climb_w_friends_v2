@@ -11,7 +11,7 @@ import {
   climbTypeDropDownStyle,
   stateDropDownStyle,
   dropDownStyles,
-  switchIcon
+  switchIcon,
 } from '../../reusableComponents/styles';
 /*
 Need to add callBack for both climb and state
@@ -113,7 +113,7 @@ const Search: React.FC<SearchProps> = ({
                             handleClimbSelect(item);
                             setSearchDrownDown(false);
                           }}
-                          className={dropDownStyles("gray")}
+                          className={dropDownStyles('gray')}
                           key={item.climbId}
                         >
                           <div className="flex flex-col gap-2 p-2">

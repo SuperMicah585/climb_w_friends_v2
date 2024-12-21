@@ -69,9 +69,11 @@ public async Task<ActionResult<FeatureDependencies>> GetClimbDependenciesById(in
     return Ok(featureDependencies);
 }
 
+//add climb relationship based on inputed climbId and mapId
 
 
-        
+//remove climb
+
 
         //// GET: api/Climbs
         //[HttpGet]

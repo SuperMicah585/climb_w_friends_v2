@@ -228,7 +228,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
               .map((item: ClimbWithDependencies) => (
                 <div
                   key={item.climb?.climbId}
-                  className="relative mt-5 flex flex-col gap-2 rounded-md bg-customGray p-10 text-black shadow-sm shadow-white"
+                  className="relative w-full mt-5 flex flex-col gap-2 rounded-md bg-customGray p-10 text-black shadow-sm shadow-white"
                 >
                   <div
                     onClick={() => mp_page(item)}
