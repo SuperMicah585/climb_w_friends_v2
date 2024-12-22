@@ -169,7 +169,7 @@ const retrieveFeatures = async (mapId: number) => {
     }
 
     const json = await response.json();
-    console.log(json)
+    console.log(json,mapId)
     // Update the specific object at the given index in the array
     return json;
   } catch (error: any) {
@@ -203,6 +203,7 @@ const retrieveFeatureDependencies = async (featureId: number) => {
 
     const json = await response.json();
     // Update the specific object at the given index in the array
+    console.log(json)
     return json;
   } catch (error: any) {
     console.error(error.message);
@@ -249,7 +250,6 @@ const addClimbsToMap = async(mapId:number,climbs:ClimbWithDependencies[]) => {
     ClimbId: item.climb.climbId
 }));
 
-console.log(climbingData,"sup")
   try {
     const response = await fetch(`http://localhost:5074/api/Features/Climbs/ToMap/${mapId}`, {
         method: 'POST',
@@ -272,7 +272,65 @@ console.log(climbingData,"sup")
 
 }
 
+
+const addUserToClimb = async(climbId:number,userId:string,mapId:number) => {
+
+  try {
+    const response = await fetch(`http://localhost:5074/api/Climbs/${climbId}/ToUser/${userId}/ToMap/${mapId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log(data,"data reponse")
+    return data
+
+} catch (error) {
+    console.error('Error sending climbing data:', error);
+    throw error;
+}
+
+}
+
+const RemoveUserFromClimb = async(climbId:number,userId:string,mapId:number) => {
+
+    try {
+      const response = await fetch(`http://localhost:5074/api/Climbs/${climbId}/FromUser/${userId}/FromMap/${mapId}`, {
+          method: 'DELETE',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      });
+  
+  
+      if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log(data,"data reponse")
+      return data
+  
+  } catch (error) {
+      console.error('Error sending climbing data:', error);
+      throw error;
+  }
+  
+  }
+
+
+
+
 export {
+  RemoveUserFromClimb,
+  addUserToClimb,
   retrieveClimbs,
   createTag,
   removeTagFromMap,

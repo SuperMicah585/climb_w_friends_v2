@@ -127,8 +127,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   function clearCustomLayers() {
     if (!map?.current) return;
 
-    console.log(map.current._listeners,"hi");
-  
+   
     try {
       const style = map.current.getStyle();
       if (!style?.layers || !style?.sources) return;
@@ -147,7 +146,6 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
             map.current._listeners.mousemove = []
             map.current._listeners.mouseout = []
 
-            console.log(map.current._listeners,"hi");
             map.current.removeLayer(layer.id);
           } catch (error) {
             console.error(`Error removing layer ${layer.id}:`, error);
@@ -177,6 +175,8 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
 
 
   useEffect(()=>{
+    console.log("wooowowpwopwopwopwop")
+    console.log(renderFeatureTrigger)
 if(renderFeatureTrigger>0){
   clearCustomLayers()
     const renderFeatures = async () => {

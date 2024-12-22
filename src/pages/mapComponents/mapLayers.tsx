@@ -126,45 +126,11 @@ export const displayLayersInitial = (
           paint: {
             'circle-color': '#0047AB',
             'circle-radius': 12,
-            'circle-opacity': 0.8,
+            'circle-opacity': 0.5,
           },
         });
         addFeatureInteractions(map, layerId, clickedFeatureClimbCallBack);
         break;
-
-      case 'LineString':
-        map.current?.addLayer({
-          id: layerId,
-          type: 'line',
-          source: {
-            type: 'geojson',
-            data: {
-              type: 'FeatureCollection',
-              features: [
-                {
-                  type: 'Feature',
-                  geometry: {
-                    type: 'LineString',
-                    coordinates: feature.geometry.coordinates,
-                    //need to add property features
-                  },
-                  properties: {
-                    climbs: feature.properties.climbs,
-                  },
-                },
-              ],
-            },
-          },
-
-          filter: ['==', '$type', 'LineString'],
-          paint: {
-            'line-color': 'green',
-            'line-width': 2,
-          },
-        });
-        addFeatureInteractions(map, layerId, clickedFeatureClimbCallBack);
-        break;
-
       case 'Polygon':
         // Fill layer for polygon
         map.current?.addLayer({
@@ -182,7 +148,9 @@ export const displayLayersInitial = (
                     coordinates: feature.geometry.coordinates,
                     //need to add property features
                   },
+                  id: feature.id,
                   properties: {
+                    
                     climbs: feature.properties.climbs,
                   },
                 },
@@ -191,7 +159,7 @@ export const displayLayersInitial = (
           },
           filter: ['==', '$type', 'Polygon'],
           paint: {
-            'fill-color': 'blue',
+            'fill-color': 'brown',
             'fill-opacity': 0.5,
           },
           layout: {
@@ -199,41 +167,10 @@ export const displayLayersInitial = (
           },
         });
 
-        /*
-   export const updateClimbingFeature = (
-  map: any,
-  featureIndex: number,
-  newCoordinates: any,
-  newProperties: any
-) => {
-  const layerId = `geojson-layer-${featureIndex}`; // Ensure this matches the generated layer ID
-
-  // Check if the layer exists before updating
-  if (map.current?.getLayer(layerId)) {
-    const newData = {
-      type: 'FeatureCollection',
-      features: [
-        {
-          type: 'Feature',
-          geometry: {
-            type: 'Point', // Adjust this if updating other geometry types
-            coordinates: newCoordinates,
-          },
-          properties: newProperties,
-        },
-      ],
-    };
-
-    // Set new data for the source of the specific layer
-    map.current.getSource(layerId).setData(newData);
-  }
-};
-
-
-
-        */
+      
         addFeatureInteractions(map, fillLayerId, clickedFeatureClimbCallBack);
         // Circle layer for polygon (alternative representation)
+
         const centroid = turf.centroid(feature);
         const [longitude, latitude] = centroid.geometry.coordinates;
 
@@ -249,12 +186,12 @@ export const displayLayersInitial = (
               features: [
                 {
                   type: 'Feature',
-                  featureId: feature.featureId,
                   geometry: {
                     type: 'Point',
                     coordinates: [longitude, latitude],
                     //need to add property features
                   },
+                  id: feature.id,
                   properties: {
                     climbs: feature.properties.climbs,
                   },
@@ -280,33 +217,7 @@ export const displayLayersInitial = (
   });
 };
 
-/*
-const shapeColorHelperFunction = (
-  climberCountTotal: number,
-  climberonFeatureArray: GeoJsonFeature[],
-) => {
-  //could take a while
-  const climberSet = new Set();
-  for (const item of climberonFeatureArray) {
-    for (const climber of item?.climber_names) {
-      climberSet.add(climber);
-    }
-  }
-  const climbersOnFeatureCount = climberSet.size;
-  const percantageOfClimbersWithinShape =
-    climbersOnFeatureCount / climberCountTotal;
 
-  if (percantageOfClimbersWithinShape < 0.34) {
-    return 'orange';
-  }
-  if (percantageOfClimbersWithinShape < 0.67) {
-    return 'blue';
-  }
-  if (percantageOfClimbersWithinShape <= 1) {
-    return 'purple';
-  }
-};
-*/
 export const filterClimbsOnMap = () => {};
 /*
 export const shapeColors = (map: any, climberCountTotal: number) => {
@@ -382,6 +293,7 @@ export const addFeatureInteractions = async (
   clickedFeatureClimbCallBack: (featureId: number) => void,
 ) => {
   // Ensure map and map.current are defined
+ 
   if (!map?.current) return;
 
  //console.log(map.current._listeners,"hi");
@@ -432,6 +344,7 @@ export const addFeatureInteractions = async (
 
       // Set current feature ID
       currentFeatureId = featureId;
+     
       map.current.getCanvas().style.cursor = 'pointer';
 
       (async () => {

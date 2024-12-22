@@ -56,7 +56,14 @@ export interface GeoJsonFeature {
 export interface ClimbWithDependencies {
   climb: ClimbsTableResponse;
   tags: Tags[];
-  climbers: friendsObject[];
+  userObjectForFeature: null | UserObjectForFeature[];
+}
+
+export interface UserObjectForFeature{
+  userId?:number;
+  auth0ID?:string;
+  name?:string;
+  username?:string;
 }
 
 interface Properties {
@@ -94,3 +101,12 @@ export interface friendsObject {
   email: string;
   userName: string;
 }
+
+export interface userObject {
+  userId: number;
+  auth0Id:string
+  userName: string;
+  name: string;
+  email: string;
+}
+
