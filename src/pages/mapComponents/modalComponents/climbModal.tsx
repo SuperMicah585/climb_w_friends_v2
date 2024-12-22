@@ -55,7 +55,6 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
     setClimbGradeForChat(climbGrade);
   };
 
-  const { user } = useAuth0();
 
   const setClimbChatForChatCallBack = (climbConversation: ChatObject[]) => {
     setClimbChatForChat(climbConversation);
@@ -207,7 +206,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
           searchFilterCallBack={searchFilterCallBack}
         />
 
-        <div>
+        <div className = 'w-full'>
           <div className="w-full rounded-md bg-zinc-900">
             {climbObject
               .filter((item: ClimbWithDependencies) =>
@@ -244,15 +243,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                     handleTagSelect={handleTagSelect}
                     tagObject={tagObject}
                     climbObject={item.climb}
-                    climberObject={[
-                      {
-                        userId: user?.sub || '',
-                        email: user?.email || '',
-                        firstName: user?.given_name || '',
-                        lastName: user?.family_name || '',
-                        userName: user?.nickname || '',
-                      },
-                    ]} //placeholder for real use data
+                    climberObject={item.userObjectForFeature} //placeholder for real use data
                     setClimbObject={setClimbObject}
                     setClimbNameForChatCallBack={setClimbNameForChatCallBack}
                     setClimbGradeForChatCallBack={setClimbGradeForChatCallBack}
@@ -260,6 +251,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                     chatDisplayTriggerCallBack={chatDisplayTriggerCallBack}
                     tagInputCallBack={tagInputCallBack}
                     setTickOverlayDisplayTrigger={setTickOverlayDisplayTrigger}
+                    mapId = {mapId}
                   />
 
                   <div className="mt-5 flex gap-5 font-semibold text-white">
@@ -277,12 +269,12 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                   </div>
                   <div className="mt-2 flex min-h-8 items-center gap-2 text-xs font-bold text-white">
                     Climbers:
-                    {item.climbers?.map((item, index) => (
+                    {item.userObjectForFeature?.map((item, index) => (
                       <div
                         key={index}
                         className="rounded-md border-2 border-violet-900 bg-violet-600 p-1"
                       >
-                        {item.firstName}
+                        {item.username}
                       </div>
                     ))}
                   </div>

@@ -9,8 +9,7 @@ using ClimbWithFriendsAPI.Data;
 using NetTopologySuite;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
-
-
+using NetTopologySuite.Geometries.Implementation;
 
 namespace ClimbWithFriendsAPI.Controllers
 {
@@ -180,19 +179,29 @@ public async Task<ActionResult<List<FeatureDependencies>>> GetFeatureDependencie
 {
     try 
     {
-        var featureDependencies = await _context.MapToFeatureToClimbs
-            .Where(m => m.FeatureId == featureId)
-            .Select(m => m.ClimbId)
-            .Distinct()
-            .Select(climbId => new FeatureDependencies
+ var featureDependencies = await _context.MapToFeatureToClimbs
+    .Where(m => m.FeatureId == featureId)
+    .Select(m => new { m.ClimbId, m.MapId })
+    .Distinct()
+    .Select(map => new FeatureDependencies
+    {
+        Climb = _context.Climbs.FirstOrDefault(c => c.ClimbId == map.ClimbId),
+        Tags = _context.ClimbToTags
+            .Where(ct => ct.ClimbId == map.ClimbId)
+            .Select(ct => _context.Tags.FirstOrDefault(t => t.TagId == ct.TagId))
+            .ToList(),
+        UserObjectForFeature = _context.MapToUserToClimbs
+            .Where(uc => uc.ClimbId == map.ClimbId && uc.MapId == map.MapId)
+            .Select(uc => new UserObjectForFeature
             {
-                Climb = _context.Climbs.FirstOrDefault(c => c.ClimbId == climbId),
-                Tags = _context.ClimbToTags
-                    .Where(ct => ct.ClimbId == climbId)
-                    .Select(ct => _context.Tags.FirstOrDefault(t => t.TagId == ct.TagId))
-                    .ToList()
+                UserId = uc.UserId,
+                Auth0ID = _context.Users.FirstOrDefault(u => u.UserId == uc.UserId).Auth0ID,
+                Name = _context.Users.FirstOrDefault(u => u.UserId == uc.UserId).Name,
+                Username = _context.Users.FirstOrDefault(u => u.UserId == uc.UserId).Username
             })
-            .ToListAsync();
+            .ToList()
+    })
+    .ToListAsync();
     
         if (featureDependencies == null || !featureDependencies.Any())
         {
@@ -309,6 +318,8 @@ public static List<object> CreateGeoFeature(List<FeatureResult> features)
         //add the type based on the coordinates
 
         var RemoveRepeatedCoordinates = RemoveRepeatCoordinates(feature.Climbs.Coordinates );
+        var AddShapeTypeAndCoordinates = AddShapeType(RemoveRepeatedCoordinates);
+        
         featureObjects.Add(new
         {
             type = "Feature",
@@ -319,8 +330,8 @@ public static List<object> CreateGeoFeature(List<FeatureResult> features)
             },
             geometry = new
             {
-                type = "Point",
-                coordinates = RemoveRepeatedCoordinates
+                type = AddShapeTypeAndCoordinates[0],
+                coordinates = AddShapeTypeAndCoordinates[1]
             }
         });
     }
@@ -348,39 +359,39 @@ private static double CalculateDistance(double lat1, double lon1, double lat2, d
 [HttpPost("Climbs/ToMap/{mapId}")]
 public async Task<List<Bucket>> ConvertDataAsync([FromBody] List<ClimbData> climbingData,int mapId)
     {
-var bucketArray = await _context.Features
-    .Join(
-        _context.MapToFeatureToClimbs,
-        feature => feature.FeatureId,
-        mapping => mapping.FeatureId,
-        (feature, mapping) => new { feature, mapping }
-    )
-    .Join(
-        _context.Climbs,
-        combined => combined.mapping.ClimbId,
-        climb => climb.ClimbId,
-        (combined, climb) => new
+    var bucketArray = await _context.Features
+        .Join(
+            _context.MapToFeatureToClimbs.Where(mapping => mapping.MapId == mapId), // Filter by mapId
+            feature => feature.FeatureId,
+            mapping => mapping.FeatureId,
+            (feature, mapping) => new { feature, mapping }
+        )
+        .Join(
+            _context.Climbs,
+            combined => combined.mapping.ClimbId,
+            climb => climb.ClimbId,
+            (combined, climb) => new
+            {
+                FeatureId = combined.feature.FeatureId,
+                Coordinates = new double[] { climb.Coordinates.X, climb.Coordinates.Y }, // Convert Point to double[]
+                ClimbId = climb.ClimbId
+            }
+        )
+        .GroupBy(x => x.FeatureId)
+        .Select(g => new Bucket
         {
-            FeatureId = combined.feature.FeatureId,
-            Coordinates = new double[] { climb.Coordinates.X, climb.Coordinates.Y },  // Convert Point to double[]
-            ClimbId = climb.ClimbId
-        }
-    )
-    .GroupBy(x => x.FeatureId)
-    .Select(g => new Bucket
-    {
-        FeatureId = g.Key,
-        Climbs = g.Select(c => new ClimbData
-        {
-            Coordinates = c.Coordinates,  // Now this will be a double[]
-            ClimbId = c.ClimbId
-        }).ToList()
-    })
-    .ToListAsync();
+            FeatureId = g.Key,
+            Climbs = g.Select(c => new ClimbData
+            {
+                Coordinates = c.Coordinates, // Now this will be a double[]
+                ClimbId = c.ClimbId
+            }).ToList()
+        })
+        .ToListAsync();
 
 
         var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory();
-
+ 
         foreach (var climbObj in climbingData)
         {
             var overlappingBuckets = new HashSet<int>();
@@ -391,13 +402,14 @@ var bucketArray = await _context.Features
                 foreach (var item in bucketArray[i].Climbs)
                 {
                         var distance = CalculateDistance(
-                         item.Coordinates[0], item.Coordinates[1],
-                        climbObj.Coordinates[0], climbObj.Coordinates[1]);
+                         item.Coordinates[1], item.Coordinates[0],
+                        climbObj.Coordinates[1], climbObj.Coordinates[0]);
          
 
-                    if (distance < 200) 
+
+                    if (distance < 1000) 
                     {
-                        Console.WriteLine("Less than 200");
+                        
                         overlappingBuckets.Add(i);
                         break; // No need to check other items in this bucket
                     }
@@ -550,65 +562,53 @@ public static List<double[]> RemoveRepeatCoordinates(List<double[]> CoordinatesL
     return uniqueArray;
 }
 
-/*
-[ApiExplorerSettings(IgnoreApi = true)]
-public async Task AddShapeType(List<ClimbData> climbingData)
+
+public static List<object> AddShapeType(List<double[]> coordinates)
 {
-    var coordinates = RemoveRepeatCoordinates(climbingData);
+    // Create the geometry factory
+    var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
 
     if (coordinates.Count == 1)
     {
-        var point = geometryFactory.CreatePoint(coordinates[0]);
-        feature.Geometry = point;
-        featureCollection.Add(feature);
-        //return ["point",point]
-       
+        return new List<object> { "Point", coordinates };
     }
     else if (coordinates.Count == 2)
     {
-        var line = geometryFactory.CreateLineString(coordinates.ToArray());
-        double length = line.Length / 1000.0; // Length in kilometers
-
-        if (length < 0.3)
-        {
-            var avgCoord = new Coordinate(
-                coordinates.Average(coord => coord.X),
-                coordinates.Average(coord => coord.Y)
-            );
-            feature.Geometry = geometryFactory.CreatePoint(avgCoord);
-            //return ["point",geometryFactory.CreatePoint(avgCoord)]
+        var avgX = (coordinates[0][0] + coordinates[1][0]) / 2;
+        var avgY = (coordinates[0][1] + coordinates[1][1]) / 2;
         
-        }
-        else
-        {
-            feature.Geometry = line;
-            //return ["line",line]
-
-        }
-
-        featureCollection.Add(feature);
+        return new List<object> { "Point", new List<double[]> { new double[] { avgX, avgY } } };
     }
     else
     {
-        var polygon = geometryFactory.CreatePolygon(coordinates.ToArray());
-
-        // Convex hull
+        var coords = coordinates.Select(c => new Coordinate(c[0], c[1])).ToArray();
+        // Add the closing point if it's not already there
+        if (!coords[0].Equals2D(coords[coords.Length - 1]))
+        {
+            coords = coords.Concat(new[] { coords[0] }).ToArray();
+        }
+        var polygon = geometryFactory.CreatePolygon(coords);
         var convexHull = polygon.ConvexHull();
+        
+        // Calculate area using the simpler spherical earth formula
+        double earthRadiusMeters = 6371000; // Earth's mean radius in meters
+        double areaInSquareMeters = convexHull.Area * (Math.PI / 180.0) * earthRadiusMeters * earthRadiusMeters;
 
-        if (convexHull.Area < 5000)
+        if (areaInSquareMeters < 5000)
         {
             var centroid = convexHull.Centroid;
-            feature.Geometry = centroid;
-       //return ["point",centroid]
-    
+            return new List<object> { "Point", new double[][] { 
+                new double[] { centroid.X, centroid.Y } 
+            }};
         }
         else
         {
-            feature.Geometry = convexHull;
-                  //return ["polygon",convexHull]
+            var polygonCoordinates = convexHull.Coordinates.Select(c => 
+                new double[] { c.X, c.Y }
+            ).ToArray();
+            
+            return new List<object> { "Polygon", new double[][][] { polygonCoordinates } };
         }
-
-        featureCollection.Add(feature);
     }
 }
 
@@ -681,6 +681,6 @@ public async Task AddShapeType(List<ClimbData> climbingData)
          //   return _context.Features.Any(e => e.FeatureId == featureId);
         //}
 
-        */
-    }
+        
+    
 }

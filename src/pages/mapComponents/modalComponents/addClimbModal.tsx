@@ -123,7 +123,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
     if (query.length === 0) {
       return setsearchResults([]);
     }
-    console.log(query);
+  
 
     const data = await retrieveClimbs(query);
 
@@ -137,6 +137,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
   const handleModalSubmit = async()=>{
 
     await addClimbsToMap(mapId,climbsArray)
+    setRenderFeatureTrigger(prev=>prev+1)
 
   }
 
@@ -146,18 +147,18 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
       {
         climb: item,
         tags: [],
-        climbers: [
+        userObjectForFeature: [
           {
-            userId: user?.sub || '',
-            email: user?.email || '',
-            firstName: user?.given_name || '',
-            lastName: user?.family_name || '',
-            userName: user?.nickname || '',
+            auth0ID: user?.sub || '',  // Ensure user?.sub is defined, or use an empty string if undefined
+            username: user?.nickname,
           },
         ],
       },
     ]);
   };
+
+  console.log(climbsArray)
+
 
   const handleTagSelect = (item: ClimbTagItem) => {
     setClimbsArray((prev) => {
@@ -306,7 +307,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
               <div className="mt-2 flex min-h-8 items-center gap-2 text-xs font-bold text-white">
                 Climbers:
                 <div className="rounded-md border-2 border-violet-900 bg-violet-600 p-1">
-                  {item.climbers?.map((item) => item.firstName)}
+                  {item.userObjectForFeature?.map((item) => item.username)}
                 </div>
               </div>
 
@@ -333,7 +334,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
                 handleTagSelect={handleTagSelect}
                 tagObject={tagObject}
                 climbObject={item.climb}
-                climberObject={item.climbers}
+                climberObject={item.userObjectForFeature}
                 setClimbNameForChatCallBack={setClimbNameForChatCallBack}
                 setClimbGradeForChatCallBack={setClimbGradeForChatCallBack}
                 setClimbChatForChatCallBack={setClimbChatForChatCallBack}
@@ -347,7 +348,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
         </div>
 
         <div
-          onClick={() => {handleModalSubmit();closeAddClimbsModalCallBack(false);setRenderFeatureTrigger(prev=>prev+1)}}
+          onClick={() => {handleModalSubmit();closeAddClimbsModalCallBack(false)}}
           className="absolute bottom-0 right-5 flex h-16 w-full items-center justify-end bg-zinc-900"
         >
           <PurpleButton>Add Climbs</PurpleButton>

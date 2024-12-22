@@ -27,6 +27,7 @@ public class FeatureDependencies
 {
     public List<Tag> Tags { get; set; } // Collection of tags
     public Climb Climb { get; set; }    // Single climb
+    public List<UserObjectForFeature> UserObjectForFeature {get;set;}
 }
 
 public class FeatureResult
@@ -39,6 +40,14 @@ public class ClimbResult
 {
     public List<int> ClimbIds { get; set; }
     public List<double[]> Coordinates { get; set; }
+}
+
+public class UserObjectForFeature
+{
+    public int UserId {get;set;}
+    public string Auth0ID { get; set; }
+    public string Name { get; set; }
+    public string Username {get;set;}
 }
 
 

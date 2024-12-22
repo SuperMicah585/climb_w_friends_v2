@@ -14,13 +14,14 @@ import {
   ClimbsTableResponse,
   Tags,
   ClimbWithDependencies,
-  friendsObject,
+  UserObjectForFeature,
 } from '../types/interfaces';
 import SearchDropDown from './searchDropDown';
 import TagInput from './input';
 import { useState, useRef, useEffect } from 'react';
 import TickClimbsComponent from '../pages/mapComponents/tickClimbsComponent';
 import { useAuth0 } from '@auth0/auth0-react';
+import { addUserToClimb,RemoveUserFromClimb } from '../pages/mapComponents/mapApiRequests';
 type ClimbTagItem = [Tags, number];
 
 interface ClimbModalBarProps {
@@ -29,13 +30,14 @@ interface ClimbModalBarProps {
   tagObject: Tags[];
   handleTagSelect: (item: ClimbTagItem) => void;
   featureTagObject: Tags[];
-  climberObject: friendsObject[];
+  climberObject: UserObjectForFeature[] | null;
   chatDisplayTriggerCallBack: () => void;
   setClimbNameForChatCallBack: (climbName: string) => void;
   setClimbGradeForChatCallBack: (climbGrade: string) => void;
   setClimbChatForChatCallBack: (climbConversation: ChatObject[]) => void;
   setClimbObject: React.Dispatch<React.SetStateAction<ClimbWithDependencies[]>>;
   setTickOverlayDisplayTrigger: React.Dispatch<React.SetStateAction<number>>;
+  mapId:number;
 }
 
 const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
@@ -51,6 +53,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
   setClimbObject,
   setTickOverlayDisplayTrigger,
   climberObject,
+  mapId
 }) => {
   const [dropDownToggle, setDropDownToggle] = useState<boolean>(false);
   const [isClimbTicked, setisClimbTicked] = useState(false);
@@ -64,7 +67,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
 
   const tickButtonRef = useRef<HTMLDivElement>(null);
   const tickButtonDropDown = useRef<HTMLDivElement>(null);
-
+  
   const setDropDownItemsStateCallBack = (value: boolean) => {
     setDropDownItemsState(false);
   };
@@ -90,52 +93,61 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
     };
   }, [tickButtonDropDown, tickButtonRef]);
 
-  const removeOrAddClimb = (id: number, action: string) => {
+  const removeOrAddClimb = async(id: number, action: string) => {
     /* setClimbsArray(prev=>prev.filter((mapItem)=>
     mapItem.climber_names.length===0?true:false))*/
-    console.log(id, 'ASdas');
     if (action === 'remove') {
-      setClimbObject((prev) => {
-        const tmpArray = prev.map((item) =>
-          item.climb.climbId === id
-            ? {
-                ...item,
-                climbers: item?.climbers.filter(
-                  (climber) => climber.userId !== user?.sub,
-                ),
-              }
-            : item,
-        );
-
-        return tmpArray.filter((mapItem) =>
-          mapItem?.climbers.length === 0 ? false : true,
-        );
+      const data = await RemoveUserFromClimb(id, user?.sub || "", mapId);
+      console.log(data, "Response from RemoveUserFromClimb");
+    
+      setClimbObject((prev: ClimbWithDependencies[]) => {
+        const updatedArray = prev.map((item) => {
+          if (item.climb.climbId === id && item.userObjectForFeature) {
+            const filteredUsers = item.userObjectForFeature.filter(
+              (climber) => climber.auth0ID !== user?.sub
+            );
+      
+            // If no users remain, set userObjectForFeature to null
+            if (filteredUsers.length === 0) {
+              return null;
+            }
+      
+            return { ...item, userObjectForFeature: filteredUsers };
+          }
+          return item;
+        }).filter((item): item is ClimbWithDependencies => item !== null); // Ensure no `null` values are returned
+        
+        return updatedArray; // Return filtered array without `null` values
       });
+      
     }
+    
 
     if (action === 'add') {
-      setClimbObject((prev) =>
-        prev.map((item) =>
-          item.climb.climbId === id && item.climbers
-            ? {
-                ...item,
-                climbers: [
-                  ...item?.climbers,
 
-                  {
-                    userId: user?.sub || '',
-                    email: user?.email || '',
-                    firstName: user?.given_name || '',
-                    lastName: user?.family_name || '',
-                    userName: user?.nickname || '',
-                  },
-                ],
-              }
-            : item,
-        ),
-      );
+      const data = await addUserToClimb(id,user?.sub || "",mapId)
+      console.log(data)
+      setClimbObject((prev) =>
+      prev.map((item) =>
+        item.climb.climbId === id && item.userObjectForFeature
+          ? {
+              ...item,
+              userObjectForFeature: [
+                ...item.userObjectForFeature,
+                {
+                  auth0ID: data.user.auth0ID,
+                  username: data.user.username,
+                  userId: data.user.userId,
+                  name: data.user.name
+                },
+              ],
+            }
+          : item
+      ),
+    );
     }
   };
+
 
   return (
     <div className="absolute right-2 top-0 flex items-center gap-2">
@@ -259,14 +271,14 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
             onClick={() =>
               removeOrAddClimb(
                 climbObject.climbId,
-                climberObject.find((friend) => friend.userId === user?.sub)
+                climberObject?.find((friend) => friend.auth0ID === user?.sub)
                   ? 'remove'
                   : 'add',
               )
             }
-            className={`cursor-pointer rounded-full p-1 hover:bg-slate-500 hover:opacity-75 ${climberObject.find((friend) => friend.userId === user?.sub) ? 'text-red-300' : 'text-green-300'}`}
+            className={`cursor-pointer rounded-full p-1 hover:bg-slate-500 hover:opacity-75 ${climberObject?.find((friend) => friend.auth0ID === user?.sub) ? 'text-red-300' : 'text-green-300'}`}
           >
-            {climberObject.find((friend) => friend.userId === user?.sub)
+            {climberObject?.find((friend) => friend.auth0ID === user?.sub)
               ? minusIcon
               : addIcon}
           </div>

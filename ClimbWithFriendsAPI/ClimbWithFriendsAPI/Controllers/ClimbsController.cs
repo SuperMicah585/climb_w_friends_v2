@@ -69,6 +69,82 @@ public async Task<ActionResult<FeatureDependencies>> GetClimbDependenciesById(in
     return Ok(featureDependencies);
 }
 
+
+[HttpPost("{climbId}/ToUser/{userId}/ToMap/{mapId}")]
+public async Task<ActionResult<MapToUserToClimb>> AddMapToUserToClimb(int climbId,int mapId,string userId)
+{
+
+    var user = await _context.Users
+        .FirstOrDefaultAsync(u => u.Auth0ID == userId);
+
+    var mapToUserToClimb = new MapToUserToClimb
+    {
+        ClimbId = climbId,
+        MapId = mapId,
+        Auth0ID = userId,
+        UserId = user.UserId,
+        AssociatedAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")
+
+    };
+
+    _context.MapToUserToClimbs.Add(mapToUserToClimb);
+            await _context.SaveChangesAsync();
+
+    return Ok(mapToUserToClimb);
+}
+
+
+[HttpDelete("{climbId}/FromUser/{userId}/FromMap/{mapId}")]
+public async Task<ActionResult<MapToUserToClimb>> RemoveMapToUserToClimb(int climbId, int mapId, string userId)
+{
+    var user = await _context.Users
+        .FirstOrDefaultAsync(u => u.Auth0ID == userId);
+
+    if (user == null)
+    {
+        return NotFound("User not found");
+    }
+
+    var mapToUserToClimb = await _context.MapToUserToClimbs
+        .FirstOrDefaultAsync(m => 
+            m.ClimbId == climbId && 
+            m.MapId == mapId && 
+            m.UserId == user.UserId);
+
+    if (mapToUserToClimb == null)
+    {
+        return NotFound("Relationship not found");
+    }
+
+    _context.MapToUserToClimbs.Remove(mapToUserToClimb);
+    await _context.SaveChangesAsync();
+
+    
+    // Check if this was the last user for this climb on this map
+    var remainingUsersForClimb = await _context.MapToUserToClimbs
+        .AnyAsync(m => m.ClimbId == climbId && m.MapId == mapId);
+
+    Console.WriteLine(remainingUsersForClimb);
+    if (!remainingUsersForClimb)
+    {
+        // If no users left, remove the climb from the map
+        var mapToFeatureToClimb = await _context.MapToFeatureToClimbs
+            .FirstOrDefaultAsync(m => m.ClimbId == climbId && m.MapId == mapId);
+            
+        if (mapToFeatureToClimb != null)
+        {
+            _context.MapToFeatureToClimbs.Remove(mapToFeatureToClimb);
+        }
+    }
+
+    await _context.SaveChangesAsync();
+
+    return Ok(mapToUserToClimb);
+}
+
+
+
+
 //add climb relationship based on inputed climbId and mapId
 
 
