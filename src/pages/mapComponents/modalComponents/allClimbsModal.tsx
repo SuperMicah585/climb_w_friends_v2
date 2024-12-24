@@ -1,8 +1,6 @@
 import ClimbModal from './climbModal';
 import { useEffect, useState } from 'react';
 import {
-  GeoJsonObject,
-  GeoJsonFeature,
   ClimbWithDependencies,
 } from '../../../types/interfaces';
 import { retrieveFeatureDependenciesByMap } from '../mapApiRequests';
@@ -19,7 +17,7 @@ const AllClimbsModal: React.FC<AllClimbsProps> = ({
   useEffect(() => {
     const getClimbsWithDependencies = async () => {
       const results = await retrieveFeatureDependenciesByMap(mapId);
-
+      console.log(results)
       setClimbsOnMap(results);
     };
     getClimbsWithDependencies();

@@ -47,6 +47,8 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   const [tickinfo, setTickInfo] = useState({});
   const [tagsOnMount, setTagsOnMount] = useState<Tags[]>([]);
 
+
+
   const setClimbNameForChatCallBack = (climbName: string) => {
     setClimbNameForChat(climbName);
   };
@@ -100,6 +102,8 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
       return newState;
     });
   };
+
+
 
   useEffect(() => {
     const fetchClimbs = async () => {
@@ -252,6 +256,8 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                     tagInputCallBack={tagInputCallBack}
                     setTickOverlayDisplayTrigger={setTickOverlayDisplayTrigger}
                     mapId = {mapId}
+                    closeModalCallBack = {closeModalCallBack}
+                    AllClimbsOnModal = {climbObject}
                   />
 
                   <div className="mt-5 flex gap-5 font-semibold text-white">
