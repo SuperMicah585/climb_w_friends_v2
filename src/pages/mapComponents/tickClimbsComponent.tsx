@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import DownDrop from '../../reusableComponents/downDrop';
-import { GeoJsonFeature, ClimbWithDependencies } from '../../types/interfaces';
+import { GeoJsonFeature, ClimbsTableResponse } from '../../types/interfaces';
 
 interface TickClimbsComponent {
   setisClimbTicked: React.Dispatch<React.SetStateAction<boolean>>;
   setDropDownItemsState: boolean;
   setDropDownItemsStateCallBack: (value: boolean) => void;
-  climbObject: ClimbWithDependencies;
+  climbObject: ClimbsTableResponse;
   setTickOverlayDisplayTrigger: React.Dispatch<React.SetStateAction<number>>;
   setClimbNameForChatCallBack: (climbName: string) => void;
   setClimbGradeForChatCallBack: (climbGrade: string) => void;
@@ -20,14 +20,17 @@ const TickClimbsComponent: React.FC<TickClimbsComponent> = ({
   setTickOverlayDisplayTrigger,
   climbObject,
 }) => {
-  const filterTypes = ['Tick', 'Tick With Details'];
+  const filterTypes = ['Attempt','Attempt With Details','Tick', 'Tick With Details'];
   const downDropRef = useRef<HTMLDivElement | null>(null);
+
+
+  console.log(climbObject,"hh")
 
   const setSelectedTickCallBack = (item: string) => {
     setisClimbTicked(true);
     if (item === 'Tick With Details') {
-      setClimbGradeForChatCallBack(climbObject.climb.rating);
-      setClimbNameForChatCallBack(climbObject.climb.climbName);
+      setClimbGradeForChatCallBack(climbObject.rating);
+      setClimbNameForChatCallBack(climbObject.climbName);
       setTickOverlayDisplayTrigger((prev) => prev + 1);
     }
     //console.log(climbObject)
@@ -39,7 +42,7 @@ const TickClimbsComponent: React.FC<TickClimbsComponent> = ({
         <DownDrop
           color="zinc"
           ref={downDropRef}
-          downDropWidth="w-32"
+          downDropWidth="w-36"
           setSelectedFilterCallBack={setSelectedTickCallBack}
           setDropDownToggleCallBack={setDropDownItemsStateCallBack}
           filterTypes={filterTypes}

@@ -269,7 +269,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
               chatDisplayTriggerCallBack();
               setClimbNameForChatCallBack(climbObject.climbName); //also used for ticks. Change name to be more accurate
               setClimbGradeForChatCallBack(climbObject.rating);
-              setClimbChatForChatCallBack(climbObject.conversation);
+              setClimbChatForChatCallBack([]);
             }}
             className="cursor-pointer rounded-full p-1 text-blue-500 hover:bg-slate-500 hover:opacity-75"
           >
