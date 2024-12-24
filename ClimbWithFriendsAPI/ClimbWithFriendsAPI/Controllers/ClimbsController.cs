@@ -70,6 +70,19 @@ public async Task<ActionResult<FeatureDependencies>> GetClimbDependenciesById(in
 }
 
 
+[HttpGet("ByMap/{mapId}/Count")]
+public async Task<ActionResult<int>> GetClimbCountByMapId(int mapId)
+{
+    // Step 1: Fetch the climb count
+    var climbCount = await _context.MapToFeatureToClimbs
+        .Where(c => c.MapId == mapId)
+        .CountAsync(); 
+
+    return Ok(climbCount);
+}
+
+
+
 [HttpPost("{climbId}/ToUser/{userId}/ToMap/{mapId}")]
 public async Task<ActionResult<MapToUserToClimb>> AddMapToUserToClimb(int climbId,int mapId,string userId)
 {

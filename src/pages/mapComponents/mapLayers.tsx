@@ -127,6 +127,8 @@ export const displayLayersInitial = (
             'circle-color': '#0047AB',
             'circle-radius': 12,
             'circle-opacity': 0.5,
+            'circle-stroke-width': .5,
+            'circle-stroke-color': '#0047AB',
           },
         });
         addFeatureInteractions(map, layerId, clickedFeatureClimbCallBack,12);
@@ -161,6 +163,8 @@ export const displayLayersInitial = (
           paint: {
             'fill-color': 'brown',
             'fill-opacity': 0.5,
+            'circle-stroke-width': .5,
+            'circle-stroke-color': 'brown',
           },
           layout: {
             visibility: 'none',
@@ -203,6 +207,8 @@ export const displayLayersInitial = (
             'circle-color': 'brown',
             'circle-radius': 14,
             'circle-opacity': 0.8,
+            'circle-stroke-width': .5,
+            'circle-stroke-color': 'brown', 
           },
           layout: {
             visibility: 'visible', // Initially visible
@@ -262,15 +268,15 @@ export const shapeColors = (map: any, climberCountTotal: number) => {
 */
 export const updateLayerVisibility = (
   map: any,
-  displayBoolean: boolean,
   geoJsonObject: GeoJsonObject,
 ) => {
   geoJsonObject.features.forEach((feature, index) => {
     if (feature.geometry.type === 'Polygon') {
-      const fillLayerId = `geojson-fill-layer-${index}`;
-      const circleLayerId = `geojson-circle-layer-${index}`;
+      const fillLayerId = `geojson-fill-layer-${feature.id}`;
+      const circleLayerId = `geojson-circle-layer-${feature.id}`;
+      const currentZoom = map.current.getZoom()
 
-      if (displayBoolean) {
+      if (currentZoom>12) {
         // Show fill layer, hide circle layer
         map.current?.setLayoutProperty(fillLayerId, 'visibility', 'visible');
         map.current?.setLayoutProperty(circleLayerId, 'visibility', 'none');
@@ -325,9 +331,6 @@ export const addFeatureInteractions = async (
       }
     }
   };
-
-
-  //map.current.on is not being removed. moussenter,mouseleave,mouse click are persisting even after shape is removed.
 
   map.current.on('mouseenter', id, (e: mapboxgl.MapMouseEvent) => {
     if(radius>0){
@@ -386,8 +389,7 @@ export const addFeatureInteractions = async (
             .setMaxWidth('280px')
             .addTo(map.current);
 
-          //hover even is happenning twice
-          console.log("hovering")
+  
           // Wait for the next tick to ensure the container is in the DOM
           setTimeout(() => {
             const chartContainer = document.getElementById(chartContainerId);
@@ -431,6 +433,7 @@ export const addFeatureInteractions = async (
 
   map.current.on('mouseleave', id, () => {
     if(radius>0){
+      console.log(radius)
       map.current?.setPaintProperty(id,'circle-radius', radius);
       }
     cleanupChart();

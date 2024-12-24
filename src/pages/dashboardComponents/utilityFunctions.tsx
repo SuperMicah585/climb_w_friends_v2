@@ -20,13 +20,20 @@ const retrieveUsersOnMap = async (mapId: number) => {
 const retrieveMapsAndUsers = async (mapsJson: MapObject[] | undefined) => {
   if (mapsJson) {
     // Create a new array to store updated maps
-    const updatedMaps = [...mapsJson];
 
-    for (const [index, item] of mapsJson.entries()) {
-      const usersOnMap = await retrieveUsersOnMap(item.mapId);
 
-      updatedMaps[index] = { ...item, climbersOnMap: usersOnMap };
-    }
+    const updatedMaps = await Promise.all(mapsJson.map(async (item, index) => {
+      const [usersOnMap, climbCountOnMap] = await Promise.all([
+        retrieveUsersOnMap(item.mapId),
+        retrieveClimbsOnMapCount(item.mapId)
+      ]);
+    
+      return {
+        ...item,
+        climbersOnMap: usersOnMap,
+        climbCountOnMap: climbCountOnMap
+      };
+    }));
 
     return updatedMaps;
   } else {
@@ -60,6 +67,24 @@ const editMap = async (title: string, description: string, id: number) => {
     return false;
   }
 };
+
+const retrieveClimbsOnMapCount = async (mapId: number) => {
+  const url = `http://localhost:5074/api/Climbs/ByMap/${mapId}/Count`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const json = await response.json();
+
+    // Update the specific object at the given index in the array
+    return json;
+  } catch (error: any) {
+    console.error(error.message);
+  }
+};
+
 
 const addUserToMap = async (mapId: number, userId: string, type: string) => {
   const payload = { UserId: userId };
@@ -198,4 +223,5 @@ export {
   addUserToMap,
   removeUserFromMap,
   createMap,
+  retrieveClimbsOnMapCount
 };
