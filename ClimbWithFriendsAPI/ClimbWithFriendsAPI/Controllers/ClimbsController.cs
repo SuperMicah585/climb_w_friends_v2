@@ -27,7 +27,7 @@ namespace ClimbWithFriendsAPI.Controllers
             // Get maps associated with the user
     var users = await _context.Climbs
         .Where(c => c.ClimbName.ToLower().Contains(name.ToLower())) // Case-insensitive search
-        .Take(5) // Limit the results to 20
+        .Take(20) // Limit the results to 20
         .ToListAsync();
 
 
