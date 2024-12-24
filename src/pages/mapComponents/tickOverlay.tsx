@@ -94,7 +94,7 @@ const TickOverlay: React.FC<TickOverlayProps> = ({
               value={value}
               onChange={handleChange}
               placeholder="input tick notes here"
-              className="h-full w-full"
+              className="h-full w-full p-2 focus:outline-none focus:ring-2 focus:ring-violet-500 rounded-md text-sm"
             />
           </div>
           <div className="absolute bottom-0 flex h-16 w-full items-center justify-between border-t border-neutral-500 bg-zinc-900 p-2">
@@ -107,7 +107,7 @@ const TickOverlay: React.FC<TickOverlayProps> = ({
               </div>
             ) : null}
             <div onClick={() => setDisplayChat(false)}>
-              <PurpleButton> Apply </PurpleButton>
+              <PurpleButton> Save </PurpleButton>
             </div>
           </div>
         </div>

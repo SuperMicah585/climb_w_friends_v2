@@ -104,7 +104,6 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   };
 
 
-
   useEffect(() => {
     const fetchClimbs = async () => {
       try {
