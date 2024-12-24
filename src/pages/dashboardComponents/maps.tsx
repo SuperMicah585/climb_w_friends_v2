@@ -13,6 +13,7 @@ import {
   editMap,
   removeUserFromMap,
   createMap,
+
 } from './utilityFunctions';
 
 import { submitAirplane } from '../../reusableComponents/styles';
@@ -29,6 +30,7 @@ const Maps = () => {
     mapName: '',
     description: '',
     climbersOnMap: [],
+    climbCountOnMap:0
   });
   const [mapId, setMapId] = useState<number>(0);
 
@@ -68,6 +70,7 @@ const Maps = () => {
       const mapsWithUsers = await retrieveMapsAndUsers(mapsJson);
 
       setMapObject(mapsWithUsers);
+
     } catch (error: any) {
       console.error(error.message);
     }
@@ -201,7 +204,7 @@ const Maps = () => {
                       <div className="text-2xl font-bold"> {item.mapName} </div>
                       <div className="font-semibold text-violet-400">
                         {' '}
-                        {'null'} climbs{' '}
+                        {item.climbCountOnMap} climbs{' '}
                       </div>
                       <div className="font-semibold text-green-400">
                         {' '}

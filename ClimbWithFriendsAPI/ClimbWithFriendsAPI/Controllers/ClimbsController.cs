@@ -70,6 +70,19 @@ public async Task<ActionResult<FeatureDependencies>> GetClimbDependenciesById(in
 }
 
 
+[HttpGet("ByMap/{mapId}/Count")]
+public async Task<ActionResult<int>> GetClimbCountByMapId(int mapId)
+{
+    // Step 1: Fetch the climb count
+    var climbCount = await _context.MapToFeatureToClimbs
+        .Where(c => c.MapId == mapId)
+        .CountAsync(); 
+
+    return Ok(climbCount);
+}
+
+
+
 [HttpPost("{climbId}/ToUser/{userId}/ToMap/{mapId}")]
 public async Task<ActionResult<MapToUserToClimb>> AddMapToUserToClimb(int climbId,int mapId,string userId)
 {
@@ -124,7 +137,6 @@ public async Task<ActionResult<MapToUserToClimb>> RemoveMapToUserToClimb(int cli
     var remainingUsersForClimb = await _context.MapToUserToClimbs
         .AnyAsync(m => m.ClimbId == climbId && m.MapId == mapId);
 
-    Console.WriteLine(remainingUsersForClimb);
     if (!remainingUsersForClimb)
     {
         // If no users left, remove the climb from the map
@@ -133,11 +145,30 @@ public async Task<ActionResult<MapToUserToClimb>> RemoveMapToUserToClimb(int cli
             
         if (mapToFeatureToClimb != null)
         {
+            // Store the FeatureId before removing the MapToFeatureToClimb
+            int featureId = mapToFeatureToClimb.FeatureId;
+            
             _context.MapToFeatureToClimbs.Remove(mapToFeatureToClimb);
+            await _context.SaveChangesAsync();
+
+            // Check if this was the last reference to this feature
+            var remainingFeatureReferences = await _context.MapToFeatureToClimbs
+                .AnyAsync(m => m.FeatureId == featureId);
+
+            if (!remainingFeatureReferences)
+            {
+                // If no references left, remove the feature
+                var feature = await _context.Features
+                    .FirstOrDefaultAsync(f => f.FeatureId == featureId);
+
+                if (feature != null)
+                {
+                    _context.Features.Remove(feature);
+                    await _context.SaveChangesAsync();
+                }
+            }
         }
     }
-
-    await _context.SaveChangesAsync();
 
     return Ok(mapToUserToClimb);
 }

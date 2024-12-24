@@ -89,8 +89,10 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     setAllClimbsModalDisplay((prev) => !prev);
   };
 
-  const closeAddClimbsModalCallBack = (trigger: boolean) => {
+  const closeAddClimbsModalCallBack = async(trigger: boolean) => {
     setAddClimbsModalDisplay(trigger);
+
+
   };
 
   const tagToggleCallBack = () => {
@@ -101,9 +103,21 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     setFilterModalDisplay(true);
   };
 
-  const closeModalCallBack = (trigger: boolean) => {
+  const closeModalCallBack = async(trigger: boolean) => {
     setClickedFeatureClimbs(-1);
     setClickedFeatureModalTriggerBoolean(trigger);
+    if(!trigger){
+      clearCustomLayers()
+   
+      const features = await retrieveFeatures(mapIdNumber);
+
+      displayLayersInitial(map, clickedFeatureClimbCallBack, features);
+      if (mapLoaded && 'type' in geoJsonObject) {
+      updateLayerVisibility(map, geoJsonObject);
+      }
+
+
+    }
   };
 
   const closeFilterModalCallBack = (trigger: boolean) => {
@@ -114,8 +128,18 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     setTagModalDisplay(trigger);
   };
 
-  const closeAllClimbsModalCallBack = (trigger: boolean) => {
+  const closeAllClimbsModalCallBack = async(trigger: boolean) => {
     setAllClimbsModalDisplay(trigger);
+    if(!trigger){
+      clearCustomLayers()
+      
+      const features = await retrieveFeatures(mapIdNumber);
+
+      displayLayersInitial(map, clickedFeatureClimbCallBack, features);
+      if (mapLoaded && 'type' in geoJsonObject) {
+        updateLayerVisibility(map, geoJsonObject);
+        }
+    }
   };
 
   const clickedFeatureClimbCallBack = (featureId: number) => {
@@ -175,14 +199,11 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
 
 
   useEffect(()=>{
-    console.log("wooowowpwopwopwopwop")
-    console.log(renderFeatureTrigger)
 if(renderFeatureTrigger>0){
   clearCustomLayers()
     const renderFeatures = async () => {
-
+   
       const features = await retrieveFeatures(mapIdNumber);
-      console.log(features)
       displayLayersInitial(map, clickedFeatureClimbCallBack, features);
       setGeoJsonObject(features);
       
@@ -271,8 +292,9 @@ if(renderFeatureTrigger>0){
   }, [selectedClimb]);
 
   useEffect(() => {
+  
     if (mapLoaded && 'type' in geoJsonObject) {
-      updateLayerVisibility(map, polygonOrCircleDisplay, geoJsonObject);
+      updateLayerVisibility(map, geoJsonObject);
     }
   }, [polygonOrCircleDisplay, mapLoaded, geoJsonObject]);
 
@@ -342,6 +364,7 @@ if(renderFeatureTrigger>0){
           closeAddClimbsModalCallBack={closeAddClimbsModalCallBack}
           mapId={mapIdNumber}
           setRenderFeatureTrigger = {setRenderFeatureTrigger}
+          AllClimbsOnMap = {geoJsonObject}
         />
       ) : null}
 

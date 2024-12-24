@@ -8,6 +8,7 @@ import {
   ClimbTagItem,
   ClimbsTableResponse,
   ClimbWithDependencies,
+  
 } from '../../../types/interfaces';
 import InputComponent from '../../../reusableComponents/input';
 import SearchDropDown from '../../../reusableComponents/searchDropDown';
@@ -20,19 +21,21 @@ import Tooltip from '../../../reusableComponents/toolTip';
 import { newWindowIcon, minusIcon } from '../../../reusableComponents/styles';
 import TickOverlay from '../tickOverlay';
 import { useAuth0 } from '@auth0/auth0-react';
-import { retrieveClimbs,addClimbsToMap } from '../mapApiRequests';
+import { retrieveClimbs,addClimbsToMap,addUserToClimb } from '../mapApiRequests';
 
 const AddClimbModal: React.FC<AddClimbsModalProps> = ({
   closeAddClimbsModalCallBack,
   location,
   routeType,
   mapId,
-  setRenderFeatureTrigger
+  setRenderFeatureTrigger,
+  AllClimbsOnMap
 }) => {
   const [searchResults, setsearchResults] = useState<ClimbsTableResponse[]>([]);
   const [toggleSearchDropDown, setToggleSearchDropDown] =
     useState<boolean>(false);
   const [climbsArray, setClimbsArray] = useState<ClimbWithDependencies[]>([]);
+  const [inputQuery,setInputQuery] = useState<string>('')
   const [tagObject, setTagObject] = useState<Tags[]>([]);
   const [tagsOnMount, setTagsOnMount] = useState<Tags[]>([]);
   const [tagInput, setTagInput] = useState<string>('');
@@ -43,6 +46,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
   const [tickOverlayDisplayTrigger, setTickOverlayDisplayTrigger] =
     useState<number>(0);
   const [tickinfo, setTickInfo] = useState({});
+  const [climbsOnMap,setClimbsOnMap] = useState<number[]>([])
 
   const inputRef = useRef(null);
 
@@ -84,6 +88,13 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
     setTagInput(item);
   };
 
+  useEffect(()=>{
+for(let feature of AllClimbsOnMap.features){
+    setClimbsOnMap(prev=> [...prev,...feature.properties.climbs])
+}
+  },[AllClimbsOnMap])
+
+
   useEffect(() => {
     const retrieveTagsOnMap = async (mapId: number) => {
       const url = `http://localhost:5074/api/Tags/ByMap/${mapId}`;
@@ -120,23 +131,53 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
   };
 
   const handleClimbSearch = async (query: string) => {
-    if (query.length === 0) {
+
+    setInputQuery(query)
+  };
+
+
+  useEffect(()=>{
+    const filerResults= async() =>{
+    if (inputQuery.length === 0) {
       return setsearchResults([]);
     }
   
 
-    const data = await retrieveClimbs(query);
+    const data = await retrieveClimbs(inputQuery);
 
     if (data) {
-      setsearchResults(data);
+
+      setsearchResults(data.filter((item:ClimbsTableResponse) => {
+
+        return !climbsArray.some(x => x.climb.climbId === item.climbId) 
+               && !climbsOnMap.includes(item.climbId);
+      }));
     } else {
       setsearchResults([]); // or handle as needed if data is null
     }
-  };
+  }
+
+  filerResults()
+  },[climbsArray,inputQuery])
+
+
 
   const handleModalSubmit = async()=>{
-
-    await addClimbsToMap(mapId,climbsArray)
+//addUserToClimb
+   await addClimbsToMap(mapId,climbsArray)
+   
+   const promises = climbsArray.map((item) => {
+    const auth0ID = item.userObjectForFeature?.[0]?.auth0ID || '';
+    if (auth0ID) {
+      return addUserToClimb(item.climb.climbId, auth0ID, mapId);
+    } else {
+      console.warn(`No auth0ID found for climb ID ${item.climb.climbId}`);
+      return Promise.resolve(); // Return a resolved promise for items without auth0ID
+    }
+  });
+  
+  await Promise.all(promises);
+  
     setRenderFeatureTrigger(prev=>prev+1)
 
   }
@@ -157,7 +198,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
     ]);
   };
 
-  console.log(climbsArray)
+
 
 
   const handleTagSelect = (item: ClimbTagItem) => {
@@ -222,63 +263,52 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
           <div className="border-b border-neutral-500"> </div>
         </div>
 
-        {toggleSearchDropDown ? (
-          <div className="w-content absolute top-[72px] z-10">
-            <SearchDropDown
-              width={'w-96'}
-              maxHeight={'max-h-48'}
-              dropDownStatus={toggleSearchDropDown}
-              inputRef={inputRef}
-              closeDropDownCallBack={setToggleSearchDropDownCallBack}
+       {toggleSearchDropDown ? (
+  <div className="w-content absolute top-[72px] z-10">
+    <SearchDropDown
+      width={'w-96'}
+      maxHeight={'max-h-48'}
+      dropDownStatus={toggleSearchDropDown}
+      inputRef={inputRef}
+      closeDropDownCallBack={setToggleSearchDropDownCallBack}
+    >
+      {searchResults.length > 0 ? (
+        
+        searchResults
+          .map((item) => (
+            <div
+              onClick={() => {
+                handleClimbSelect(item);
+                setToggleSearchDropDown(false);
+              }}
+              className={dropDownStyles('gray')}
+              key={item.climbId}
             >
-              {searchResults.length > 0 ? (
-                searchResults
-                  .filter((item) =>
-                    climbsArray.length > 0
-                      ? !climbsArray.some(
-                          (x) => x.climb.climbId === item.climbId,
-                        )
-                      : true,
-                  )
-                  .map((item) => (
-                    <div
-                      onClick={() => {
-                        handleClimbSelect(item);
-                        setToggleSearchDropDown(false);
-                      }}
-                      className={dropDownStyles('gray')}
-                      key={item.climbId}
-                    >
-                      <div className="flex flex-col gap-2 p-2">
-                        <div>
-                          <div className="flex gap-2 font-semibold">
-                            <div> {item.climbName} </div>
-                            <div> {item.rating} </div>
-                          </div>
-                          <div className="text-xs font-thin italic">
-                            {' '}
-                            {item.climbType}{' '}
-                          </div>
-                        </div>
-
-                        <div className="text-xs font-thin">{item.location}</div>
-                      </div>
-                    </div>
-                  ))
-              ) : (
-                <div
-                  onClick={() => {
-                    setToggleSearchDropDown(false);
-                  }}
-                  className="flex w-96 items-center p-2 text-sm text-white"
-                >
-                  {' '}
-                  No Results{' '}
+              <div className="flex flex-col gap-2 p-2">
+                <div>
+                  <div className="flex gap-2 font-semibold">
+                    <div>{item.climbName}</div>
+                    <div>{item.rating}</div>
+                  </div>
+                  <div className="text-xs font-thin italic">
+                    {item.climbType}
+                  </div>
                 </div>
-              )}
-            </SearchDropDown>
-          </div>
-        ) : null}
+                <div className="text-xs font-thin">{item.location}</div>
+              </div>
+            </div>
+          ))
+      ) : (
+        <div
+          onClick={() => setToggleSearchDropDown(false)}
+          className="flex w-96 items-center p-2 text-sm text-white"
+        >
+          No Results
+        </div>
+      )}
+    </SearchDropDown>
+  </div>
+) : null}
 
         <div className="flex w-full flex-col overflow-y-scroll pb-12">
           {climbsArray.map((item) => (

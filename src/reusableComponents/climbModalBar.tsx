@@ -22,6 +22,7 @@ import { useState, useRef, useEffect } from 'react';
 import TickClimbsComponent from '../pages/mapComponents/tickClimbsComponent';
 import { useAuth0 } from '@auth0/auth0-react';
 import { addUserToClimb,RemoveUserFromClimb } from '../pages/mapComponents/mapApiRequests';
+import { retrieveFeatures } from '../pages/mapComponents/mapApiRequests';
 type ClimbTagItem = [Tags, number];
 
 interface ClimbModalBarProps {
@@ -38,6 +39,8 @@ interface ClimbModalBarProps {
   setClimbObject: React.Dispatch<React.SetStateAction<ClimbWithDependencies[]>>;
   setTickOverlayDisplayTrigger: React.Dispatch<React.SetStateAction<number>>;
   mapId:number;
+  closeModalCallBack: (trigger: boolean) => void;
+  AllClimbsOnModal: ClimbWithDependencies[]
 }
 
 const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
@@ -53,7 +56,9 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
   setClimbObject,
   setTickOverlayDisplayTrigger,
   climberObject,
-  mapId
+  mapId,
+  closeModalCallBack,
+  AllClimbsOnModal
 }) => {
   const [dropDownToggle, setDropDownToggle] = useState<boolean>(false);
   const [isClimbTicked, setisClimbTicked] = useState(false);
@@ -97,29 +102,43 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
     /* setClimbsArray(prev=>prev.filter((mapItem)=>
     mapItem.climber_names.length===0?true:false))*/
     if (action === 'remove') {
-      const data = await RemoveUserFromClimb(id, user?.sub || "", mapId);
-      console.log(data, "Response from RemoveUserFromClimb");
-    
-      setClimbObject((prev: ClimbWithDependencies[]) => {
-        const updatedArray = prev.map((item) => {
-          if (item.climb.climbId === id && item.userObjectForFeature) {
-            const filteredUsers = item.userObjectForFeature.filter(
-              (climber) => climber.auth0ID !== user?.sub
-            );
-      
-            // If no users remain, set userObjectForFeature to null
-            if (filteredUsers.length === 0) {
-              return null;
-            }
-      
-            return { ...item, userObjectForFeature: filteredUsers };
-          }
-          return item;
-        }).filter((item): item is ClimbWithDependencies => item !== null); // Ensure no `null` values are returned
+      try {
+        // Wait for the database update
+        const data = await RemoveUserFromClimb(id, user?.sub || "", mapId);
+        const features = await retrieveFeatures(mapId);
+        console.log(features,"SDfsdfsd")
+        // Update the local state
+        if(features){}
+        setClimbObject((prev) => {
+          const updatedArray = prev
+            .map((item) => {
+              if (item.climb.climbId === id && item.userObjectForFeature) {
+                const filteredUsers = item.userObjectForFeature.filter(
+                  (climber) => climber.auth0ID !== user?.sub
+                );
         
-        return updatedArray; // Return filtered array without `null` values
-      });
-      
+                if (filteredUsers.length === 0) {
+                  return null;
+                }
+        
+                return { ...item, userObjectForFeature: filteredUsers };
+              }
+              return item;
+            })
+            .filter((item): item is ClimbWithDependencies => item !== null);
+        
+          // Schedule modal close after state update
+          if (updatedArray.length === 0) {
+            setTimeout(() => closeModalCallBack(false), 0);
+          }
+        
+          return updatedArray;
+        });
+        
+      } catch (error) {
+        console.error("Error removing user from climb:", error);
+        // Handle error appropriately
+      }
     }
     
 

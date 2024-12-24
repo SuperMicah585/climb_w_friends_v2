@@ -225,16 +225,26 @@ public async Task<ActionResult<List<FeatureDependencies>>> GetFeatureDependencie
     {
         var featureDependencies = await _context.MapToFeatureToClimbs
             .Where(m => m.MapId == mapId)
-            .Select(m => m.ClimbId)
+            .Select(m => new { m.ClimbId, m.MapId })
             .Distinct()
-            .Select(climbId => new FeatureDependencies
+            .Select(map => new FeatureDependencies
             {
-                Climb = _context.Climbs.FirstOrDefault(c => c.ClimbId == climbId),
+                Climb = _context.Climbs.FirstOrDefault(c => c.ClimbId == map.ClimbId),
                 Tags = _context.ClimbToTags
-                    .Where(ct => ct.ClimbId == climbId)
+                    .Where(ct => ct.ClimbId == map.ClimbId)
                     .Select(ct => _context.Tags.FirstOrDefault(t => t.TagId == ct.TagId))
+                    .ToList(),
+                UserObjectForFeature = _context.MapToUserToClimbs
+                    .Where(uc => uc.ClimbId == map.ClimbId && uc.MapId == map.MapId)
+                    .Select(uc => new UserObjectForFeature
+                    {
+                        UserId = uc.UserId,
+                        Auth0ID = _context.Users.FirstOrDefault(u => u.UserId == uc.UserId).Auth0ID,
+                        Name = _context.Users.FirstOrDefault(u => u.UserId == uc.UserId).Name,
+                        Username = _context.Users.FirstOrDefault(u => u.UserId == uc.UserId).Username
+                    })
                     .ToList()
-            })
+                    })
             .ToListAsync();
     
         if (featureDependencies == null || !featureDependencies.Any())

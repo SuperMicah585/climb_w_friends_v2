@@ -81,7 +81,7 @@ export const displayLayersInitial = (
   features: GeoJsonObject,
 ) => {
   // Only add the source once
-
+  console.log(features,"featuressdfsdfsdfsdfsdfsdf sddasda")
   if (!map?.current?.getSource('geojson-data')  ) {
   
     map.current?.addSource('geojson-data', {
@@ -92,9 +92,9 @@ export const displayLayersInitial = (
 
 
   features.features.forEach((feature, index) => {
-    const fillLayerId = `geojson-fill-layer-${index}`;
-    const circleLayerId = `geojson-circle-layer-${index}`;
-    const layerId = `geojson-layer-${index}`;
+    const fillLayerId = `geojson-fill-layer-${feature.id}`;
+    const circleLayerId = `geojson-circle-layer-${feature.id}`;
+    const layerId = `geojson-layer-${feature.id}`;
 
     switch (feature.geometry.type) {
   
@@ -127,9 +127,11 @@ export const displayLayersInitial = (
             'circle-color': '#0047AB',
             'circle-radius': 12,
             'circle-opacity': 0.5,
+            'circle-stroke-width': .5,
+            'circle-stroke-color': '#0047AB',
           },
         });
-        addFeatureInteractions(map, layerId, clickedFeatureClimbCallBack);
+        addFeatureInteractions(map, layerId, clickedFeatureClimbCallBack,12);
         break;
       case 'Polygon':
         // Fill layer for polygon
@@ -161,6 +163,8 @@ export const displayLayersInitial = (
           paint: {
             'fill-color': 'brown',
             'fill-opacity': 0.5,
+            'circle-stroke-width': .5,
+            'circle-stroke-color': 'brown',
           },
           layout: {
             visibility: 'none',
@@ -168,7 +172,7 @@ export const displayLayersInitial = (
         });
 
       
-        addFeatureInteractions(map, fillLayerId, clickedFeatureClimbCallBack);
+        addFeatureInteractions(map, fillLayerId, clickedFeatureClimbCallBack,0);
         // Circle layer for polygon (alternative representation)
 
         const centroid = turf.centroid(feature);
@@ -203,12 +207,14 @@ export const displayLayersInitial = (
             'circle-color': 'brown',
             'circle-radius': 14,
             'circle-opacity': 0.8,
+            'circle-stroke-width': .5,
+            'circle-stroke-color': 'brown', 
           },
           layout: {
             visibility: 'visible', // Initially visible
           },
         });
-        addFeatureInteractions(map, circleLayerId, clickedFeatureClimbCallBack);
+        addFeatureInteractions(map, circleLayerId, clickedFeatureClimbCallBack,14);
         break;
 
       default:
@@ -262,15 +268,15 @@ export const shapeColors = (map: any, climberCountTotal: number) => {
 */
 export const updateLayerVisibility = (
   map: any,
-  displayBoolean: boolean,
   geoJsonObject: GeoJsonObject,
 ) => {
   geoJsonObject.features.forEach((feature, index) => {
     if (feature.geometry.type === 'Polygon') {
-      const fillLayerId = `geojson-fill-layer-${index}`;
-      const circleLayerId = `geojson-circle-layer-${index}`;
+      const fillLayerId = `geojson-fill-layer-${feature.id}`;
+      const circleLayerId = `geojson-circle-layer-${feature.id}`;
+      const currentZoom = map.current.getZoom()
 
-      if (displayBoolean) {
+      if (currentZoom>12) {
         // Show fill layer, hide circle layer
         map.current?.setLayoutProperty(fillLayerId, 'visibility', 'visible');
         map.current?.setLayoutProperty(circleLayerId, 'visibility', 'none');
@@ -291,6 +297,7 @@ export const addFeatureInteractions = async (
   map: any,
   id: string,
   clickedFeatureClimbCallBack: (featureId: number) => void,
+  radius:number
 ) => {
   // Ensure map and map.current are defined
  
@@ -325,10 +332,10 @@ export const addFeatureInteractions = async (
     }
   };
 
-
-  //map.current.on is not being removed. moussenter,mouseleave,mouse click are persisting even after shape is removed.
-
   map.current.on('mouseenter', id, (e: mapboxgl.MapMouseEvent) => {
+    if(radius>0){
+    map.current?.setPaintProperty(id,'circle-radius', radius*1.2);
+    }
 
     const features = e.features ? e.features[0] : null;
 
@@ -382,12 +389,11 @@ export const addFeatureInteractions = async (
             .setMaxWidth('280px')
             .addTo(map.current);
 
-          //hover even is happenning twice
-          console.log("hovering")
+  
           // Wait for the next tick to ensure the container is in the DOM
           setTimeout(() => {
             const chartContainer = document.getElementById(chartContainerId);
-            console.log(chartContainer)
+            
             if (chartContainer && currentFeatureId === featureId) {
               // Only create a new root if we don't have one
               if (!currentRoot) {
@@ -426,6 +432,10 @@ export const addFeatureInteractions = async (
   });
 
   map.current.on('mouseleave', id, () => {
+    if(radius>0){
+      console.log(radius)
+      map.current?.setPaintProperty(id,'circle-radius', radius);
+      }
     cleanupChart();
     popup.remove();
     currentFeatureId = null;
@@ -445,7 +455,7 @@ export const addFeatureInteractions = async (
 
   // Return a cleanup function
   return () => {
-    console.log("cleanup")
+
     if (map.current) {
       map.current.off('mouseenter', id);
       map.current.off('mouseleave', id);

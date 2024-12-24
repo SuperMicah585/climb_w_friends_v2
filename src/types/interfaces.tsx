@@ -18,6 +18,7 @@ export interface AddClimbsModalProps {
   closeAddClimbsModalCallBack: (trigger: boolean) => void;
   mapId: number;
   setRenderFeatureTrigger: React.Dispatch<React.SetStateAction<number>>;
+  AllClimbsOnMap:GeoJsonObject;
 }
 
 export type TempDic = {
@@ -92,6 +93,7 @@ export interface MapObject {
   mapName: string;
   description: string;
   climbersOnMap?: friendsObject[];
+  climbCountOnMap:number;
 }
 
 export interface friendsObject {
