@@ -1,46 +1,91 @@
 import { useEffect, useState, useRef } from 'react';
 import { backArrowIcon } from '../../reusableComponents/styles';
 import ChatInput from '../../reusableComponents/chatInput';
-import { ChatObject } from '../../types/interfaces';
+import { AttemptObject,ClimbWithDependencies } from '../../types/interfaces';
 import PurpleButton from '../../reusableComponents/genericButton';
+import { AddTickToClimbToUserToMap } from './mapApiRequests';
 
-interface TickOverlayProps {
+interface AttemptOverlayProps {
   displayTrigger: number;
   climbName: string;
   climbGrade: string;
-  tickInfo: any; //change
+  userId: string;
+  mapId: number;
+  attemptObject:AttemptObject | null;
+  climbIdForAttemptAndTick: number
+  setClimbObject:React.Dispatch<React.SetStateAction<ClimbWithDependencies[]>>
+
 }
 
-const TickOverlay: React.FC<TickOverlayProps> = ({
+const AttemptOverlay: React.FC<AttemptOverlayProps> = ({
+  attemptObject,
   displayTrigger,
   climbName,
   climbGrade,
-  tickInfo,
+  setClimbObject,
+  userId,
+  mapId,
+  climbIdForAttemptAndTick
 }) => {
   const [displayChat, setDisplayChat] = useState(false);
-  const [tickObject, setTickObject] = useState<ChatObject[]>([]);
+  //const [attemptObjectForOverlay, setAttemptObjectForOverlay] = useState<AttemptObject | null>(null);
   const [value, setValue] = useState<string>('');
-  const [attemptValue, setAttemptValue] = useState<string>('Flash');
+  const [attemptValue, setAttemptValue] = useState<string>('A Few');
   const [difficultyValue, setDifficultyValue] = useState<string>('Soft');
   const containerRef = useRef<HTMLDivElement>(null);
 
+
+ 
   useEffect(() => {
     if (displayTrigger > 0) {
       setDisplayChat((prev) => !prev);
     }
   }, [displayTrigger]);
 
-  useEffect(() => {
-    setTickObject(tickInfo);
-  }, [tickInfo]);
+
 
   const handleChange = (e: any) => {
-    console.log(e.target.value);
+
     setValue(e.target.value);
   };
 
-  const AttemptArray = ['Flash', 'A Few', 'Meh Amount', 'A Lot'];
+  const AttemptArray = ['A Few', 'Meh Amount', 'A Lot'];
   const difficultyArray = ['Soft', 'Benchmark', 'Sandbagged'];
+
+
+  const submitAttempt = async() =>{
+if(climbIdForAttemptAndTick>-1){
+    const response = await AddTickToClimbToUserToMap(climbIdForAttemptAndTick,userId,mapId,value,difficultyValue,attemptValue)
+    setClimbObject(prev => prev.map((dependency) =>
+    dependency.climb.climbId === response.climbId 
+      ? { ...dependency, attempts: response }
+      : dependency
+  )) 
+    setDisplayChat(false)
+}
+  }
+
+
+useEffect(()=>{
+  if(attemptObject !== null){
+  
+    setAttemptValue(attemptObject.attempts)
+    setDifficultyValue(attemptObject.difficulty)
+    setValue(attemptObject.notes)
+
+  }
+
+  else{
+    setAttemptValue('A Few')
+    setDifficultyValue('Soft')
+    setValue('')
+
+  }
+
+  },[displayTrigger])
+
+
+ 
 
   return (
     <>
@@ -94,7 +139,7 @@ const TickOverlay: React.FC<TickOverlayProps> = ({
               value={value}
               onChange={handleChange}
               placeholder="input tick notes here"
-              className="h-full w-full p-2 focus:outline-none focus:ring-2 border-2 border-neutral-500 focus:ring-violet-500 rounded-md text-sm"
+              className="h-full w-full p-2 focus:outline-none focus:ring-2 border-neutral-500 border-2 focus:ring-violet-500 rounded-md text-sm"
             />
           </div>
           <div className="absolute bottom-0 flex h-16 w-full items-center justify-between border-t border-neutral-500 bg-zinc-900 p-2">
@@ -106,7 +151,7 @@ const TickOverlay: React.FC<TickOverlayProps> = ({
                 {backArrowIcon}
               </div>
             ) : null}
-            <div onClick={() => setDisplayChat(false)}>
+            <div onClick={() => submitAttempt()}>
               <PurpleButton paddingLeft='pl-5' paddingRight='pr-5'> Save </PurpleButton>
             </div>
           </div>
@@ -115,4 +160,4 @@ const TickOverlay: React.FC<TickOverlayProps> = ({
     </>
   );
 };
-export default TickOverlay;
+export default AttemptOverlay;
