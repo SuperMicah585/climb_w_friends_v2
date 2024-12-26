@@ -28,6 +28,8 @@ public class FeatureDependencies
     public List<Tag> Tags { get; set; } // Collection of tags
     public Climb Climb { get; set; }    // Single climb
     public List<UserObjectForFeature> UserObjectForFeature {get;set;}
+    public Attempt Attempts {get;set;}
+    public Tick Ticks {get;set;}
 }
 
 public class FeatureResult

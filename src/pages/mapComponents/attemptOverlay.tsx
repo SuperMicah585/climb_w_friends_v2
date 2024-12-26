@@ -1,23 +1,25 @@
 import { useEffect, useState, useRef } from 'react';
 import { backArrowIcon } from '../../reusableComponents/styles';
-import { TickObject, ClimbWithDependencies } from '../../types/interfaces';
+import ChatInput from '../../reusableComponents/chatInput';
+import { AttemptObject,ClimbWithDependencies } from '../../types/interfaces';
 import PurpleButton from '../../reusableComponents/genericButton';
-import { AddTickToClimbToUserToMap } from './mapApiRequests';
+import { AddAttemptToClimbToUserToMap } from './mapApiRequests';
 import ToastContainer from '../../reusableComponents/toastContainer';
 
-interface TickOverlayProps {
+interface AttemptOverlayProps {
   displayTrigger: number;
   climbName: string;
   climbGrade: string;
   userId: string;
   mapId: number;
-  tickObject: TickObject | null;
-  climbIdForAttemptAndTick: number;
-  setClimbObject: React.Dispatch<React.SetStateAction<ClimbWithDependencies[]>>;
+  attemptObject:AttemptObject | null;
+  climbIdForAttemptAndTick: number
+  setClimbObject:React.Dispatch<React.SetStateAction<ClimbWithDependencies[]>>
+
 }
 
-const TickOverlay: React.FC<TickOverlayProps> = ({
-  tickObject,
+const AttemptOverlay: React.FC<AttemptOverlayProps> = ({
+  attemptObject,
   displayTrigger,
   climbName,
   climbGrade,
@@ -27,29 +29,36 @@ const TickOverlay: React.FC<TickOverlayProps> = ({
   climbIdForAttemptAndTick
 }) => {
   const [displayChat, setDisplayChat] = useState(false);
+  //const [attemptObjectForOverlay, setAttemptObjectForOverlay] = useState<AttemptObject | null>(null);
   const [value, setValue] = useState<string>('');
   const [attemptValue, setAttemptValue] = useState<string>('');
   const [difficultyValue, setDifficultyValue] = useState<string>('');
   const [toastTrigger,setToastTrigger] = useState<number>(0)
   const containerRef = useRef<HTMLDivElement>(null);
 
+
+ 
   useEffect(() => {
     if (displayTrigger > 0) {
       setDisplayChat((prev) => !prev);
     }
   }, [displayTrigger]);
 
+
+
   const handleChange = (e: any) => {
+
     setValue(e.target.value);
   };
 
-  const AttemptArray = ['Flash', 'A Few', 'Meh Amount', 'A Lot'];
+  const AttemptArray = ['A Few', 'Meh Amount', 'A Lot'];
   const difficultyArray = ['Soft', 'Benchmark', 'Sandbagged'];
 
-  const submitTick = async () => {
+
+  const submitAttempt = async () => {
     if (climbIdForAttemptAndTick > -1) {
       try {
-        const response = await AddTickToClimbToUserToMap(
+        const response = await AddAttemptToClimbToUserToMap(
           climbIdForAttemptAndTick,
           userId,
           mapId,
@@ -58,44 +67,51 @@ const TickOverlay: React.FC<TickOverlayProps> = ({
           attemptValue
         );
   
-        console.log(response, "sdfsdf");
-  
         // Update climbObject if the response is valid
         setClimbObject(prev =>
           prev.map(dependency =>
             dependency.climb.climbId === response.climbId
-              ? { ...dependency, ticks: response }
+              ? { ...dependency, attempts: response }
               : dependency
           )
         );
   
         setDisplayChat(false); // Close chat on success
       } catch (error) {
-        console.error("Error while submitting tick:", error);
+        console.error("Error while submitting attempt:", error);
   
-        // Trigger toast notification on error
+        // Trigger toast notification or handle error appropriately
         setToastTrigger(prev => prev + 1);
       }
     }
   };
   
 
-  useEffect(() => {
 
-    if (tickObject !== null && tickObject !== undefined) {
-      setAttemptValue(tickObject.attempts);
-      setDifficultyValue(tickObject.difficulty);
-      setValue(tickObject.notes);
-    } else {
-      setAttemptValue('');
-      setDifficultyValue('');
-      setValue('');
-    }
-  }, [displayTrigger]);
+useEffect(()=>{
+  if(attemptObject !== null && attemptObject !== undefined){
+  
+    setAttemptValue(attemptObject.attempts)
+    setDifficultyValue(attemptObject.difficulty)
+    setValue(attemptObject.notes)
+
+  }
+
+  else{
+    setAttemptValue('')
+    setDifficultyValue('')
+    setValue('')
+
+  }
+
+  },[displayTrigger])
+
+
+ 
 
   return (
     <>
-      <ToastContainer message = "Please add yourself to climb first" type='error' trigger = {toastTrigger} mode = 'dark' /> 
+       <ToastContainer message = "Please add yourself to climb first" type='error' trigger = {toastTrigger} mode = 'dark' /> 
       {displayChat ? (
         <div className="pointer-events-auto fixed z-10 flex h-1/2 min-h-96 w-1/2 min-w-96 max-w-[700px] flex-col items-start rounded-lg bg-zinc-900">
           <div className="flex w-full gap-5 border-b border-neutral-500 p-5 text-2xl font-semibold text-white">
@@ -158,7 +174,7 @@ const TickOverlay: React.FC<TickOverlayProps> = ({
                 {backArrowIcon}
               </div>
             ) : null}
-            <div onClick={() => submitTick()}>
+            <div onClick={() => submitAttempt()}>
               <PurpleButton paddingLeft='pl-5' paddingRight='pr-5'> Save </PurpleButton>
             </div>
           </div>
@@ -167,5 +183,4 @@ const TickOverlay: React.FC<TickOverlayProps> = ({
     </>
   );
 };
-
-export default TickOverlay;
+export default AttemptOverlay;

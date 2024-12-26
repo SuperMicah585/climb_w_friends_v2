@@ -15,11 +15,13 @@ import {
   Tags,
   ClimbWithDependencies,
   UserObjectForFeature,
+  AttemptObject,
+  TickObject
 } from '../types/interfaces';
 import SearchDropDown from './searchDropDown';
 import TagInput from './input';
 import { useState, useRef, useEffect } from 'react';
-import TickClimbsComponent from '../pages/mapComponents/tickClimbsComponent';
+import TickAndAttempt from '../pages/mapComponents/tickAndAttempt';
 import { useAuth0 } from '@auth0/auth0-react';
 import { addUserToClimb,RemoveUserFromClimb } from '../pages/mapComponents/mapApiRequests';
 import { retrieveFeatures } from '../pages/mapComponents/mapApiRequests';
@@ -29,19 +31,26 @@ interface ClimbModalBarProps {
   tagInputCallBack: (item: string) => void;
   climbObject: ClimbsTableResponse;
   tagObject: Tags[];
+  attemptObject:AttemptObject;
+  tickObject:TickObject;
   handleTagSelect: (item: ClimbTagItem) => void;
   featureTagObject: Tags[];
   climberObject: UserObjectForFeature[] | null;
   chatDisplayTriggerCallBack: () => void;
   setClimbNameForChatCallBack: (climbName: string) => void;
   setClimbGradeForChatCallBack: (climbGrade: string) => void;
+  setAttemptObjectCallBack:(attemptObject: AttemptObject) => void;
   setClimbChatForChatCallBack: (climbConversation: ChatObject[]) => void;
   setClimbObject: React.Dispatch<React.SetStateAction<ClimbWithDependencies[]>>;
   setTickOverlayDisplayTrigger: React.Dispatch<React.SetStateAction<number>>;
+  setAttemptOverlayDisplayTrigger: React.Dispatch<React.SetStateAction<number>>;
+  setClimbIdForAttemptAndTick: React.Dispatch<React.SetStateAction<number>>;
+  setTickObjectCallBack: (tickObject: TickObject) => void; 
   mapId:number;
   closeModalCallBack: (trigger: boolean) => void;
   AllClimbsOnModal: ClimbWithDependencies[]
 }
+
 
 const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
   tagInputCallBack,
@@ -49,19 +58,25 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
   tagObject,
   handleTagSelect,
   featureTagObject,
+  tickObject,
   chatDisplayTriggerCallBack,
+  setAttemptObjectCallBack,
+  setTickObjectCallBack,
   setClimbNameForChatCallBack,
   setClimbGradeForChatCallBack,
   setClimbChatForChatCallBack,
   setClimbObject,
   setTickOverlayDisplayTrigger,
+  setAttemptOverlayDisplayTrigger,
   climberObject,
   mapId,
   closeModalCallBack,
+  setClimbIdForAttemptAndTick,
+  attemptObject,
   AllClimbsOnModal
 }) => {
   const [dropDownToggle, setDropDownToggle] = useState<boolean>(false);
-  const [isClimbTicked, setisClimbTicked] = useState(false);
+  const [tickClimbColor, setTickClimbColor] = useState('text-neutral-500');
   const [configToggle, setConfigToggle] = useState<number>(0);
   const [dropDownItemsState, setDropDownItemsState] = useState<boolean>(false);
   const tagInputRef = useRef(null);
@@ -69,6 +84,8 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
   const closeDropDownCallBack = (value: boolean) => {
     setDropDownToggle(value);
   };
+
+
 
   const tickButtonRef = useRef<HTMLDivElement>(null);
   const tickButtonDropDown = useRef<HTMLDivElement>(null);
@@ -98,6 +115,20 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
     };
   }, [tickButtonDropDown, tickButtonRef]);
 
+  const colorForTickIcon = () => {
+
+    if (attemptObject !== null && tickObject !== null) {
+     return 'text-green-500'
+    } else if (attemptObject !== null && tickObject === null) {
+      return 'text-amber-500'
+    } else if (attemptObject === null && tickObject !== null) {
+      return 'text-green-500'
+    } else {
+      return 'text-neutral-500'
+    }
+
+  }
+
   const removeOrAddClimb = async(id: number, action: string) => {
     /* setClimbsArray(prev=>prev.filter((mapItem)=>
     mapItem.climber_names.length===0?true:false))*/
@@ -106,7 +137,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
         // Wait for the database update
         const data = await RemoveUserFromClimb(id, user?.sub || "", mapId);
         const features = await retrieveFeatures(mapId);
-        console.log(features,"SDfsdfsd")
+       
         // Update the local state
         if(features){}
         setClimbObject((prev) => {
@@ -121,7 +152,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
                   return null;
                 }
         
-                return { ...item, userObjectForFeature: filteredUsers };
+                return { ...item, userObjectForFeature: filteredUsers,ticks:null,attempts:null };
               }
               return item;
             })
@@ -145,7 +176,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
     if (action === 'add') {
 
       const data = await addUserToClimb(id,user?.sub || "",mapId)
-      console.log(data)
+    
       setClimbObject((prev) =>
       prev.map((item) =>
         item.climb.climbId === id && item.userObjectForFeature
@@ -259,8 +290,11 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
             ref={tickButtonRef}
             onClick={() => {
               setDropDownItemsState((prev) => !prev);
+              setAttemptObjectCallBack(attemptObject);
+              setTickObjectCallBack(tickObject);
+              setClimbIdForAttemptAndTick(climbObject.climbId)
             }}
-            className={`cursor-pointer rounded-full p-1 hover:bg-slate-500 hover:opacity-75 ${isClimbTicked ? 'text-green-500' : 'text-neutral-500 hover:text-neutral-400'}`}
+            className={`cursor-pointer rounded-full p-1 hover:bg-slate-500 hover:opacity-75 ${colorForTickIcon()}`}
           >
             {checkBadge}
           </div>
@@ -276,14 +310,19 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
             {chatIcon}
           </div>
           <div ref={tickButtonDropDown}>
-            <TickClimbsComponent
+            <TickAndAttempt
               setClimbGradeForChatCallBack={setClimbGradeForChatCallBack}
               setClimbNameForChatCallBack={setClimbNameForChatCallBack}
               setTickOverlayDisplayTrigger={setTickOverlayDisplayTrigger}
               climbObject={climbObject}
               setDropDownItemsStateCallBack={setDropDownItemsStateCallBack}
-              setisClimbTicked={setisClimbTicked}
+              setTickClimbColor={setTickClimbColor}
+              attemptObject = {attemptObject}
               setDropDownItemsState={dropDownItemsState}
+              setAttemptOverlayDisplayTrigger = {setAttemptOverlayDisplayTrigger}
+              setClimbObject = {setClimbObject}
+              tickObject={tickObject}
+           
             />
           </div>
           <div

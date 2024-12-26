@@ -13,7 +13,7 @@ const ModalChat: React.FC<ChatProps> = ({
   const [chatArray, setChatArray] = useState<ChatObject[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  console.log(displayTrigger,climbName,climbGrade,climbChat)
+
   const handleChatInputCallBack = (chat: ChatObject) => {
     setChatArray((prev) => [...prev, chat]);
   };

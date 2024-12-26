@@ -21,5 +21,6 @@ namespace ClimbWithFriendsAPI.Data
 
         public DateTime? CreatedAt { get; set; } // When the user was created
 
+        
     }
 }

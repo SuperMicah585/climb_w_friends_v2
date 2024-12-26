@@ -173,36 +173,58 @@ public async Task<ActionResult> RemoveFeature(int featureId)
 }
 
 
-
-[HttpGet("{featureId}/Dependencies")]
-public async Task<ActionResult<List<FeatureDependencies>>> GetFeatureDependenciesById(int featureId)
+[HttpGet("{featureId}/Dependencies/UserId/{auth0Id}")]
+public async Task<ActionResult<List<FeatureDependencies>>> GetFeatureDependenciesById(int featureId, string auth0Id)
 {
+
     try 
     {
- var featureDependencies = await _context.MapToFeatureToClimbs
-    .Where(m => m.FeatureId == featureId)
-    .Select(m => new { m.ClimbId, m.MapId })
-    .Distinct()
-    .Select(map => new FeatureDependencies
-    {
-        Climb = _context.Climbs.FirstOrDefault(c => c.ClimbId == map.ClimbId),
-        Tags = _context.ClimbToTags
-            .Where(ct => ct.ClimbId == map.ClimbId)
-            .Select(ct => _context.Tags.FirstOrDefault(t => t.TagId == ct.TagId))
-            .ToList(),
-        UserObjectForFeature = _context.MapToUserToClimbs
-            .Where(uc => uc.ClimbId == map.ClimbId && uc.MapId == map.MapId)
-            .Select(uc => new UserObjectForFeature
+
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Auth0ID == auth0Id);
+        var featureDependencies = await _context.MapToFeatureToClimbs
+            .Where(m => m.FeatureId == featureId)
+            .Select(m => new { m.ClimbId, m.MapId })
+            .Distinct()
+            .Select(map => new FeatureDependencies
             {
-                UserId = uc.UserId,
-                Auth0ID = _context.Users.FirstOrDefault(u => u.UserId == uc.UserId).Auth0ID,
-                Name = _context.Users.FirstOrDefault(u => u.UserId == uc.UserId).Name,
-                Username = _context.Users.FirstOrDefault(u => u.UserId == uc.UserId).Username
+                Climb = _context.Climbs
+                    .FirstOrDefault(c => c.ClimbId == map.ClimbId),  // Consider using Include to load Climb's relationships
+
+                Tags = _context.ClimbToTags
+                    .Where(ct => ct.ClimbId == map.ClimbId)
+                    .Select(ct => ct.Tag)
+                    .ToList(),
+
+                Attempts = _context.Attempts
+                    .Where(ca => ca.ClimbId == map.ClimbId && ca.UserId == user.UserId)
+                    .FirstOrDefault(), 
+
+                Ticks = _context.Ticks
+                    .Where(ct => ct.ClimbId == map.ClimbId && ct.UserId == user.UserId)
+                    .FirstOrDefault(),
+
+                UserObjectForFeature = _context.MapToUserToClimbs
+                    .Where(uc => uc.ClimbId == map.ClimbId && uc.MapId == map.MapId)
+                    .Select(uc => new UserObjectForFeature
+                    {
+                        UserId = uc.UserId,
+                        Auth0ID = _context.Users
+                            .Where(u => u.UserId == uc.UserId)
+                            .Select(u => u.Auth0ID)
+                            .FirstOrDefault(),
+                        Name = _context.Users
+                            .Where(u => u.UserId == uc.UserId)
+                            .Select(u => u.Name)
+                            .FirstOrDefault(),
+                        Username = _context.Users
+                            .Where(u => u.UserId == uc.UserId)
+                            .Select(u => u.Username)
+                            .FirstOrDefault()
+                    })
+                    .ToList()
             })
-            .ToList()
-    })
-    .ToListAsync();
-    
+            .ToListAsync();
+
         if (featureDependencies == null || !featureDependencies.Any())
         {
             return NotFound($"No dependencies found for feature {featureId}");
@@ -218,11 +240,14 @@ public async Task<ActionResult<List<FeatureDependencies>>> GetFeatureDependencie
 }
 
 
-[HttpGet("ByMapId/{mapId}/Dependencies")]
-public async Task<ActionResult<List<FeatureDependencies>>> GetFeatureDependenciesByMapId(int mapId)
+
+[HttpGet("ByMapId/{mapId}/Dependencies/UserId/{auth0Id}")]
+public async Task<ActionResult<List<FeatureDependencies>>> GetFeatureDependenciesByMapId(int mapId, string auth0Id)
 {
     try 
     {
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Auth0ID == auth0Id);
+        
         var featureDependencies = await _context.MapToFeatureToClimbs
             .Where(m => m.MapId == mapId)
             .Select(m => new { m.ClimbId, m.MapId })
@@ -234,6 +259,13 @@ public async Task<ActionResult<List<FeatureDependencies>>> GetFeatureDependencie
                     .Where(ct => ct.ClimbId == map.ClimbId)
                     .Select(ct => _context.Tags.FirstOrDefault(t => t.TagId == ct.TagId))
                     .ToList(),
+                Attempts = _context.Attempts
+                    .Where(ca => ca.ClimbId == map.ClimbId && ca.UserId == user.UserId)
+                    .FirstOrDefault(),
+                Ticks = _context.Ticks
+                    .Where(ct => ct.ClimbId == map.ClimbId && ct.UserId == user.UserId)
+                    .FirstOrDefault(),
+
                 UserObjectForFeature = _context.MapToUserToClimbs
                     .Where(uc => uc.ClimbId == map.ClimbId && uc.MapId == map.MapId)
                     .Select(uc => new UserObjectForFeature
@@ -244,7 +276,7 @@ public async Task<ActionResult<List<FeatureDependencies>>> GetFeatureDependencie
                         Username = _context.Users.FirstOrDefault(u => u.UserId == uc.UserId).Username
                     })
                     .ToList()
-                    })
+            })
             .ToListAsync();
     
         if (featureDependencies == null || !featureDependencies.Any())
@@ -260,7 +292,6 @@ public async Task<ActionResult<List<FeatureDependencies>>> GetFeatureDependencie
         return StatusCode(500, $"An error occurred while retrieving feature dependencies: {ex.Message}");
     }
 }
-
 
 [HttpGet("{featureId}/Aggregate_climbs")]
 public async Task<ActionResult> getGradeCounts(int featureId)

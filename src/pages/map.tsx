@@ -343,6 +343,7 @@ if(renderFeatureTrigger>0){
           closeModalCallBack={closeModalCallBack}
           clickedFeatureClimbs={clickedFeatureClimbs}
           mapId={mapIdNumber}
+          auth0Id={user?.sub || ''}
         />
       ) : null}
 
@@ -373,6 +374,7 @@ if(renderFeatureTrigger>0){
           mapId={mapIdNumber}
           climbsObject={geoJsonObject}
           closeModalCallBack={closeAllClimbsModalCallBack}
+          auth0Id={user?.sub || ''}
         />
       ) : null}
 

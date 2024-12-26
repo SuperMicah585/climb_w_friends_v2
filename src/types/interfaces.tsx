@@ -58,6 +58,34 @@ export interface ClimbWithDependencies {
   climb: ClimbsTableResponse;
   tags: Tags[];
   userObjectForFeature: null | UserObjectForFeature[];
+  attempts: null | AttemptObject;
+  ticks: null | TickObject;
+}
+
+export interface AttemptObject {
+  attemptId: number;
+  mapId: number;
+  climbId: number;
+  userId: number;
+  attempts: string;
+  difficulty: string;
+  notes: string;
+  createdAt:string;
+  updatedAt:string;
+
+}
+
+export interface TickObject {
+  tickId: number;
+  mapId: number;
+  climbId: number;
+  userId: number;
+  attempts: string;
+  difficulty: string;
+  notes: string;
+  createdAt:string;
+  updatedAt:string;
+
 }
 
 export interface UserObjectForFeature{

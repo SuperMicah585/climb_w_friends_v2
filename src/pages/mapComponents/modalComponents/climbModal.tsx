@@ -6,6 +6,8 @@ import {
   deleteTagItem,
   ClimbTagItem,
   ClimbWithDependencies,
+  AttemptObject,
+  TickObject
 } from '../../../types/interfaces';
 import { newWindowIcon } from '../../../reusableComponents/styles';
 import ModalSearch from './modalSearch';
@@ -15,6 +17,7 @@ import Tooltip from '../../../reusableComponents/toolTip';
 import { useState, useEffect } from 'react';
 import ClimbModalBar from '../../../reusableComponents/climbModalBar';
 import TickOverlay from '../tickOverlay';
+import AttemptOverlay from '../attemptOverlay';
 import { useAuth0 } from '@auth0/auth0-react';
 import {
   retrieveClimbDependencies,
@@ -26,25 +29,31 @@ export type ClimbModalProps = {
   clickedFeatureClimbs: number | ClimbWithDependencies[];
   closeModalCallBack: (trigger: boolean) => void;
   mapId: number;
+  auth0Id:string
 };
 
 const ClimbModal: React.FC<ClimbModalProps> = ({
   clickedFeatureClimbs,
   closeModalCallBack = () => {},
   mapId,
+  auth0Id
 }) => {
   const [routeFilterString, setRouteFilterString] = useState<string>('');
   const [sortString, setSortString] = useState('Order Grade ASC');
   const [displayTrigger, setDisplayTrigger] = useState(0);
   const [climbNameForChat, setClimbNameForChat] = useState('');
   const [climbGradeForChat, setClimbGradeForChat] = useState('');
+  const [attemptObject, setAttemptObject] = useState<AttemptObject | null>(null);
+  const [tickObject, setTickObject] = useState<TickObject | null>(null);
+  const [climbIdForAttemptAndTick, setClimbIdForAttemptAndTick] = useState<number>(-1)
   const [climbChatForChat, setClimbChatForChat] = useState<ChatObject[]>([]);
   const [tagInput, setTagInput] = useState<string>('');
   const [tagObject, setTagObject] = useState<Tags[]>([]);
   const [climbObject, setClimbObject] = useState<ClimbWithDependencies[]>([]);
   const [tickOverlayDisplayTrigger, setTickOverlayDisplayTrigger] =
     useState<number>(0);
-  const [tickinfo, setTickInfo] = useState({});
+    const [attemptOverlayDisplayTrigger, setAttemptOverlayDisplayTrigger] =
+    useState<number>(0);
   const [tagsOnMount, setTagsOnMount] = useState<Tags[]>([]);
 
 
@@ -57,6 +66,25 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
     setClimbGradeForChat(climbGrade);
   };
 
+  const setAttemptObjectCallBack = (attemptObject: AttemptObject | null) => {
+    if (attemptObject !== null) {
+      setAttemptObject(attemptObject);
+    }
+
+    else{
+      setAttemptObject(null);
+    }
+  };
+
+  const setTickObjectCallBack = (tickObject: TickObject | null) => {
+    if (attemptObject !== null) {
+      setTickObject(tickObject);
+    }
+
+    else{
+      setTickObject(null);
+    }
+  };
 
   const setClimbChatForChatCallBack = (climbConversation: ChatObject[]) => {
     setClimbChatForChat(climbConversation);
@@ -109,7 +137,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
       try {
         if (typeof clickedFeatureClimbs === 'number') {
           const results =
-            await retrieveFeatureDependencies(clickedFeatureClimbs);
+            await retrieveFeatureDependencies(clickedFeatureClimbs,auth0Id);
           setClimbObject(results);
         } else {
           setClimbObject(clickedFeatureClimbs);
@@ -179,6 +207,8 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
     });
   };
 
+
+
   return (
     <>
       <div
@@ -196,8 +226,25 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
           displayTrigger={tickOverlayDisplayTrigger}
           climbName={climbNameForChat}
           climbGrade={climbGradeForChat}
-          tickInfo={tickinfo}
+          mapId = {mapId}
+          userId={auth0Id}
+          setClimbObject = {setClimbObject}
+          climbIdForAttemptAndTick = {climbIdForAttemptAndTick}
+          tickObject={tickObject}
+          
         />
+
+        <AttemptOverlay
+          displayTrigger={attemptOverlayDisplayTrigger}
+          climbName={climbNameForChat}
+          climbGrade={climbGradeForChat}
+          attemptObject = {attemptObject}
+          mapId = {mapId}
+          userId={auth0Id}
+          climbIdForAttemptAndTick = {climbIdForAttemptAndTick}
+          setClimbObject = {setClimbObject}
+
+/>
       </div>
       <ZincModal
         maxHeight={'max-h-[700px]'}
@@ -250,10 +297,16 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                     setClimbObject={setClimbObject}
                     setClimbNameForChatCallBack={setClimbNameForChatCallBack}
                     setClimbGradeForChatCallBack={setClimbGradeForChatCallBack}
+                    setAttemptObjectCallBack={setAttemptObjectCallBack}
+                    setTickObjectCallBack = {setTickObjectCallBack}
+                    attemptObject = {item.attempts}
+                    tickObject = {item.ticks}
+                    setClimbIdForAttemptAndTick = {setClimbIdForAttemptAndTick}
                     setClimbChatForChatCallBack={setClimbChatForChatCallBack}
                     chatDisplayTriggerCallBack={chatDisplayTriggerCallBack}
                     tagInputCallBack={tagInputCallBack}
                     setTickOverlayDisplayTrigger={setTickOverlayDisplayTrigger}
+                    setAttemptOverlayDisplayTrigger = {setAttemptOverlayDisplayTrigger}
                     mapId = {mapId}
                     closeModalCallBack = {closeModalCallBack}
                     AllClimbsOnModal = {climbObject}

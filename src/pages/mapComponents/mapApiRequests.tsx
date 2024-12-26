@@ -193,8 +193,8 @@ const retrieveClimbDependencies = async (climbId: number) => {
   }
 };
 
-const retrieveFeatureDependencies = async (featureId: number) => {
-  const url = `http://localhost:5074/api/Features/${featureId}/Dependencies`;
+const retrieveFeatureDependencies = async (featureId: number,auth0Id:string) => {
+  const url = `http://localhost:5074/api/Features/${featureId}/Dependencies/UserId/${auth0Id}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -210,8 +210,8 @@ const retrieveFeatureDependencies = async (featureId: number) => {
   }
 };
 
-const retrieveFeatureDependenciesByMap = async (mapId: number) => {
-  const url = `http://localhost:5074/api/Features/ByMapId/${mapId}/Dependencies`;
+const retrieveFeatureDependenciesByMap = async (mapId: number,auth0Id:string) => {
+  const url = `http://localhost:5074/api/Features/ByMapId/${mapId}/Dependencies/UserId/${auth0Id}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -326,9 +326,127 @@ const RemoveUserFromClimb = async(climbId:number,userId:string,mapId:number) => 
   }
 
 
+  const AddAttemptToClimbToUserToMap = async(climbId:number,userId:string,mapId:number,notes:string,difficulty:string,attempts:string) => {
+
+    try {
+      const response = await fetch(`http://localhost:5074/api/Attempts/ToMap/${mapId}/ToUser/${userId}/ToClimb/${climbId}`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({Notes: notes,Difficulty: difficulty,Attempts:attempts})
+      });
+  
+  
+      if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      return data
+  
+  } catch (error) {
+      console.error('Error sending climbing data:', error);
+      throw error;
+  }
+  
+  }
+
+
+  const removeAttempt = async (attemptId: number) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5074/api/Attempts/${attemptId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+  
+      if (response.ok) {
+        // Handle success case
+        return true;
+      } else {
+        // If the response is not OK, try to log the reason
+        const error = await response.json(); // Try parsing the error JSON
+        console.warn('Response indicates failure:', error.message || error);
+        return false;
+      }
+    } catch (err) {
+      console.error('Network error:', err);
+      return false;
+    }
+  };
+
+
+  const AddTickToClimbToUserToMap = async(climbId:number,userId:string,mapId:number,notes:string,difficulty:string,attempts:string) => {
+
+    try {
+      const response = await fetch(`http://localhost:5074/api/Ticks/ToMap/${mapId}/ToUser/${userId}/ToClimb/${climbId}`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({Notes: notes,Difficulty: difficulty,Attempts:attempts})
+      });
+  
+  
+      if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+          
+      }
+  
+      const data = await response.json();
+      return data
+  
+  } catch (error) {
+    throw new Error(`HTTP error! status: ${error}`);
+  }
+  
+  }
+
+
+  const removeTick = async (tickId: number) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5074/api/Ticks/${tickId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+  
+      if (response.ok) {
+        // Handle success case
+        return true;
+      } else {
+        // If the response is not OK, try to log the reason
+        const error = await response.json(); // Try parsing the error JSON
+        console.warn('Response indicates failure:', error.message || error);
+        return false;
+      }
+    } catch (err) {
+      console.error('Network error:', err);
+      return false;
+    }
+  };
+  
+  
+
+
+
+
 
 
 export {
+  AddTickToClimbToUserToMap,
+  removeTick,
+  removeAttempt,
+  AddAttemptToClimbToUserToMap,
   RemoveUserFromClimb,
   addUserToClimb,
   retrieveClimbs,
