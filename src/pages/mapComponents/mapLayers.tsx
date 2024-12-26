@@ -81,7 +81,6 @@ export const displayLayersInitial = (
   features: GeoJsonObject,
 ) => {
   // Only add the source once
-  console.log(features,"featuressdfsdfsdfsdfsdfsdf sddasda")
   if (!map?.current?.getSource('geojson-data')  ) {
   
     map.current?.addSource('geojson-data', {
@@ -357,7 +356,7 @@ export const addFeatureInteractions = async (
       (async () => {
         try {
           const popUpData = await retrieveFeatureAggregate(featureId);
-
+       
           // Check if the feature ID is still the same (prevent stale data)
           if (currentFeatureId !== featureId) return;
 
@@ -370,7 +369,7 @@ export const addFeatureInteractions = async (
               <div class="flex w-full items-start gap-5 font-bold">
                 <div class="flex flex-col gap-2 w-1/2 text-center rounded-md bg-customGray p-2 text-white">
                   <div class="text-neutral-200 font-thin"> CLIMBERS </div>
-                  <div class="text-xl">5</div>
+                  <div class="text-xl">${popUpData.uniqueUserCount}</div>
                 </div>
   
                 <div class="flex flex-col gap-2 w-1/2 text-center rounded-md bg-customGray p-2 text-white">
@@ -433,7 +432,7 @@ export const addFeatureInteractions = async (
 
   map.current.on('mouseleave', id, () => {
     if(radius>0){
-      console.log(radius)
+ 
       map.current?.setPaintProperty(id,'circle-radius', radius);
       }
     cleanupChart();

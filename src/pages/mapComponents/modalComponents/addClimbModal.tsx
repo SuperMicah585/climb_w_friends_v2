@@ -3,11 +3,13 @@ import {
   GeoJsonFeature,
   ChatObject,
   Tags,
-  AddClimbsModalProps,
+  GeoJsonObject,
   deleteTagItem,
   ClimbTagItem,
   ClimbsTableResponse,
   ClimbWithDependencies,
+  AttemptObject,
+  TickObject
   
 } from '../../../types/interfaces';
 import InputComponent from '../../../reusableComponents/input';
@@ -21,7 +23,18 @@ import Tooltip from '../../../reusableComponents/toolTip';
 import { newWindowIcon, minusIcon } from '../../../reusableComponents/styles';
 import TickOverlay from '../tickOverlay';
 import { useAuth0 } from '@auth0/auth0-react';
-import { retrieveClimbs,addClimbsToMap,addUserToClimb } from '../mapApiRequests';
+import { retrieveClimbs,addClimbsToMap,addUserToClimb,AddTickToClimbToUserToMap,AddAttemptToClimbToUserToMap,addTagToClimb } from '../mapApiRequests';
+import AttemptOverlay from '../attemptOverlay';
+
+interface AddClimbsModalProps {
+  location: string;
+  routeType: string;
+  closeAddClimbsModalCallBack: (trigger: boolean) => void;
+  mapId: number;
+  setRenderFeatureTrigger: React.Dispatch<React.SetStateAction<number>>;
+  AllClimbsOnMap:GeoJsonObject;
+  auth0Id: string;
+}
 
 const AddClimbModal: React.FC<AddClimbsModalProps> = ({
   closeAddClimbsModalCallBack,
@@ -29,7 +42,8 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
   routeType,
   mapId,
   setRenderFeatureTrigger,
-  AllClimbsOnMap
+  AllClimbsOnMap,
+  auth0Id
 }) => {
   const [searchResults, setsearchResults] = useState<ClimbsTableResponse[]>([]);
   const [toggleSearchDropDown, setToggleSearchDropDown] =
@@ -39,11 +53,16 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
   const [tagObject, setTagObject] = useState<Tags[]>([]);
   const [tagsOnMount, setTagsOnMount] = useState<Tags[]>([]);
   const [tagInput, setTagInput] = useState<string>('');
+  const [attemptObject, setAttemptObject] = useState<AttemptObject | null>(null);
+  const [tickObject, setTickObject] = useState<TickObject | null>(null);
   const [climbNameForChat, setClimbNameForChat] = useState('');
   const [displayTrigger, setDisplayTrigger] = useState(0);
   const [climbGradeForChat, setClimbGradeForChat] = useState('');
   const [climbChatForChat, setClimbChatForChat] = useState<ChatObject[]>([]);
+  const [climbIdForAttemptAndTick, setClimbIdForAttemptAndTick] = useState<number>(-1)
   const [tickOverlayDisplayTrigger, setTickOverlayDisplayTrigger] =
+    useState<number>(0);
+    const [attemptOverlayDisplayTrigger, setAttemptOverlayDisplayTrigger] =
     useState<number>(0);
   const [tickinfo, setTickInfo] = useState({});
   const [climbsOnMap,setClimbsOnMap] = useState<number[]>([])
@@ -160,27 +179,94 @@ for(let feature of AllClimbsOnMap.features){
   filerResults()
   },[climbsArray,inputQuery])
 
+  const setAttemptObjectCallBack = (attemptObject: AttemptObject | null) => {
 
-
-  const handleModalSubmit = async()=>{
-//addUserToClimb
-   await addClimbsToMap(mapId,climbsArray)
-   
-   const promises = climbsArray.map((item) => {
-    const auth0ID = item.userObjectForFeature?.[0]?.auth0ID || '';
-    if (auth0ID) {
-      return addUserToClimb(item.climb.climbId, auth0ID, mapId);
-    } else {
-      console.warn(`No auth0ID found for climb ID ${item.climb.climbId}`);
-      return Promise.resolve(); // Return a resolved promise for items without auth0ID
+    if (attemptObject !== null) {
+    
+      setAttemptObject(attemptObject);
     }
-  });
-  
-  await Promise.all(promises);
-  
-    setRenderFeatureTrigger(prev=>prev+1)
 
-  }
+    else{
+      setAttemptObject(null);
+    }
+  };
+
+  const setTickObjectCallBack = (tickObject: TickObject | null) => {
+    if (attemptObject !== null) {
+      setTickObject(tickObject);
+    }
+
+    else{
+      setTickObject(null);
+    }
+  };
+
+
+
+  const handleModalSubmit = async () => {
+    try {
+      // Log for debugging
+      console.log('Processing climbs:', climbsArray);
+  
+      // First add all climbs to map
+      await addClimbsToMap(mapId, climbsArray);
+  
+      // Process each climb's associated data
+      const promises = climbsArray.map(async (item) => {
+        try {
+          // Handle user association
+          const auth0ID = item.userObjectForFeature?.[0]?.auth0ID;
+          if (auth0ID) {
+            await addUserToClimb(item.climb.climbId, auth0ID, mapId);
+          }
+  
+          // Handle attempts - fix string comparison
+          if (item.attempts?.userId && typeof item.attempts.userId === 'string') {
+            await AddAttemptToClimbToUserToMap(
+              item.attempts.climbId,
+              item.attempts.userId,
+              item.attempts.mapId,
+              item.attempts.notes,
+              item.attempts.difficulty,
+              item.attempts.attempts
+            );
+          }
+  
+          // Handle ticks - fix string comparison
+          if (item.ticks?.userId && typeof item.ticks.userId === 'string') {
+            await AddTickToClimbToUserToMap(
+              item.ticks.climbId,
+              item.ticks.userId,
+              item.ticks.mapId,
+              item.ticks.notes,
+              item.ticks.difficulty,
+              item.ticks.attempts
+            );
+          }
+  
+          // Handle tags
+          if (Array.isArray(item.tags) && item.tags.length > 0) {
+            const tagPromises = item.tags.map(tag => 
+              addTagToClimb(tag.tagId, item.climb.climbId)
+            );
+            await Promise.all(tagPromises);
+          }
+  
+        } catch (itemError) {
+          console.error(`Error processing climb ${item.climb?.climbId}:`, itemError);
+          throw itemError; // Re-throw to be caught by outer try-catch
+        }
+      });
+  
+      await Promise.all(promises);
+      setRenderFeatureTrigger(prev => prev + 1);
+  
+    } catch (error) {
+      console.error('Error in handleModalSubmit:', error);
+      // Consider adding error handling UI feedback here
+      throw error; // Re-throw if you want calling code to handle it
+    }
+  };
 
   const handleClimbSelect = (item: ClimbsTableResponse) => {
     setClimbsArray((prev) => [
@@ -193,7 +279,10 @@ for(let feature of AllClimbsOnMap.features){
             auth0ID: user?.sub || '',  // Ensure user?.sub is defined, or use an empty string if undefined
             username: user?.nickname,
           },
+          
         ],
+        ticks:null,
+        attempts:null,
       },
     ]);
   };
@@ -242,8 +331,27 @@ for(let feature of AllClimbsOnMap.features){
           displayTrigger={tickOverlayDisplayTrigger}
           climbName={climbNameForChat}
           climbGrade={climbGradeForChat}
-          tickInfo={tickinfo}
+          mapId = {mapId}
+          userId={auth0Id}
+          setClimbObject = {setClimbsArray}
+          climbIdForAttemptAndTick = {climbIdForAttemptAndTick}
+          tickObject={tickObject}
+          type = 'addclimb'
+          
         />
+
+        <AttemptOverlay
+          displayTrigger={attemptOverlayDisplayTrigger}
+          climbName={climbNameForChat}
+          climbGrade={climbGradeForChat}
+          attemptObject = {attemptObject}
+          mapId = {mapId}
+          userId={auth0Id}
+          climbIdForAttemptAndTick = {climbIdForAttemptAndTick}
+          setClimbObject = {setClimbsArray}
+          type = 'addclimb'
+
+/>
       </div>
 
       <ZincModal
@@ -363,7 +471,9 @@ for(let feature of AllClimbsOnMap.features){
                 featureTagObject={item.tags}
                 handleTagSelect={handleTagSelect}
                 tagObject={tagObject}
+                setAttemptOverlayDisplayTrigger = {setAttemptOverlayDisplayTrigger}
                 climbObject={item.climb}
+                setClimbIdForAttemptAndTick = {setClimbIdForAttemptAndTick}
                 climberObject={item.userObjectForFeature}
                 setClimbNameForChatCallBack={setClimbNameForChatCallBack}
                 setClimbGradeForChatCallBack={setClimbGradeForChatCallBack}
@@ -372,6 +482,11 @@ for(let feature of AllClimbsOnMap.features){
                 tagInputCallBack={tagInputCallBack}
                 setClimbObject={setClimbsArray}
                 setTickOverlayDisplayTrigger={setTickOverlayDisplayTrigger}
+                attemptObject={item.attempts}
+                tickObject={item.ticks}
+                setAttemptObjectCallBack={setAttemptObjectCallBack}
+                setTickObjectCallBack={setTickObjectCallBack}
+                type = 'addclimb'
               />
             </div>
           ))}

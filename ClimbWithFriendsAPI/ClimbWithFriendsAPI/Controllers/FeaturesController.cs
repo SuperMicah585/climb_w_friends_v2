@@ -291,38 +291,46 @@ public async Task<ActionResult<List<FeatureDependencies>>> GetFeatureDependencie
         // Log the exception
         return StatusCode(500, $"An error occurred while retrieving feature dependencies: {ex.Message}");
     }
-}
-
-[HttpGet("{featureId}/Aggregate_climbs")]
+}[HttpGet("{featureId}/Aggregate_climbs")]
 public async Task<ActionResult> getGradeCounts(int featureId)
 {
     try 
     {
-var ClimbOnGrade = await _context.MapToFeatureToClimbs
-    .Where(m => m.FeatureId == featureId)
-    .Join(_context.Climbs, 
-          mapping => mapping.ClimbId, 
-          climb => climb.ClimbId, 
-          (mapping, climb) => climb)
-    .GroupBy(c => c.Rating)
-    .Select(g => new 
-    {
-        Rating = g.Key,
-        Count = g.Count()
-    })
-    .ToListAsync();
+        var ClimbOnGrade = await _context.MapToFeatureToClimbs
+            .Where(m => m.FeatureId == featureId)
+            .Join(_context.Climbs, 
+                  mapping => mapping.ClimbId, 
+                  climb => climb.ClimbId, 
+                  (mapping, climb) => climb)
+            .GroupBy(c => c.Rating)
+            .Select(g => new 
+            {
+                Rating = g.Key,
+                Count = g.Count()
+            })
+            .ToListAsync();
 
-    
+        // Get unique user count for the feature
+        var uniqueUserCount = await _context.MapToFeatureToClimbs
+            .Where(m => m.FeatureId == featureId)
+            .Join(_context.MapToUserToClimbs,
+                  feature => new { ClimbId = feature.ClimbId, MapId = feature.MapId },
+                  user => new { ClimbId = user.ClimbId, MapId = user.MapId },
+                  (feature, user) => user.UserId)
+            .Distinct()
+            .CountAsync();
+        
         if (ClimbOnGrade == null)
         {
             return NotFound($"No Climbs found for map {featureId}");
         }
 
         return Ok(new 
-{
-    GradeCounts = ClimbOnGrade,
-    TotalCount = await GetClimbCount(featureId) // Fix the invocation
-});
+        {
+            GradeCounts = ClimbOnGrade,
+            TotalCount = await GetClimbCount(featureId),
+            UniqueUserCount = uniqueUserCount
+        });
     }
     catch (Exception ex)
     {
@@ -330,7 +338,6 @@ var ClimbOnGrade = await _context.MapToFeatureToClimbs
         return StatusCode(500, $"An error occurred while retrieving feature dependencies: {ex.Message}");
     }
 }
-
         [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<int> GetClimbCount(int featureId)
 {

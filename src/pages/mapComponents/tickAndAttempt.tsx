@@ -15,6 +15,7 @@ interface TickClimbsComponent {
   attemptObject:AttemptObject;
   tickObject:TickObject;
   setClimbObject:React.Dispatch<React.SetStateAction<ClimbWithDependencies[]>>;
+  type:string
 
 }
 const TickClimbsComponent: React.FC<TickClimbsComponent> = ({
@@ -28,7 +29,8 @@ const TickClimbsComponent: React.FC<TickClimbsComponent> = ({
   climbObject,
   attemptObject,
   tickObject,
-  setClimbObject
+  setClimbObject,
+  type
   
 }) => {
 
@@ -49,7 +51,7 @@ const TickClimbsComponent: React.FC<TickClimbsComponent> = ({
   }, [attemptObject, tickObject, setDropDownItemsState]);
   
 
-  
+ 
 
 
   const setSelectedTickCallBack = async(item: string) => {
@@ -70,43 +72,83 @@ const TickClimbsComponent: React.FC<TickClimbsComponent> = ({
     }
 
     if (item === 'Remove Attempt') {
+      if(type ==='climb'){
       const responseBoolean = await removeAttempt(attemptObject.attemptId)
       if(responseBoolean){
       setClimbObject(prev => 
         prev.map(obj => {
+          if (obj.attempts && 'attemptId' in obj.attempts) {
           // Check if the current object's attemptId matches the target attemptId
           if (obj?.attempts?.attemptId === attemptObject?.attemptId) {
             return {
               ...obj, // Copy the current object
               attempts: null, // Set attempts to null
             };
-          }
+          }}
           return obj; // Return the object unchanged
-        })
+      })
       );
     }
   }
+  else{
+    setClimbObject(prev => 
+      prev.map(obj => {
+        // Check if the current object's attemptId matches the target attemptId
+        if (obj.attempts && 'climbId' in obj.attempts) {
+        if (obj?.attempts?.climbId === attemptObject?.climbId) {
+          return {
+            ...obj, // Copy the current object
+            attempts: null, // Set attempts to null
+          };
+        }}
+        return obj; // Return the object unchanged
+      })
+    );
+  }
+  }
 
   if (item === 'Remove Tick') {
+    if(type==='climb'){
     const responseBoolean = await removeTick(tickObject.tickId)
 
     if(responseBoolean){
     setClimbObject(prev => 
       prev.map(obj => {
         // Check if the current object's attemptId matches the target attemptId
+        if (obj.ticks && 'tickId' in obj.ticks) {
         if (obj?.ticks?.tickId === tickObject?.tickId) {
           return {
             ...obj, // Copy the current object
             ticks: null, // Set attempts to null
           };
-        }
+        }}
         return obj; // Return the object unchanged
       })
     );
   }
+    }
+  
+
+  else{
+
+    setClimbObject(prev => 
+      prev.map(obj => {
+        // Check if the current object's attemptId matches the target attemptId
+        if (obj.ticks && 'climbId' in obj.ticks) {
+        if (obj?.ticks?.climbId === tickObject?.climbId) {
+          return {
+            ...obj, // Copy the current object
+            ticks: null, // Set attempts to null
+          };
+        }}
+        return obj; // Return the object unchanged
+      })
+    );
+
+  }
 }
-    //console.log(climbObject)
-  };
+  }
+
 
   return (
     <div className="absolute right-0 top-0">

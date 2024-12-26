@@ -49,6 +49,7 @@ interface ClimbModalBarProps {
   mapId:number;
   closeModalCallBack: (trigger: boolean) => void;
   AllClimbsOnModal: ClimbWithDependencies[]
+  type:string
 }
 
 
@@ -73,7 +74,8 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
   closeModalCallBack,
   setClimbIdForAttemptAndTick,
   attemptObject,
-  AllClimbsOnModal
+  AllClimbsOnModal,
+  type,
 }) => {
   const [dropDownToggle, setDropDownToggle] = useState<boolean>(false);
   const [tickClimbColor, setTickClimbColor] = useState('text-neutral-500');
@@ -117,6 +119,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
 
   const colorForTickIcon = () => {
 
+
     if (attemptObject !== null && tickObject !== null) {
      return 'text-green-500'
     } else if (attemptObject !== null && tickObject === null) {
@@ -129,6 +132,8 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
 
   }
 
+
+
   const removeOrAddClimb = async(id: number, action: string) => {
     /* setClimbsArray(prev=>prev.filter((mapItem)=>
     mapItem.climber_names.length===0?true:false))*/
@@ -136,10 +141,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
       try {
         // Wait for the database update
         const data = await RemoveUserFromClimb(id, user?.sub || "", mapId);
-        const features = await retrieveFeatures(mapId);
-       
-        // Update the local state
-        if(features){}
+
         setClimbObject((prev) => {
           const updatedArray = prev
             .map((item) => {
@@ -152,7 +154,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
                   return null;
                 }
         
-                return { ...item, userObjectForFeature: filteredUsers,ticks:null,attempts:null };
+                return { ...item, userObjectForFeature: filteredUsers,attempts: null, ticks:null };
               }
               return item;
             })
@@ -322,6 +324,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
               setAttemptOverlayDisplayTrigger = {setAttemptOverlayDisplayTrigger}
               setClimbObject = {setClimbObject}
               tickObject={tickObject}
+              type = {type}
            
             />
           </div>

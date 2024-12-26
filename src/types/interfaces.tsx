@@ -12,14 +12,6 @@ export interface ClimbsTableResponse {
   coordinates: number[];
 }
 
-export interface AddClimbsModalProps {
-  location: string;
-  routeType: string;
-  closeAddClimbsModalCallBack: (trigger: boolean) => void;
-  mapId: number;
-  setRenderFeatureTrigger: React.Dispatch<React.SetStateAction<number>>;
-  AllClimbsOnMap:GeoJsonObject;
-}
 
 export type TempDic = {
   [key: string]: (Tags | null)[];
@@ -58,8 +50,8 @@ export interface ClimbWithDependencies {
   climb: ClimbsTableResponse;
   tags: Tags[];
   userObjectForFeature: null | UserObjectForFeature[];
-  attempts: null | AttemptObject;
-  ticks: null | TickObject;
+  attempts: null | AttemptObject | TickAndAttemptObjectBeforeResponse;
+  ticks: null | TickObject | TickAndAttemptObjectBeforeResponse;
 }
 
 export interface AttemptObject {
@@ -87,6 +79,17 @@ export interface TickObject {
   updatedAt:string;
 
 }
+
+export interface TickAndAttemptObjectBeforeResponse {
+  mapId: number;
+  climbId: number;
+  userId: string;
+  attempts: string;
+  difficulty: string;
+  notes: string;
+}
+
+
 
 export interface UserObjectForFeature{
   userId?:number;

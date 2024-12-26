@@ -366,6 +366,7 @@ if(renderFeatureTrigger>0){
           mapId={mapIdNumber}
           setRenderFeatureTrigger = {setRenderFeatureTrigger}
           AllClimbsOnMap = {geoJsonObject}
+          auth0Id={user?.sub || ''}
         />
       ) : null}
 

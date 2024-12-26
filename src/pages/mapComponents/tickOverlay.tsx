@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { backArrowIcon } from '../../reusableComponents/styles';
-import { TickObject, ClimbWithDependencies } from '../../types/interfaces';
+import { TickObject, ClimbWithDependencies,TickAndAttemptObjectBeforeResponse } from '../../types/interfaces';
 import PurpleButton from '../../reusableComponents/genericButton';
 import { AddTickToClimbToUserToMap } from './mapApiRequests';
 import ToastContainer from '../../reusableComponents/toastContainer';
@@ -11,9 +11,10 @@ interface TickOverlayProps {
   climbGrade: string;
   userId: string;
   mapId: number;
-  tickObject: TickObject | null;
+  tickObject: TickObject | null | TickAndAttemptObjectBeforeResponse;
   climbIdForAttemptAndTick: number;
   setClimbObject: React.Dispatch<React.SetStateAction<ClimbWithDependencies[]>>;
+  type:string
 }
 
 const TickOverlay: React.FC<TickOverlayProps> = ({
@@ -24,7 +25,8 @@ const TickOverlay: React.FC<TickOverlayProps> = ({
   setClimbObject,
   userId,
   mapId,
-  climbIdForAttemptAndTick
+  climbIdForAttemptAndTick,
+  type
 }) => {
   const [displayChat, setDisplayChat] = useState(false);
   const [value, setValue] = useState<string>('');
@@ -47,6 +49,7 @@ const TickOverlay: React.FC<TickOverlayProps> = ({
   const difficultyArray = ['Soft', 'Benchmark', 'Sandbagged'];
 
   const submitTick = async () => {
+    if(type==='climb'){
     if (climbIdForAttemptAndTick > -1) {
       try {
         const response = await AddTickToClimbToUserToMap(
@@ -58,7 +61,7 @@ const TickOverlay: React.FC<TickOverlayProps> = ({
           attemptValue
         );
   
-        console.log(response, "sdfsdf");
+   
   
         // Update climbObject if the response is valid
         setClimbObject(prev =>
@@ -77,6 +80,31 @@ const TickOverlay: React.FC<TickOverlayProps> = ({
         setToastTrigger(prev => prev + 1);
       }
     }
+  }
+  else{
+
+
+    setClimbObject(prev =>
+      prev.map((dependency): ClimbWithDependencies =>
+        dependency.climb.climbId === climbIdForAttemptAndTick
+          ? {
+              ...dependency,
+              ticks: {
+                mapId: mapId,
+                climbId: climbIdForAttemptAndTick,
+                userId: userId, 
+                notes: value,
+                difficulty: difficultyValue,
+                attempts: attemptValue,
+              },
+            }
+          : dependency
+      )
+    );
+    
+
+    setDisplayChat(false);
+  }
   };
   
 

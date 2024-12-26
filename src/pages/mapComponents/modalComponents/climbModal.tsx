@@ -231,6 +231,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
           setClimbObject = {setClimbObject}
           climbIdForAttemptAndTick = {climbIdForAttemptAndTick}
           tickObject={tickObject}
+          type='climb'
           
         />
 
@@ -243,6 +244,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
           userId={auth0Id}
           climbIdForAttemptAndTick = {climbIdForAttemptAndTick}
           setClimbObject = {setClimbObject}
+          type='climb'
 
 />
       </div>
@@ -310,6 +312,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                     mapId = {mapId}
                     closeModalCallBack = {closeModalCallBack}
                     AllClimbsOnModal = {climbObject}
+                    type='climb'
                   />
 
                   <div className="mt-5 flex gap-5 font-semibold text-white">

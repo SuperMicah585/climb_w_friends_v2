@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { backArrowIcon } from '../../reusableComponents/styles';
 import ChatInput from '../../reusableComponents/chatInput';
-import { AttemptObject,ClimbWithDependencies } from '../../types/interfaces';
+import { AttemptObject,ClimbWithDependencies,TickAndAttemptObjectBeforeResponse } from '../../types/interfaces';
 import PurpleButton from '../../reusableComponents/genericButton';
 import { AddAttemptToClimbToUserToMap } from './mapApiRequests';
 import ToastContainer from '../../reusableComponents/toastContainer';
@@ -12,9 +12,10 @@ interface AttemptOverlayProps {
   climbGrade: string;
   userId: string;
   mapId: number;
-  attemptObject:AttemptObject | null;
+  attemptObject:AttemptObject | null | TickAndAttemptObjectBeforeResponse;
   climbIdForAttemptAndTick: number
   setClimbObject:React.Dispatch<React.SetStateAction<ClimbWithDependencies[]>>
+  type:string
 
 }
 
@@ -26,7 +27,8 @@ const AttemptOverlay: React.FC<AttemptOverlayProps> = ({
   setClimbObject,
   userId,
   mapId,
-  climbIdForAttemptAndTick
+  climbIdForAttemptAndTick,
+  type
 }) => {
   const [displayChat, setDisplayChat] = useState(false);
   //const [attemptObjectForOverlay, setAttemptObjectForOverlay] = useState<AttemptObject | null>(null);
@@ -56,6 +58,7 @@ const AttemptOverlay: React.FC<AttemptOverlayProps> = ({
 
 
   const submitAttempt = async () => {
+    if(type==='climb'){
     if (climbIdForAttemptAndTick > -1) {
       try {
         const response = await AddAttemptToClimbToUserToMap(
@@ -84,6 +87,29 @@ const AttemptOverlay: React.FC<AttemptOverlayProps> = ({
         setToastTrigger(prev => prev + 1);
       }
     }
+  }
+  else{
+
+
+    setClimbObject(prev =>
+      prev.map((dependency): ClimbWithDependencies =>
+        dependency.climb.climbId === climbIdForAttemptAndTick
+          ? {
+              ...dependency,
+              attempts: {
+                mapId: mapId,
+                climbId: climbIdForAttemptAndTick,
+                userId: userId, 
+                notes: value,
+                difficulty: difficultyValue,
+                attempts: attemptValue,
+              },
+            }
+          : dependency
+      )
+    );
+    setDisplayChat(false);
+  }
   };
   
 
