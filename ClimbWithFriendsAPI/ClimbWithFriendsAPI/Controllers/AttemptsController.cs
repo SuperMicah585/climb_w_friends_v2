@@ -44,10 +44,25 @@ namespace ClimbWithFriendsAPI.Controllers
 [HttpPost("ToMap/{mapId}/ToUser/{auth0Id}/ToClimb/{climbId}")]
 public async Task<ActionResult<Attempt>> PostAttempt(int mapId, string auth0Id, int climbId, [FromBody] AttemptDTO payloadAttempt)
 {
+    // Validate user exists
     var user = await _context.Users.FirstOrDefaultAsync(u => u.Auth0ID == auth0Id);
     if (user == null)
     {
         return NotFound($"User with auth0Id '{auth0Id}' not found.");
+    }
+
+    // Validate MapToUserToClimb relationship exists
+    var userToClimb = await _context.MapToUserToClimbs
+        .FirstOrDefaultAsync(mu => 
+            mu.Auth0ID == auth0Id && 
+            mu.MapId == mapId && 
+            mu.ClimbId == climbId);
+    
+
+    
+    if (userToClimb == null)
+    {
+        return NotFound($"No relationship found between User, Map {mapId}, and Climb {climbId}.");
     }
 
     // Check for existing attempt
@@ -55,6 +70,9 @@ public async Task<ActionResult<Attempt>> PostAttempt(int mapId, string auth0Id, 
         a.MapId == mapId && 
         a.UserId == user.UserId && 
         a.ClimbId == climbId);
+
+    
+
 
     if (existingAttempt != null)
     {
@@ -64,8 +82,15 @@ public async Task<ActionResult<Attempt>> PostAttempt(int mapId, string auth0Id, 
         existingAttempt.Notes = payloadAttempt.Notes;
         existingAttempt.UpdatedAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
 
-        await _context.SaveChangesAsync();
-        return Ok(existingAttempt);
+        try
+        {
+            await _context.SaveChangesAsync();
+            return Ok(existingAttempt);
+        }
+        catch (DbUpdateException ex)
+        {
+            return StatusCode(500, "Failed to update the attempt. Please try again.");
+        }
     }
     else
     {
@@ -74,6 +99,7 @@ public async Task<ActionResult<Attempt>> PostAttempt(int mapId, string auth0Id, 
             MapId = mapId,
             UserId = user.UserId,
             ClimbId = climbId,
+            MapToUserToClimbId = userToClimb.Id,  // Using the found relationship
             Attempts = payloadAttempt.Attempts,
             Difficulty = payloadAttempt.Difficulty,
             Notes = payloadAttempt.Notes,
@@ -81,10 +107,16 @@ public async Task<ActionResult<Attempt>> PostAttempt(int mapId, string auth0Id, 
             UpdatedAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"),
         };
     
-        _context.Attempts.Add(attempt);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction("GetAttempt", new { attemptId = attempt.AttemptId }, attempt);
+        try
+        {
+            _context.Attempts.Add(attempt);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction("GetAttempt", new { attemptId = attempt.AttemptId }, attempt);
+        }
+        catch (DbUpdateException ex)
+        {
+            return StatusCode(500, "Failed to create the attempt. Please try again.");
+        }
     }
 }
   

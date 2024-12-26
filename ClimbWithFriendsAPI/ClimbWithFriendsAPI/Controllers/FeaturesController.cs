@@ -177,8 +177,6 @@ public async Task<ActionResult> RemoveFeature(int featureId)
 public async Task<ActionResult<List<FeatureDependencies>>> GetFeatureDependenciesById(int featureId, string auth0Id)
 {
 
-    Console.WriteLine(featureId);
-    Console.WriteLine(auth0Id);
     try 
     {
 
@@ -201,6 +199,9 @@ public async Task<ActionResult<List<FeatureDependencies>>> GetFeatureDependencie
                     .Where(ca => ca.ClimbId == map.ClimbId && ca.UserId == user.UserId)
                     .FirstOrDefault(), 
 
+                Ticks = _context.Ticks
+                    .Where(ct => ct.ClimbId == map.ClimbId && ct.UserId == user.UserId)
+                    .FirstOrDefault(),
 
                 UserObjectForFeature = _context.MapToUserToClimbs
                     .Where(uc => uc.ClimbId == map.ClimbId && uc.MapId == map.MapId)
@@ -261,6 +262,10 @@ public async Task<ActionResult<List<FeatureDependencies>>> GetFeatureDependencie
                 Attempts = _context.Attempts
                     .Where(ca => ca.ClimbId == map.ClimbId && ca.UserId == user.UserId)
                     .FirstOrDefault(),
+                Ticks = _context.Ticks
+                    .Where(ct => ct.ClimbId == map.ClimbId && ct.UserId == user.UserId)
+                    .FirstOrDefault(),
+
                 UserObjectForFeature = _context.MapToUserToClimbs
                     .Where(uc => uc.ClimbId == map.ClimbId && uc.MapId == map.MapId)
                     .Select(uc => new UserObjectForFeature
