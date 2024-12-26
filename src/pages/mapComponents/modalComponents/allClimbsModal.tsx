@@ -19,7 +19,6 @@ const AllClimbsModal: React.FC<AllClimbsProps> = ({
   useEffect(() => {
     const getClimbsWithDependencies = async () => {
       const results = await retrieveFeatureDependenciesByMap(mapId,auth0Id);
-    
       setClimbsOnMap(results);
     };
     getClimbsWithDependencies();

@@ -326,7 +326,7 @@ const RemoveUserFromClimb = async(climbId:number,userId:string,mapId:number) => 
   }
 
 
-  const AddTickToClimbToUserToMap = async(climbId:number,userId:string,mapId:number,notes:string,difficulty:string,attempts:string) => {
+  const AddAttemptToClimbToUserToMap = async(climbId:number,userId:string,mapId:number,notes:string,difficulty:string,attempts:string) => {
 
     try {
       const response = await fetch(`http://localhost:5074/api/Attempts/ToMap/${mapId}/ToUser/${userId}/ToClimb/${climbId}`, {
@@ -353,12 +353,100 @@ const RemoveUserFromClimb = async(climbId:number,userId:string,mapId:number) => 
   }
 
 
+  const removeAttempt = async (attemptId: number) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5074/api/Attempts/${attemptId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+  
+      if (response.ok) {
+        // Handle success case
+        return true;
+      } else {
+        // If the response is not OK, try to log the reason
+        const error = await response.json(); // Try parsing the error JSON
+        console.warn('Response indicates failure:', error.message || error);
+        return false;
+      }
+    } catch (err) {
+      console.error('Network error:', err);
+      return false;
+    }
+  };
+
+
+  const AddTickToClimbToUserToMap = async(climbId:number,userId:string,mapId:number,notes:string,difficulty:string,attempts:string) => {
+
+    try {
+      const response = await fetch(`http://localhost:5074/api/Ticks/ToMap/${mapId}/ToUser/${userId}/ToClimb/${climbId}`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({Notes: notes,Difficulty: difficulty,Attempts:attempts})
+      });
+  
+  
+      if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+          
+      }
+  
+      const data = await response.json();
+      return data
+  
+  } catch (error) {
+    throw new Error(`HTTP error! status: ${error}`);
+  }
+  
+  }
+
+
+  const removeTick = async (tickId: number) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5074/api/Ticks/${tickId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+  
+      if (response.ok) {
+        // Handle success case
+        return true;
+      } else {
+        // If the response is not OK, try to log the reason
+        const error = await response.json(); // Try parsing the error JSON
+        console.warn('Response indicates failure:', error.message || error);
+        return false;
+      }
+    } catch (err) {
+      console.error('Network error:', err);
+      return false;
+    }
+  };
+  
+  
+
+
 
 
 
 
 export {
   AddTickToClimbToUserToMap,
+  removeTick,
+  removeAttempt,
+  AddAttemptToClimbToUserToMap,
   RemoveUserFromClimb,
   addUserToClimb,
   retrieveClimbs,

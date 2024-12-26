@@ -3,7 +3,8 @@ import { backArrowIcon } from '../../reusableComponents/styles';
 import ChatInput from '../../reusableComponents/chatInput';
 import { AttemptObject,ClimbWithDependencies } from '../../types/interfaces';
 import PurpleButton from '../../reusableComponents/genericButton';
-import { AddTickToClimbToUserToMap } from './mapApiRequests';
+import { AddAttemptToClimbToUserToMap } from './mapApiRequests';
+import ToastContainer from '../../reusableComponents/toastContainer';
 
 interface AttemptOverlayProps {
   displayTrigger: number;
@@ -30,8 +31,9 @@ const AttemptOverlay: React.FC<AttemptOverlayProps> = ({
   const [displayChat, setDisplayChat] = useState(false);
   //const [attemptObjectForOverlay, setAttemptObjectForOverlay] = useState<AttemptObject | null>(null);
   const [value, setValue] = useState<string>('');
-  const [attemptValue, setAttemptValue] = useState<string>('A Few');
-  const [difficultyValue, setDifficultyValue] = useState<string>('Soft');
+  const [attemptValue, setAttemptValue] = useState<string>('');
+  const [difficultyValue, setDifficultyValue] = useState<string>('');
+  const [toastTrigger,setToastTrigger] = useState<number>(0)
   const containerRef = useRef<HTMLDivElement>(null);
 
 
@@ -53,21 +55,41 @@ const AttemptOverlay: React.FC<AttemptOverlayProps> = ({
   const difficultyArray = ['Soft', 'Benchmark', 'Sandbagged'];
 
 
-  const submitAttempt = async() =>{
-if(climbIdForAttemptAndTick>-1){
-    const response = await AddTickToClimbToUserToMap(climbIdForAttemptAndTick,userId,mapId,value,difficultyValue,attemptValue)
-    setClimbObject(prev => prev.map((dependency) =>
-    dependency.climb.climbId === response.climbId 
-      ? { ...dependency, attempts: response }
-      : dependency
-  )) 
-    setDisplayChat(false)
-}
-  }
+  const submitAttempt = async () => {
+    if (climbIdForAttemptAndTick > -1) {
+      try {
+        const response = await AddAttemptToClimbToUserToMap(
+          climbIdForAttemptAndTick,
+          userId,
+          mapId,
+          value,
+          difficultyValue,
+          attemptValue
+        );
+  
+        // Update climbObject if the response is valid
+        setClimbObject(prev =>
+          prev.map(dependency =>
+            dependency.climb.climbId === response.climbId
+              ? { ...dependency, attempts: response }
+              : dependency
+          )
+        );
+  
+        setDisplayChat(false); // Close chat on success
+      } catch (error) {
+        console.error("Error while submitting attempt:", error);
+  
+        // Trigger toast notification or handle error appropriately
+        setToastTrigger(prev => prev + 1);
+      }
+    }
+  };
+  
 
 
 useEffect(()=>{
-  if(attemptObject !== null){
+  if(attemptObject !== null && attemptObject !== undefined){
   
     setAttemptValue(attemptObject.attempts)
     setDifficultyValue(attemptObject.difficulty)
@@ -76,8 +98,8 @@ useEffect(()=>{
   }
 
   else{
-    setAttemptValue('A Few')
-    setDifficultyValue('Soft')
+    setAttemptValue('')
+    setDifficultyValue('')
     setValue('')
 
   }
@@ -89,6 +111,7 @@ useEffect(()=>{
 
   return (
     <>
+       <ToastContainer message = "Please add yourself to climb first" type='error' trigger = {toastTrigger} mode = 'dark' /> 
       {displayChat ? (
         <div className="pointer-events-auto fixed z-10 flex h-1/2 min-h-96 w-1/2 min-w-96 max-w-[700px] flex-col items-start rounded-lg bg-zinc-900">
           <div className="flex w-full gap-5 border-b border-neutral-500 p-5 text-2xl font-semibold text-white">

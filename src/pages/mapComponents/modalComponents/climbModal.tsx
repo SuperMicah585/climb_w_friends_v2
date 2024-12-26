@@ -6,7 +6,8 @@ import {
   deleteTagItem,
   ClimbTagItem,
   ClimbWithDependencies,
-  AttemptObject
+  AttemptObject,
+  TickObject
 } from '../../../types/interfaces';
 import { newWindowIcon } from '../../../reusableComponents/styles';
 import ModalSearch from './modalSearch';
@@ -43,6 +44,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   const [climbNameForChat, setClimbNameForChat] = useState('');
   const [climbGradeForChat, setClimbGradeForChat] = useState('');
   const [attemptObject, setAttemptObject] = useState<AttemptObject | null>(null);
+  const [tickObject, setTickObject] = useState<TickObject | null>(null);
   const [climbIdForAttemptAndTick, setClimbIdForAttemptAndTick] = useState<number>(-1)
   const [climbChatForChat, setClimbChatForChat] = useState<ChatObject[]>([]);
   const [tagInput, setTagInput] = useState<string>('');
@@ -52,7 +54,6 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
     useState<number>(0);
     const [attemptOverlayDisplayTrigger, setAttemptOverlayDisplayTrigger] =
     useState<number>(0);
-  const [tickinfo, setTickInfo] = useState({});
   const [tagsOnMount, setTagsOnMount] = useState<Tags[]>([]);
 
 
@@ -72,6 +73,16 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
 
     else{
       setAttemptObject(null);
+    }
+  };
+
+  const setTickObjectCallBack = (tickObject: TickObject | null) => {
+    if (attemptObject !== null) {
+      setTickObject(tickObject);
+    }
+
+    else{
+      setTickObject(null);
     }
   };
 
@@ -215,7 +226,12 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
           displayTrigger={tickOverlayDisplayTrigger}
           climbName={climbNameForChat}
           climbGrade={climbGradeForChat}
-          tickInfo={tickinfo}
+          mapId = {mapId}
+          userId={auth0Id}
+          setClimbObject = {setClimbObject}
+          climbIdForAttemptAndTick = {climbIdForAttemptAndTick}
+          tickObject={tickObject}
+          
         />
 
         <AttemptOverlay
@@ -282,7 +298,9 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                     setClimbNameForChatCallBack={setClimbNameForChatCallBack}
                     setClimbGradeForChatCallBack={setClimbGradeForChatCallBack}
                     setAttemptObjectCallBack={setAttemptObjectCallBack}
+                    setTickObjectCallBack = {setTickObjectCallBack}
                     attemptObject = {item.attempts}
+                    tickObject = {item.ticks}
                     setClimbIdForAttemptAndTick = {setClimbIdForAttemptAndTick}
                     setClimbChatForChatCallBack={setClimbChatForChatCallBack}
                     chatDisplayTriggerCallBack={chatDisplayTriggerCallBack}
