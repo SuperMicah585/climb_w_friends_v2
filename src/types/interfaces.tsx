@@ -12,7 +12,6 @@ export interface ClimbsTableResponse {
   coordinates: number[];
 }
 
-
 export type TempDic = {
   [key: string]: (Tags | null)[];
 };
@@ -62,9 +61,8 @@ export interface AttemptObject {
   attempts: string;
   difficulty: string;
   notes: string;
-  createdAt:string;
-  updatedAt:string;
-
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface TickObject {
@@ -75,9 +73,8 @@ export interface TickObject {
   attempts: string;
   difficulty: string;
   notes: string;
-  createdAt:string;
-  updatedAt:string;
-
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface TickAndAttemptObjectBeforeResponse {
@@ -89,13 +86,11 @@ export interface TickAndAttemptObjectBeforeResponse {
   notes: string;
 }
 
-
-
-export interface UserObjectForFeature{
-  userId?:number;
-  auth0ID?:string;
-  name?:string;
-  username?:string;
+export interface UserObjectForFeature {
+  userId?: number;
+  auth0ID?: string;
+  name?: string;
+  username?: string;
 }
 
 interface Properties {
@@ -124,7 +119,7 @@ export interface MapObject {
   mapName: string;
   description: string;
   climbersOnMap?: friendsObject[];
-  climbCountOnMap:number;
+  climbCountOnMap: number;
 }
 
 export interface friendsObject {
@@ -137,9 +132,8 @@ export interface friendsObject {
 
 export interface userObject {
   userId: number;
-  auth0Id:string
+  auth0Id: string;
   userName: string;
   name: string;
   email: string;
 }
-

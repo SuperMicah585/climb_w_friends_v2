@@ -1,4 +1,4 @@
-import { ClimbWithDependencies } from "../../types/interfaces";
+import { ClimbWithDependencies } from '../../types/interfaces';
 const createTag = async (TagName: string, mapId: number) => {
   try {
     const response = await fetch(`http://localhost:5074/api/Tags`, {
@@ -160,7 +160,6 @@ const retrieveClimbs = async (searchString: string) => {
 };
 
 const retrieveFeatures = async (mapId: number) => {
-
   const url = `http://localhost:5074/api/Features/ByMap/${mapId}`;
   try {
     const response = await fetch(url);
@@ -169,7 +168,7 @@ const retrieveFeatures = async (mapId: number) => {
     }
 
     const json = await response.json();
-    console.log(json,mapId)
+    console.log(json, mapId);
     // Update the specific object at the given index in the array
     return json;
   } catch (error: any) {
@@ -193,7 +192,10 @@ const retrieveClimbDependencies = async (climbId: number) => {
   }
 };
 
-const retrieveFeatureDependencies = async (featureId: number,auth0Id:string) => {
+const retrieveFeatureDependencies = async (
+  featureId: number,
+  auth0Id: string,
+) => {
   const url = `http://localhost:5074/api/Features/${featureId}/Dependencies/UserId/${auth0Id}`;
   try {
     const response = await fetch(url);
@@ -203,14 +205,17 @@ const retrieveFeatureDependencies = async (featureId: number,auth0Id:string) => 
 
     const json = await response.json();
     // Update the specific object at the given index in the array
-    console.log(json)
+    console.log(json);
     return json;
   } catch (error: any) {
     console.error(error.message);
   }
 };
 
-const retrieveFeatureDependenciesByMap = async (mapId: number,auth0Id:string) => {
+const retrieveFeatureDependenciesByMap = async (
+  mapId: number,
+  auth0Id: string,
+) => {
   const url = `http://localhost:5074/api/Features/ByMapId/${mapId}/Dependencies/UserId/${auth0Id}`;
   try {
     const response = await fetch(url);
@@ -242,205 +247,218 @@ const retrieveFeatureAggregate = async (featureId: number) => {
   }
 };
 
-const addClimbsToMap = async(mapId:number,climbs:ClimbWithDependencies[]) => {
-
-
+const addClimbsToMap = async (
+  mapId: number,
+  climbs: ClimbWithDependencies[],
+) => {
   const climbingData = climbs.map((item) => ({
     Coordinates: item.climb.coordinates,
-    ClimbId: item.climb.climbId
-}));
+    ClimbId: item.climb.climbId,
+  }));
 
   try {
-    const response = await fetch(`http://localhost:5074/api/Features/Climbs/ToMap/${mapId}`, {
+    const response = await fetch(
+      `http://localhost:5074/api/Features/Climbs/ToMap/${mapId}`,
+      {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(climbingData)
-    });
+        body: JSON.stringify(climbingData),
+      },
+    );
 
     if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const buckets = await response.json();
-    console.log(buckets,"hi")
-} catch (error) {
+    console.log(buckets, 'hi');
+  } catch (error) {
     console.error('Error sending climbing data:', error);
     throw error;
-}
+  }
+};
 
-}
-
-
-const addUserToClimb = async(climbId:number,userId:string,mapId:number) => {
-
+const addUserToClimb = async (
+  climbId: number,
+  userId: string,
+  mapId: number,
+) => {
   try {
-    const response = await fetch(`http://localhost:5074/api/Climbs/${climbId}/ToUser/${userId}/ToMap/${mapId}`, {
+    const response = await fetch(
+      `http://localhost:5074/api/Climbs/${climbId}/ToUser/${userId}/ToMap/${mapId}`,
+      {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
         },
-    });
-
+      },
+    );
 
     if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const data = await response.json();
-    console.log(data,"data reponse")
-    return data
-
-} catch (error) {
+    console.log(data, 'data reponse');
+    return data;
+  } catch (error) {
     console.error('Error sending climbing data:', error);
     throw error;
-}
-
-}
-
-const RemoveUserFromClimb = async(climbId:number,userId:string,mapId:number) => {
-
-    try {
-      const response = await fetch(`http://localhost:5074/api/Climbs/${climbId}/FromUser/${userId}/FromMap/${mapId}`, {
-          method: 'DELETE',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-      });
-  
-  
-      if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-      }
-  
-      const data = await response.json();
-      console.log(data,"data reponse")
-      return data
-  
-  } catch (error) {
-      console.error('Error sending climbing data:', error);
-      throw error;
   }
-  
-  }
+};
 
-
-  const AddAttemptToClimbToUserToMap = async(climbId:number,userId:string,mapId:number,notes:string,difficulty:string,attempts:string) => {
-
-    try {
-      const response = await fetch(`http://localhost:5074/api/Attempts/ToMap/${mapId}/ToUser/${userId}/ToClimb/${climbId}`, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({Notes: notes,Difficulty: difficulty,Attempts:attempts})
-      });
-  
-  
-      if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-      }
-  
-      const data = await response.json();
-      return data
-  
-  } catch (error) {
-      console.error('Error sending climbing data:', error);
-      throw error;
-  }
-  
-  }
-
-
-  const removeAttempt = async (attemptId: number) => {
-    try {
-      const response = await fetch(
-        `http://localhost:5074/api/Attempts/${attemptId}`,
-        {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+const RemoveUserFromClimb = async (
+  climbId: number,
+  userId: string,
+  mapId: number,
+) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5074/api/Climbs/${climbId}/FromUser/${userId}/FromMap/${mapId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
-  
-      if (response.ok) {
-        // Handle success case
-        return true;
-      } else {
-        // If the response is not OK, try to log the reason
-        const error = await response.json(); // Try parsing the error JSON
-        console.warn('Response indicates failure:', error.message || error);
-        return false;
-      }
-    } catch (err) {
-      console.error('Network error:', err);
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log(data, 'data reponse');
+    return data;
+  } catch (error) {
+    console.error('Error sending climbing data:', error);
+    throw error;
+  }
+};
+
+const AddAttemptToClimbToUserToMap = async (
+  climbId: number,
+  userId: string,
+  mapId: number,
+  notes: string,
+  difficulty: string,
+  attempts: string,
+) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5074/api/Attempts/ToMap/${mapId}/ToUser/${userId}/ToClimb/${climbId}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          Notes: notes,
+          Difficulty: difficulty,
+          Attempts: attempts,
+        }),
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error sending climbing data:', error);
+    throw error;
+  }
+};
+
+const removeAttempt = async (attemptId: number) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5074/api/Attempts/${attemptId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    if (response.ok) {
+      // Handle success case
+      return true;
+    } else {
+      // If the response is not OK, try to log the reason
+      const error = await response.json(); // Try parsing the error JSON
+      console.warn('Response indicates failure:', error.message || error);
       return false;
     }
-  };
+  } catch (err) {
+    console.error('Network error:', err);
+    return false;
+  }
+};
 
+const AddTickToClimbToUserToMap = async (
+  climbId: number,
+  userId: string,
+  mapId: number,
+  notes: string,
+  difficulty: string,
+  attempts: string,
+) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5074/api/Ticks/ToMap/${mapId}/ToUser/${userId}/ToClimb/${climbId}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          Notes: notes,
+          Difficulty: difficulty,
+          Attempts: attempts,
+        }),
+      },
+    );
 
-  const AddTickToClimbToUserToMap = async(climbId:number,userId:string,mapId:number,notes:string,difficulty:string,attempts:string) => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
-    try {
-      const response = await fetch(`http://localhost:5074/api/Ticks/ToMap/${mapId}/ToUser/${userId}/ToClimb/${climbId}`, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({Notes: notes,Difficulty: difficulty,Attempts:attempts})
-      });
-  
-  
-      if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-          
-      }
-  
-      const data = await response.json();
-      return data
-  
+    const data = await response.json();
+    return data;
   } catch (error) {
     throw new Error(`HTTP error! status: ${error}`);
   }
-  
-  }
+};
 
+const removeTick = async (tickId: number) => {
+  try {
+    const response = await fetch(`http://localhost:5074/api/Ticks/${tickId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
-  const removeTick = async (tickId: number) => {
-    try {
-      const response = await fetch(
-        `http://localhost:5074/api/Ticks/${tickId}`,
-        {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-  
-      if (response.ok) {
-        // Handle success case
-        return true;
-      } else {
-        // If the response is not OK, try to log the reason
-        const error = await response.json(); // Try parsing the error JSON
-        console.warn('Response indicates failure:', error.message || error);
-        return false;
-      }
-    } catch (err) {
-      console.error('Network error:', err);
+    if (response.ok) {
+      // Handle success case
+      return true;
+    } else {
+      // If the response is not OK, try to log the reason
+      const error = await response.json(); // Try parsing the error JSON
+      console.warn('Response indicates failure:', error.message || error);
       return false;
     }
-  };
-  
-  
-
-
-
-
-
+  } catch (err) {
+    console.error('Network error:', err);
+    return false;
+  }
+};
 
 export {
   AddTickToClimbToUserToMap,
@@ -459,5 +477,5 @@ export {
   retrieveFeatureDependencies,
   retrieveFeatureDependenciesByMap,
   retrieveFeatureAggregate,
-  addClimbsToMap
+  addClimbsToMap,
 };

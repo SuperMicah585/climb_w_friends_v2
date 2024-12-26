@@ -9,8 +9,7 @@ import {
   ClimbsTableResponse,
   ClimbWithDependencies,
   AttemptObject,
-  TickObject
-  
+  TickObject,
 } from '../../../types/interfaces';
 import InputComponent from '../../../reusableComponents/input';
 import SearchDropDown from '../../../reusableComponents/searchDropDown';
@@ -23,7 +22,14 @@ import Tooltip from '../../../reusableComponents/toolTip';
 import { newWindowIcon, minusIcon } from '../../../reusableComponents/styles';
 import TickOverlay from '../tickOverlay';
 import { useAuth0 } from '@auth0/auth0-react';
-import { retrieveClimbs,addClimbsToMap,addUserToClimb,AddTickToClimbToUserToMap,AddAttemptToClimbToUserToMap,addTagToClimb } from '../mapApiRequests';
+import {
+  retrieveClimbs,
+  addClimbsToMap,
+  addUserToClimb,
+  AddTickToClimbToUserToMap,
+  AddAttemptToClimbToUserToMap,
+  addTagToClimb,
+} from '../mapApiRequests';
 import AttemptOverlay from '../attemptOverlay';
 
 interface AddClimbsModalProps {
@@ -32,7 +38,7 @@ interface AddClimbsModalProps {
   closeAddClimbsModalCallBack: (trigger: boolean) => void;
   mapId: number;
   setRenderFeatureTrigger: React.Dispatch<React.SetStateAction<number>>;
-  AllClimbsOnMap:GeoJsonObject;
+  AllClimbsOnMap: GeoJsonObject;
   auth0Id: string;
 }
 
@@ -43,29 +49,32 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
   mapId,
   setRenderFeatureTrigger,
   AllClimbsOnMap,
-  auth0Id
+  auth0Id,
 }) => {
   const [searchResults, setsearchResults] = useState<ClimbsTableResponse[]>([]);
   const [toggleSearchDropDown, setToggleSearchDropDown] =
     useState<boolean>(false);
   const [climbsArray, setClimbsArray] = useState<ClimbWithDependencies[]>([]);
-  const [inputQuery,setInputQuery] = useState<string>('')
+  const [inputQuery, setInputQuery] = useState<string>('');
   const [tagObject, setTagObject] = useState<Tags[]>([]);
   const [tagsOnMount, setTagsOnMount] = useState<Tags[]>([]);
   const [tagInput, setTagInput] = useState<string>('');
-  const [attemptObject, setAttemptObject] = useState<AttemptObject | null>(null);
+  const [attemptObject, setAttemptObject] = useState<AttemptObject | null>(
+    null,
+  );
   const [tickObject, setTickObject] = useState<TickObject | null>(null);
   const [climbNameForChat, setClimbNameForChat] = useState('');
   const [displayTrigger, setDisplayTrigger] = useState(0);
   const [climbGradeForChat, setClimbGradeForChat] = useState('');
   const [climbChatForChat, setClimbChatForChat] = useState<ChatObject[]>([]);
-  const [climbIdForAttemptAndTick, setClimbIdForAttemptAndTick] = useState<number>(-1)
+  const [climbIdForAttemptAndTick, setClimbIdForAttemptAndTick] =
+    useState<number>(-1);
   const [tickOverlayDisplayTrigger, setTickOverlayDisplayTrigger] =
     useState<number>(0);
-    const [attemptOverlayDisplayTrigger, setAttemptOverlayDisplayTrigger] =
+  const [attemptOverlayDisplayTrigger, setAttemptOverlayDisplayTrigger] =
     useState<number>(0);
   const [tickinfo, setTickInfo] = useState({});
-  const [climbsOnMap,setClimbsOnMap] = useState<number[]>([])
+  const [climbsOnMap, setClimbsOnMap] = useState<number[]>([]);
 
   const inputRef = useRef(null);
 
@@ -107,12 +116,11 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
     setTagInput(item);
   };
 
-  useEffect(()=>{
-for(let feature of AllClimbsOnMap.features){
-    setClimbsOnMap(prev=> [...prev,...feature.properties.climbs])
-}
-  },[AllClimbsOnMap])
-
+  useEffect(() => {
+    for (let feature of AllClimbsOnMap.features) {
+      setClimbsOnMap((prev) => [...prev, ...feature.properties.climbs]);
+    }
+  }, [AllClimbsOnMap]);
 
   useEffect(() => {
     const retrieveTagsOnMap = async (mapId: number) => {
@@ -150,43 +158,38 @@ for(let feature of AllClimbsOnMap.features){
   };
 
   const handleClimbSearch = async (query: string) => {
-
-    setInputQuery(query)
+    setInputQuery(query);
   };
 
+  useEffect(() => {
+    const filerResults = async () => {
+      if (inputQuery.length === 0) {
+        return setsearchResults([]);
+      }
 
-  useEffect(()=>{
-    const filerResults= async() =>{
-    if (inputQuery.length === 0) {
-      return setsearchResults([]);
-    }
-  
+      const data = await retrieveClimbs(inputQuery);
 
-    const data = await retrieveClimbs(inputQuery);
+      if (data) {
+        setsearchResults(
+          data.filter((item: ClimbsTableResponse) => {
+            return (
+              !climbsArray.some((x) => x.climb.climbId === item.climbId) &&
+              !climbsOnMap.includes(item.climbId)
+            );
+          }),
+        );
+      } else {
+        setsearchResults([]); // or handle as needed if data is null
+      }
+    };
 
-    if (data) {
-
-      setsearchResults(data.filter((item:ClimbsTableResponse) => {
-
-        return !climbsArray.some(x => x.climb.climbId === item.climbId) 
-               && !climbsOnMap.includes(item.climbId);
-      }));
-    } else {
-      setsearchResults([]); // or handle as needed if data is null
-    }
-  }
-
-  filerResults()
-  },[climbsArray,inputQuery])
+    filerResults();
+  }, [climbsArray, inputQuery]);
 
   const setAttemptObjectCallBack = (attemptObject: AttemptObject | null) => {
-
     if (attemptObject !== null) {
-    
       setAttemptObject(attemptObject);
-    }
-
-    else{
+    } else {
       setAttemptObject(null);
     }
   };
@@ -194,23 +197,19 @@ for(let feature of AllClimbsOnMap.features){
   const setTickObjectCallBack = (tickObject: TickObject | null) => {
     if (attemptObject !== null) {
       setTickObject(tickObject);
-    }
-
-    else{
+    } else {
       setTickObject(null);
     }
   };
-
-
 
   const handleModalSubmit = async () => {
     try {
       // Log for debugging
       console.log('Processing climbs:', climbsArray);
-  
+
       // First add all climbs to map
       await addClimbsToMap(mapId, climbsArray);
-  
+
       // Process each climb's associated data
       const promises = climbsArray.map(async (item) => {
         try {
@@ -219,19 +218,22 @@ for(let feature of AllClimbsOnMap.features){
           if (auth0ID) {
             await addUserToClimb(item.climb.climbId, auth0ID, mapId);
           }
-  
+
           // Handle attempts - fix string comparison
-          if (item.attempts?.userId && typeof item.attempts.userId === 'string') {
+          if (
+            item.attempts?.userId &&
+            typeof item.attempts.userId === 'string'
+          ) {
             await AddAttemptToClimbToUserToMap(
               item.attempts.climbId,
               item.attempts.userId,
               item.attempts.mapId,
               item.attempts.notes,
               item.attempts.difficulty,
-              item.attempts.attempts
+              item.attempts.attempts,
             );
           }
-  
+
           // Handle ticks - fix string comparison
           if (item.ticks?.userId && typeof item.ticks.userId === 'string') {
             await AddTickToClimbToUserToMap(
@@ -240,27 +242,28 @@ for(let feature of AllClimbsOnMap.features){
               item.ticks.mapId,
               item.ticks.notes,
               item.ticks.difficulty,
-              item.ticks.attempts
+              item.ticks.attempts,
             );
           }
-  
+
           // Handle tags
           if (Array.isArray(item.tags) && item.tags.length > 0) {
-            const tagPromises = item.tags.map(tag => 
-              addTagToClimb(tag.tagId, item.climb.climbId)
+            const tagPromises = item.tags.map((tag) =>
+              addTagToClimb(tag.tagId, item.climb.climbId),
             );
             await Promise.all(tagPromises);
           }
-  
         } catch (itemError) {
-          console.error(`Error processing climb ${item.climb?.climbId}:`, itemError);
+          console.error(
+            `Error processing climb ${item.climb?.climbId}:`,
+            itemError,
+          );
           throw itemError; // Re-throw to be caught by outer try-catch
         }
       });
-  
+
       await Promise.all(promises);
-      setRenderFeatureTrigger(prev => prev + 1);
-  
+      setRenderFeatureTrigger((prev) => prev + 1);
     } catch (error) {
       console.error('Error in handleModalSubmit:', error);
       // Consider adding error handling UI feedback here
@@ -276,19 +279,15 @@ for(let feature of AllClimbsOnMap.features){
         tags: [],
         userObjectForFeature: [
           {
-            auth0ID: user?.sub || '',  // Ensure user?.sub is defined, or use an empty string if undefined
+            auth0ID: user?.sub || '', // Ensure user?.sub is defined, or use an empty string if undefined
             username: user?.nickname,
           },
-          
         ],
-        ticks:null,
-        attempts:null,
+        ticks: null,
+        attempts: null,
       },
     ]);
   };
-
-
-
 
   const handleTagSelect = (item: ClimbTagItem) => {
     setClimbsArray((prev) => {
@@ -312,10 +311,6 @@ for(let feature of AllClimbsOnMap.features){
     });
   };
 
-
-
-
-
   const mp_page = (item: ClimbsTableResponse) => {
     const url = item.url;
     window.open(url, '_blank'); // Open in a new tab
@@ -331,27 +326,25 @@ for(let feature of AllClimbsOnMap.features){
           displayTrigger={tickOverlayDisplayTrigger}
           climbName={climbNameForChat}
           climbGrade={climbGradeForChat}
-          mapId = {mapId}
+          mapId={mapId}
           userId={auth0Id}
-          setClimbObject = {setClimbsArray}
-          climbIdForAttemptAndTick = {climbIdForAttemptAndTick}
+          setClimbObject={setClimbsArray}
+          climbIdForAttemptAndTick={climbIdForAttemptAndTick}
           tickObject={tickObject}
-          type = 'addclimb'
-          
+          type="addclimb"
         />
 
         <AttemptOverlay
           displayTrigger={attemptOverlayDisplayTrigger}
           climbName={climbNameForChat}
           climbGrade={climbGradeForChat}
-          attemptObject = {attemptObject}
-          mapId = {mapId}
+          attemptObject={attemptObject}
+          mapId={mapId}
           userId={auth0Id}
-          climbIdForAttemptAndTick = {climbIdForAttemptAndTick}
-          setClimbObject = {setClimbsArray}
-          type = 'addclimb'
-
-/>
+          climbIdForAttemptAndTick={climbIdForAttemptAndTick}
+          setClimbObject={setClimbsArray}
+          type="addclimb"
+        />
       </div>
 
       <ZincModal
@@ -371,52 +364,50 @@ for(let feature of AllClimbsOnMap.features){
           <div className="border-b border-neutral-500"> </div>
         </div>
 
-       {toggleSearchDropDown ? (
-  <div className="w-content absolute top-[72px] z-10">
-    <SearchDropDown
-      width={'w-96'}
-      maxHeight={'max-h-48'}
-      dropDownStatus={toggleSearchDropDown}
-      inputRef={inputRef}
-      closeDropDownCallBack={setToggleSearchDropDownCallBack}
-    >
-      {searchResults.length > 0 ? (
-        
-        searchResults
-          .map((item) => (
-            <div
-              onClick={() => {
-                handleClimbSelect(item);
-                setToggleSearchDropDown(false);
-              }}
-              className={dropDownStyles('gray')}
-              key={item.climbId}
+        {toggleSearchDropDown ? (
+          <div className="w-content absolute top-[72px] z-10">
+            <SearchDropDown
+              width={'w-96'}
+              maxHeight={'max-h-48'}
+              dropDownStatus={toggleSearchDropDown}
+              inputRef={inputRef}
+              closeDropDownCallBack={setToggleSearchDropDownCallBack}
             >
-              <div className="flex flex-col gap-2 p-2">
-                <div>
-                  <div className="flex gap-2 font-semibold">
-                    <div>{item.climbName}</div>
-                    <div>{item.rating}</div>
+              {searchResults.length > 0 ? (
+                searchResults.map((item) => (
+                  <div
+                    onClick={() => {
+                      handleClimbSelect(item);
+                      setToggleSearchDropDown(false);
+                    }}
+                    className={dropDownStyles('gray')}
+                    key={item.climbId}
+                  >
+                    <div className="flex flex-col gap-2 p-2">
+                      <div>
+                        <div className="flex gap-2 font-semibold">
+                          <div>{item.climbName}</div>
+                          <div>{item.rating}</div>
+                        </div>
+                        <div className="text-xs font-thin italic">
+                          {item.climbType}
+                        </div>
+                      </div>
+                      <div className="text-xs font-thin">{item.location}</div>
+                    </div>
                   </div>
-                  <div className="text-xs font-thin italic">
-                    {item.climbType}
-                  </div>
+                ))
+              ) : (
+                <div
+                  onClick={() => setToggleSearchDropDown(false)}
+                  className="flex w-96 items-center p-2 text-sm text-white"
+                >
+                  No Results
                 </div>
-                <div className="text-xs font-thin">{item.location}</div>
-              </div>
-            </div>
-          ))
-      ) : (
-        <div
-          onClick={() => setToggleSearchDropDown(false)}
-          className="flex w-96 items-center p-2 text-sm text-white"
-        >
-          No Results
-        </div>
-      )}
-    </SearchDropDown>
-  </div>
-) : null}
+              )}
+            </SearchDropDown>
+          </div>
+        ) : null}
 
         <div className="flex w-full flex-col overflow-y-scroll pb-12">
           {climbsArray.map((item) => (
@@ -471,9 +462,11 @@ for(let feature of AllClimbsOnMap.features){
                 featureTagObject={item.tags}
                 handleTagSelect={handleTagSelect}
                 tagObject={tagObject}
-                setAttemptOverlayDisplayTrigger = {setAttemptOverlayDisplayTrigger}
+                setAttemptOverlayDisplayTrigger={
+                  setAttemptOverlayDisplayTrigger
+                }
                 climbObject={item.climb}
-                setClimbIdForAttemptAndTick = {setClimbIdForAttemptAndTick}
+                setClimbIdForAttemptAndTick={setClimbIdForAttemptAndTick}
                 climberObject={item.userObjectForFeature}
                 setClimbNameForChatCallBack={setClimbNameForChatCallBack}
                 setClimbGradeForChatCallBack={setClimbGradeForChatCallBack}
@@ -486,14 +479,17 @@ for(let feature of AllClimbsOnMap.features){
                 tickObject={item.ticks}
                 setAttemptObjectCallBack={setAttemptObjectCallBack}
                 setTickObjectCallBack={setTickObjectCallBack}
-                type = 'addclimb'
+                type="addclimb"
               />
             </div>
           ))}
         </div>
 
         <div
-          onClick={() => {handleModalSubmit();closeAddClimbsModalCallBack(false)}}
+          onClick={() => {
+            handleModalSubmit();
+            closeAddClimbsModalCallBack(false);
+          }}
           className="absolute bottom-0 right-5 flex h-16 w-full items-center justify-end bg-zinc-900"
         >
           <PurpleButton>Add Climbs</PurpleButton>

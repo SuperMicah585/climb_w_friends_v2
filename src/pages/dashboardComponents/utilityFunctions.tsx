@@ -21,19 +21,20 @@ const retrieveMapsAndUsers = async (mapsJson: MapObject[] | undefined) => {
   if (mapsJson) {
     // Create a new array to store updated maps
 
+    const updatedMaps = await Promise.all(
+      mapsJson.map(async (item, index) => {
+        const [usersOnMap, climbCountOnMap] = await Promise.all([
+          retrieveUsersOnMap(item.mapId),
+          retrieveClimbsOnMapCount(item.mapId),
+        ]);
 
-    const updatedMaps = await Promise.all(mapsJson.map(async (item, index) => {
-      const [usersOnMap, climbCountOnMap] = await Promise.all([
-        retrieveUsersOnMap(item.mapId),
-        retrieveClimbsOnMapCount(item.mapId)
-      ]);
-    
-      return {
-        ...item,
-        climbersOnMap: usersOnMap,
-        climbCountOnMap: climbCountOnMap
-      };
-    }));
+        return {
+          ...item,
+          climbersOnMap: usersOnMap,
+          climbCountOnMap: climbCountOnMap,
+        };
+      }),
+    );
 
     return updatedMaps;
   } else {
@@ -84,7 +85,6 @@ const retrieveClimbsOnMapCount = async (mapId: number) => {
     console.error(error.message);
   }
 };
-
 
 const addUserToMap = async (mapId: number, userId: string, type: string) => {
   const payload = { UserId: userId };
@@ -223,5 +223,5 @@ export {
   addUserToMap,
   removeUserFromMap,
   createMap,
-  retrieveClimbsOnMapCount
+  retrieveClimbsOnMapCount,
 };

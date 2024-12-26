@@ -74,21 +74,18 @@ export const createClimbingShapes = (
   });
 };
 
-
 export const displayLayersInitial = (
   map: any,
   clickedFeatureClimbCallBack: (featureId: number) => void,
   features: GeoJsonObject,
 ) => {
   // Only add the source once
-  if (!map?.current?.getSource('geojson-data')  ) {
-  
+  if (!map?.current?.getSource('geojson-data')) {
     map.current?.addSource('geojson-data', {
       type: 'geojson',
       data: features, // Your GeoJSON data
     });
   }
-
 
   features.features.forEach((feature, index) => {
     const fillLayerId = `geojson-fill-layer-${feature.id}`;
@@ -96,7 +93,6 @@ export const displayLayersInitial = (
     const layerId = `geojson-layer-${feature.id}`;
 
     switch (feature.geometry.type) {
-  
       case 'Point':
         map.current?.addLayer({
           id: layerId,
@@ -126,11 +122,11 @@ export const displayLayersInitial = (
             'circle-color': '#0047AB',
             'circle-radius': 12,
             'circle-opacity': 0.5,
-            'circle-stroke-width': .5,
+            'circle-stroke-width': 0.5,
             'circle-stroke-color': '#0047AB',
           },
         });
-        addFeatureInteractions(map, layerId, clickedFeatureClimbCallBack,12);
+        addFeatureInteractions(map, layerId, clickedFeatureClimbCallBack, 12);
         break;
       case 'Polygon':
         // Fill layer for polygon
@@ -151,7 +147,6 @@ export const displayLayersInitial = (
                   },
                   id: feature.id,
                   properties: {
-                    
                     climbs: feature.properties.climbs,
                   },
                 },
@@ -162,7 +157,7 @@ export const displayLayersInitial = (
           paint: {
             'fill-color': 'brown',
             'fill-opacity': 0.5,
-            'circle-stroke-width': .5,
+            'circle-stroke-width': 0.5,
             'circle-stroke-color': 'brown',
           },
           layout: {
@@ -170,8 +165,12 @@ export const displayLayersInitial = (
           },
         });
 
-      
-        addFeatureInteractions(map, fillLayerId, clickedFeatureClimbCallBack,0);
+        addFeatureInteractions(
+          map,
+          fillLayerId,
+          clickedFeatureClimbCallBack,
+          0,
+        );
         // Circle layer for polygon (alternative representation)
 
         const centroid = turf.centroid(feature);
@@ -206,14 +205,19 @@ export const displayLayersInitial = (
             'circle-color': 'brown',
             'circle-radius': 14,
             'circle-opacity': 0.8,
-            'circle-stroke-width': .5,
-            'circle-stroke-color': 'brown', 
+            'circle-stroke-width': 0.5,
+            'circle-stroke-color': 'brown',
           },
           layout: {
             visibility: 'visible', // Initially visible
           },
         });
-        addFeatureInteractions(map, circleLayerId, clickedFeatureClimbCallBack,14);
+        addFeatureInteractions(
+          map,
+          circleLayerId,
+          clickedFeatureClimbCallBack,
+          14,
+        );
         break;
 
       default:
@@ -221,7 +225,6 @@ export const displayLayersInitial = (
     }
   });
 };
-
 
 export const filterClimbsOnMap = () => {};
 /*
@@ -273,9 +276,9 @@ export const updateLayerVisibility = (
     if (feature.geometry.type === 'Polygon') {
       const fillLayerId = `geojson-fill-layer-${feature.id}`;
       const circleLayerId = `geojson-circle-layer-${feature.id}`;
-      const currentZoom = map.current.getZoom()
+      const currentZoom = map.current.getZoom();
 
-      if (currentZoom>12) {
+      if (currentZoom > 12) {
         // Show fill layer, hide circle layer
         map.current?.setLayoutProperty(fillLayerId, 'visibility', 'visible');
         map.current?.setLayoutProperty(circleLayerId, 'visibility', 'none');
@@ -289,37 +292,34 @@ export const updateLayerVisibility = (
 };
 //save all ID's within a set. When layers are refreshed loop through layers and unmount aech id within the set.
 
-
-
-
 export const addFeatureInteractions = async (
   map: any,
   id: string,
   clickedFeatureClimbCallBack: (featureId: number) => void,
-  radius:number
+  radius: number,
 ) => {
   // Ensure map and map.current are defined
- 
+
   if (!map?.current) return;
 
- //console.log(map.current._listeners,"hi");
+  //console.log(map.current._listeners,"hi");
 
   const popup = new mapboxgl.Popup({
     closeButton: false,
     closeOnClick: false,
     offset: 10,
   });
-  
+
   let currentFeatureId: number | null = null;
   let currentRoot: ReactDOM.Root | null = null;
-  
+
   const cleanupChart = () => {
     if (currentRoot) {
       try {
         // Check if the container still exists before unmounting
         const containerId = `chart-container-${currentFeatureId}`;
         const container = document.getElementById(containerId);
-        
+
         if (container) {
           currentRoot.unmount();
         }
@@ -332,8 +332,8 @@ export const addFeatureInteractions = async (
   };
 
   map.current.on('mouseenter', id, (e: mapboxgl.MapMouseEvent) => {
-    if(radius>0){
-    map.current?.setPaintProperty(id,'circle-radius', radius*1.2);
+    if (radius > 0) {
+      map.current?.setPaintProperty(id, 'circle-radius', radius * 1.2);
     }
 
     const features = e.features ? e.features[0] : null;
@@ -350,18 +350,18 @@ export const addFeatureInteractions = async (
 
       // Set current feature ID
       currentFeatureId = featureId;
-     
+
       map.current.getCanvas().style.cursor = 'pointer';
 
       (async () => {
         try {
           const popUpData = await retrieveFeatureAggregate(featureId);
-       
+
           // Check if the feature ID is still the same (prevent stale data)
           if (currentFeatureId !== featureId) return;
 
           const chartContainerId = `chart-container-${featureId}`;
-          
+
           popup
             .setLngLat(e.lngLat)
             .setHTML(
@@ -388,18 +388,16 @@ export const addFeatureInteractions = async (
             .setMaxWidth('280px')
             .addTo(map.current);
 
-  
           // Wait for the next tick to ensure the container is in the DOM
           setTimeout(() => {
             const chartContainer = document.getElementById(chartContainerId);
-            
+
             if (chartContainer && currentFeatureId === featureId) {
               // Only create a new root if we don't have one
               if (!currentRoot) {
-          
                 currentRoot = ReactDOM.createRoot(chartContainer);
               }
-              
+
               // Always use render() to update the content
               currentRoot.render(
                 <BarChart
@@ -420,7 +418,6 @@ export const addFeatureInteractions = async (
               );
             }
           }, 0);
-
         } catch (error) {
           console.error('Error processing feature:', error);
           currentFeatureId = null;
@@ -431,10 +428,9 @@ export const addFeatureInteractions = async (
   });
 
   map.current.on('mouseleave', id, () => {
-    if(radius>0){
- 
-      map.current?.setPaintProperty(id,'circle-radius', radius);
-      }
+    if (radius > 0) {
+      map.current?.setPaintProperty(id, 'circle-radius', radius);
+    }
     cleanupChart();
     popup.remove();
     currentFeatureId = null;
@@ -454,7 +450,6 @@ export const addFeatureInteractions = async (
 
   // Return a cleanup function
   return () => {
-
     if (map.current) {
       map.current.off('mouseenter', id);
       map.current.off('mouseleave', id);

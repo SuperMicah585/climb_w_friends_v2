@@ -1,6 +1,10 @@
 import { useEffect, useState, useRef } from 'react';
 import { backArrowIcon } from '../../reusableComponents/styles';
-import { TickObject, ClimbWithDependencies,TickAndAttemptObjectBeforeResponse } from '../../types/interfaces';
+import {
+  TickObject,
+  ClimbWithDependencies,
+  TickAndAttemptObjectBeforeResponse,
+} from '../../types/interfaces';
 import PurpleButton from '../../reusableComponents/genericButton';
 import { AddTickToClimbToUserToMap } from './mapApiRequests';
 import ToastContainer from '../../reusableComponents/toastContainer';
@@ -14,7 +18,7 @@ interface TickOverlayProps {
   tickObject: TickObject | null | TickAndAttemptObjectBeforeResponse;
   climbIdForAttemptAndTick: number;
   setClimbObject: React.Dispatch<React.SetStateAction<ClimbWithDependencies[]>>;
-  type:string
+  type: string;
 }
 
 const TickOverlay: React.FC<TickOverlayProps> = ({
@@ -26,13 +30,13 @@ const TickOverlay: React.FC<TickOverlayProps> = ({
   userId,
   mapId,
   climbIdForAttemptAndTick,
-  type
+  type,
 }) => {
   const [displayChat, setDisplayChat] = useState(false);
   const [value, setValue] = useState<string>('');
   const [attemptValue, setAttemptValue] = useState<string>('');
   const [difficultyValue, setDifficultyValue] = useState<string>('');
-  const [toastTrigger,setToastTrigger] = useState<number>(0)
+  const [toastTrigger, setToastTrigger] = useState<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -49,67 +53,60 @@ const TickOverlay: React.FC<TickOverlayProps> = ({
   const difficultyArray = ['Soft', 'Benchmark', 'Sandbagged'];
 
   const submitTick = async () => {
-    if(type==='climb'){
-    if (climbIdForAttemptAndTick > -1) {
-      try {
-        const response = await AddTickToClimbToUserToMap(
-          climbIdForAttemptAndTick,
-          userId,
-          mapId,
-          value,
-          difficultyValue,
-          attemptValue
-        );
-  
-   
-  
-        // Update climbObject if the response is valid
-        setClimbObject(prev =>
-          prev.map(dependency =>
-            dependency.climb.climbId === response.climbId
-              ? { ...dependency, ticks: response }
-              : dependency
-          )
-        );
-  
-        setDisplayChat(false); // Close chat on success
-      } catch (error) {
-        console.error("Error while submitting tick:", error);
-  
-        // Trigger toast notification on error
-        setToastTrigger(prev => prev + 1);
+    if (type === 'climb') {
+      if (climbIdForAttemptAndTick > -1) {
+        try {
+          const response = await AddTickToClimbToUserToMap(
+            climbIdForAttemptAndTick,
+            userId,
+            mapId,
+            value,
+            difficultyValue,
+            attemptValue,
+          );
+
+          // Update climbObject if the response is valid
+          setClimbObject((prev) =>
+            prev.map((dependency) =>
+              dependency.climb.climbId === response.climbId
+                ? { ...dependency, ticks: response }
+                : dependency,
+            ),
+          );
+
+          setDisplayChat(false); // Close chat on success
+        } catch (error) {
+          console.error('Error while submitting tick:', error);
+
+          // Trigger toast notification on error
+          setToastTrigger((prev) => prev + 1);
+        }
       }
+    } else {
+      setClimbObject((prev) =>
+        prev.map(
+          (dependency): ClimbWithDependencies =>
+            dependency.climb.climbId === climbIdForAttemptAndTick
+              ? {
+                  ...dependency,
+                  ticks: {
+                    mapId: mapId,
+                    climbId: climbIdForAttemptAndTick,
+                    userId: userId,
+                    notes: value,
+                    difficulty: difficultyValue,
+                    attempts: attemptValue,
+                  },
+                }
+              : dependency,
+        ),
+      );
+
+      setDisplayChat(false);
     }
-  }
-  else{
-
-
-    setClimbObject(prev =>
-      prev.map((dependency): ClimbWithDependencies =>
-        dependency.climb.climbId === climbIdForAttemptAndTick
-          ? {
-              ...dependency,
-              ticks: {
-                mapId: mapId,
-                climbId: climbIdForAttemptAndTick,
-                userId: userId, 
-                notes: value,
-                difficulty: difficultyValue,
-                attempts: attemptValue,
-              },
-            }
-          : dependency
-      )
-    );
-    
-
-    setDisplayChat(false);
-  }
   };
-  
 
   useEffect(() => {
-
     if (tickObject !== null && tickObject !== undefined) {
       setAttemptValue(tickObject.attempts);
       setDifficultyValue(tickObject.difficulty);
@@ -123,7 +120,12 @@ const TickOverlay: React.FC<TickOverlayProps> = ({
 
   return (
     <>
-      <ToastContainer message = "Please add yourself to climb first" type='error' trigger = {toastTrigger} mode = 'dark' /> 
+      <ToastContainer
+        message="Please add yourself to climb first"
+        type="error"
+        trigger={toastTrigger}
+        mode="dark"
+      />
       {displayChat ? (
         <div className="pointer-events-auto fixed z-10 flex h-1/2 min-h-96 w-1/2 min-w-96 max-w-[700px] flex-col items-start rounded-lg bg-zinc-900">
           <div className="flex w-full gap-5 border-b border-neutral-500 p-5 text-2xl font-semibold text-white">
@@ -174,7 +176,7 @@ const TickOverlay: React.FC<TickOverlayProps> = ({
               value={value}
               onChange={handleChange}
               placeholder="input tick notes here"
-              className="h-full w-full p-2 focus:outline-none focus:ring-2 border-neutral-500 border-2 focus:ring-violet-500 rounded-md text-sm"
+              className="h-full w-full rounded-md border-2 border-neutral-500 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
             />
           </div>
           <div className="absolute bottom-0 flex h-16 w-full items-center justify-between border-t border-neutral-500 bg-zinc-900 p-2">
@@ -187,7 +189,10 @@ const TickOverlay: React.FC<TickOverlayProps> = ({
               </div>
             ) : null}
             <div onClick={() => submitTick()}>
-              <PurpleButton paddingLeft='pl-5' paddingRight='pr-5'> Save </PurpleButton>
+              <PurpleButton paddingLeft="pl-5" paddingRight="pr-5">
+                {' '}
+                Save{' '}
+              </PurpleButton>
             </div>
           </div>
         </div>
