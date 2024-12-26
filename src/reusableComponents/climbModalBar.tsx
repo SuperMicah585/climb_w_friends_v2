@@ -16,14 +16,17 @@ import {
   ClimbWithDependencies,
   UserObjectForFeature,
   AttemptObject,
-  TickObject
+  TickObject,
 } from '../types/interfaces';
 import SearchDropDown from './searchDropDown';
 import TagInput from './input';
 import { useState, useRef, useEffect } from 'react';
 import TickAndAttempt from '../pages/mapComponents/tickAndAttempt';
 import { useAuth0 } from '@auth0/auth0-react';
-import { addUserToClimb,RemoveUserFromClimb } from '../pages/mapComponents/mapApiRequests';
+import {
+  addUserToClimb,
+  RemoveUserFromClimb,
+} from '../pages/mapComponents/mapApiRequests';
 import { retrieveFeatures } from '../pages/mapComponents/mapApiRequests';
 type ClimbTagItem = [Tags, number];
 
@@ -31,26 +34,26 @@ interface ClimbModalBarProps {
   tagInputCallBack: (item: string) => void;
   climbObject: ClimbsTableResponse;
   tagObject: Tags[];
-  attemptObject:AttemptObject;
-  tickObject:TickObject;
+  attemptObject: AttemptObject;
+  tickObject: TickObject;
   handleTagSelect: (item: ClimbTagItem) => void;
   featureTagObject: Tags[];
   climberObject: UserObjectForFeature[] | null;
   chatDisplayTriggerCallBack: () => void;
   setClimbNameForChatCallBack: (climbName: string) => void;
   setClimbGradeForChatCallBack: (climbGrade: string) => void;
-  setAttemptObjectCallBack:(attemptObject: AttemptObject) => void;
+  setAttemptObjectCallBack: (attemptObject: AttemptObject) => void;
   setClimbChatForChatCallBack: (climbConversation: ChatObject[]) => void;
   setClimbObject: React.Dispatch<React.SetStateAction<ClimbWithDependencies[]>>;
   setTickOverlayDisplayTrigger: React.Dispatch<React.SetStateAction<number>>;
   setAttemptOverlayDisplayTrigger: React.Dispatch<React.SetStateAction<number>>;
   setClimbIdForAttemptAndTick: React.Dispatch<React.SetStateAction<number>>;
-  setTickObjectCallBack: (tickObject: TickObject) => void; 
-  mapId:number;
+  setTickObjectCallBack: (tickObject: TickObject) => void;
+  mapId: number;
   closeModalCallBack: (trigger: boolean) => void;
-  AllClimbsOnModal: ClimbWithDependencies[]
+  AllClimbsOnModal: ClimbWithDependencies[];
+  type: string;
 }
-
 
 const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
   tagInputCallBack,
@@ -73,7 +76,8 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
   closeModalCallBack,
   setClimbIdForAttemptAndTick,
   attemptObject,
-  AllClimbsOnModal
+  AllClimbsOnModal,
+  type,
 }) => {
   const [dropDownToggle, setDropDownToggle] = useState<boolean>(false);
   const [tickClimbColor, setTickClimbColor] = useState('text-neutral-500');
@@ -85,11 +89,9 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
     setDropDownToggle(value);
   };
 
-
-
   const tickButtonRef = useRef<HTMLDivElement>(null);
   const tickButtonDropDown = useRef<HTMLDivElement>(null);
-  
+
   const setDropDownItemsStateCallBack = (value: boolean) => {
     setDropDownItemsState(false);
   };
@@ -116,88 +118,84 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
   }, [tickButtonDropDown, tickButtonRef]);
 
   const colorForTickIcon = () => {
-
     if (attemptObject !== null && tickObject !== null) {
-     return 'text-green-500'
+      return 'text-green-500';
     } else if (attemptObject !== null && tickObject === null) {
-      return 'text-amber-500'
+      return 'text-amber-500';
     } else if (attemptObject === null && tickObject !== null) {
-      return 'text-green-500'
+      return 'text-green-500';
     } else {
-      return 'text-neutral-500'
+      return 'text-neutral-500';
     }
+  };
 
-  }
-
-  const removeOrAddClimb = async(id: number, action: string) => {
+  const removeOrAddClimb = async (id: number, action: string) => {
     /* setClimbsArray(prev=>prev.filter((mapItem)=>
     mapItem.climber_names.length===0?true:false))*/
     if (action === 'remove') {
       try {
         // Wait for the database update
-        const data = await RemoveUserFromClimb(id, user?.sub || "", mapId);
-        const features = await retrieveFeatures(mapId);
-       
-        // Update the local state
-        if(features){}
+        const data = await RemoveUserFromClimb(id, user?.sub || '', mapId);
+
         setClimbObject((prev) => {
           const updatedArray = prev
             .map((item) => {
               if (item.climb.climbId === id && item.userObjectForFeature) {
                 const filteredUsers = item.userObjectForFeature.filter(
-                  (climber) => climber.auth0ID !== user?.sub
+                  (climber) => climber.auth0ID !== user?.sub,
                 );
-        
+
                 if (filteredUsers.length === 0) {
                   return null;
                 }
-        
-                return { ...item, userObjectForFeature: filteredUsers,ticks:null,attempts:null };
+
+                return {
+                  ...item,
+                  userObjectForFeature: filteredUsers,
+                  attempts: null,
+                  ticks: null,
+                };
               }
               return item;
             })
             .filter((item): item is ClimbWithDependencies => item !== null);
-        
+
           // Schedule modal close after state update
           if (updatedArray.length === 0) {
             setTimeout(() => closeModalCallBack(false), 0);
           }
-        
+
           return updatedArray;
         });
-        
       } catch (error) {
-        console.error("Error removing user from climb:", error);
+        console.error('Error removing user from climb:', error);
         // Handle error appropriately
       }
     }
-    
 
     if (action === 'add') {
+      const data = await addUserToClimb(id, user?.sub || '', mapId);
 
-      const data = await addUserToClimb(id,user?.sub || "",mapId)
-    
       setClimbObject((prev) =>
-      prev.map((item) =>
-        item.climb.climbId === id && item.userObjectForFeature
-          ? {
-              ...item,
-              userObjectForFeature: [
-                ...item.userObjectForFeature,
-                {
-                  auth0ID: data.user.auth0ID,
-                  username: data.user.username,
-                  userId: data.user.userId,
-                  name: data.user.name
-                },
-              ],
-            }
-          : item
-      ),
-    );
+        prev.map((item) =>
+          item.climb.climbId === id && item.userObjectForFeature
+            ? {
+                ...item,
+                userObjectForFeature: [
+                  ...item.userObjectForFeature,
+                  {
+                    auth0ID: data.user.auth0ID,
+                    username: data.user.username,
+                    userId: data.user.userId,
+                    name: data.user.name,
+                  },
+                ],
+              }
+            : item,
+        ),
+      );
     }
   };
-
 
   return (
     <div className="absolute right-2 top-0 flex items-center gap-2">
@@ -292,7 +290,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
               setDropDownItemsState((prev) => !prev);
               setAttemptObjectCallBack(attemptObject);
               setTickObjectCallBack(tickObject);
-              setClimbIdForAttemptAndTick(climbObject.climbId)
+              setClimbIdForAttemptAndTick(climbObject.climbId);
             }}
             className={`cursor-pointer rounded-full p-1 hover:bg-slate-500 hover:opacity-75 ${colorForTickIcon()}`}
           >
@@ -317,12 +315,12 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
               climbObject={climbObject}
               setDropDownItemsStateCallBack={setDropDownItemsStateCallBack}
               setTickClimbColor={setTickClimbColor}
-              attemptObject = {attemptObject}
+              attemptObject={attemptObject}
               setDropDownItemsState={dropDownItemsState}
-              setAttemptOverlayDisplayTrigger = {setAttemptOverlayDisplayTrigger}
-              setClimbObject = {setClimbObject}
+              setAttemptOverlayDisplayTrigger={setAttemptOverlayDisplayTrigger}
+              setClimbObject={setClimbObject}
               tickObject={tickObject}
-           
+              type={type}
             />
           </div>
           <div

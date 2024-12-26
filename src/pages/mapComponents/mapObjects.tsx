@@ -211,8 +211,6 @@ export const filterTypes: string[] = [
   'Order Grade DESC',
 ];
 
-
-
 export const conversation = [
   { name: 'Micah', message: 'Hey everyone, how’s it going?' },
   {

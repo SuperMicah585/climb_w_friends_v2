@@ -64,7 +64,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
 
   const [stateDropDownName, setStateDropDownName] = useState<string>('WA');
 
-  const [renderFeatureTrigger,setRenderFeatureTrigger] = useState<number>(0)
+  const [renderFeatureTrigger, setRenderFeatureTrigger] = useState<number>(0);
 
   const {
     getAccessTokenSilently,
@@ -89,10 +89,8 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     setAllClimbsModalDisplay((prev) => !prev);
   };
 
-  const closeAddClimbsModalCallBack = async(trigger: boolean) => {
+  const closeAddClimbsModalCallBack = async (trigger: boolean) => {
     setAddClimbsModalDisplay(trigger);
-
-
   };
 
   const tagToggleCallBack = () => {
@@ -103,20 +101,18 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     setFilterModalDisplay(true);
   };
 
-  const closeModalCallBack = async(trigger: boolean) => {
+  const closeModalCallBack = async (trigger: boolean) => {
     setClickedFeatureClimbs(-1);
     setClickedFeatureModalTriggerBoolean(trigger);
-    if(!trigger){
-      clearCustomLayers()
-   
+    if (!trigger) {
+      clearCustomLayers();
+
       const features = await retrieveFeatures(mapIdNumber);
 
       displayLayersInitial(map, clickedFeatureClimbCallBack, features);
       if (mapLoaded && 'type' in geoJsonObject) {
-      updateLayerVisibility(map, geoJsonObject);
+        updateLayerVisibility(map, geoJsonObject);
       }
-
-
     }
   };
 
@@ -128,17 +124,17 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     setTagModalDisplay(trigger);
   };
 
-  const closeAllClimbsModalCallBack = async(trigger: boolean) => {
+  const closeAllClimbsModalCallBack = async (trigger: boolean) => {
     setAllClimbsModalDisplay(trigger);
-    if(!trigger){
-      clearCustomLayers()
-      
+    if (!trigger) {
+      clearCustomLayers();
+
       const features = await retrieveFeatures(mapIdNumber);
 
       displayLayersInitial(map, clickedFeatureClimbCallBack, features);
       if (mapLoaded && 'type' in geoJsonObject) {
         updateLayerVisibility(map, geoJsonObject);
-        }
+      }
     }
   };
 
@@ -146,29 +142,25 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     setClickedFeatureClimbs(featureId);
   };
 
-
-  
   function clearCustomLayers() {
     if (!map?.current) return;
 
-   
     try {
       const style = map.current.getStyle();
       if (!style?.layers || !style?.sources) return;
-  
+
       // Create a copy of layers array since we'll be modifying it during iteration
       const layers = [...style.layers];
-  
+
       // Remove all custom layers first
-      layers.forEach(layer => {
+      layers.forEach((layer) => {
         if (layer.id.startsWith('geojson') && map.current?.getLayer(layer.id)) {
-          
           try {
             // Remove event listeners before removing the layer
-     
-            map.current._listeners.click = []
-            map.current._listeners.mousemove = []
-            map.current._listeners.mouseout = []
+
+            map.current._listeners.click = [];
+            map.current._listeners.mousemove = [];
+            map.current._listeners.mouseout = [];
 
             map.current.removeLayer(layer.id);
           } catch (error) {
@@ -176,10 +168,9 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
           }
         }
       });
-  
 
       // Remove all custom sources
-      Object.keys(style.sources).forEach(sourceId => {
+      Object.keys(style.sources).forEach((sourceId) => {
         if (sourceId.startsWith('geojson')) {
           try {
             // Double check if source still exists before removal
@@ -191,29 +182,24 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
           }
         }
       });
-  
     } catch (error) {
       console.error('Error in clearCustomLayers:', error);
     }
   }
 
+  useEffect(() => {
+    if (renderFeatureTrigger > 0) {
+      clearCustomLayers();
+      const renderFeatures = async () => {
+        const features = await retrieveFeatures(mapIdNumber);
+        displayLayersInitial(map, clickedFeatureClimbCallBack, features);
+        setGeoJsonObject(features);
+      };
 
-  useEffect(()=>{
-if(renderFeatureTrigger>0){
-  clearCustomLayers()
-    const renderFeatures = async () => {
-   
-      const features = await retrieveFeatures(mapIdNumber);
-      displayLayersInitial(map, clickedFeatureClimbCallBack, features);
-      setGeoJsonObject(features);
-      
-    };
+      renderFeatures();
+    }
+  }, [renderFeatureTrigger]);
 
-    renderFeatures();
-    
-  }
-  },[renderFeatureTrigger])
-  
   //const layers = map.current?.getStyle().layers;
   //console.log(layers)
   useEffect(() => {
@@ -235,7 +221,6 @@ if(renderFeatureTrigger>0){
         setpolygonOrCircleDisplay(false);
       }
     });
-
 
     const renderFeatures = async () => {
       const features = await retrieveFeatures(mapIdNumber);
@@ -292,7 +277,6 @@ if(renderFeatureTrigger>0){
   }, [selectedClimb]);
 
   useEffect(() => {
-  
     if (mapLoaded && 'type' in geoJsonObject) {
       updateLayerVisibility(map, geoJsonObject);
     }
@@ -364,8 +348,9 @@ if(renderFeatureTrigger>0){
           location={usStateDictionary[stateDropDownName]}
           closeAddClimbsModalCallBack={closeAddClimbsModalCallBack}
           mapId={mapIdNumber}
-          setRenderFeatureTrigger = {setRenderFeatureTrigger}
-          AllClimbsOnMap = {geoJsonObject}
+          setRenderFeatureTrigger={setRenderFeatureTrigger}
+          AllClimbsOnMap={geoJsonObject}
+          auth0Id={user?.sub || ''}
         />
       ) : null}
 
