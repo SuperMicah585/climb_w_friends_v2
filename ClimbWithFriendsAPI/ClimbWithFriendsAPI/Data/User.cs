@@ -23,4 +23,11 @@ namespace ClimbWithFriendsAPI.Data
 
         
     }
+
+    public class UserStatistics
+    {
+        public int TotalMaps {  get; set; }
+        public int TotalClimbs {  get; set; }
+        public int UniqueClimbers {  get; set; }
+    }
 }

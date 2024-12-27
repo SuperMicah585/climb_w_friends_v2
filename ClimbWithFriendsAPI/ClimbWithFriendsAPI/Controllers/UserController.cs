@@ -1,8 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ClimbWithFriendsAPI.Data;
+﻿using ClimbWithFriendsAPI.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ClimbWithFriendsAPI.DTOs;
 
 namespace ClimbWithFriendsAPI.Controllers
 {
@@ -31,6 +36,42 @@ namespace ClimbWithFriendsAPI.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+    [HttpGet("{auth0Id}/GetStats")]
+    public async Task<UserStatistics> GetUserStatisticsAsync(string auth0Id)
+    {
+        var user = await _context.Users
+        .FirstOrDefaultAsync(u => u.Auth0ID == auth0Id);
+
+        var userId = user.UserId;
+        // Get all maps associated with the user's climbs
+        var userMaps = await _context.MapToUserToClimbs
+            .Where(c => c.UserId == userId)
+            .Select(c => c.MapId)
+            .Distinct()
+            .CountAsync();
+
+        // Get total climbs for the user
+        var totalClimbs = await _context.MapToUserToClimbs
+            .CountAsync(c => c.UserId == userId);
+
+        // Get unique climbers who climbed the same maps as the user
+        var uniqueClimbers = await _context.MapToUserToClimbs
+            .Where(c => _context.MapToUserToClimbs
+                .Where(uc => uc.UserId == userId)
+                .Select(uc => uc.MapId)
+                .Contains(c.MapId))
+            .Select(c => c.UserId)
+            .Distinct()
+            .CountAsync();
+
+        return new UserStatistics
+        {
+            TotalMaps = userMaps,
+            TotalClimbs = totalClimbs,
+            UniqueClimbers = uniqueClimbers
+        };
+    }
 
         // POST: api/User
         [HttpPost]
