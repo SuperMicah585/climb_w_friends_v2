@@ -15,7 +15,7 @@ const ModalSearch: React.FC<ModalSearchProps> = ({
 }) => {
   const [searchResults, setSearchResults] = useState('');
   const [dropDownToggle, setDropDownToggle] = useState(false);
-  const [selectedFilter, setSelectedFilter] = useState('Order Grade ASC');
+  const [selectedFilter, setSelectedFilter] = useState('Order By Grade ASC');
   const filterIconDownRef = useRef<HTMLDivElement | null>(null);
   const filterDropDownRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -67,7 +67,7 @@ const ModalSearch: React.FC<ModalSearchProps> = ({
           paddingLeft={'pl-5'}
           ref={inputRef}
           handleSearch={handleClimbSearch}
-          setPlaceHolder={'Search by Climb, or Tag'}
+          setPlaceHolder={'Search by climb name'}
         />
         <div
           ref={filterIconDownRef}
@@ -84,7 +84,7 @@ const ModalSearch: React.FC<ModalSearchProps> = ({
             setSelectedFilterCallBack={setSelectedFilterCallBack}
             filterTypes={filterTypes}
             color="zinc"
-            downDropWidth={'w-40'}
+            downDropWidth={'w-50'}
             ref={filterDropDownRef}
           />
         ) : null}

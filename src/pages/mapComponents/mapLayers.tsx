@@ -3,6 +3,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import * as turf from '@turf/turf';
 import * as ReactDOM from 'react-dom/client';
 import './popup.css';
+import { sortByGradeDesc,compareGrades,groupByGrade } from './gradeComparison';
 import { retrieveFeatureAggregate } from './mapApiRequests';
 import {
   BarChart,
@@ -398,12 +399,23 @@ export const addFeatureInteractions = async (
                 currentRoot = ReactDOM.createRoot(chartContainer);
               }
 
+
+              var sortedGradeArray = popUpData.gradeCounts.sort((a:any, b:any) => {
+
+                return compareGrades(a.rating,b.rating); 
+              })
+
+              if(sortedGradeArray.length>3){
+                sortedGradeArray = groupByGrade(sortedGradeArray)
+              }
+
+   
               // Always use render() to update the content
               currentRoot.render(
                 <BarChart
                   width={225}
                   height={120}
-                  data={popUpData.gradeCounts}
+                  data={sortedGradeArray}
                   margin={{ top: 0, right: 20, bottom: 0, left: 0 }}
                 >
                   <CartesianGrid stroke="white" strokeDasharray="3 3" />

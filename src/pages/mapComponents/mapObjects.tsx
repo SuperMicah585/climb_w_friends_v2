@@ -205,10 +205,8 @@ export const usStateDictionary: { [key: string]: string } = {
 };
 
 export const filterTypes: string[] = [
-  'Order Route DESC',
-  'Order Route ASC',
-  'Order Grade ASC',
-  'Order Grade DESC',
+  'Order By Grade ASC',
+  'Order By Grade DESC',
 ];
 
 export const conversation = [
