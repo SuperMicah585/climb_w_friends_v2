@@ -190,18 +190,37 @@ public async Task<ActionResult<List<FeatureDependencies>>> GetFeatureDependencie
                 Climb = _context.Climbs
                     .FirstOrDefault(c => c.ClimbId == map.ClimbId),  // Consider using Include to load Climb's relationships
 
+
                 Tags = _context.ClimbToTags
                     .Where(ct => ct.ClimbId == map.ClimbId)
-                    .Select(ct => ct.Tag)
+                    .Join(
+                        _context.MapToTags.Where(mt => mt.MapId == map.MapId),
+                        ct => ct.TagId,
+                        mt => mt.TagId,
+                        (ct, mt) => ct.Tag
+                    )
                     .ToList(),
 
                 Attempts = _context.Attempts
-                    .Where(ca => ca.ClimbId == map.ClimbId && ca.UserId == user.UserId)
+                    .Where(ca => ca.ClimbId == map.ClimbId && ca.UserId == user.UserId && ca.MapId == map.MapId)
                     .FirstOrDefault(), 
 
                 Ticks = _context.Ticks
-                    .Where(ct => ct.ClimbId == map.ClimbId && ct.UserId == user.UserId)
+                    .Where(ct => ct.ClimbId == map.ClimbId && ct.UserId == user.UserId && ct.MapId == map.MapId)
                     .FirstOrDefault(),
+                
+                ChatObject = _context.ClimbChats
+                    .Where(cc => cc.ClimbId == map.ClimbId && cc.MapId == map.MapId)
+                    .OrderBy(c => c.CreatedAt)
+                    .Select(c => new ClimbChatResponse
+                    {
+                        ClimbChatId = c.ClimbChatId, 
+                        Message = c.Message,
+                        Username = c.User.Username,
+                        Auth0Id = c.User.Auth0ID,
+                        CreatedAt = c.CreatedAt
+                    })
+                    .ToList(),
 
                 UserObjectForFeature = _context.MapToUserToClimbs
                     .Where(uc => uc.ClimbId == map.ClimbId && uc.MapId == map.MapId)
@@ -257,14 +276,33 @@ public async Task<ActionResult<List<FeatureDependencies>>> GetFeatureDependencie
                 Climb = _context.Climbs.FirstOrDefault(c => c.ClimbId == map.ClimbId),
                 Tags = _context.ClimbToTags
                     .Where(ct => ct.ClimbId == map.ClimbId)
-                    .Select(ct => _context.Tags.FirstOrDefault(t => t.TagId == ct.TagId))
+                    .Join(
+                        _context.MapToTags.Where(mt => mt.MapId == map.MapId),
+                        ct => ct.TagId,
+                        mt => mt.TagId,
+                        (ct, mt) => ct.Tag
+                    )
                     .ToList(),
+
                 Attempts = _context.Attempts
-                    .Where(ca => ca.ClimbId == map.ClimbId && ca.UserId == user.UserId)
-                    .FirstOrDefault(),
+                    .Where(ca => ca.ClimbId == map.ClimbId && ca.UserId == user.UserId && ca.MapId == map.MapId)
+                    .FirstOrDefault(), 
+
                 Ticks = _context.Ticks
-                    .Where(ct => ct.ClimbId == map.ClimbId && ct.UserId == user.UserId)
+                    .Where(ct => ct.ClimbId == map.ClimbId && ct.UserId == user.UserId && ct.MapId == map.MapId)
                     .FirstOrDefault(),
+                ChatObject = _context.ClimbChats
+                    .Where(cc => cc.ClimbId == map.ClimbId && cc.MapId == map.MapId)
+                    .OrderBy(c => c.CreatedAt)
+                    .Select(c => new ClimbChatResponse
+                    {
+                        ClimbChatId = c.ClimbChatId, 
+                        Message = c.Message,
+                        Username = c.User.Username,
+                        Auth0Id = c.User.Auth0ID,
+                        CreatedAt = c.CreatedAt
+                    })
+                    .ToList(),
 
                 UserObjectForFeature = _context.MapToUserToClimbs
                     .Where(uc => uc.ClimbId == map.ClimbId && uc.MapId == map.MapId)

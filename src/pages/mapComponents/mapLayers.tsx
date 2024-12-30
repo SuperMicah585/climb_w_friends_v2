@@ -411,7 +411,7 @@ export const addFeatureInteractions = async (
                   <YAxis stroke="white" />
                   <Bar
                     dataKey="count"
-                    fill="#8884d8"
+                    fill="#8b5cf6"
                     activeBar={<Rectangle fill="pink" stroke="blue" />}
                   />
                 </BarChart>,

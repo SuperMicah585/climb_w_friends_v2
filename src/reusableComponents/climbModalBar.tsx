@@ -52,12 +52,14 @@ interface ClimbModalBarProps {
   mapId: number;
   closeModalCallBack: (trigger: boolean) => void;
   AllClimbsOnModal: ClimbWithDependencies[];
+  setClimbIdForClimbChat: React.Dispatch<React.SetStateAction<number>>;
+  chatObject: ChatObject[];
   type: string;
 }
 
 const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
   tagInputCallBack,
-  climbObject,
+  chatObject,
   tagObject,
   handleTagSelect,
   featureTagObject,
@@ -69,12 +71,14 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
   setClimbGradeForChatCallBack,
   setClimbChatForChatCallBack,
   setClimbObject,
+  climbObject,
   setTickOverlayDisplayTrigger,
   setAttemptOverlayDisplayTrigger,
   climberObject,
   mapId,
   closeModalCallBack,
   setClimbIdForAttemptAndTick,
+  setClimbIdForClimbChat,
   attemptObject,
   AllClimbsOnModal,
   type,
@@ -135,8 +139,9 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
     if (action === 'remove') {
       try {
         // Wait for the database update
-        const data = await RemoveUserFromClimb(id, user?.sub || '', mapId);
-
+        if (type === 'climb') {
+          const data = await RemoveUserFromClimb(id, user?.sub || '', mapId);
+        }
         setClimbObject((prev) => {
           const updatedArray = prev
             .map((item) => {
@@ -161,7 +166,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
             .filter((item): item is ClimbWithDependencies => item !== null);
 
           // Schedule modal close after state update
-          if (updatedArray.length === 0) {
+          if (updatedArray.length === 0 && type === 'climb') {
             setTimeout(() => closeModalCallBack(false), 0);
           }
 
@@ -301,7 +306,8 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
               chatDisplayTriggerCallBack();
               setClimbNameForChatCallBack(climbObject.climbName); //also used for ticks. Change name to be more accurate
               setClimbGradeForChatCallBack(climbObject.rating);
-              setClimbChatForChatCallBack([]);
+              setClimbIdForClimbChat(climbObject.climbId);
+              setClimbChatForChatCallBack(chatObject);
             }}
             className="cursor-pointer rounded-full p-1 text-blue-500 hover:bg-slate-500 hover:opacity-75"
           >

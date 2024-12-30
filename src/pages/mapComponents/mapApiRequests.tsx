@@ -17,7 +17,7 @@ const createTag = async (TagName: string, mapId: number) => {
       if (tagObject && mapId) {
         const mapToTag = await addTagToMap(tagObject.tagId, mapId);
         if (mapToTag) {
-          console.log('success');
+          ('success');
           return tagObject;
         }
       } else {
@@ -36,7 +36,6 @@ const createTag = async (TagName: string, mapId: number) => {
 };
 
 const addTagToMap = async (tagId: number, mapId: number) => {
-  console.log(tagId, mapId);
   try {
     const response = await fetch(
       `http://localhost:5074/api/Tags/${tagId}/ToMap/${mapId}`,
@@ -118,7 +117,6 @@ const removeTagFromClimb = async (tagId: number, climbId: number) => {
 };
 
 const removeTagFromMap = async (mapId: number, tagId: number) => {
-  console.log(mapId, tagId, 'Asdasd');
   try {
     const response = await fetch(
       `http://localhost:5074/api/Tags/${tagId}/Maps/${mapId}`,
@@ -168,7 +166,7 @@ const retrieveFeatures = async (mapId: number) => {
     }
 
     const json = await response.json();
-    console.log(json, mapId);
+
     // Update the specific object at the given index in the array
     return json;
   } catch (error: any) {
@@ -205,7 +203,7 @@ const retrieveFeatureDependencies = async (
 
     const json = await response.json();
     // Update the specific object at the given index in the array
-    console.log(json);
+
     return json;
   } catch (error: any) {
     console.error(error.message);
@@ -273,7 +271,6 @@ const addClimbsToMap = async (
     }
 
     const buckets = await response.json();
-    console.log(buckets, 'hi');
   } catch (error) {
     console.error('Error sending climbing data:', error);
     throw error;
@@ -301,7 +298,7 @@ const addUserToClimb = async (
     }
 
     const data = await response.json();
-    console.log(data, 'data reponse');
+
     return data;
   } catch (error) {
     console.error('Error sending climbing data:', error);
@@ -330,7 +327,7 @@ const RemoveUserFromClimb = async (
     }
 
     const data = await response.json();
-    console.log(data, 'data reponse');
+
     return data;
   } catch (error) {
     console.error('Error sending climbing data:', error);
@@ -460,7 +457,63 @@ const removeTick = async (tickId: number) => {
   }
 };
 
+const AddChatToClimb = async (
+  climbId: number,
+  userId: string,
+  mapId: number,
+  message: string,
+) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5074/api/ClimbChats/ToMap/${mapId}/ToUser/${userId}/ToClimb/${climbId}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          Message: message,
+        }),
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(`HTTP error! status: ${error}`);
+  }
+};
+
+const ListChatsForClimb = async (climbId: number, mapId: number) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5074/api/ClimbChats/${climbId}/OnMap/${mapId}/List`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(`HTTP error! status: ${error}`);
+  }
+};
+
 export {
+  ListChatsForClimb,
+  AddChatToClimb,
   AddTickToClimbToUserToMap,
   removeTick,
   removeAttempt,

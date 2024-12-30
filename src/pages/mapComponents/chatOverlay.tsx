@@ -1,20 +1,81 @@
 import { useEffect, useState, useRef } from 'react';
 import { backArrowIcon } from '../../reusableComponents/styles';
+import { ClimbWithDependencies, ChatObject } from '../../types/interfaces';
 import ChatInput from '../../reusableComponents/chatInput';
-import { ChatProps, ChatObject } from '../../types/interfaces';
+import { AddChatToClimb, ListChatsForClimb } from './mapApiRequests';
+
+export interface ChatProps {
+  displayTrigger: number;
+  climbName: string;
+  climbGrade: string;
+  userId: string;
+  mapId: number;
+  climbIdForClimbChat: number;
+  setClimbObject: React.Dispatch<React.SetStateAction<ClimbWithDependencies[]>>;
+  climbChatObject: ChatObject[];
+  type: string;
+}
 
 const ModalChat: React.FC<ChatProps> = ({
   displayTrigger,
   climbName,
   climbGrade,
-  climbChat,
+  climbIdForClimbChat,
+  setClimbObject,
+  mapId,
+  userId,
+  climbChatObject,
+  type,
 }) => {
   const [displayChat, setDisplayChat] = useState(false);
-  const [chatArray, setChatArray] = useState<ChatObject[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [chatArray, setChatArray] = useState<ChatObject[]>([]);
 
-  const handleChatInputCallBack = (chat: ChatObject) => {
-    setChatArray((prev) => [...prev, chat]);
+  const handleChatInputCallBack = async (message: string) => {
+    if (type === 'climb') {
+      const response = await AddChatToClimb(
+        climbIdForClimbChat,
+        userId,
+        mapId,
+        message,
+      );
+      setChatArray(response);
+      setClimbObject((prev) =>
+        prev.map(
+          (dependency): ClimbWithDependencies =>
+            dependency.climb.climbId === climbIdForClimbChat
+              ? {
+                  ...dependency,
+                  chatObject: response,
+                }
+              : dependency,
+        ),
+      );
+    }
+    if (type === 'addclimb') {
+      setChatArray((prev) => [
+        ...prev,
+        { message: message, auth0Id: userId, ClimbChatId: climbIdForClimbChat },
+      ]);
+      setClimbObject((prev) =>
+        prev.map(
+          (dependency): ClimbWithDependencies =>
+            dependency.climb.climbId === climbIdForClimbChat
+              ? {
+                  ...dependency,
+                  chatObject: [
+                    ...(dependency.chatObject || []),
+                    {
+                      message: message,
+                      auth0Id: userId,
+                      ClimbChatId: climbIdForClimbChat,
+                    },
+                  ],
+                }
+              : dependency,
+        ),
+      );
+    }
   };
 
   useEffect(() => {
@@ -31,13 +92,13 @@ const ModalChat: React.FC<ChatProps> = ({
   }, [chatArray]);
 
   useEffect(() => {
-    setChatArray(climbChat);
-  }, [climbChat]);
+    setChatArray(climbChatObject);
+  }, [displayTrigger]);
 
   return (
     <>
       {displayChat ? (
-        <div className="pointer-events-auto fixed z-10 flex h-1/2 min-h-96 w-1/2 min-w-96 max-w-[700px] flex-col items-start rounded-lg bg-zinc-900">
+        <div className="pointer-events-auto fixed z-10 flex h-2/3 min-h-[400px] w-[700px] min-w-[600px] flex-col items-start rounded-lg bg-zinc-900">
           <div className="flex w-full gap-5 border-b border-neutral-500 p-5 text-2xl font-semibold text-white">
             <div>{climbName}</div>
             <div className="white border-r"></div>
@@ -49,7 +110,7 @@ const ModalChat: React.FC<ChatProps> = ({
             className="flex h-full w-full flex-col gap-5 overflow-y-scroll p-5 pb-20"
           >
             {chatArray.map((item, index) =>
-              item.name === 'Micah' ? (
+              item.auth0Id === userId ? (
                 <div
                   style={{
                     whiteSpace: 'pre-wrap', // This preserves line breaks
@@ -68,7 +129,7 @@ const ModalChat: React.FC<ChatProps> = ({
                   className="max-w-[66.6667%] self-start break-words rounded-lg bg-zinc-700 p-2 text-white"
                 >
                   <div className="font-semibold text-green-500">
-                    {item.name}
+                    {item.username}
                   </div>
                   {item.message}
                 </div>

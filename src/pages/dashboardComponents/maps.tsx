@@ -13,6 +13,7 @@ import {
   editMap,
   removeUserFromMap,
   createMap,
+  retrieveUserStats,
 } from './utilityFunctions';
 
 import { submitAirplane } from '../../reusableComponents/styles';
@@ -23,6 +24,7 @@ const Maps = () => {
   const [addMapTrigger, setAddMapTrigger] = useState(false);
   const [toastTrigger, setToastTrigger] = useState(0);
   const [toastType, setToastType] = useState('success');
+
   const [toastMessage, setToastMessage] = useState('');
   const [editMapObject, setEditMapObject] = useState<MapObject>({
     mapId: -1,
@@ -82,7 +84,7 @@ const Maps = () => {
         user?.sub,
       );
       if (mapObject) {
-        console.log('toast');
+        ('toast');
         setMapObject((prev) => [...prev, mapObject.map]);
 
         ////----->Toast
@@ -132,7 +134,7 @@ const Maps = () => {
   };
 
   const EditedClimbCallBack = async (item: any) => {
-    //console.log(item,"sdfsdf")
+    //(item,"sdfsdf")
     const success = await editMap(item.mapName, item.description, item.mapId);
     if (success) {
       setMapObject((prev) =>

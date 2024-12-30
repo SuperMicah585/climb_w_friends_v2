@@ -1,15 +1,13 @@
 import { supabase } from '../../../supaBaseClient';
 import {
-  GeoJsonFeature,
-  ChatObject,
   Tags,
   GeoJsonObject,
-  deleteTagItem,
   ClimbTagItem,
   ClimbsTableResponse,
   ClimbWithDependencies,
   AttemptObject,
   TickObject,
+  ChatObject,
 } from '../../../types/interfaces';
 import InputComponent from '../../../reusableComponents/input';
 import SearchDropDown from '../../../reusableComponents/searchDropDown';
@@ -22,6 +20,7 @@ import Tooltip from '../../../reusableComponents/toolTip';
 import { newWindowIcon, minusIcon } from '../../../reusableComponents/styles';
 import TickOverlay from '../tickOverlay';
 import { useAuth0 } from '@auth0/auth0-react';
+import ModalChat from '../chatOverlay';
 import {
   retrieveClimbs,
   addClimbsToMap,
@@ -29,6 +28,7 @@ import {
   AddTickToClimbToUserToMap,
   AddAttemptToClimbToUserToMap,
   addTagToClimb,
+  AddChatToClimb,
 } from '../mapApiRequests';
 import AttemptOverlay from '../attemptOverlay';
 
@@ -73,6 +73,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
     useState<number>(0);
   const [attemptOverlayDisplayTrigger, setAttemptOverlayDisplayTrigger] =
     useState<number>(0);
+  const [climbIdForClimbChat, setClimbIdForClimbChat] = useState<number>(-1);
   const [tickinfo, setTickInfo] = useState({});
   const [climbsOnMap, setClimbsOnMap] = useState<number[]>([]);
 
@@ -205,7 +206,6 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
   const handleModalSubmit = async () => {
     try {
       // Log for debugging
-      console.log('Processing climbs:', climbsArray);
 
       // First add all climbs to map
       await addClimbsToMap(mapId, climbsArray);
@@ -263,6 +263,18 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
       });
 
       await Promise.all(promises);
+      climbsArray, 'submit';
+      for (let item of climbsArray) {
+        for (let chatObject of item.chatObject) {
+          await AddChatToClimb(
+            chatObject.ClimbChatId,
+            auth0Id,
+            mapId,
+            chatObject.message,
+          );
+        }
+      }
+
       setRenderFeatureTrigger((prev) => prev + 1);
     } catch (error) {
       console.error('Error in handleModalSubmit:', error);
@@ -270,6 +282,8 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
       throw error; // Re-throw if you want calling code to handle it
     }
   };
+
+  climbsArray, 'climbsarraty';
 
   const handleClimbSelect = (item: ClimbsTableResponse) => {
     setClimbsArray((prev) => [
@@ -285,6 +299,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
         ],
         ticks: null,
         attempts: null,
+        chatObject: [],
       },
     ]);
   };
@@ -322,6 +337,17 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
         className="pointer-events-none absolute z-20 flex h-screen w-screen items-center justify-center"
         onClick={(event) => event.stopPropagation()}
       >
+        <ModalChat
+          climbGrade={climbGradeForChat}
+          climbName={climbNameForChat}
+          climbChatObject={climbChatForChat}
+          userId={auth0Id}
+          mapId={mapId}
+          climbIdForClimbChat={climbIdForClimbChat}
+          setClimbObject={setClimbsArray}
+          displayTrigger={displayTrigger}
+          type="addclimb"
+        />
         <TickOverlay
           displayTrigger={tickOverlayDisplayTrigger}
           climbName={climbNameForChat}
@@ -348,8 +374,8 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
       </div>
 
       <ZincModal
-        maxHeight={'max-h-[700px]'}
-        maxWidth={'max-w-[700px]'}
+        maxHeight={'h-2/3 min-h-[400px]'}
+        maxWidth={'max-w-[700px] min-w-[600px]'}
         closeModalCallBack={closeAddClimbsModalCallBack}
       >
         <div className="flex w-full flex-col gap-5">
@@ -477,8 +503,10 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
                 setTickOverlayDisplayTrigger={setTickOverlayDisplayTrigger}
                 attemptObject={item.attempts}
                 tickObject={item.ticks}
+                chatObject={item.chatObject}
                 setAttemptObjectCallBack={setAttemptObjectCallBack}
                 setTickObjectCallBack={setTickObjectCallBack}
+                setClimbIdForClimbChat={setClimbIdForClimbChat}
                 type="addclimb"
               />
             </div>

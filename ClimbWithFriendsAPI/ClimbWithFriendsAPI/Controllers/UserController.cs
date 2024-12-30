@@ -45,8 +45,8 @@ namespace ClimbWithFriendsAPI.Controllers
 
         var userId = user.UserId;
         // Get all maps associated with the user's climbs
-        var userMaps = await _context.MapToUserToClimbs
-            .Where(c => c.UserId == userId)
+        var userMaps = await _context.MapToUsers
+            .Where(c => c.UserId == auth0Id)
             .Select(c => c.MapId)
             .Distinct()
             .CountAsync();

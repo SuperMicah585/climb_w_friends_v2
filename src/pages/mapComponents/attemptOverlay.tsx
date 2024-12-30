@@ -117,7 +117,7 @@ const AttemptOverlay: React.FC<AttemptOverlayProps> = ({
       setDifficultyValue('');
       setValue('');
     }
-  }, [displayTrigger]);
+  }, [displayTrigger, attemptObject]);
 
   return (
     <>
@@ -128,7 +128,7 @@ const AttemptOverlay: React.FC<AttemptOverlayProps> = ({
         mode="dark"
       />
       {displayChat ? (
-        <div className="pointer-events-auto fixed z-10 flex h-1/2 min-h-96 w-1/2 min-w-96 max-w-[700px] flex-col items-start rounded-lg bg-zinc-900">
+        <div className="pointer-events-auto fixed z-10 flex h-2/3 min-h-[400px] w-[700px] min-w-[600px] flex-col items-start rounded-lg bg-zinc-900">
           <div className="flex w-full gap-5 border-b border-neutral-500 p-5 text-2xl font-semibold text-white">
             <div>{climbName}</div>
             <div className="white border-r"></div>
@@ -176,7 +176,7 @@ const AttemptOverlay: React.FC<AttemptOverlayProps> = ({
             <textarea
               value={value}
               onChange={handleChange}
-              placeholder="input tick notes here"
+              placeholder="input attempt notes here"
               className="h-full w-full rounded-md border-2 border-neutral-500 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
             />
           </div>
