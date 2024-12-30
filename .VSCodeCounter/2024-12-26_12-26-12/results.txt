@@ -1,0 +1,31 @@
+Date : 2024-12-26 12:26:12
+Directory : /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers
+Total : 7 files,  1233 codes, 292 comments, 355 blanks, all 1880 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| C#       |          7 |      1,233 |        292 |        355 |      1,880 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++-------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                        | files      | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                           |          7 |      1,233 |        292 |        355 |      1,880 |
++-------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                                    | language | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/AttemptsController.cs | C#       |        132 |         10 |         41 |        183 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/ClimbsController.cs   | C#       |        129 |         88 |         62 |        279 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/FeaturesController.cs | C#       |        503 |        106 |        126 |        735 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/MapsController.cs     | C#       |        157 |         69 |         61 |        287 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/TagsController.cs     | C#       |        135 |          5 |         31 |        171 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/TicksController.cs    | C#       |        114 |          8 |         22 |        144 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/UserController.cs     | C#       |         63 |          6 |         12 |         81 |
+| Total                                                                                                       |          |      1,233 |        292 |        355 |      1,880 |
++-------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

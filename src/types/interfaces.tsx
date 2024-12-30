@@ -20,6 +20,15 @@ export type deleteTagItem = [string, number];
 
 export type ClimbTagItem = [Tags, number];
 
+export interface ChatObject {
+  message: string;
+  username?: string;
+  ClimbChatId: number;
+  auth0Id: string;
+  MapToFeatureToClimbId?: number;
+  CreatedAt?: string;
+}
+
 export interface Micah {
   name: string;
   id: number;
@@ -51,6 +60,7 @@ export interface ClimbWithDependencies {
   userObjectForFeature: null | UserObjectForFeature[];
   attempts: null | AttemptObject | TickAndAttemptObjectBeforeResponse;
   ticks: null | TickObject | TickAndAttemptObjectBeforeResponse;
+  chatObject: ChatObject[];
 }
 
 export interface AttemptObject {
@@ -100,18 +110,6 @@ interface Properties {
 interface Geometry {
   coordinates: number[];
   type: string;
-}
-
-export interface ChatProps {
-  displayTrigger: number;
-  climbName: string;
-  climbGrade: string;
-  climbChat: ChatObject[];
-}
-
-export interface ChatObject {
-  message: string;
-  name: string;
 }
 
 export interface MapObject {

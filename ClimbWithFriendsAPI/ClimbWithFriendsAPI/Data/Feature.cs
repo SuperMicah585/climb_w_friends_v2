@@ -30,6 +30,7 @@ public class FeatureDependencies
     public List<UserObjectForFeature> UserObjectForFeature {get;set;}
     public Attempt Attempts {get;set;}
     public Tick Ticks {get;set;}
+    public List<ClimbChatResponse> ChatObject {get;set;}
 }
 
 public class FeatureResult

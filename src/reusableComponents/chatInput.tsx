@@ -1,8 +1,7 @@
 import React, { useState, useEffect, forwardRef, useRef } from 'react';
-import { ChatObject } from '../types/interfaces';
 import { submitAirplane } from './styles';
 interface InputComponentProps {
-  handleSearch: (query: ChatObject) => void;
+  handleSearch: (query: string) => void;
   paddingLeft: string;
 }
 
@@ -22,7 +21,7 @@ const chatInput = forwardRef<HTMLTextAreaElement, InputComponentProps>(
         />
         <div
           onClick={() => {
-            handleSearch({ message: query, name: 'Micah' });
+            handleSearch(query);
             setQuery('');
           }}
           className="absolute right-5 z-10 cursor-pointer rounded-full p-1 text-white hover:bg-slate-500 hover:opacity-75"

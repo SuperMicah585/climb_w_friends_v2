@@ -39,6 +39,7 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         public DbSet<MapToUserToClimb> MapToUserToClimbs { get; set; }
         public DbSet<Tick> Ticks { get; set; }
         public DbSet<Attempt> Attempts { get; set; }
+        public DbSet<ClimbChat> ClimbChats{get;set;}
 protected override void OnModelCreating(ModelBuilder modelBuilder)
 {
     // Apply all existing configurations

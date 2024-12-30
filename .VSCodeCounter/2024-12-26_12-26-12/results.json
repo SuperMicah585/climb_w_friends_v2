@@ -1,0 +1,44 @@
+{
+  "file:///Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/TagsController.cs": {
+    "language": "C#",
+    "code": 135,
+    "comment": 5,
+    "blank": 31
+  },
+  "file:///Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/ClimbsController.cs": {
+    "language": "C#",
+    "code": 129,
+    "comment": 88,
+    "blank": 62
+  },
+  "file:///Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/UserController.cs": {
+    "language": "C#",
+    "code": 63,
+    "comment": 6,
+    "blank": 12
+  },
+  "file:///Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/MapsController.cs": {
+    "language": "C#",
+    "code": 157,
+    "comment": 69,
+    "blank": 61
+  },
+  "file:///Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/FeaturesController.cs": {
+    "language": "C#",
+    "code": 503,
+    "comment": 106,
+    "blank": 126
+  },
+  "file:///Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/AttemptsController.cs": {
+    "language": "C#",
+    "code": 132,
+    "comment": 10,
+    "blank": 41
+  },
+  "file:///Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/TicksController.cs": {
+    "language": "C#",
+    "code": 114,
+    "comment": 8,
+    "blank": 22
+  }
+}

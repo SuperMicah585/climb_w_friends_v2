@@ -58,6 +58,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   const [attemptOverlayDisplayTrigger, setAttemptOverlayDisplayTrigger] =
     useState<number>(0);
   const [tagsOnMount, setTagsOnMount] = useState<Tags[]>([]);
+  const [climbIdForClimbChat, setClimbIdForClimbChat] = useState<number>(-1);
 
   const setClimbNameForChatCallBack = (climbName: string) => {
     setClimbNameForChat(climbName);
@@ -103,7 +104,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
     setSortString(data);
   };
 
-  //console.log(climbObject,"Sdfsd")
+  //(climbObject,"Sdfsd")
   const handleTagSelect = (item: ClimbTagItem) => {
     setClimbObject((prev) => {
       const newState = [...prev];
@@ -205,6 +206,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
     });
   };
 
+  climbObject;
   return (
     <>
       <div
@@ -214,8 +216,13 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
         <ModalChat
           climbGrade={climbGradeForChat}
           climbName={climbNameForChat}
-          climbChat={climbChatForChat}
+          climbChatObject={climbChatForChat}
+          userId={auth0Id}
+          mapId={mapId}
+          climbIdForClimbChat={climbIdForClimbChat}
+          setClimbObject={setClimbObject}
           displayTrigger={displayTrigger}
+          type="climb"
         />
 
         <TickOverlay
@@ -243,8 +250,8 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
         />
       </div>
       <ZincModal
-        maxHeight={'max-h-[700px]'}
-        maxWidth={'max-w-[700px]'}
+        maxHeight={'h-2/3 min-h-[400px]'}
+        maxWidth={'max-w-[700px] min-w-[600px]'}
         closeModalCallBack={closeModalCallBack}
       >
         <ModalSearch
@@ -297,10 +304,12 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                     setTickObjectCallBack={setTickObjectCallBack}
                     attemptObject={item.attempts}
                     tickObject={item.ticks}
+                    chatObject={item.chatObject}
                     setClimbIdForAttemptAndTick={setClimbIdForAttemptAndTick}
                     setClimbChatForChatCallBack={setClimbChatForChatCallBack}
                     chatDisplayTriggerCallBack={chatDisplayTriggerCallBack}
                     tagInputCallBack={tagInputCallBack}
+                    setClimbIdForClimbChat={setClimbIdForClimbChat}
                     setTickOverlayDisplayTrigger={setTickOverlayDisplayTrigger}
                     setAttemptOverlayDisplayTrigger={
                       setAttemptOverlayDisplayTrigger

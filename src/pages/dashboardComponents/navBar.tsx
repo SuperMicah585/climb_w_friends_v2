@@ -1,9 +1,39 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import LogoutButton from '../../reusableComponents/logoutButton';
 import camoBackGroundImage from '../homeComponents/black_camo.jpeg';
+import { useAuth0 } from '@auth0/auth0-react';
+import { retrieveUserStats } from './utilityFunctions';
+
+interface StatObject {
+  totalMaps: number;
+  totalClimbs: number;
+  uniqueClimbers: number;
+}
+
 const NavBar = () => {
   const [currentPage, setCurrentPage] = useState<string>('Maps');
   const navBarItems = ['Maps', 'Communities', 'Feed', 'Profile'];
+  const { user } = useAuth0();
+  const [statObject, setStatObject] = useState<StatObject>({
+    totalClimbs: 0,
+    totalMaps: 0,
+    uniqueClimbers: 0,
+  });
+
+  useEffect(() => {
+    const userStats = async () => {
+      if (user?.sub) {
+        const data = await retrieveUserStats(user?.sub);
+        setStatObject(data);
+      }
+    };
+
+    if (user?.sub) {
+      userStats();
+    } else {
+      console.error('User not found');
+    }
+  }, [user]);
 
   return (
     <div className="relative z-10 flex min-h-96 w-screen items-center justify-center gap-40 bg-gradient-to-br from-indigo-600 to-indigo-500 font-semibold">
@@ -16,17 +46,17 @@ const NavBar = () => {
       <div className="z-10 flex items-center gap-5 text-6xl font-black text-white">
         <div>
           {' '}
-          <span className="">3</span> Maps
+          <span className="">{statObject.totalMaps}</span> Maps
         </div>
         <div> | </div>
         <div className="">
           {' '}
-          <span className="">300</span> Climbs
+          <span className="">{statObject.totalClimbs}</span> Climbs
         </div>
         <div> | </div>
         <div className="">
           {' '}
-          <span className="">40</span> Climbers
+          <span className="">{statObject.uniqueClimbers}</span> Friends
         </div>
       </div>
 

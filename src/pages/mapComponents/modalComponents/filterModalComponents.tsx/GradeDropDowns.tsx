@@ -13,11 +13,11 @@ const GradeDropDowns = () => {
   };
 
   const fromGradeCallBack = (item: string) => {
-    console.log(item);
+    item;
   };
 
   const toGradeCallBack = (item: string) => {
-    console.log(item);
+    item;
   };
 
   const climbButtonStyle =

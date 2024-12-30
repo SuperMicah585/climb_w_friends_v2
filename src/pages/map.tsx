@@ -112,6 +112,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
       displayLayersInitial(map, clickedFeatureClimbCallBack, features);
       if (mapLoaded && 'type' in geoJsonObject) {
         updateLayerVisibility(map, geoJsonObject);
+        setGeoJsonObject(features);
       }
     }
   };
