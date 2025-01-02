@@ -6,7 +6,7 @@ import ActivityFeed from './mapComponents/activityFeed';
 import ClimbModal from './mapComponents/modalComponents/climbModal';
 import MapNavBar from './mapComponents/mapNavBar';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { ClimbsTableResponse, GeoJsonObject } from '../types/interfaces';
+import { ClimbsTableResponse, GeoJsonObject,filterObject } from '../types/interfaces';
 import TagModal from './mapComponents/modalComponents/modalTag';
 import FilterModal from './mapComponents/modalComponents/filterModal';
 import TagOverlay from './mapComponents/modalComponents/tagOverlay';
@@ -44,7 +44,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     useState<boolean>(false);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [clickedFeatureClimbs, setClickedFeatureClimbs] = useState<number>(-1);
-
+  const [filtersOnMap,setFiltersOnMap] = useState<filterObject>({users:[],tags:[],gradeRange:{gradeStart:'',gradeEnd:'',type:'None'}})
   const [addClimbsModalDisplay, setAddClimbsModalDisplay] = useState(false);
   const [geoJsonObject, setGeoJsonObject] = useState<GeoJsonObject | {}>({});
   const [
@@ -290,6 +290,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     }
   }, [clickedFeatureClimbs]);
 
+
   return (
     <div className="absolute">
       <MapNavBar
@@ -339,7 +340,9 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
       {filterModalDisplay ? (
         <FilterModal
           mapId={mapIdNumber}
+          setFiltersOnMap = {setFiltersOnMap}
           closeTagModalCallBack={closeFilterModalCallBack}
+          filtersOnMap={filtersOnMap}
         />
       ) : null}
 

@@ -29,13 +29,6 @@ export interface ChatObject {
   CreatedAt?: string;
 }
 
-export interface Micah {
-  name: string;
-  id: number;
-  email: string;
-  userName: string;
-}
-
 export interface Tags {
   id?: number;
   tagId: number;
@@ -119,6 +112,20 @@ export interface MapObject {
   climbersOnMap?: friendsObject[];
   climbCountOnMap: number;
 }
+
+export interface filterObject {
+  users: UserObjectForFeature[]
+  tags:Tags[]
+  gradeRange:GradeRange
+}
+
+
+export interface GradeRange {
+  type:string;
+  gradeStart:string;
+  gradeEnd:string;
+}
+
 
 export interface friendsObject {
   userId: string;

@@ -69,18 +69,27 @@ namespace ClimbWithFriendsAPI.Controllers
 
 
                 // GET: api/Maps/Userlist/5
-        [HttpGet("Userlist/{id}")]
-        public async Task<ActionResult<IEnumerable<Map>>> GetUsersByMapId(int id)
-        {
-            // Get maps associated with the user
-        var users = await _context.MapToUsers
-            .Where(mu => mu.MapId == id)  // Filter by the given mapId
-            .ToListAsync();
+[HttpGet("Userlist/{mapId}")]
+public async Task<ActionResult<IEnumerable<UserObjectForFeature>>> GetUsersByMapId(int mapId)
+{
+    // Get users associated with the map using a join
+    var users = await _context.MapToUsers
+        .Where(mu => mu.MapId == mapId)  // Filter by MapId first
+        .Join(
+            _context.Users,
+            mapUser => mapUser.UserId,
+            user => user.Auth0ID,
+            (mapUser, user) => new UserObjectForFeature
+            {
+                UserId = user.UserId,
+                Auth0ID = user.Auth0ID,
+                Name = user.Name,
+                Username = user.Username
+            })
+        .ToListAsync();
 
-
-
-            return Ok(users);
-        }
+    return Ok(users);
+}
 
         //GET: api/Maps/Tags/{id}
 
