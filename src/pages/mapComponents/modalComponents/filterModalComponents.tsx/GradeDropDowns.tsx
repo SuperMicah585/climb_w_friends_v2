@@ -4,14 +4,18 @@ import {
   ropeClimbingGrades,
   boulderingClimbingGrades,
 } from '../../mapObjects';
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { filterObject } from '../../../../types/interfaces';
-interface GradeDropDownsProps{
+interface GradeDropDownsProps {
   setModifiedFiltersOnMap: React.Dispatch<React.SetStateAction<filterObject>>;
-  filtersOnMap: filterObject
-  modifiedFiltersOnMap: filterObject
+  filtersOnMap: filterObject;
+  modifiedFiltersOnMap: filterObject;
 }
-const GradeDropDowns:React.FC<GradeDropDownsProps> = ({setModifiedFiltersOnMap,filtersOnMap,modifiedFiltersOnMap}) => {
+const GradeDropDowns: React.FC<GradeDropDownsProps> = ({
+  setModifiedFiltersOnMap,
+  filtersOnMap,
+  modifiedFiltersOnMap,
+}) => {
   const [currentClimbType, setCurrentClimbType] = useState<string>('None');
 
   const climbTypeCallBack = (item: string) => {
@@ -24,19 +28,17 @@ const GradeDropDowns:React.FC<GradeDropDownsProps> = ({setModifiedFiltersOnMap,f
       },
     }));
 
-    if(item==='Boulder'){
-      fromGradeCallBack('V1')
-      toGradeCallBack('V1')
-
+    if (item === 'Boulder') {
+      fromGradeCallBack('V1');
+      toGradeCallBack('V1');
     }
-    if(item==='Rock'){
-      fromGradeCallBack('5.9')
-      toGradeCallBack('5.9')
-      
+    if (item === 'Rock') {
+      fromGradeCallBack('5.9');
+      toGradeCallBack('5.9');
     }
-    if(item==='None'){
-      fromGradeCallBack('')
-      toGradeCallBack('')
+    if (item === 'None') {
+      fromGradeCallBack('');
+      toGradeCallBack('');
     }
   };
 
@@ -60,15 +62,12 @@ const GradeDropDowns:React.FC<GradeDropDownsProps> = ({setModifiedFiltersOnMap,f
     }));
   };
 
-
-  useEffect(()=>{
-    console.log(filtersOnMap,"Sdfsdf")
-    fromGradeCallBack(filtersOnMap.gradeRange.gradeStart)
-    toGradeCallBack(filtersOnMap.gradeRange.gradeEnd)
-    setCurrentClimbType(filtersOnMap.gradeRange.type)
-
-  },[filtersOnMap])
-  
+  useEffect(() => {
+    console.log(filtersOnMap, 'Sdfsdf');
+    fromGradeCallBack(filtersOnMap.gradeRange.gradeStart);
+    toGradeCallBack(filtersOnMap.gradeRange.gradeEnd);
+    setCurrentClimbType(filtersOnMap.gradeRange.type);
+  }, [filtersOnMap]);
 
   const climbButtonStyle =
     'bg-customGray border-slate-500 border text-white flex font-semibold text-sm w-[84px] justify-between gap-1 items-center hover:opacity-75 cursor-pointer rounded-lg p-2';

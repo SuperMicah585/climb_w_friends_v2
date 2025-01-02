@@ -32,7 +32,7 @@ const ZincModal: React.FC<ModalProps> = ({
   return (
     <div
       onClick={() => closeModalCallBack(false)}
-      className={`bg-blur-md fixed z-10 flex h-screen w-screen items-center justify-center ${opacityColor ? opacityColor : 'bg-zinc-500'} bg-opacity-75 `}
+      className={`bg-blur-md fixed z-10 flex h-screen w-screen items-center justify-center ${opacityColor ? opacityColor : 'bg-zinc-500'} bg-opacity-75`}
     >
       <div
         onClick={(event) => event.stopPropagation()}

@@ -521,7 +521,7 @@ const retrieveTagsOnMap = async (mapId: number) => {
 
     const json = await response.json();
     // Update the specific object at the given index in the array
-    return json
+    return json;
   } catch (error: any) {
     console.error(error.message);
   }

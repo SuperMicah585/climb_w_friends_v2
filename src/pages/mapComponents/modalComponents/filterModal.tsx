@@ -5,7 +5,11 @@ import Input from '../../../reusableComponents/input';
 import PurpleButton from '../../../reusableComponents/genericButton';
 import { useState, useRef, useEffect } from 'react';
 import SearchDropDown from '../../../reusableComponents/searchDropDown';
-import { Tags,UserObjectForFeature,filterObject } from '../../../types/interfaces';
+import {
+  Tags,
+  UserObjectForFeature,
+  filterObject,
+} from '../../../types/interfaces';
 import GradeDropDowns from './filterModalComponents.tsx/GradeDropDowns';
 import { useFilterContext } from '../../filterProvider';
 import {
@@ -14,34 +18,36 @@ import {
 } from '../../../reusableComponents/styles';
 import { retrieveTagsOnMap } from '../mapApiRequests';
 import { retrieveUsersOnMap } from '../../dashboardComponents/utilityFunctions';
-import {
-  filterItems,
-} from '../../mapComponents/mapObjects';
+import { filterItems } from '../../mapComponents/mapObjects';
 
 interface FilterModalProps {
   closeTagModalCallBack: (value: boolean) => void;
   mapId: number;
-  setFiltersOnMap:React.Dispatch<React.SetStateAction<filterObject>>;
-  filtersOnMap:filterObject
+  setFiltersOnMap: React.Dispatch<React.SetStateAction<filterObject>>;
+  filtersOnMap: filterObject;
 }
 const FilterModal: React.FC<FilterModalProps> = ({
   closeTagModalCallBack,
   mapId,
   setFiltersOnMap,
-  filtersOnMap
+  filtersOnMap,
 }) => {
   //const { setFilterFunctions, filters } = useFilterContext();
- // const [setFilterFunctions,filters] = useState<filterObject>({users:[],tags:[],gradeRange:[]})
+  // const [setFilterFunctions,filters] = useState<filterObject>({users:[],tags:[],gradeRange:[]})
   const [searchString, setSearchString] = useState<string>('');
   const [toggleFilterDropDown, setToggleFilterDropDown] =
     useState<boolean>(false);
   const inputFilterRef = useRef<HTMLInputElement | null>(null);
 
-  const [searchResults, setSearchResults] = useState<Tags[] | UserObjectForFeature[]>(
-    [],
-  );
-  const [modifiedFiltersOnMap,setModifiedFiltersOnMap
-  ] = useState<filterObject>({users:[],tags:[],gradeRange:{gradeStart:'',gradeEnd:'',type:'None'}})
+  const [searchResults, setSearchResults] = useState<
+    Tags[] | UserObjectForFeature[]
+  >([]);
+  const [modifiedFiltersOnMap, setModifiedFiltersOnMap] =
+    useState<filterObject>({
+      users: [],
+      tags: [],
+      gradeRange: { gradeStart: '', gradeEnd: '', type: 'None' },
+    });
   const [filterToggle, setFilterToggle] = useState<boolean>(false);
   const [selectedFilter, setSelecetedFilter] = useState<string>('climber');
   const filterIconRef = useRef<HTMLDivElement | null>(null);
@@ -56,16 +62,22 @@ const FilterModal: React.FC<FilterModalProps> = ({
   };
 
   const modifyFriendArray = (item: UserObjectForFeature) => {
-    setModifiedFiltersOnMap((prev) =>
-     ({...prev, users: [...prev.users,item]}));
+    setModifiedFiltersOnMap((prev) => ({
+      ...prev,
+      users: [...prev.users, item],
+    }));
   };
 
-  const [tagArrayForSearch,setTagArrayForSearch] = useState<Tags[]>([])
-  const [userArrayForSearch,setUserArrayForSearch] = useState<UserObjectForFeature[]>([])
+  const [tagArrayForSearch, setTagArrayForSearch] = useState<Tags[]>([]);
+  const [userArrayForSearch, setUserArrayForSearch] = useState<
+    UserObjectForFeature[]
+  >([]);
 
   const modifyTagArray = (item: Tags) => {
-    setModifiedFiltersOnMap((prev) =>
-    ({...prev, tags: [...prev.tags,item]}));
+    setModifiedFiltersOnMap((prev) => ({
+      ...prev,
+      tags: [...prev.tags, item],
+    }));
   };
   const handleClickedTag = (item: Tags | UserObjectForFeature) => {
     if ('tagName' in item) {
@@ -78,8 +90,10 @@ const FilterModal: React.FC<FilterModalProps> = ({
 
   useEffect(() => {
     if (selectedFilter === 'tag') {
-      let filteredTags = tagArrayForSearch.filter((item) =>
-        item.tagName.includes(searchString) && !modifiedFiltersOnMap.tags.find((tag)=>item.tagId===tag.tagId),
+      let filteredTags = tagArrayForSearch.filter(
+        (item) =>
+          item.tagName.includes(searchString) &&
+          !modifiedFiltersOnMap.tags.find((tag) => item.tagId === tag.tagId),
       );
 
       setSearchResults(filteredTags);
@@ -87,45 +101,50 @@ const FilterModal: React.FC<FilterModalProps> = ({
       let filteredClimber = userArrayForSearch.filter(
         (item) =>
           (item.name?.includes(searchString) ||
-          item.username?.includes(searchString)) && !modifiedFiltersOnMap.users.find((user)=>item.userId===user.userId),
+            item.username?.includes(searchString)) &&
+          !modifiedFiltersOnMap.users.find(
+            (user) => item.userId === user.userId,
+          ),
       );
       setSearchResults(filteredClimber);
     }
-  }, [searchString,tagArrayForSearch,userArrayForSearch,modifiedFiltersOnMap, selectedFilter]);
-
+  }, [
+    searchString,
+    tagArrayForSearch,
+    userArrayForSearch,
+    modifiedFiltersOnMap,
+    selectedFilter,
+  ]);
 
   useEffect(() => {
     const retrieveAndSetTagsOnMap = async (mapId: number) => {
-     const tagResponse = await retrieveTagsOnMap(mapId)
-     setTagArrayForSearch(tagResponse)
+      const tagResponse = await retrieveTagsOnMap(mapId);
+      setTagArrayForSearch(tagResponse);
     };
 
-    const retrieveAndSetUsersOnMap = async (mapId:number) =>{
-      const userResponse = await retrieveUsersOnMap(mapId)
+    const retrieveAndSetUsersOnMap = async (mapId: number) => {
+      const userResponse = await retrieveUsersOnMap(mapId);
 
-      setUserArrayForSearch(userResponse)
-      
-    }
-    retrieveAndSetUsersOnMap(mapId)
+      setUserArrayForSearch(userResponse);
+    };
+    retrieveAndSetUsersOnMap(mapId);
     retrieveAndSetTagsOnMap(mapId);
   }, [mapId]);
 
   const deleteTagCallBack = (item: Tags) => {
-    setModifiedFiltersOnMap(prev => ({
-        ...prev,
-        tags: prev.tags.filter((tag) => tag.tagId !== item.tagId)
+    setModifiedFiltersOnMap((prev) => ({
+      ...prev,
+      tags: prev.tags.filter((tag) => tag.tagId !== item.tagId),
     }));
-};
+  };
 
-
-console.log(modifiedFiltersOnMap)
-const deleteUserCallBack = (item:UserObjectForFeature) =>{
-  setModifiedFiltersOnMap(prev => ({
-    ...prev,
-    users: prev.users.filter((user) => user.userId !== item.userId)
-}));
-
-}
+  console.log(modifiedFiltersOnMap);
+  const deleteUserCallBack = (item: UserObjectForFeature) => {
+    setModifiedFiltersOnMap((prev) => ({
+      ...prev,
+      users: prev.users.filter((user) => user.userId !== item.userId),
+    }));
+  };
 
   const setSelectedFilterCallBack = (item: string) => {
     setSelecetedFilter(item);
@@ -162,7 +181,6 @@ const deleteUserCallBack = (item:UserObjectForFeature) =>{
     <ZincModal
       maxHeight={'max-h-[500px]'}
       maxWidth={'max-w-[500px]'}
-
       closeModalCallBack={closeTagModalCallBack}
     >
       <div className="relative flex h-full w-full flex-col pb-12">
@@ -204,7 +222,11 @@ const deleteUserCallBack = (item:UserObjectForFeature) =>{
           </div>
 
           <div className="font-semibold text-white">Filter by Grade/Type</div>
-          <GradeDropDowns modifiedFiltersOnMap = {modifiedFiltersOnMap} filtersOnMap = {filtersOnMap} setModifiedFiltersOnMap = {setModifiedFiltersOnMap}/>
+          <GradeDropDowns
+            modifiedFiltersOnMap={modifiedFiltersOnMap}
+            filtersOnMap={filtersOnMap}
+            setModifiedFiltersOnMap={setModifiedFiltersOnMap}
+          />
 
           <div className="font-semibold text-white"> Filters on Map</div>
           <div className="flex flex-wrap gap-2">
@@ -213,31 +235,30 @@ const deleteUserCallBack = (item:UserObjectForFeature) =>{
                 {' '}
                 <div
                   key={index}
-                  className={`flex cursor-pointer rounded-md border-green-900 bg-green-600 border-2 p-1 text-center text-sm hover:opacity-75`}
+                  className={`flex cursor-pointer rounded-md border-2 border-green-900 bg-green-600 p-1 text-center text-sm hover:opacity-75`}
                 >
                   {item.tagName}
-                  </div>
+                </div>
               </Tooltip>
             ))}
-              {modifiedFiltersOnMap.users.map((item, index) => (
+            {modifiedFiltersOnMap.users.map((item, index) => (
               <Tooltip deleteItemCallBack={deleteUserCallBack} item={item}>
                 {' '}
                 <div
                   key={index}
-                  className={`flex cursor-pointer rounded-md border-violet-900 bg-violet-600 border-2 p-1 text-center text-sm hover:opacity-75`}
+                  className={`flex cursor-pointer rounded-md border-2 border-violet-900 bg-violet-600 p-1 text-center text-sm hover:opacity-75`}
                 >
                   {item.username}
-                  </div>
+                </div>
               </Tooltip>
             ))}
           </div>
         </div>
 
-
         <div className="absolute bottom-0 right-0 flex h-12 w-full items-end justify-end">
           <div
             onClick={() => {
-              setFiltersOnMap(modifiedFiltersOnMap)
+              setFiltersOnMap(modifiedFiltersOnMap);
               closeTagModalCallBack(false);
             }}
             className=" "
@@ -279,9 +300,18 @@ const deleteUserCallBack = (item:UserObjectForFeature) =>{
                     <div className="flex flex-col gap-2 p-2">
                       <div>
                         {' '}
-                        {'username' in item
-                          ?<div className = 'flex flex-col'> <div> {item.name} </div> <div className = 'font-thin text-xs'> {item.username} </div> </div>
-                          : 'tagName' in item? item.tagName:null}
+                        {'username' in item ? (
+                          <div className="flex flex-col">
+                            {' '}
+                            <div> {item.name} </div>{' '}
+                            <div className="text-xs font-thin">
+                              {' '}
+                              {item.username}{' '}
+                            </div>{' '}
+                          </div>
+                        ) : 'tagName' in item ? (
+                          item.tagName
+                        ) : null}
                       </div>
                     </div>
                   </div>
