@@ -73,6 +73,7 @@ namespace ClimbWithFriendsAPI.Controllers
         };
     }
 
+
         // POST: api/User
         [HttpPost]
         public ActionResult<User> CreateUser([FromBody] User user)

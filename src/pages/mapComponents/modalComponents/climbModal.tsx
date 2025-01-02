@@ -19,7 +19,7 @@ import ClimbModalBar from '../../../reusableComponents/climbModalBar';
 import TickOverlay from '../tickOverlay';
 import AttemptOverlay from '../attemptOverlay';
 import { useAuth0 } from '@auth0/auth0-react';
-import { sortByGradeDesc,compareGrades } from '../gradeComparison';
+import { sortByGradeDesc, compareGrades } from '../gradeComparison';
 import {
   retrieveClimbDependencies,
   addTagToClimb,
@@ -271,10 +271,9 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
 
               .sort((a, b) => {
                 if (sortString === 'Order By Grade DESC') {
-                  return compareGrades(b.climb?.rating,a.climb?.rating); 
-                }
-                else if (sortString === 'Order By Grade ASC') {
-                  return compareGrades(a.climb?.rating,b.climb?.rating); 
+                  return compareGrades(b.climb?.rating, a.climb?.rating);
+                } else if (sortString === 'Order By Grade ASC') {
+                  return compareGrades(a.climb?.rating, b.climb?.rating);
                 }
                 return 0;
               })
