@@ -527,7 +527,195 @@ const retrieveTagsOnMap = async (mapId: number) => {
   }
 };
 
+const retrieveFiltersOnMap = async (mapId: number, auth0Id: string) => {
+  const url = `http://localhost:5074/api/Filters/OnMap/${mapId}/ForUser/${auth0Id}/List`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const json = await response.json();
+    // Update the specific object at the given index in the array
+    return json;
+  } catch (error: any) {
+    console.error(error.message);
+  }
+};
+
+const AddTagFilter = async (auth0Id: string, mapId: number, tagId: number) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5074/api/Filters/Tag/${tagId}/ToMap/${mapId}/ForUser/${auth0Id}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(`HTTP error! status: ${error}`);
+  }
+};
+
+const AddUserFilter = async (
+  auth0IdToFilter: string,
+  auth0Id: string,
+  mapId: number,
+) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5074/api/Filters/User/${auth0IdToFilter}/ToMap/${mapId}/ForUser/${auth0Id}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(`HTTP error! status: ${error}`);
+  }
+};
+
+const AddGradeRangeFilter = async (
+  auth0Id: string,
+  mapId: number,
+  fromGrade: string,
+  toGrade: string,
+  type: string,
+) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5074/api/Filters/GradeRangeFilter/ToMap/${mapId}/ForUser/${auth0Id}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          FromGrade: fromGrade,
+          ToGrade: toGrade,
+          Type: type,
+        }),
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(`HTTP error! status: ${error}`);
+  }
+};
+
+const removeTagFilter = async (filterId: number) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5074/api/Filters/Tag/${filterId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    if (response.ok) {
+      // Handle success case
+      return true;
+    } else {
+      // If the response is not OK, try to log the reason
+      const error = await response.json(); // Try parsing the error JSON
+      console.warn('Response indicates failure:', error.message || error);
+      return false;
+    }
+  } catch (err) {
+    console.error('Network error:', err);
+    return false;
+  }
+};
+
+const removeUserFilter = async (userId: number) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5074/api/Filters/User/${userId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    if (response.ok) {
+      // Handle success case
+      return true;
+    } else {
+      // If the response is not OK, try to log the reason
+      const error = await response.json(); // Try parsing the error JSON
+      console.warn('Response indicates failure:', error.message || error);
+      return false;
+    }
+  } catch (err) {
+    console.error('Network error:', err);
+    return false;
+  }
+};
+
+const removeGradeRangeFilter = async (gradeRangeId: number) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5074/api/Filters/GradeRange/${gradeRangeId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    if (response.ok) {
+      // Handle success case
+      return true;
+    } else {
+      // If the response is not OK, try to log the reason
+      const error = await response.json(); // Try parsing the error JSON
+      console.warn('Response indicates failure:', error.message || error);
+      return false;
+    }
+  } catch (err) {
+    console.error('Network error:', err);
+    return false;
+  }
+};
+
 export {
+  removeGradeRangeFilter,
+  removeUserFilter,
+  removeTagFilter,
+  AddGradeRangeFilter,
+  AddUserFilter,
+  AddTagFilter,
+  retrieveFiltersOnMap,
   retrieveTagsOnMap,
   ListChatsForClimb,
   AddChatToClimb,

@@ -1,4 +1,5 @@
-﻿namespace ClimbWithFriendsAPI.DTOs
+﻿using ClimbWithFriendsAPI.Data;
+namespace ClimbWithFriendsAPI.DTOs
 {
     public class MapToUserDTO
     {
@@ -37,4 +38,17 @@ public class ClimbChatDTO
     public string Message{get;set;}
 }
 
+public class FilterDTO
+{
+       public List<TagFilter> TagFilters { get; set; } = new List<TagFilter>();
+        public List<GradeRangeFilter> GradeRangeFilters { get; set; } = new List<GradeRangeFilter>();
+        public List<UserFilter> UserFilters { get; set; } = new List<UserFilter>();
+}
 
+public class GradeRangeFilterDTO
+{
+    public string FromGrade {get;set;}
+    public string ToGrade{get;set;}
+    public string Type{get;set;} 
+
+}

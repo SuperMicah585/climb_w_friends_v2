@@ -27,7 +27,10 @@ import {
   displayLayersInitial,
   //shapeColors,
 } from './mapComponents/mapLayers';
-import { retrieveFeatures } from './mapComponents/mapApiRequests';
+import {
+  retrieveFeatures,
+  AddUserFilter,
+} from './mapComponents/mapApiRequests';
 // Set Mapbox access token
 mapboxgl.accessToken = import.meta.env.VITE_MAP_BOX_KEY;
 
