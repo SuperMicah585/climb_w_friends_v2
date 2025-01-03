@@ -1,0 +1,14 @@
+{DONE?}user joins/leaves map
+
+setup users again
+climbs added/removed
+
+
+climbing data scraped
+
+deployment
+
+CICD
+
+
+

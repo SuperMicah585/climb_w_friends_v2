@@ -15,10 +15,12 @@ namespace ClimbWithFriendsAPI.Controllers
     public class MapsController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly ActivityLogService _activityLogService;
 
-        public MapsController(AppDbContext context)
+        public MapsController(AppDbContext context, ActivityLogService activityLogService)
         {
             _context = context;
+            _activityLogService = activityLogService;
         }
 
         // GET: api/Maps
@@ -180,6 +182,7 @@ public async Task<ActionResult<IEnumerable<UserObjectForFeature>>> GetUsersByMap
 
             _context.MapToUsers.Add(newAssociation);
             await _context.SaveChangesAsync();
+            await _activityLogService.LogActivity(payload.UserId, "UserJoined", $"User joined map {mapId}");
 
             return CreatedAtAction(nameof(AddUserToMap), new { userId = payload.UserId }, newAssociation);
         }

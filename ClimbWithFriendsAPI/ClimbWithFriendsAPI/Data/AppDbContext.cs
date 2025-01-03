@@ -28,6 +28,7 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 }
 
         public DbSet<Map> Maps { get; set; }
+        public DbSet<ActivityLog> ActivityLogs { get; set; }
         public DbSet<MapToUser> MapToUsers { get; set; }
         public DbSet<Feature> Features { get; set; }
         public DbSet<Climb> Climbs { get; set; }

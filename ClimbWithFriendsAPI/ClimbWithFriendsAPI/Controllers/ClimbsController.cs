@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ClimbWithFriendsAPI.Data;
+using Humanizer;
 
 namespace ClimbWithFriendsAPI.Controllers
 {
@@ -14,7 +15,6 @@ namespace ClimbWithFriendsAPI.Controllers
     public class ClimbsController : ControllerBase
     {
         private readonly AppDbContext _context;
-
         public ClimbsController(AppDbContext context)
         {
             _context = context;
@@ -102,14 +102,12 @@ public async Task<ActionResult<MapToUserToClimb>> AddMapToUserToClimb(int climbI
 
     _context.MapToUserToClimbs.Add(mapToUserToClimb);
             await _context.SaveChangesAsync();
-
-    return Ok(mapToUserToClimb);
-}
-
-
-[HttpDelete("{climbId}/FromUser/{userId}/FromMap/{mapId}")]
-public async Task<ActionResult<MapToUserToClimb>> RemoveMapToUserToClimb(int climbId, int mapId, string userId)
-{
+            
+            return Ok(mapToUserToClimb);
+        }
+        [HttpDelete("{climbId}/FromUser/{userId}/FromMap/{mapId}")]
+        public async Task<ActionResult<MapToUserToClimb>> RemoveMapToUserToClimb(int climbId, int mapId, string userId)
+        {
     var user = await _context.Users
         .FirstOrDefaultAsync(u => u.Auth0ID == userId);
 
@@ -169,8 +167,7 @@ public async Task<ActionResult<MapToUserToClimb>> RemoveMapToUserToClimb(int cli
             }
         }
     }
-
-    return Ok(mapToUserToClimb);
+            return Ok(mapToUserToClimb);
 }
 
 
