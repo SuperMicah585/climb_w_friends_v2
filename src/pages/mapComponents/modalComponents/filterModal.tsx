@@ -32,8 +32,17 @@ const FilterModal: React.FC<FilterModalProps> = ({
   setFiltersOnMap,
   filtersOnMap,
 }) => {
-  //const { setFilterFunctions, filters } = useFilterContext();
-  // const [setFilterFunctions,filters] = useState<filterObject>({users:[],tags:[],gradeRange:[]})
+  //Pass filters to backend. Have backend grab all climbs on the map that have the dependency Id(tagId,userId). TagToMap and MapToUser Join.
+  //Based on these returned climbs, I will then check every climb to see if the string grade is between the values that were passed. Will need to recreate the functions
+  //Will then use the remaining climbs to create shapes.
+
+  //Filters will also need to filter endpoint for hover of shapes/clicked shape/all climbs modal since all these calls are based on featureId/mapId and not the climbs on the map.
+  //alternatively, I can do a promise.all for shape hovers and individual features based on the ID's within the shape. A combination of this
+  //Based on this, filters should be held in the database so that client doesn't have send the data everytime within the get request
+  //Three Tables
+  // TagFilters: Id/TagID/Auth0Id/MapId/TagToMapID -- TagToMap navigation/cascade
+  // UserFilters: Id/userAuth0Id/filteredUserAuth0ID/MapId/UserToMapId --UserToMap navigation/cascade
+  // GradeRangeFilter: To/From/Type/MapId/Auth0Id  --Map navigation property/cascade
   const [searchString, setSearchString] = useState<string>('');
   const [toggleFilterDropDown, setToggleFilterDropDown] =
     useState<boolean>(false);
