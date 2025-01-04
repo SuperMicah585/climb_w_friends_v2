@@ -11,26 +11,33 @@ import {
   UserObjectForFeature,
   filterObject,
   UserFilter,
-  TagFilter
+  TagFilter,
 } from '../../../types/interfaces';
 import GradeDropDowns from './filterModalComponents.tsx/GradeDropDowns';
 import {
   dropDownStyles,
   threeLineDropDownIcon,
 } from '../../../reusableComponents/styles';
-import { retrieveTagsOnMap,retrieveFiltersOnMap,AddTagFilter,AddUserFilter,removeTagFilter,removeUserFilter } from '../mapApiRequests';
+import {
+  retrieveTagsOnMap,
+  retrieveFiltersOnMap,
+  AddTagFilter,
+  AddUserFilter,
+  removeTagFilter,
+  removeUserFilter,
+} from '../mapApiRequests';
 import { retrieveUsersOnMap } from '../../dashboardComponents/utilityFunctions';
 import { filterItems } from '../../mapComponents/mapObjects';
 
 interface FilterModalProps {
   closeTagModalCallBack: (value: boolean) => void;
   mapId: number;
-  auth0Id:string;
+  auth0Id: string;
 }
 const FilterModal: React.FC<FilterModalProps> = ({
   closeTagModalCallBack,
   mapId,
-  auth0Id
+  auth0Id,
 }) => {
   //Pass filters to backend. Have backend grab all climbs on the map that have the dependency Id(tagId,userId). TagToMap and MapToUser Join.
   //Based on these returned climbs, I will then check every climb to see if the string grade is between the values that were passed. Will need to recreate the functions
@@ -70,30 +77,29 @@ const FilterModal: React.FC<FilterModalProps> = ({
     setToggleFilterDropDown(booleanValue);
   };
 
-  const modifyFriendArray = async(item: UserFilter) => {
-
-    const response = await AddUserFilter(item.auth0ID || ''  ,auth0Id,mapId)
-    if(response){
-    setModifiedFiltersOnMap((prev) => ({
-      ...prev,
-      userFilters: [...prev.userFilters, item],
-    }));
-  }
+  const modifyFriendArray = async (item: UserFilter) => {
+    const response = await AddUserFilter(item.auth0ID || '', auth0Id, mapId);
+    if (response) {
+      setModifiedFiltersOnMap((prev) => ({
+        ...prev,
+        userFilters: [...prev.userFilters, item],
+      }));
+    }
   };
 
   const [tagArrayForSearch, setTagArrayForSearch] = useState<TagFilter[]>([]);
-  const [userArrayForSearch, setUserArrayForSearch] = useState<
-  UserFilter[]
-  >([]);
+  const [userArrayForSearch, setUserArrayForSearch] = useState<UserFilter[]>(
+    [],
+  );
 
-  const modifyTagArray = async(item: TagFilter) => {
-    const response = await AddTagFilter(auth0Id,mapId,item.tagId)
-    if(response){
-    setModifiedFiltersOnMap((prev) => ({
-      ...prev,
-      tagFilters: [...prev.tagFilters, item],
-    }));
-  }
+  const modifyTagArray = async (item: TagFilter) => {
+    const response = await AddTagFilter(auth0Id, mapId, item.tagId);
+    if (response) {
+      setModifiedFiltersOnMap((prev) => ({
+        ...prev,
+        tagFilters: [...prev.tagFilters, item],
+      }));
+    }
   };
   const handleClickedTag = (item: TagFilter | UserFilter) => {
     if ('tagName' in item) {
@@ -104,30 +110,27 @@ const FilterModal: React.FC<FilterModalProps> = ({
     //setModifiedFiltersOnMap((prev) => [...prev.users, item]);
   };
 
-
-
   useEffect(() => {
-
     if (selectedFilter === 'tag') {
       let filteredTags = tagArrayForSearch.filter(
         (item) =>
           item.tagName.includes(searchString) &&
-          !modifiedFiltersOnMap.tagFilters.find((tag) => item.tagId === tag.tagId),
+          !modifiedFiltersOnMap.tagFilters.find(
+            (tag) => item.tagId === tag.tagId,
+          ),
       );
 
       setSearchResults(filteredTags);
     } else if (selectedFilter === 'climber') {
-
-
       let filteredClimber = userArrayForSearch.filter(
         (item) =>
           (item.name?.includes(searchString) ||
             item.username?.includes(searchString)) &&
-            !modifiedFiltersOnMap.userFilters.find((user) => {
-              const itemAuth0ID = item.auth0ID || item.auth0Id; // Check both possible properties
-              const userAuth0ID = user.auth0ID || user.auth0Id; // Check both possible properties
-              return itemAuth0ID && userAuth0ID && itemAuth0ID === userAuth0ID; // Compare if both are set
-            }),
+          !modifiedFiltersOnMap.userFilters.find((user) => {
+            const itemAuth0ID = item.auth0ID || item.auth0Id; // Check both possible properties
+            const userAuth0ID = user.auth0ID || user.auth0Id; // Check both possible properties
+            return itemAuth0ID && userAuth0ID && itemAuth0ID === userAuth0ID; // Compare if both are set
+          }),
       );
       setSearchResults(filteredClimber);
     }
@@ -154,27 +157,27 @@ const FilterModal: React.FC<FilterModalProps> = ({
     retrieveAndSetTagsOnMap(mapId);
   }, [mapId]);
 
-  const deleteTagCallBack = async(item: Tags) => {
-    const response = await removeTagFilter(item.tagId)
+  const deleteTagCallBack = async (item: Tags) => {
+    const response = await removeTagFilter(item.tagId);
 
-    if(response){
-    setModifiedFiltersOnMap((prev) => ({
-      ...prev,
-      tagFilters: prev.tagFilters.filter((tag) => tag.tagId !== item.tagId),
-    }));
-  }
+    if (response) {
+      setModifiedFiltersOnMap((prev) => ({
+        ...prev,
+        tagFilters: prev.tagFilters.filter((tag) => tag.tagId !== item.tagId),
+      }));
+    }
   };
 
-
-  const deleteUserCallBack = async(item: UserFilter) => {
-
-    const response = await removeUserFilter(item.auth0Id || item.auth0ID || '')
-    if(response){
-    setModifiedFiltersOnMap((prev) => ({
-      ...prev,
-      userFilters: prev.userFilters.filter((user) => user.auth0Id  !== item.auth0Id),
-    }));
-  }
+  const deleteUserCallBack = async (item: UserFilter) => {
+    const response = await removeUserFilter(item.auth0Id || item.auth0ID || '');
+    if (response) {
+      setModifiedFiltersOnMap((prev) => ({
+        ...prev,
+        userFilters: prev.userFilters.filter(
+          (user) => user.auth0Id !== item.auth0Id,
+        ),
+      }));
+    }
   };
 
   const setSelectedFilterCallBack = (item: string) => {
@@ -204,24 +207,23 @@ const FilterModal: React.FC<FilterModalProps> = ({
   }, []);
 
   useEffect(() => {
-    const fetchFiltersOnMap = async() =>{
- 
-      const data = await retrieveFiltersOnMap(mapId,auth0Id)
+    const fetchFiltersOnMap = async () => {
+      const data = await retrieveFiltersOnMap(mapId, auth0Id);
 
-      if(data[0].gradeRangeFilters.length===0){
-  
-        data[0].gradeRangeFilters[0] = { fromGrade: '', toGrade: '', type: 'None' }
+      if (data[0].gradeRangeFilters.length === 0) {
+        data[0].gradeRangeFilters[0] = {
+          fromGrade: '',
+          toGrade: '',
+          type: 'None',
+        };
       }
       setModifiedFiltersOnMap(data[0]);
-      
+    };
+
+    if (mapId && auth0Id) {
+      fetchFiltersOnMap();
     }
-
-    if(mapId && auth0Id){
-
-    fetchFiltersOnMap()
-    }
-  }, [mapId,auth0Id]);
-
+  }, [mapId, auth0Id]);
 
   //need to filter my climber(s)
   return (
@@ -272,8 +274,8 @@ const FilterModal: React.FC<FilterModalProps> = ({
           <GradeDropDowns
             filtersOnMap={modifiedFiltersOnMap}
             setModifiedFiltersOnMap={setModifiedFiltersOnMap}
-            mapId = {mapId}
-            auth0Id= {auth0Id}
+            mapId={mapId}
+            auth0Id={auth0Id}
           />
 
           <div className="font-semibold text-white"> Filters on Map</div>
@@ -303,8 +305,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
           </div>
         </div>
 
-        <div className="absolute bottom-0 right-0 flex h-12 w-full items-end justify-end">
-        </div>
+        <div className="absolute bottom-0 right-0 flex h-12 w-full items-end justify-end"></div>
       </div>
 
       <div className="absolute">

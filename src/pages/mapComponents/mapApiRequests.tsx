@@ -157,7 +157,7 @@ const retrieveClimbs = async (searchString: string) => {
   }
 };
 
-const retrieveFeatures = async (mapId: number,auth0Id:string) => {
+const retrieveFeatures = async (mapId: number, auth0Id: string) => {
   const url = `http://localhost:5074/api/Features/ByMap/${mapId}/ForUser/${auth0Id}`;
   try {
     const response = await fetch(url);
@@ -229,8 +229,8 @@ const retrieveFeatureDependenciesByMap = async (
   }
 };
 
-const retrieveFeatureAggregate = async (featureId: number,auth0Id:string) => {
-  console.log(auth0Id,"Sdfsd")
+const retrieveFeatureAggregate = async (featureId: number, auth0Id: string) => {
+  console.log(auth0Id, 'Sdfsd');
   const url = `http://localhost:5074/api/Features/${featureId}/Aggregate_climbs/ForUser/${auth0Id}`;
   try {
     const response = await fetch(url);
@@ -682,7 +682,7 @@ const removeUserFilter = async (auth0Id: string) => {
   }
 };
 
-const removeGradeRangeFilter = async (auth0Id: string,mapId:number) => {
+const removeGradeRangeFilter = async (auth0Id: string, mapId: number) => {
   try {
     const response = await fetch(
       `http://localhost:5074/api/Filters/GradeRange/FromMap/${mapId}/FromUser/${auth0Id}`,

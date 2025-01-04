@@ -6,25 +6,23 @@ import {
 } from '../../mapObjects';
 import { useState, useEffect } from 'react';
 import { filterObject } from '../../../../types/interfaces';
-import { AddGradeRangeFilter,removeGradeRangeFilter } from '../../mapApiRequests';
+import {
+  AddGradeRangeFilter,
+  removeGradeRangeFilter,
+} from '../../mapApiRequests';
 interface GradeDropDownsProps {
   setModifiedFiltersOnMap: React.Dispatch<React.SetStateAction<filterObject>>;
   filtersOnMap: filterObject;
-  auth0Id:string,
-  mapId:number,
-
+  auth0Id: string;
+  mapId: number;
 }
 const GradeDropDowns: React.FC<GradeDropDownsProps> = ({
   setModifiedFiltersOnMap,
   filtersOnMap,
   auth0Id,
-  mapId
+  mapId,
 }) => {
-
-
-  const climbTypeCallBack = async(item: string) => {
-
-
+  const climbTypeCallBack = async (item: string) => {
     setModifiedFiltersOnMap((prev) => ({
       ...prev,
       gradeRangeFilters: {
@@ -34,31 +32,39 @@ const GradeDropDowns: React.FC<GradeDropDownsProps> = ({
     }));
 
     if (item === 'Boulder') {
-      
-      const response = await AddGradeRangeFilter(auth0Id,mapId,'V1','V1','Boulder')
+      const response = await AddGradeRangeFilter(
+        auth0Id,
+        mapId,
+        'V1',
+        'V1',
+        'Boulder',
+      );
       //AddGradeRangeFilter(auth0Id,mapId,'V1','V1','Boulder')
- 
-      if(response){
-      setModifiedFiltersOnMap((prev) => ({
-        ...prev,
-        gradeRangeFilters: [response],
-      }));
-    }
-    }
-    else if (item === 'Rock') {
 
-      const response = await AddGradeRangeFilter(auth0Id,mapId,'5.9','5.9','Rock')
+      if (response) {
+        setModifiedFiltersOnMap((prev) => ({
+          ...prev,
+          gradeRangeFilters: [response],
+        }));
+      }
+    } else if (item === 'Rock') {
+      const response = await AddGradeRangeFilter(
+        auth0Id,
+        mapId,
+        '5.9',
+        '5.9',
+        'Rock',
+      );
       //AddGradeRangeFilter(auth0Id,mapId,'5.9','5.9','Rock')
-  
-      if(response){
-      setModifiedFiltersOnMap((prev) => ({
-        ...prev,
-        gradeRangeFilters: [response],
-      }));
-    }
-    }
-    else if (item === 'None') {
-      removeGradeRangeFilter(auth0Id,mapId)
+
+      if (response) {
+        setModifiedFiltersOnMap((prev) => ({
+          ...prev,
+          gradeRangeFilters: [response],
+        }));
+      }
+    } else if (item === 'None') {
+      removeGradeRangeFilter(auth0Id, mapId);
       setModifiedFiltersOnMap((prev) => ({
         ...prev,
         gradeRangeFilters: [{ fromGrade: '', toGrade: '', type: 'None' }],
@@ -67,8 +73,7 @@ const GradeDropDowns: React.FC<GradeDropDownsProps> = ({
   };
 
   const fromGradeCallBack = (value: string) => {
-
-    AddGradeRangeFilter(auth0Id,mapId,value,'','')
+    AddGradeRangeFilter(auth0Id, mapId, value, '', '');
 
     setModifiedFiltersOnMap((prev) => ({
       ...prev,
@@ -80,7 +85,7 @@ const GradeDropDowns: React.FC<GradeDropDownsProps> = ({
   };
 
   const toGradeCallBack = (value: string) => {
-    AddGradeRangeFilter(auth0Id,mapId,'',value,'')
+    AddGradeRangeFilter(auth0Id, mapId, '', value, '');
     setModifiedFiltersOnMap((prev) => ({
       ...prev,
       gradeRangeFilters: {
@@ -89,8 +94,6 @@ const GradeDropDowns: React.FC<GradeDropDownsProps> = ({
       },
     }));
   };
-
-
 
   const climbButtonStyle =
     'bg-customGray border-slate-500 border text-white flex font-semibold text-sm w-[84px] justify-between gap-1 items-center hover:opacity-75 cursor-pointer rounded-lg p-2';

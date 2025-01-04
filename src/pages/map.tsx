@@ -113,9 +113,14 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     if (!trigger) {
       clearCustomLayers();
 
-      const features = await retrieveFeatures(mapIdNumber,user?.sub || '');
+      const features = await retrieveFeatures(mapIdNumber, user?.sub || '');
 
-      displayLayersInitial(map, clickedFeatureClimbCallBack, features,user?.sub || '');
+      displayLayersInitial(
+        map,
+        clickedFeatureClimbCallBack,
+        features,
+        user?.sub || '',
+      );
       if (mapLoaded && 'type' in geoJsonObject) {
         updateLayerVisibility(map, geoJsonObject);
         setGeoJsonObject(features);
@@ -123,15 +128,20 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     }
   };
 
-  const closeFilterModalCallBack = async(trigger: boolean) => {
+  const closeFilterModalCallBack = async (trigger: boolean) => {
     setClickedFeatureClimbs(-1);
     setFilterModalDisplay(trigger);
     if (!trigger) {
       clearCustomLayers();
 
-      const features = await retrieveFeatures(mapIdNumber,user?.sub || '');
+      const features = await retrieveFeatures(mapIdNumber, user?.sub || '');
 
-      displayLayersInitial(map, clickedFeatureClimbCallBack, features,user?.sub || '');
+      displayLayersInitial(
+        map,
+        clickedFeatureClimbCallBack,
+        features,
+        user?.sub || '',
+      );
       if (mapLoaded && 'type' in geoJsonObject) {
         updateLayerVisibility(map, geoJsonObject);
         setGeoJsonObject(features);
@@ -148,9 +158,14 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     if (!trigger) {
       clearCustomLayers();
 
-      const features = await retrieveFeatures(mapIdNumber,user?.sub || '');
+      const features = await retrieveFeatures(mapIdNumber, user?.sub || '');
 
-      displayLayersInitial(map, clickedFeatureClimbCallBack, features,user?.sub || '');
+      displayLayersInitial(
+        map,
+        clickedFeatureClimbCallBack,
+        features,
+        user?.sub || '',
+      );
       if (mapLoaded && 'type' in geoJsonObject) {
         updateLayerVisibility(map, geoJsonObject);
       }
@@ -210,50 +225,59 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     if (renderFeatureTrigger > 0 && user?.sub) {
       clearCustomLayers();
       const renderFeatures = async () => {
-        const features = await retrieveFeatures(mapIdNumber,user?.sub || '');
-        displayLayersInitial(map, clickedFeatureClimbCallBack, features,user?.sub || '');
+        const features = await retrieveFeatures(mapIdNumber, user?.sub || '');
+        displayLayersInitial(
+          map,
+          clickedFeatureClimbCallBack,
+          features,
+          user?.sub || '',
+        );
         setGeoJsonObject(features);
       };
 
       renderFeatures();
     }
-  }, [renderFeatureTrigger,user]);
+  }, [renderFeatureTrigger, user]);
 
   //const layers = map.current?.getStyle().layers;
   //console.log(layers)
   useEffect(() => {
-    if(user?.sub){
-    if (mapContainer.current) {
-      map.current = new mapboxgl.Map({
-        container: mapContainer.current, // Container for the map
-        style: 'mapbox://styles/mapbox/outdoors-v12', // Mapbox style
-        center: [-74.5, 40], // Starting position [lng, lat]
-        zoom: zoomLevel, // Starting zoom level
-        projection: 'globe', // Enable the globe projection
-      });
-    }
-
-    map.current?.on('zoomend', () => {
-      const currentZoom = map.current?.getZoom() ?? 2;
-      if (currentZoom > 12) {
-        setpolygonOrCircleDisplay(true);
-      } else {
-        setpolygonOrCircleDisplay(false);
+    if (user?.sub) {
+      if (mapContainer.current) {
+        map.current = new mapboxgl.Map({
+          container: mapContainer.current, // Container for the map
+          style: 'mapbox://styles/mapbox/outdoors-v12', // Mapbox style
+          center: [-74.5, 40], // Starting position [lng, lat]
+          zoom: zoomLevel, // Starting zoom level
+          projection: 'globe', // Enable the globe projection
+        });
       }
-    });
 
-    const renderFeatures = async () => {
-      const features = await retrieveFeatures(mapIdNumber,user?.sub || '');
-      console.log(features)
-      createClimbingShapes(map, clickedFeatureClimbCallBack, features,user?.sub || '');
-      setGeoJsonObject(features);
-    };
+      map.current?.on('zoomend', () => {
+        const currentZoom = map.current?.getZoom() ?? 2;
+        if (currentZoom > 12) {
+          setpolygonOrCircleDisplay(true);
+        } else {
+          setpolygonOrCircleDisplay(false);
+        }
+      });
 
-  
-    renderFeatures();
-    
-    map.current?.addControl(new mapboxgl.NavigationControl(), 'bottom-left');
-    return () => map.current?.remove(); // Clean up on unmount
+      const renderFeatures = async () => {
+        const features = await retrieveFeatures(mapIdNumber, user?.sub || '');
+        console.log(features);
+        createClimbingShapes(
+          map,
+          clickedFeatureClimbCallBack,
+          features,
+          user?.sub || '',
+        );
+        setGeoJsonObject(features);
+      };
+
+      renderFeatures();
+
+      map.current?.addControl(new mapboxgl.NavigationControl(), 'bottom-left');
+      return () => map.current?.remove(); // Clean up on unmount
     }
   }, [user]);
 

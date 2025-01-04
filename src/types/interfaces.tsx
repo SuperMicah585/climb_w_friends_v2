@@ -119,19 +119,17 @@ export interface filterObject {
   gradeRangeFilters: GradeRange[];
 }
 
-export interface UserFilter{
-auth0Id:string;
-auth0ID?:string;
-name:string;
-username:string;
+export interface UserFilter {
+  auth0Id: string;
+  auth0ID?: string;
+  name: string;
+  username: string;
 }
 
-export interface TagFilter{
-tagId:number;
-tagName:string;
+export interface TagFilter {
+  tagId: number;
+  tagName: string;
 }
-
-
 
 export interface GradeRange {
   type: string;

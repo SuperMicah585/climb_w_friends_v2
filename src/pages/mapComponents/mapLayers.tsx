@@ -20,8 +20,6 @@ import {
 } from 'recharts';
 import { GeoJsonObject } from '../../types/interfaces';
 
-
-
 let currentMarker: mapboxgl.Marker | null = null;
 
 export const createMarker = (
@@ -77,10 +75,10 @@ export const createClimbingShapes = (
   map: any,
   clickedFeatureClimbCallBack: (featureId: number) => void,
   features: GeoJsonObject,
-  auth0Id:string
+  auth0Id: string,
 ) => {
   map.current?.on('load', () => {
-    displayLayersInitial(map, clickedFeatureClimbCallBack, features,auth0Id);
+    displayLayersInitial(map, clickedFeatureClimbCallBack, features, auth0Id);
   });
 };
 
@@ -88,7 +86,7 @@ export const displayLayersInitial = (
   map: any,
   clickedFeatureClimbCallBack: (featureId: number) => void,
   features: GeoJsonObject,
-  auth0Id:string,
+  auth0Id: string,
 ) => {
   // Only add the source once
   if (!map?.current?.getSource('geojson-data')) {
@@ -137,7 +135,13 @@ export const displayLayersInitial = (
             'circle-stroke-color': '#0047AB',
           },
         });
-        addFeatureInteractions(map, layerId, auth0Id, clickedFeatureClimbCallBack, 12);
+        addFeatureInteractions(
+          map,
+          layerId,
+          auth0Id,
+          clickedFeatureClimbCallBack,
+          12,
+        );
         break;
       case 'Polygon':
         // Fill layer for polygon
@@ -308,7 +312,7 @@ export const updateLayerVisibility = (
 export const addFeatureInteractions = async (
   map: any,
   id: string,
-  auth0Id:string,
+  auth0Id: string,
   clickedFeatureClimbCallBack: (featureId: number) => void,
   radius: number,
 ) => {
@@ -369,7 +373,7 @@ export const addFeatureInteractions = async (
 
       (async () => {
         try {
-          const popUpData = await retrieveFeatureAggregate(featureId,auth0Id);
+          const popUpData = await retrieveFeatureAggregate(featureId, auth0Id);
 
           // Check if the feature ID is still the same (prevent stale data)
           if (currentFeatureId !== featureId) return;
