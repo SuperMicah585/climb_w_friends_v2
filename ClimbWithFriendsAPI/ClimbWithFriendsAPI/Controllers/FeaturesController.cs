@@ -941,10 +941,26 @@ public class ClimbingGrades
 
         if (gradeStr.StartsWith("5."))
         {
-            gradeStr = Regex.Replace(gradeStr, "[A-D]-[A-D]", m => m.Value[0].ToString());
+    if (gradeStr.StartsWith("5."))
+    {
+        // Match "5.0" to "5.9" explicitly (only one digit after "5.")
+        if (Regex.IsMatch(gradeStr, @"^5\.[0-9]$|^5\.[0-9][^0-9]"))
+        {
+            return gradeStr.Substring(0, 3);
         }
 
-        return gradeStr.Trim();
+        // Match "5.10" to "5.16" and optionally include "a", "b", or "c"
+        Match match = Regex.Match(gradeStr, @"^(5\.1[0-6])([a-cA-C]?)");
+        if (match.Success)
+        {
+            return match.Groups[1].Value + match.Groups[2].Value;
+        }
+    }
+        }
+     
+        // Return the original string if no conditions are met
+        return gradeStr;
+    
     }
 
     public static int ParseGrade(string? gradeStr)
@@ -1000,6 +1016,7 @@ public class ClimbingGrades
         int gradeValue = ParseGrade(gradeToCheck);
         int fromValue = ParseGrade(fromGrade);
         int toValue = ParseGrade(toGrade);
+
 
         // Handle cases where fromGrade is higher than toGrade
         if (fromValue > toValue)
