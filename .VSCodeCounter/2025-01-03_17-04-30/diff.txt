@@ -1,0 +1,109 @@
+Date : 2025-01-03 17:04:30
+Directory : /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers
+Total : 61 files,  -5714 codes, 127 comments, -283 blanks, all -5870 lines
+
+Languages
++----------------+------------+------------+------------+------------+------------+
+| language       | files      | code       | comment    | blank      | total      |
++----------------+------------+------------+------------+------------+------------+
+| C#             |          9 |      1,573 |        368 |        442 |      2,383 |
+| XML            |          1 |         -1 |          0 |          0 |         -1 |
+| CSS            |          2 |        -62 |         -7 |         -8 |        -77 |
+| TypeScript     |          2 |       -106 |        -18 |        -23 |       -147 |
+| TypeScript JSX |         47 |     -7,118 |       -216 |       -694 |     -8,028 |
++----------------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                   | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                      |         61 |     -5,714 |        127 |       -283 |     -5,870 |
+| . (Files)                                                                                                              |          9 |      1,573 |        368 |        442 |      2,383 |
+| ..                                                                                                                     |         52 |     -7,287 |       -241 |       -725 |     -8,253 |
+| ../..                                                                                                                  |         52 |     -7,287 |       -241 |       -725 |     -8,253 |
+| ../../..                                                                                                               |         52 |     -7,287 |       -241 |       -725 |     -8,253 |
+| ../../../src                                                                                                           |         52 |     -7,287 |       -241 |       -725 |     -8,253 |
+| ../../../src (Files)                                                                                                   |          4 |       -119 |         -7 |        -22 |       -148 |
+| ../../../src/assets                                                                                                    |          1 |         -1 |          0 |          0 |         -1 |
+| ../../../src/pages                                                                                                     |         31 |     -5,698 |       -221 |       -567 |     -6,486 |
+| ../../../src/pages (Files)                                                                                             |          4 |       -467 |        -34 |        -74 |       -575 |
+| ../../../src/pages/dashboardComponents                                                                                 |          6 |     -1,293 |        -26 |        -95 |     -1,414 |
+| ../../../src/pages/dashboardComponents (Files)                                                                         |          4 |       -894 |        -25 |        -65 |       -984 |
+| ../../../src/pages/dashboardComponents/mapsComponents                                                                  |          2 |       -399 |         -1 |        -30 |       -430 |
+| ../../../src/pages/homeComponents                                                                                      |          1 |        -40 |          0 |         -4 |        -44 |
+| ../../../src/pages/mapComponents                                                                                       |         20 |     -3,898 |       -161 |       -394 |     -4,453 |
+| ../../../src/pages/mapComponents (Files)                                                                               |         12 |     -2,394 |       -121 |       -227 |     -2,742 |
+| ../../../src/pages/mapComponents/modalComponents                                                                       |          8 |     -1,504 |        -40 |       -167 |     -1,711 |
+| ../../../src/pages/mapComponents/modalComponents (Files)                                                               |          7 |     -1,387 |        -40 |       -156 |     -1,583 |
+| ../../../src/pages/mapComponents/modalComponents/filterModalComponents.tsx                                             |          1 |       -117 |          0 |        -11 |       -128 |
+| ../../../src/reusableComponents                                                                                        |         14 |     -1,330 |        -13 |       -112 |     -1,455 |
+| ../../../src/types                                                                                                     |          2 |       -139 |          0 |        -24 |       -163 |
++------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| filename                                                                                                               | language       | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/AttemptsController.cs            | C#             |        132 |         10 |         41 |        183 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/ClimbChatController.cs           | C#             |         88 |         40 |         22 |        150 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/ClimbsController.cs              | C#             |        129 |         88 |         62 |        279 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/FeaturesController.cs            | C#             |        537 |        106 |        130 |        773 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/FilterController.cs              | C#             |        174 |         33 |         57 |        264 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/MapsController.cs                | C#             |        168 |         69 |         59 |        296 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/TagsController.cs                | C#             |        135 |          5 |         31 |        171 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/TicksController.cs               | C#             |        114 |          8 |         22 |        144 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/UserController.cs                | C#             |         96 |          9 |         18 |        123 |
+| /Users/mphelps/climb_w_friends_v2/src/App.tsx                                                                          | TypeScript JSX |        -11 |          0 |         -2 |        -13 |
+| /Users/mphelps/climb_w_friends_v2/src/assets/react.svg                                                                 | XML            |         -1 |          0 |          0 |         -1 |
+| /Users/mphelps/climb_w_friends_v2/src/index.css                                                                        | CSS            |        -34 |         -4 |         -5 |        -43 |
+| /Users/mphelps/climb_w_friends_v2/src/main.tsx                                                                         | TypeScript JSX |        -29 |         -2 |         -3 |        -34 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/dashboard.tsx                                                              | TypeScript JSX |        -26 |          0 |         -4 |        -30 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/dashboardObjects.tsx                                   | TypeScript JSX |       -377 |          0 |         -2 |       -379 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/maps.tsx                                               | TypeScript JSX |       -232 |         -9 |        -26 |       -267 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/mapsComponents/addMapModal.tsx                         | TypeScript JSX |       -113 |         -1 |        -10 |       -124 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/mapsComponents/editModal.tsx                           | TypeScript JSX |       -286 |          0 |        -20 |       -306 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/navBar.tsx                                             | TypeScript JSX |        -83 |          0 |        -10 |        -93 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/utilityFunctions.tsx                                   | TypeScript JSX |       -202 |        -16 |        -27 |       -245 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/filterProvider.tsx                                                         | TypeScript JSX |        -28 |          0 |         -7 |        -35 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/homeComponents/homeNavBar.tsx                                              | TypeScript JSX |        -40 |          0 |         -4 |        -44 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/login.tsx                                                                  | TypeScript JSX |        -97 |        -22 |         -9 |       -128 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/map.tsx                                                                    | TypeScript JSX |       -316 |        -12 |        -54 |       -382 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/activityFeed.tsx                                             | TypeScript JSX |        -62 |         -1 |         -9 |        -72 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/attemptOverlay.tsx                                           | TypeScript JSX |       -187 |         -3 |        -15 |       -205 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/chatOverlay.tsx                                              | TypeScript JSX |       -149 |         -1 |        -10 |       -160 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/gradeComparison.ts                                           | TypeScript     |       -101 |        -18 |        -22 |       -141 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/mapApiRequests.tsx                                           | TypeScript JSX |       -644 |        -22 |        -74 |       -740 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/mapLayers.tsx                                                | TypeScript JSX |       -371 |        -62 |        -44 |       -477 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/mapNavBar.tsx                                                | TypeScript JSX |        -95 |          0 |         -3 |        -98 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/mapObjects.tsx                                               | TypeScript JSX |       -247 |          0 |         -9 |       -256 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/addClimbModal.tsx                            | TypeScript JSX |       -465 |        -14 |        -51 |       -530 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/allClimbsModal.tsx                           | TypeScript JSX |        -32 |          0 |         -3 |        -35 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/climbModal.tsx                               | TypeScript JSX |       -331 |         -9 |        -35 |       -375 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/filterModal.tsx                              | TypeScript JSX |       -308 |        -12 |        -38 |       -358 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/filterModalComponents.tsx/GradeDropDowns.tsx | TypeScript JSX |       -117 |          0 |        -11 |       -128 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/modalSearch.tsx                              | TypeScript JSX |        -83 |         -1 |        -12 |        -96 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/modalTag.tsx                                 | TypeScript JSX |       -152 |         -4 |        -15 |       -171 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/tagOverlay.tsx                               | TypeScript JSX |        -16 |          0 |         -2 |        -18 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/popup.css                                                    | CSS            |        -28 |         -3 |         -3 |        -34 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/search.tsx                                                   | TypeScript JSX |       -167 |         -5 |        -12 |       -184 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/tickAndAttempt.tsx                                           | TypeScript JSX |       -157 |         -4 |         -9 |       -170 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/tickOverlay.tsx                                              | TypeScript JSX |       -186 |         -2 |        -17 |       -205 |
+| /Users/mphelps/climb_w_friends_v2/src/reusableComponents/chatInput.tsx                                                 | TypeScript JSX |        -33 |          0 |         -4 |        -37 |
+| /Users/mphelps/climb_w_friends_v2/src/reusableComponents/climbModalBar.tsx                                             | TypeScript JSX |       -334 |         -6 |        -21 |       -361 |
+| /Users/mphelps/climb_w_friends_v2/src/reusableComponents/downDrop.tsx                                                  | TypeScript JSX |        -53 |          0 |         -2 |        -55 |
+| /Users/mphelps/climb_w_friends_v2/src/reusableComponents/dropDown.tsx                                                  | TypeScript JSX |        -93 |          0 |         -9 |       -102 |
+| /Users/mphelps/climb_w_friends_v2/src/reusableComponents/genericButton.tsx                                             | TypeScript JSX |        -30 |          0 |         -1 |        -31 |
+| /Users/mphelps/climb_w_friends_v2/src/reusableComponents/genericModal.tsx                                              | TypeScript JSX |        -48 |         -2 |         -5 |        -55 |
+| /Users/mphelps/climb_w_friends_v2/src/reusableComponents/input.tsx                                                     | TypeScript JSX |        -47 |          0 |         -8 |        -55 |
+| /Users/mphelps/climb_w_friends_v2/src/reusableComponents/loginButton.tsx                                               | TypeScript JSX |        -18 |          0 |         -4 |        -22 |
+| /Users/mphelps/climb_w_friends_v2/src/reusableComponents/logoutButton.tsx                                              | TypeScript JSX |        -22 |          0 |         -4 |        -26 |
+| /Users/mphelps/climb_w_friends_v2/src/reusableComponents/searchDropDown.tsx                                            | TypeScript JSX |        -50 |          0 |         -6 |        -56 |
+| /Users/mphelps/climb_w_friends_v2/src/reusableComponents/styles.tsx                                                    | TypeScript JSX |       -386 |          0 |        -25 |       -411 |
+| /Users/mphelps/climb_w_friends_v2/src/reusableComponents/toastContainer.tsx                                            | TypeScript JSX |        -53 |          0 |         -8 |        -61 |
+| /Users/mphelps/climb_w_friends_v2/src/reusableComponents/toastNotification.tsx                                         | TypeScript JSX |        -98 |         -3 |         -9 |       -110 |
+| /Users/mphelps/climb_w_friends_v2/src/reusableComponents/toolTip.tsx                                                   | TypeScript JSX |        -65 |         -2 |         -6 |        -73 |
+| /Users/mphelps/climb_w_friends_v2/src/supaBaseClient.tsx                                                               | TypeScript JSX |        -45 |         -1 |        -12 |        -58 |
+| /Users/mphelps/climb_w_friends_v2/src/types/Posts.ts                                                                   | TypeScript     |         -5 |          0 |         -1 |         -6 |
+| /Users/mphelps/climb_w_friends_v2/src/types/interfaces.tsx                                                             | TypeScript JSX |       -134 |          0 |        -23 |       -157 |
+| Total                                                                                                                  |                |     -5,714 |        127 |       -283 |     -5,870 |
++------------------------------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+

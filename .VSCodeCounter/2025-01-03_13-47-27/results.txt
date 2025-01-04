@@ -1,88 +1,80 @@
-Date : 2024-12-21 23:34:51
+Date : 2025-01-03 13:47:27
 Directory : /Users/mphelps/climb_w_friends_v2/src
-Total : 55 files,  5165 codes, -84 comments, 359 blanks, all 5440 lines
+Total : 52 files,  7287 codes, 241 comments, 725 blanks, all 8253 lines
 
 Languages
 +----------------+------------+------------+------------+------------+------------+
 | language       | files      | code       | comment    | blank      | total      |
 +----------------+------------+------------+------------+------------+------------+
-| TypeScript JSX |         46 |      6,022 |        178 |        630 |      6,830 |
+| TypeScript JSX |         47 |      7,118 |        216 |        694 |      8,028 |
+| TypeScript     |          2 |        106 |         18 |         23 |        147 |
 | CSS            |          2 |         62 |          7 |          8 |         77 |
-| TypeScript     |          1 |          5 |          0 |          1 |          6 |
 | XML            |          1 |          1 |          0 |          0 |          1 |
-| C#             |          5 |       -925 |       -269 |       -280 |     -1,474 |
 +----------------+------------+------------+------------+------------+------------+
 
 Directories
 +------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
 | path                                                                                                                   | files      | code       | comment    | blank      | total      |
 +------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
-| .                                                                                                                      |         55 |      5,165 |        -84 |        359 |      5,440 |
+| .                                                                                                                      |         52 |      7,287 |        241 |        725 |      8,253 |
 | . (Files)                                                                                                              |          4 |        119 |          7 |         22 |        148 |
-| ..                                                                                                                     |          5 |       -925 |       -269 |       -280 |     -1,474 |
-| ../ClimbWithFriendsAPI                                                                                                 |          5 |       -925 |       -269 |       -280 |     -1,474 |
-| ../ClimbWithFriendsAPI/ClimbWithFriendsAPI                                                                             |          5 |       -925 |       -269 |       -280 |     -1,474 |
-| ../ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers                                                                 |          5 |       -925 |       -269 |       -280 |     -1,474 |
 | assets                                                                                                                 |          1 |          1 |          0 |          0 |          1 |
-| pages                                                                                                                  |         29 |      4,601 |        167 |        484 |      5,252 |
-| pages (Files)                                                                                                          |          4 |        441 |         34 |         82 |        557 |
-| pages/dashboardComponents                                                                                              |          6 |      1,229 |         24 |         85 |      1,338 |
-| pages/dashboardComponents (Files)                                                                                      |          4 |        830 |         23 |         55 |        908 |
+| pages                                                                                                                  |         31 |      5,698 |        221 |        567 |      6,486 |
+| pages (Files)                                                                                                          |          4 |        467 |         34 |         74 |        575 |
+| pages/dashboardComponents                                                                                              |          6 |      1,293 |         26 |         95 |      1,414 |
+| pages/dashboardComponents (Files)                                                                                      |          4 |        894 |         25 |         65 |        984 |
 | pages/dashboardComponents/mapsComponents                                                                               |          2 |        399 |          1 |         30 |        430 |
 | pages/homeComponents                                                                                                   |          1 |         40 |          0 |          4 |         44 |
-| pages/mapComponents                                                                                                    |         18 |      2,891 |        109 |        313 |      3,313 |
-| pages/mapComponents (Files)                                                                                            |         10 |      1,681 |         85 |        170 |      1,936 |
-| pages/mapComponents/modalComponents                                                                                    |          8 |      1,210 |         24 |        143 |      1,377 |
-| pages/mapComponents/modalComponents (Files)                                                                            |          7 |      1,140 |         24 |        137 |      1,301 |
-| pages/mapComponents/modalComponents/filterModalComponents.tsx                                                          |          1 |         70 |          0 |          6 |         76 |
-| reusableComponents                                                                                                     |         14 |      1,269 |         11 |        114 |      1,394 |
-| types                                                                                                                  |          2 |        100 |          0 |         19 |        119 |
+| pages/mapComponents                                                                                                    |         20 |      3,898 |        161 |        394 |      4,453 |
+| pages/mapComponents (Files)                                                                                            |         12 |      2,394 |        121 |        227 |      2,742 |
+| pages/mapComponents/modalComponents                                                                                    |          8 |      1,504 |         40 |        167 |      1,711 |
+| pages/mapComponents/modalComponents (Files)                                                                            |          7 |      1,387 |         40 |        156 |      1,583 |
+| pages/mapComponents/modalComponents/filterModalComponents.tsx                                                          |          1 |        117 |          0 |         11 |        128 |
+| reusableComponents                                                                                                     |         14 |      1,330 |         13 |        112 |      1,455 |
+| types                                                                                                                  |          2 |        139 |          0 |         24 |        163 |
 +------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
 
 Files
 +------------------------------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
 | filename                                                                                                               | language       | code       | comment    | blank      | total      |
 +------------------------------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
-| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/ClimbsController.cs              | C#             |       -109 |        -84 |        -55 |       -248 |
-| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/FeaturesController.cs            | C#             |       -461 |       -105 |       -121 |       -687 |
-| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/MapsController.cs                | C#             |       -157 |        -69 |        -61 |       -287 |
-| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/TagsController.cs                | C#             |       -135 |         -5 |        -31 |       -171 |
-| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/UserController.cs                | C#             |        -63 |         -6 |        -12 |        -81 |
 | /Users/mphelps/climb_w_friends_v2/src/App.tsx                                                                          | TypeScript JSX |         11 |          0 |          2 |         13 |
 | /Users/mphelps/climb_w_friends_v2/src/assets/react.svg                                                                 | XML            |          1 |          0 |          0 |          1 |
 | /Users/mphelps/climb_w_friends_v2/src/index.css                                                                        | CSS            |         34 |          4 |          5 |         43 |
 | /Users/mphelps/climb_w_friends_v2/src/main.tsx                                                                         | TypeScript JSX |         29 |          2 |          3 |         34 |
 | /Users/mphelps/climb_w_friends_v2/src/pages/dashboard.tsx                                                              | TypeScript JSX |         26 |          0 |          4 |         30 |
 | /Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/dashboardObjects.tsx                                   | TypeScript JSX |        377 |          0 |          2 |        379 |
-| /Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/maps.tsx                                               | TypeScript JSX |        230 |          9 |         25 |        264 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/maps.tsx                                               | TypeScript JSX |        232 |          9 |         26 |        267 |
 | /Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/mapsComponents/addMapModal.tsx                         | TypeScript JSX |        113 |          1 |         10 |        124 |
 | /Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/mapsComponents/editModal.tsx                           | TypeScript JSX |        286 |          0 |         20 |        306 |
-| /Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/navBar.tsx                                             | TypeScript JSX |         57 |          0 |          6 |         63 |
-| /Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/utilityFunctions.tsx                                   | TypeScript JSX |        166 |         14 |         22 |        202 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/navBar.tsx                                             | TypeScript JSX |         83 |          0 |         10 |         93 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/utilityFunctions.tsx                                   | TypeScript JSX |        202 |         16 |         27 |        245 |
 | /Users/mphelps/climb_w_friends_v2/src/pages/filterProvider.tsx                                                         | TypeScript JSX |         28 |          0 |          7 |         35 |
 | /Users/mphelps/climb_w_friends_v2/src/pages/homeComponents/homeNavBar.tsx                                              | TypeScript JSX |         40 |          0 |          4 |         44 |
 | /Users/mphelps/climb_w_friends_v2/src/pages/login.tsx                                                                  | TypeScript JSX |         97 |         22 |          9 |        128 |
-| /Users/mphelps/climb_w_friends_v2/src/pages/map.tsx                                                                    | TypeScript JSX |        290 |         12 |         62 |        364 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/map.tsx                                                                    | TypeScript JSX |        316 |         12 |         54 |        382 |
 | /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/activityFeed.tsx                                             | TypeScript JSX |         62 |          1 |          9 |         72 |
-| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/chatOverlay.tsx                                              | TypeScript JSX |         89 |          1 |          9 |         99 |
-| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/mapApiRequests.tsx                                           | TypeScript JSX |        285 |         10 |         51 |        346 |
-| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/mapLayers.tsx                                                | TypeScript JSX |        338 |         64 |         55 |        457 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/attemptOverlay.tsx                                           | TypeScript JSX |        187 |          3 |         15 |        205 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/chatOverlay.tsx                                              | TypeScript JSX |        149 |          1 |         10 |        160 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/gradeComparison.ts                                           | TypeScript     |        101 |         18 |         22 |        141 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/mapApiRequests.tsx                                           | TypeScript JSX |        644 |         22 |         74 |        740 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/mapLayers.tsx                                                | TypeScript JSX |        371 |         62 |         44 |        477 |
 | /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/mapNavBar.tsx                                                | TypeScript JSX |         95 |          0 |          3 |         98 |
-| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/mapObjects.tsx                                               | TypeScript JSX |        462 |          0 |         13 |        475 |
-| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/addClimbModal.tsx                            | TypeScript JSX |        309 |          6 |         46 |        361 |
-| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/allClimbsModal.tsx                           | TypeScript JSX |         31 |          0 |          4 |         35 |
-| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/climbModal.tsx                               | TypeScript JSX |        266 |          9 |         33 |        308 |
-| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/filterModal.tsx                              | TypeScript JSX |        283 |          4 |         25 |        312 |
-| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/filterModalComponents.tsx/GradeDropDowns.tsx | TypeScript JSX |         70 |          0 |          6 |         76 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/mapObjects.tsx                                               | TypeScript JSX |        247 |          0 |          9 |        256 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/addClimbModal.tsx                            | TypeScript JSX |        465 |         14 |         51 |        530 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/allClimbsModal.tsx                           | TypeScript JSX |         32 |          0 |          3 |         35 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/climbModal.tsx                               | TypeScript JSX |        331 |          9 |         35 |        375 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/filterModal.tsx                              | TypeScript JSX |        308 |         12 |         38 |        358 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/filterModalComponents.tsx/GradeDropDowns.tsx | TypeScript JSX |        117 |          0 |         11 |        128 |
 | /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/modalSearch.tsx                              | TypeScript JSX |         83 |          1 |         12 |         96 |
 | /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/modalTag.tsx                                 | TypeScript JSX |        152 |          4 |         15 |        171 |
 | /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/tagOverlay.tsx                               | TypeScript JSX |         16 |          0 |          2 |         18 |
 | /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/popup.css                                                    | CSS            |         28 |          3 |          3 |         34 |
 | /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/search.tsx                                                   | TypeScript JSX |        167 |          5 |         12 |        184 |
-| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/tickClimbsComponent.tsx                                      | TypeScript JSX |         47 |          1 |          4 |         52 |
-| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/tickOverlay.tsx                                              | TypeScript JSX |        108 |          0 |         11 |        119 |
-| /Users/mphelps/climb_w_friends_v2/src/reusableComponents/chatInput.tsx                                                 | TypeScript JSX |         34 |          0 |          4 |         38 |
-| /Users/mphelps/climb_w_friends_v2/src/reusableComponents/climbModalBar.tsx                                             | TypeScript JSX |        272 |          4 |         23 |        299 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/tickAndAttempt.tsx                                           | TypeScript JSX |        157 |          4 |          9 |        170 |
+| /Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/tickOverlay.tsx                                              | TypeScript JSX |        186 |          2 |         17 |        205 |
+| /Users/mphelps/climb_w_friends_v2/src/reusableComponents/chatInput.tsx                                                 | TypeScript JSX |         33 |          0 |          4 |         37 |
+| /Users/mphelps/climb_w_friends_v2/src/reusableComponents/climbModalBar.tsx                                             | TypeScript JSX |        334 |          6 |         21 |        361 |
 | /Users/mphelps/climb_w_friends_v2/src/reusableComponents/downDrop.tsx                                                  | TypeScript JSX |         53 |          0 |          2 |         55 |
 | /Users/mphelps/climb_w_friends_v2/src/reusableComponents/dropDown.tsx                                                  | TypeScript JSX |         93 |          0 |          9 |        102 |
 | /Users/mphelps/climb_w_friends_v2/src/reusableComponents/genericButton.tsx                                             | TypeScript JSX |         30 |          0 |          1 |         31 |
@@ -97,6 +89,6 @@ Files
 | /Users/mphelps/climb_w_friends_v2/src/reusableComponents/toolTip.tsx                                                   | TypeScript JSX |         65 |          2 |          6 |         73 |
 | /Users/mphelps/climb_w_friends_v2/src/supaBaseClient.tsx                                                               | TypeScript JSX |         45 |          1 |         12 |         58 |
 | /Users/mphelps/climb_w_friends_v2/src/types/Posts.ts                                                                   | TypeScript     |          5 |          0 |          1 |          6 |
-| /Users/mphelps/climb_w_friends_v2/src/types/interfaces.tsx                                                             | TypeScript JSX |         95 |          0 |         18 |        113 |
-| Total                                                                                                                  |                |      5,165 |        -84 |        359 |      5,440 |
+| /Users/mphelps/climb_w_friends_v2/src/types/interfaces.tsx                                                             | TypeScript JSX |        134 |          0 |         23 |        157 |
+| Total                                                                                                                  |                |      7,287 |        241 |        725 |      8,253 |
 +------------------------------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+

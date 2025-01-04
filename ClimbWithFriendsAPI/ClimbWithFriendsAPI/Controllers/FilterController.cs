@@ -27,10 +27,17 @@ namespace ClimbWithFriendsAPI.Controllers
 public async Task<ActionResult<List<FilterDTO>>> ListFiltersOnMap(int mapId, string auth0Id)
 {
     // Query tag filters
-    var tagFilters = await _context.TagFilters
-        .Include(tf => tf.MapToTags)
-        .Where(tf => tf.MapId == mapId && tf.Auth0Id == auth0Id)
-        .ToListAsync();
+var tagFilters = await (from tf in _context.TagFilters
+                        join t in _context.Tags on tf.TagId equals t.TagId // Join with Tag table
+                        where tf.MapId == mapId && tf.Auth0Id == auth0Id
+                        select new TagDTO
+                        {
+                            TagId = tf.TagId,
+                            TagName = t.TagName
+                        })
+                        .ToListAsync();
+
+
 
     // Query grade range filters
     var gradeRangeFilters = await _context.GradeRangeFilters
@@ -38,12 +45,17 @@ public async Task<ActionResult<List<FilterDTO>>> ListFiltersOnMap(int mapId, str
         .Where(grf => grf.MapId == mapId && grf.Auth0Id == auth0Id)
         .ToListAsync();
 
-    // Query user filters
-    var userFilters = await _context.UserFilters
-        .Include(uf => uf.MapToUsers)
-        .Include(uf => uf.Users)
-        .Where(uf => uf.MapId == mapId && uf.Auth0Id == auth0Id)
-        .ToListAsync();
+var userFilters = await _context.UserFilters
+    .Include(uf => uf.MapToUsers)
+    .Include(uf => uf.Users)
+    .Where(uf => uf.MapId == mapId && uf.Auth0Id == auth0Id)
+    .Select(uf => new UserDTO
+    {
+        Auth0Id = uf.Auth0Id,
+        Username = uf.Users.Username, // Assuming `Users` has a `Username` property
+        Name = uf.Users.Name         // Assuming `Users` has a `Name` property
+    })
+    .ToListAsync();
 
     // Create the DTO
     var filterDTO = new FilterDTO
@@ -135,43 +147,67 @@ public async Task<ActionResult<UserFilter>> AddUserFilterToMap(int mapId, string
 }
 
 [HttpPost("GradeRangeFilter/ToMap/{mapId}/ForUser/{auth0Id}")]
-public async Task<ActionResult<GradeRangeFilter>> AddGradeRangeFilterToMap(int mapId, string auth0Id,[FromBody] GradeRangeFilterDTO payload)
+public async Task<ActionResult<GradeRangeFilter>> AddGradeRangeFilterToMap(int mapId, string auth0Id, [FromBody] GradeRangeFilterDTO payload)
 {
-    // Fetch current UTC time for createdAt
-    var createdAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"); 
-    if(payload ==null){
+    if (payload == null)
+    {
         return BadRequest("Payload information is null");
     }
-    // Create the TagFilter object
-    var GradeRangeFilterObject = new GradeRangeFilter
+
+    // Check if an entry already exists
+    var existingFilter = await _context.GradeRangeFilters
+        .FirstOrDefaultAsync(f => f.MapId == mapId && f.Auth0Id == auth0Id);
+
+    if (existingFilter != null)
     {
+        // Update only the properties that are provided in the payload
+        if (!string.IsNullOrEmpty(payload.FromGrade))
+        {
+            existingFilter.FromGrade = payload.FromGrade;
+        }
+        if (!string.IsNullOrEmpty(payload.ToGrade))
+        {
+            existingFilter.ToGrade = payload.ToGrade;
+        }
+        if (!string.IsNullOrEmpty(payload.Type))
+        {
+            existingFilter.Type = payload.Type;
+        }
 
-        MapId = mapId,
-        Auth0Id = auth0Id,
-        FromGrade = payload.FromGrade,
-        ToGrade = payload.ToGrade,
-        Type = payload.Type,
-        CreatedAt = createdAt
-    };
+        existingFilter.CreatedAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
+        
+        _context.GradeRangeFilters.Update(existingFilter);
+        await _context.SaveChangesAsync();
+        
+        return Ok(existingFilter);
+    }
+    else
+    {
+        // Create new entry if one doesn't exist
+        var gradeRangeFilterObject = new GradeRangeFilter
+        {
+            MapId = mapId,
+            Auth0Id = auth0Id,
+            FromGrade = payload.FromGrade ?? string.Empty,
+            ToGrade = payload.ToGrade ?? string.Empty,
+            Type = payload.Type ?? string.Empty,
+            CreatedAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")
+        };
 
-    // Add the object to the TagFilters table
-    _context.GradeRangeFilters.Add(GradeRangeFilterObject);
+        _context.GradeRangeFilters.Add(gradeRangeFilterObject);
+        await _context.SaveChangesAsync();
 
-    // Save changes to the database
-    await _context.SaveChangesAsync();
-
-    // Return success
-    return Ok(GradeRangeFilterObject);
+        return Ok(gradeRangeFilterObject);
+    }
 }
 
-
-[HttpDelete("Tag/{filterId}")]
-public async Task<ActionResult<bool>> DeleteTagFilterFromMap(int filterId)
+[HttpDelete("Tag/{tagId}")]
+public async Task<ActionResult<bool>> DeleteTagFilterFromMap(int tagId)
 {
 
     // Query the MapToTags table for the relationship
     var mapToTag = await _context.TagFilters
-        .FirstOrDefaultAsync(mu => mu.Id == filterId);
+        .FirstOrDefaultAsync(mu => mu.TagId == tagId);
 
 
     // Add the object to the TagFilters table
@@ -184,13 +220,13 @@ public async Task<ActionResult<bool>> DeleteTagFilterFromMap(int filterId)
     return Ok(true);
 }
 
-[HttpDelete("User/{userId}")]
-public async Task<ActionResult<bool>> DeleteUserFilterFromMap(int userId)
+[HttpDelete("User/{auth0Id}")]
+public async Task<ActionResult<bool>> DeleteUserFilterFromMap(string auth0Id)
 {
 
     // Query the MapToTags table for the relationship
     var UserFilter = await _context.UserFilters
-        .FirstOrDefaultAsync(mu => mu.Id == userId);
+        .FirstOrDefaultAsync(mu => mu.Auth0Id == auth0Id);
 
 
     // Add the object to the TagFilters table
@@ -203,13 +239,13 @@ public async Task<ActionResult<bool>> DeleteUserFilterFromMap(int userId)
     return Ok(true);
 }
 
-[HttpDelete("GradeRange/{gradeRangeId}")]
-public async Task<ActionResult<bool>> DeleteGradeRangeFilterFromMap(int gradeRangeId)
+[HttpDelete("GradeRange/FromMap/{mapId}/FromUser/{auth0Id}")]
+public async Task<ActionResult<bool>> DeleteGradeRangeFilterFromMap(int mapId,string auth0Id)
 {
 
     // Query the MapToTags table for the relationship
     var gradeRange = await _context.GradeRangeFilters
-        .FirstOrDefaultAsync(mu => mu.Id == gradeRangeId);
+        .FirstOrDefaultAsync(mu => mu.MapId == mapId && mu.Auth0Id == auth0Id);
 
 
     // Add the object to the TagFilters table
