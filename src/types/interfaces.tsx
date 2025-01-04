@@ -114,15 +114,27 @@ export interface MapObject {
 }
 
 export interface filterObject {
-  users: UserObjectForFeature[];
-  tags: Tags[];
-  gradeRange: GradeRange;
+  userFilters: UserFilter[];
+  tagFilters: TagFilter[];
+  gradeRangeFilters: GradeRange[];
+}
+
+export interface UserFilter {
+  auth0Id: string;
+  auth0ID?: string;
+  name: string;
+  username: string;
+}
+
+export interface TagFilter {
+  tagId: number;
+  tagName: string;
 }
 
 export interface GradeRange {
   type: string;
-  gradeStart: string;
-  gradeEnd: string;
+  toGrade: string;
+  fromGrade: string;
 }
 
 export interface friendsObject {

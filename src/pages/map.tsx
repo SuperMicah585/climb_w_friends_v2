@@ -51,11 +51,6 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     useState<boolean>(false);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [clickedFeatureClimbs, setClickedFeatureClimbs] = useState<number>(-1);
-  const [filtersOnMap, setFiltersOnMap] = useState<filterObject>({
-    users: [],
-    tags: [],
-    gradeRange: { gradeStart: '', gradeEnd: '', type: 'None' },
-  });
   const [addClimbsModalDisplay, setAddClimbsModalDisplay] = useState(false);
   const [geoJsonObject, setGeoJsonObject] = useState<GeoJsonObject | {}>({});
   const [
@@ -118,9 +113,14 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     if (!trigger) {
       clearCustomLayers();
 
-      const features = await retrieveFeatures(mapIdNumber);
+      const features = await retrieveFeatures(mapIdNumber, user?.sub || '');
 
-      displayLayersInitial(map, clickedFeatureClimbCallBack, features);
+      displayLayersInitial(
+        map,
+        clickedFeatureClimbCallBack,
+        features,
+        user?.sub || '',
+      );
       if (mapLoaded && 'type' in geoJsonObject) {
         updateLayerVisibility(map, geoJsonObject);
         setGeoJsonObject(features);
@@ -128,8 +128,25 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     }
   };
 
-  const closeFilterModalCallBack = (trigger: boolean) => {
+  const closeFilterModalCallBack = async (trigger: boolean) => {
+    setClickedFeatureClimbs(-1);
     setFilterModalDisplay(trigger);
+    if (!trigger) {
+      clearCustomLayers();
+
+      const features = await retrieveFeatures(mapIdNumber, user?.sub || '');
+
+      displayLayersInitial(
+        map,
+        clickedFeatureClimbCallBack,
+        features,
+        user?.sub || '',
+      );
+      if (mapLoaded && 'type' in geoJsonObject) {
+        updateLayerVisibility(map, geoJsonObject);
+        setGeoJsonObject(features);
+      }
+    }
   };
 
   const closeTagModalCallBack = (trigger: boolean) => {
@@ -141,9 +158,14 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     if (!trigger) {
       clearCustomLayers();
 
-      const features = await retrieveFeatures(mapIdNumber);
+      const features = await retrieveFeatures(mapIdNumber, user?.sub || '');
 
-      displayLayersInitial(map, clickedFeatureClimbCallBack, features);
+      displayLayersInitial(
+        map,
+        clickedFeatureClimbCallBack,
+        features,
+        user?.sub || '',
+      );
       if (mapLoaded && 'type' in geoJsonObject) {
         updateLayerVisibility(map, geoJsonObject);
       }
@@ -200,51 +222,64 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   }
 
   useEffect(() => {
-    if (renderFeatureTrigger > 0) {
+    if (renderFeatureTrigger > 0 && user?.sub) {
       clearCustomLayers();
       const renderFeatures = async () => {
-        const features = await retrieveFeatures(mapIdNumber);
-        displayLayersInitial(map, clickedFeatureClimbCallBack, features);
+        const features = await retrieveFeatures(mapIdNumber, user?.sub || '');
+        displayLayersInitial(
+          map,
+          clickedFeatureClimbCallBack,
+          features,
+          user?.sub || '',
+        );
         setGeoJsonObject(features);
       };
 
       renderFeatures();
     }
-  }, [renderFeatureTrigger]);
+  }, [renderFeatureTrigger, user]);
 
   //const layers = map.current?.getStyle().layers;
   //console.log(layers)
   useEffect(() => {
-    if (mapContainer.current) {
-      map.current = new mapboxgl.Map({
-        container: mapContainer.current, // Container for the map
-        style: 'mapbox://styles/mapbox/outdoors-v12', // Mapbox style
-        center: [-74.5, 40], // Starting position [lng, lat]
-        zoom: zoomLevel, // Starting zoom level
-        projection: 'globe', // Enable the globe projection
-      });
-    }
-
-    map.current?.on('zoomend', () => {
-      const currentZoom = map.current?.getZoom() ?? 2;
-      if (currentZoom > 12) {
-        setpolygonOrCircleDisplay(true);
-      } else {
-        setpolygonOrCircleDisplay(false);
+    if (user?.sub) {
+      if (mapContainer.current) {
+        map.current = new mapboxgl.Map({
+          container: mapContainer.current, // Container for the map
+          style: 'mapbox://styles/mapbox/outdoors-v12', // Mapbox style
+          center: [-74.5, 40], // Starting position [lng, lat]
+          zoom: zoomLevel, // Starting zoom level
+          projection: 'globe', // Enable the globe projection
+        });
       }
-    });
 
-    const renderFeatures = async () => {
-      const features = await retrieveFeatures(mapIdNumber);
+      map.current?.on('zoomend', () => {
+        const currentZoom = map.current?.getZoom() ?? 2;
+        if (currentZoom > 12) {
+          setpolygonOrCircleDisplay(true);
+        } else {
+          setpolygonOrCircleDisplay(false);
+        }
+      });
 
-      createClimbingShapes(map, clickedFeatureClimbCallBack, features);
-      setGeoJsonObject(features);
-    };
+      const renderFeatures = async () => {
+        const features = await retrieveFeatures(mapIdNumber, user?.sub || '');
+        console.log(features);
+        createClimbingShapes(
+          map,
+          clickedFeatureClimbCallBack,
+          features,
+          user?.sub || '',
+        );
+        setGeoJsonObject(features);
+      };
 
-    renderFeatures();
-    map.current?.addControl(new mapboxgl.NavigationControl(), 'bottom-left');
-    return () => map.current?.remove(); // Clean up on unmount
-  }, []);
+      renderFeatures();
+
+      map.current?.addControl(new mapboxgl.NavigationControl(), 'bottom-left');
+      return () => map.current?.remove(); // Clean up on unmount
+    }
+  }, [user]);
 
   useEffect(() => {
     if (!isAuthenticated && !isLoading) {
@@ -350,9 +385,8 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
       {filterModalDisplay ? (
         <FilterModal
           mapId={mapIdNumber}
-          setFiltersOnMap={setFiltersOnMap}
+          auth0Id={user?.sub || ''}
           closeTagModalCallBack={closeFilterModalCallBack}
-          filtersOnMap={filtersOnMap}
         />
       ) : null}
 

@@ -5,32 +5,39 @@ import Input from '../../../reusableComponents/input';
 import PurpleButton from '../../../reusableComponents/genericButton';
 import { useState, useRef, useEffect } from 'react';
 import SearchDropDown from '../../../reusableComponents/searchDropDown';
+
 import {
   Tags,
   UserObjectForFeature,
   filterObject,
+  UserFilter,
+  TagFilter,
 } from '../../../types/interfaces';
 import GradeDropDowns from './filterModalComponents.tsx/GradeDropDowns';
-import { useFilterContext } from '../../filterProvider';
 import {
   dropDownStyles,
   threeLineDropDownIcon,
 } from '../../../reusableComponents/styles';
-import { retrieveTagsOnMap } from '../mapApiRequests';
+import {
+  retrieveTagsOnMap,
+  retrieveFiltersOnMap,
+  AddTagFilter,
+  AddUserFilter,
+  removeTagFilter,
+  removeUserFilter,
+} from '../mapApiRequests';
 import { retrieveUsersOnMap } from '../../dashboardComponents/utilityFunctions';
 import { filterItems } from '../../mapComponents/mapObjects';
 
 interface FilterModalProps {
   closeTagModalCallBack: (value: boolean) => void;
   mapId: number;
-  setFiltersOnMap: React.Dispatch<React.SetStateAction<filterObject>>;
-  filtersOnMap: filterObject;
+  auth0Id: string;
 }
 const FilterModal: React.FC<FilterModalProps> = ({
   closeTagModalCallBack,
   mapId,
-  setFiltersOnMap,
-  filtersOnMap,
+  auth0Id,
 }) => {
   //Pass filters to backend. Have backend grab all climbs on the map that have the dependency Id(tagId,userId). TagToMap and MapToUser Join.
   //Based on these returned climbs, I will then check every climb to see if the string grade is between the values that were passed. Will need to recreate the functions
@@ -49,13 +56,13 @@ const FilterModal: React.FC<FilterModalProps> = ({
   const inputFilterRef = useRef<HTMLInputElement | null>(null);
 
   const [searchResults, setSearchResults] = useState<
-    Tags[] | UserObjectForFeature[]
+    TagFilter[] | UserFilter[]
   >([]);
   const [modifiedFiltersOnMap, setModifiedFiltersOnMap] =
     useState<filterObject>({
-      users: [],
-      tags: [],
-      gradeRange: { gradeStart: '', gradeEnd: '', type: 'None' },
+      userFilters: [],
+      tagFilters: [],
+      gradeRangeFilters: [],
     });
   const [filterToggle, setFilterToggle] = useState<boolean>(false);
   const [selectedFilter, setSelecetedFilter] = useState<string>('climber');
@@ -70,25 +77,31 @@ const FilterModal: React.FC<FilterModalProps> = ({
     setToggleFilterDropDown(booleanValue);
   };
 
-  const modifyFriendArray = (item: UserObjectForFeature) => {
-    setModifiedFiltersOnMap((prev) => ({
-      ...prev,
-      users: [...prev.users, item],
-    }));
+  const modifyFriendArray = async (item: UserFilter) => {
+    const response = await AddUserFilter(item.auth0ID || '', auth0Id, mapId);
+    if (response) {
+      setModifiedFiltersOnMap((prev) => ({
+        ...prev,
+        userFilters: [...prev.userFilters, item],
+      }));
+    }
   };
 
-  const [tagArrayForSearch, setTagArrayForSearch] = useState<Tags[]>([]);
-  const [userArrayForSearch, setUserArrayForSearch] = useState<
-    UserObjectForFeature[]
-  >([]);
+  const [tagArrayForSearch, setTagArrayForSearch] = useState<TagFilter[]>([]);
+  const [userArrayForSearch, setUserArrayForSearch] = useState<UserFilter[]>(
+    [],
+  );
 
-  const modifyTagArray = (item: Tags) => {
-    setModifiedFiltersOnMap((prev) => ({
-      ...prev,
-      tags: [...prev.tags, item],
-    }));
+  const modifyTagArray = async (item: TagFilter) => {
+    const response = await AddTagFilter(auth0Id, mapId, item.tagId);
+    if (response) {
+      setModifiedFiltersOnMap((prev) => ({
+        ...prev,
+        tagFilters: [...prev.tagFilters, item],
+      }));
+    }
   };
-  const handleClickedTag = (item: Tags | UserObjectForFeature) => {
+  const handleClickedTag = (item: TagFilter | UserFilter) => {
     if ('tagName' in item) {
       modifyTagArray(item);
     } else if ('username' in item) {
@@ -102,7 +115,9 @@ const FilterModal: React.FC<FilterModalProps> = ({
       let filteredTags = tagArrayForSearch.filter(
         (item) =>
           item.tagName.includes(searchString) &&
-          !modifiedFiltersOnMap.tags.find((tag) => item.tagId === tag.tagId),
+          !modifiedFiltersOnMap.tagFilters.find(
+            (tag) => item.tagId === tag.tagId,
+          ),
       );
 
       setSearchResults(filteredTags);
@@ -111,9 +126,11 @@ const FilterModal: React.FC<FilterModalProps> = ({
         (item) =>
           (item.name?.includes(searchString) ||
             item.username?.includes(searchString)) &&
-          !modifiedFiltersOnMap.users.find(
-            (user) => item.userId === user.userId,
-          ),
+          !modifiedFiltersOnMap.userFilters.find((user) => {
+            const itemAuth0ID = item.auth0ID || item.auth0Id; // Check both possible properties
+            const userAuth0ID = user.auth0ID || user.auth0Id; // Check both possible properties
+            return itemAuth0ID && userAuth0ID && itemAuth0ID === userAuth0ID; // Compare if both are set
+          }),
       );
       setSearchResults(filteredClimber);
     }
@@ -140,19 +157,27 @@ const FilterModal: React.FC<FilterModalProps> = ({
     retrieveAndSetTagsOnMap(mapId);
   }, [mapId]);
 
-  const deleteTagCallBack = (item: Tags) => {
-    setModifiedFiltersOnMap((prev) => ({
-      ...prev,
-      tags: prev.tags.filter((tag) => tag.tagId !== item.tagId),
-    }));
+  const deleteTagCallBack = async (item: Tags) => {
+    const response = await removeTagFilter(item.tagId);
+
+    if (response) {
+      setModifiedFiltersOnMap((prev) => ({
+        ...prev,
+        tagFilters: prev.tagFilters.filter((tag) => tag.tagId !== item.tagId),
+      }));
+    }
   };
 
-  console.log(modifiedFiltersOnMap);
-  const deleteUserCallBack = (item: UserObjectForFeature) => {
-    setModifiedFiltersOnMap((prev) => ({
-      ...prev,
-      users: prev.users.filter((user) => user.userId !== item.userId),
-    }));
+  const deleteUserCallBack = async (item: UserFilter) => {
+    const response = await removeUserFilter(item.auth0Id || item.auth0ID || '');
+    if (response) {
+      setModifiedFiltersOnMap((prev) => ({
+        ...prev,
+        userFilters: prev.userFilters.filter(
+          (user) => user.auth0Id !== item.auth0Id,
+        ),
+      }));
+    }
   };
 
   const setSelectedFilterCallBack = (item: string) => {
@@ -182,8 +207,23 @@ const FilterModal: React.FC<FilterModalProps> = ({
   }, []);
 
   useEffect(() => {
-    setModifiedFiltersOnMap(filtersOnMap);
-  }, [filtersOnMap]);
+    const fetchFiltersOnMap = async () => {
+      const data = await retrieveFiltersOnMap(mapId, auth0Id);
+
+      if (data[0].gradeRangeFilters.length === 0) {
+        data[0].gradeRangeFilters[0] = {
+          fromGrade: '',
+          toGrade: '',
+          type: 'None',
+        };
+      }
+      setModifiedFiltersOnMap(data[0]);
+    };
+
+    if (mapId && auth0Id) {
+      fetchFiltersOnMap();
+    }
+  }, [mapId, auth0Id]);
 
   //need to filter my climber(s)
   return (
@@ -232,14 +272,15 @@ const FilterModal: React.FC<FilterModalProps> = ({
 
           <div className="font-semibold text-white">Filter by Grade/Type</div>
           <GradeDropDowns
-            modifiedFiltersOnMap={modifiedFiltersOnMap}
-            filtersOnMap={filtersOnMap}
+            filtersOnMap={modifiedFiltersOnMap}
             setModifiedFiltersOnMap={setModifiedFiltersOnMap}
+            mapId={mapId}
+            auth0Id={auth0Id}
           />
 
           <div className="font-semibold text-white"> Filters on Map</div>
           <div className="flex flex-wrap gap-2">
-            {modifiedFiltersOnMap.tags.map((item, index) => (
+            {modifiedFiltersOnMap.tagFilters.map((item, index) => (
               <Tooltip deleteItemCallBack={deleteTagCallBack} item={item}>
                 {' '}
                 <div
@@ -250,7 +291,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
                 </div>
               </Tooltip>
             ))}
-            {modifiedFiltersOnMap.users.map((item, index) => (
+            {modifiedFiltersOnMap.userFilters.map((item, index) => (
               <Tooltip deleteItemCallBack={deleteUserCallBack} item={item}>
                 {' '}
                 <div
@@ -264,26 +305,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
           </div>
         </div>
 
-        <div className="absolute bottom-0 right-0 flex h-12 w-full items-end justify-end">
-          <div
-            onClick={() => {
-              setFiltersOnMap(modifiedFiltersOnMap);
-              closeTagModalCallBack(false);
-            }}
-            className=" "
-          >
-            <PurpleButton
-              paddingBottom="pb-3"
-              paddingTop="pt-3"
-              paddingLeft="pl-5"
-              paddingRight="pr-5"
-              roundedCorners="rounded-full"
-            >
-              {' '}
-              Apply
-            </PurpleButton>{' '}
-          </div>
-        </div>
+        <div className="absolute bottom-0 right-0 flex h-12 w-full items-end justify-end"></div>
       </div>
 
       <div className="absolute">
@@ -296,7 +318,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
               inputRef={inputFilterRef}
               closeDropDownCallBack={setToggleFilterDropDownCallBack}
             >
-              {searchResults.length > 0 ? (
+              {searchResults?.length > 0 ? (
                 searchResults.map((item, index) => (
                   <div
                     onClick={() => {
