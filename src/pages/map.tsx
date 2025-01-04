@@ -291,18 +291,19 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     const onLoadHandler = () => {
       setMapLoaded(true); // Map has finished loading
     };
-
+  
     if (map.current) {
       map.current.on('load', onLoadHandler);
     }
-
+  
     // Cleanup function to remove the "load" event listener
     return () => {
       if (map.current) {
         map.current.off('load', onLoadHandler);
       }
     };
-  }, []); // Only run once on mount
+  }, [map.current]); // Re-run when map.current changes
+  
 
   useEffect(() => {
     if (selectedClimb && map?.current) {
@@ -324,7 +325,9 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   }, [selectedClimb]);
 
   useEffect(() => {
+
     if (mapLoaded && 'type' in geoJsonObject) {
+
       updateLayerVisibility(map, geoJsonObject);
     }
   }, [polygonOrCircleDisplay, mapLoaded, geoJsonObject]);

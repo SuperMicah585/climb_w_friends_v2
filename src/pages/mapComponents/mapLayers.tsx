@@ -170,10 +170,10 @@ export const displayLayersInitial = (
           },
           filter: ['==', '$type', 'Polygon'],
           paint: {
-            'fill-color': 'brown',
-            'fill-opacity': 0.5,
-            'circle-stroke-width': 0.5,
-            'circle-stroke-color': 'brown',
+            'fill-color': 'brown',       // The fill color of the polygon
+            'fill-opacity': 0.5,         // The opacity of the polygon fill
+
+
           },
           layout: {
             visibility: 'none',
@@ -296,6 +296,7 @@ export const updateLayerVisibility = (
       const currentZoom = map.current.getZoom();
 
       if (currentZoom > 12) {
+        console.log(currentZoom,"zoom")
         // Show fill layer, hide circle layer
         map.current?.setLayoutProperty(fillLayerId, 'visibility', 'visible');
         map.current?.setLayoutProperty(circleLayerId, 'visibility', 'none');

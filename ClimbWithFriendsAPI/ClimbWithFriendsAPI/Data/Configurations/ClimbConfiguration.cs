@@ -14,8 +14,8 @@ namespace YourProjectNamespace.Data.Configurations
             // Define table structure and constraints
             builder.HasKey(c => c.ClimbId);
 
-            builder.Property(c => c.ClimbName).IsRequired().HasMaxLength(100);
-            builder.Property(c => c.Location).IsRequired().HasMaxLength(200);
+            builder.Property(c => c.ClimbName).IsRequired().HasMaxLength(150);
+            builder.Property(c => c.Location).IsRequired().HasMaxLength(500);
             builder.Property(c => c.Coordinates).IsRequired();
             builder.Property(c => c.Url).HasMaxLength(500);
             builder.Property(c => c.ClimbType).HasMaxLength(100);
