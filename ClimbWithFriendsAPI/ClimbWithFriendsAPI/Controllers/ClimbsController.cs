@@ -21,14 +21,16 @@ namespace ClimbWithFriendsAPI.Controllers
         }
 
     //api/Climbs/
-        [HttpGet("List/{name}")]
-        public async Task<ActionResult<IEnumerable<Climb>>> GetClimbsByName(String name)
+        [HttpGet("List/{name}/Within/{state}/IsType/{type}")]
+        public async Task<ActionResult<IEnumerable<Climb>>> GetClimbsByName(String name, String state, String type)
         {
             // Get maps associated with the user
-    var users = await _context.Climbs
-        .Where(c => c.ClimbName.ToLower().Contains(name.ToLower())) // Case-insensitive search
-        .Take(20) // Limit the results to 20
-        .ToListAsync();
+        var users = await _context.Climbs
+            .Where(c => c.ClimbName.ToLower().Contains(name.ToLower()) && 
+                        c.State == state && 
+                       c.ClimbType.Contains(type))
+            .Take(20)
+            .ToListAsync();
 
 
 

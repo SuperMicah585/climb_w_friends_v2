@@ -10,6 +10,7 @@
         public int ClimbId { get; set; }
         public string ClimbName { get; set; }
         public string Location { get; set; }
+        public string State { get; set; }  // New State property
         private NetTopologySuite.Geometries.Point _coordinates;
         public ICollection<ClimbToTag> ClimbToTags { get; set; }
         
@@ -34,7 +35,7 @@
         }
 
         public string Url { get; set; }
-        public string ClimbType { get; set; } // Comma-separated string
+        public string ClimbType { get; set; }
         public string Rating { get; set; }
         public int Pitches { get; set; }
         public string CreatedAt { get; set; }
@@ -58,21 +59,20 @@
         public double AvgStars { get; set; }
     }
 
-public class ClimbCsvMap : ClassMap<ClimbCsvRecord>
-{
-    public ClimbCsvMap()
+    public class ClimbCsvMap : ClassMap<ClimbCsvRecord>
     {
-        Map(m => m.Id).Name("id");
-        Map(m => m.Name).Name("name");
-        Map(m => m.Location).Name("Location");
-        Map(m => m.AreaLatitude).Name("Area Latitude");
-        Map(m => m.AreaLongitude).Name("Area Longitude");
-        Map(m => m.Url).Name("URL");
-        Map(m => m.RouteType).Name("Route Type");
-        Map(m => m.Grade).Name("grade");
-        Map(m => m.Pitches).Name("Pitches");
-        Map(m => m.AvgStars).Name("Avg Stars");
+        public ClimbCsvMap()
+        {
+            Map(m => m.Id).Name("id");
+            Map(m => m.Name).Name("name");
+            Map(m => m.Location).Name("Location");
+            Map(m => m.AreaLatitude).Name("Area Latitude");
+            Map(m => m.AreaLongitude).Name("Area Longitude");
+            Map(m => m.Url).Name("URL");
+            Map(m => m.RouteType).Name("Route Type");
+            Map(m => m.Grade).Name("grade");
+            Map(m => m.Pitches).Name("Pitches");
+            Map(m => m.AvgStars).Name("Avg Stars");
+        }
     }
-}
-
 }

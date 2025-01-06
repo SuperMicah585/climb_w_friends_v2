@@ -56,22 +56,36 @@ namespace ClimbWithFriendsAPI.Controllers
             .CountAsync(c => c.UserId == userId);
 
         // Get unique climbers who climbed the same maps as the user
-        var uniqueClimbers = await _context.MapToUserToClimbs
-            .Where(c => _context.MapToUserToClimbs
-                .Where(uc => uc.UserId == userId)
-                .Select(uc => uc.MapId)
-                .Contains(c.MapId))
-            .Select(c => c.UserId)
-            .Distinct()
-            .CountAsync();
+        var uniqueUserCount = await _context.MapToUsers
+            .Where(c => _context.MapToUsers
+                .Where(u => u.UserId == auth0Id)
+                .Select(u => u.MapId)
+                .Contains(c.MapId))          // Find users on the same MapIds
+            .Select(c => c.UserId)           // Select UserId values
+            .Distinct()                      // Ensure UserIds are unique
+            .CountAsync();                   // Get the count
+      
 
         return new UserStatistics
         {
             TotalMaps = userMaps,
             TotalClimbs = totalClimbs,
-            UniqueClimbers = uniqueClimbers
+            UniqueClimbers = uniqueUserCount
         };
     }
+
+[HttpGet("List")]
+public async Task<List<UserDTO>> ListUsers()
+{
+    var users = await _context.Users.ToListAsync();
+
+    return users.Select(user => new UserDTO
+    {
+        Auth0Id = user.Auth0ID,
+        Username = user.Username,
+        Name = user.Name
+    }).ToList();
+}
 
 
         // POST: api/User

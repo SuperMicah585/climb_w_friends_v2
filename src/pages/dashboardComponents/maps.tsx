@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { friendExample } from './dashboardObjects';
-import { MapObject, friendsObject } from '../../types/interfaces';
+import { MapObject, FriendsList } from '../../types/interfaces';
 import { verticalDotIcon, minusIcon } from '../../reusableComponents/styles';
 import { Link } from 'react-router-dom';
 import AddMapComponent from './mapsComponents/addMapModal';
@@ -38,6 +37,11 @@ const Maps = () => {
   const { user } = useAuth0();
 
   const closeEditModalCallBack = () => {
+    if (user?.sub) {
+      retrieveMaps(user.sub);
+    } else {
+      console.error('User not found');
+    }
     setEditMapTrigger(false);
   };
 
@@ -45,7 +49,7 @@ const Maps = () => {
     setAddMapTrigger(value);
   };
 
-  const editPeopleOnMapCallBack = (data: friendsObject[]) => {
+  const editPeopleOnMapCallBack = (data: FriendsList[]) => {
     setMapObject((prev) =>
       prev.map((item) =>
         item.mapId === mapId
@@ -83,14 +87,28 @@ const Maps = () => {
         newMapObj.description,
         user?.sub,
       );
-      if (mapObject) {
+      console.log(mapObject, 'map');
+      const combinedObject = {
+        ...mapObject.mapAssociation, // Spread properties from mapAssociation
+        map: {
+          ...mapObject.mapAssociation.map, // Spread properties from the existing map
+          climbersOnMap: mapObject.userInformation, // Add the new property
+        },
+      };
+
+      if (combinedObject) {
         ('toast');
-        setMapObject((prev) => [...prev, mapObject.map]);
+        setMapObject((prev) => [...prev, combinedObject.map]);
 
         ////----->Toast
         setToastType('success');
         setToastMessage('Map was created sucessfully!');
         setToastTrigger((prev) => prev + 1);
+        if (user?.sub) {
+          retrieveMaps(user.sub);
+        } else {
+          console.error('User not found');
+        }
       }
     } else {
       console.error('user not defined');
@@ -204,11 +222,15 @@ const Maps = () => {
                       <div className="text-2xl font-bold"> {item.mapName} </div>
                       <div className="font-semibold text-violet-400">
                         {' '}
-                        {item.climbCountOnMap} climbs{' '}
+                        {item.climbCountOnMap}{' '}
+                        {item.climbCountOnMap === 1 ? 'Climb' : 'Climbs'}{' '}
                       </div>
                       <div className="font-semibold text-green-400">
                         {' '}
-                        {item.climbersOnMap?.length} climbers{' '}
+                        {item.climbersOnMap?.length}{' '}
+                        {item.climbersOnMap?.length === 1
+                          ? 'Climber'
+                          : 'Climbers'}{' '}
                       </div>
                     </div>
                     <div className="text-thin text-sm">
@@ -246,8 +268,8 @@ const Maps = () => {
 
       {editMapTrigger ? (
         <EditModal
+          mapId={mapId}
           editPeopleOnMapCallBack={editPeopleOnMapCallBack}
-          friendsList={friendExample}
           EditedClimbCallBack={EditedClimbCallBack}
           editMapObject={editMapObject}
           closeModalCallBack={closeEditModalCallBack}

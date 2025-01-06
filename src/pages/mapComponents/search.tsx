@@ -53,7 +53,11 @@ const Search: React.FC<SearchProps> = ({
       return setsearchResults([]);
     }
 
-    const data = await retrieveClimbs(query);
+    const data = await retrieveClimbs(
+      query,
+      stateDropDownName,
+      climbTypeDropDownValue,
+    );
 
     if (data) {
       setsearchResults(data);
