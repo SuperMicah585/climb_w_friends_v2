@@ -35,6 +35,8 @@ const NavBar = () => {
     }
   }, [user]);
 
+  console.log(statObject);
+
   return (
     <div className="relative z-10 flex min-h-96 w-screen items-center justify-center gap-40 bg-gradient-to-br from-indigo-600 to-indigo-500 font-semibold">
       <img
@@ -46,17 +48,20 @@ const NavBar = () => {
       <div className="z-10 flex items-center gap-5 text-6xl font-black text-white">
         <div>
           {' '}
-          <span className="">{statObject.totalMaps}</span> Maps
+          <span className="">{statObject.totalMaps}</span>{' '}
+          {statObject.totalMaps == 1 ? 'Map' : 'Maps'}
         </div>
         <div> | </div>
         <div className="">
           {' '}
-          <span className="">{statObject.totalClimbs}</span> Climbs
+          <span className="">{statObject.totalClimbs}</span>{' '}
+          {statObject.totalClimbs === 1 ? 'Climb' : 'Climbs'}
         </div>
         <div> | </div>
         <div className="">
           {' '}
-          <span className="">{statObject.uniqueClimbers}</span> Friends
+          <span className="">{statObject.uniqueClimbers - 1}</span>{' '}
+          {statObject.uniqueClimbers - 1 === 1 ? 'Friend' : 'Friends'}
         </div>
       </div>
 

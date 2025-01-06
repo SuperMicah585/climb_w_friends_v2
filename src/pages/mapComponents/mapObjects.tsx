@@ -96,7 +96,7 @@ export const friendsOnMapExample = [
   },
 ];
 
-export const climbType: Array<string> = ['Rock', 'Boulder', 'All'];
+export const climbType: Array<string> = ['Sport', 'Trad', 'TR', 'Boulder'];
 
 export const climbTypeForFilter: Array<string> = ['Rock', 'Boulder', 'None'];
 export const usStateAbbreviations: string[] = [

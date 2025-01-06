@@ -16,6 +16,7 @@ namespace YourProjectNamespace.Data.Configurations
 
             builder.Property(c => c.ClimbName).IsRequired().HasMaxLength(150);
             builder.Property(c => c.Location).IsRequired().HasMaxLength(500);
+            builder.Property(c => c.State).IsRequired().HasMaxLength(50);  // New State property configuration
             builder.Property(c => c.Coordinates).IsRequired();
             builder.Property(c => c.Url).HasMaxLength(500);
             builder.Property(c => c.ClimbType).HasMaxLength(100);
@@ -25,6 +26,16 @@ namespace YourProjectNamespace.Data.Configurations
             // Dynamically load seed data from a CSV file
             var climbs = LoadClimbDataFromCsv("Data/Configurations/climb_data.csv");
             builder.HasData(climbs);
+        }
+
+        private string ExtractStateFromLocation(string location)
+        {
+            if (string.IsNullOrEmpty(location))
+                return string.Empty;
+
+            // Split by ">" and get the last part, then trim any whitespace
+            var parts = location.Split('>');
+            return parts.Length > 0 ? parts[parts.Length - 1].Trim() : string.Empty;
         }
 
         private List<Climb> LoadClimbDataFromCsv(string filePath)
@@ -45,6 +56,7 @@ namespace YourProjectNamespace.Data.Configurations
                         ClimbId = record.Id,
                         ClimbName = record.Name,
                         Location = record.Location,
+                        State = ExtractStateFromLocation(record.Location),  // Extract state from location
                         Coordinates = new Point(record.AreaLongitude, record.AreaLatitude) { SRID = 4326 },
                         Url = record.Url,
                         ClimbType = record.RouteType,

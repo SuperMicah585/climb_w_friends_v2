@@ -141,8 +141,12 @@ const removeTagFromMap = async (mapId: number, tagId: number) => {
   }
 };
 
-const retrieveClimbs = async (searchString: string) => {
-  const url = `http://localhost:5074/api/Climbs/List/${searchString}`;
+const retrieveClimbs = async (
+  searchString: string,
+  State: string,
+  type: string,
+) => {
+  const url = `http://localhost:5074/api/Climbs/List/${searchString}/Within/${State}/IsType/${type}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {

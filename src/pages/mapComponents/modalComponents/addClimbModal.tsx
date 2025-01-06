@@ -172,7 +172,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
         return setsearchResults([]);
       }
 
-      const data = await retrieveClimbs(inputQuery);
+      const data = await retrieveClimbs(inputQuery, location, routeType);
 
       if (data) {
         setsearchResults(

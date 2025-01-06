@@ -4,11 +4,12 @@ import {
   closeIcon,
   dropDownStyles,
 } from '../../../reusableComponents/styles';
-import { MapObject, friendsObject } from '../../../types/interfaces';
+import { MapObject, FriendsList } from '../../../types/interfaces';
 import InputComponent from '../../../reusableComponents/input';
 import ZincModal from '../../../reusableComponents/genericModal';
 import SearchDropDown from '../../../reusableComponents/searchDropDown';
 import ToastContainer from '../../../reusableComponents/toastContainer';
+import { retrieveAllUsers, addUserToMap } from '../utilityFunctions';
 
 import { useState, useRef, useEffect } from 'react';
 
@@ -16,14 +17,14 @@ type EditModalProps = {
   editMapObject: MapObject;
   closeModalCallBack: (trigger: boolean) => void;
   EditedClimbCallBack: (item: MapObject) => void;
-  friendsList: friendsObject[];
-  editPeopleOnMapCallBack: (data: friendsObject[]) => void;
+  editPeopleOnMapCallBack: (data: FriendsList[]) => void;
+  mapId: number;
 };
 const EditModal: React.FC<EditModalProps> = ({
+  mapId,
   closeModalCallBack,
   editMapObject,
   EditedClimbCallBack,
-  friendsList,
   editPeopleOnMapCallBack,
 }) => {
   const [toggleState, setToggleState] = useState(true);
@@ -34,12 +35,13 @@ const EditModal: React.FC<EditModalProps> = ({
     editMapObject?.description || '',
   );
   const [inputData, setInputData] = useState<string>('');
-  const [matchingFriends, setMatchingFriends] = useState<friendsObject[]>([]);
-  const [selectedFriends, setSelectedFriends] = useState<friendsObject[]>([]);
+  const [matchingFriends, setMatchingFriends] = useState<FriendsList[]>([]);
+  const [selectedFriends, setSelectedFriends] = useState<FriendsList[]>([]);
   const [toastTrigger, setToastTrigger] = useState(0);
   const [toastType, setToastType] = useState('success');
   const [toastMessage, setToastMessage] = useState('');
   const [titleInputValid, setTitleInputValid] = useState<boolean>(true);
+  const [friendsList, setFriendsList] = useState<FriendsList[]>([]);
   const [descriptionInputValid, setDescriptionInputValid] =
     useState<boolean>(true);
   const [toggleSearchDropDown, setToggleSearchDropDown] = useState(false);
@@ -48,7 +50,7 @@ const EditModal: React.FC<EditModalProps> = ({
   const inputDataCallBack = (data: string) => {
     setInputData(data);
   };
-
+  console.log(mapId);
   const checkInput = () => {
     if (titleState.length < 6 || titleState.length > 29) {
       setToastType('error');
@@ -75,17 +77,26 @@ const EditModal: React.FC<EditModalProps> = ({
   useEffect(() => {}, []);
 
   useEffect(() => {
+    const retrieveUsers = async () => {
+      const allUsers = await retrieveAllUsers();
+      setFriendsList(allUsers);
+    };
+
+    retrieveUsers();
+  }, []);
+
+  useEffect(() => {
     let tempArray = [];
     if (inputData.length > 0) {
       for (let item of friendsList) {
+        // Check if the item matches search criteria AND is not already on the map AND is not already selected
         if (
-          (item.userName?.includes(inputData) ||
-            item.firstName?.includes(inputData) ||
-            item.lastName?.includes(inputData)) &&
+          (item.username?.includes(inputData) ||
+            item.name?.includes(inputData)) && // Search criteria
           !editMapObject.climbersOnMap?.some(
-            (person) => person.userId === item.userId,
-          ) &&
-          !selectedFriends.some((person) => person.userId === item.userId)
+            (person) => person.auth0Id === item.auth0Id,
+          ) && // Not on map
+          !selectedFriends.some((person) => person.auth0Id === item.auth0Id) // Not already selected
         ) {
           tempArray.push(item);
         }
@@ -93,14 +104,13 @@ const EditModal: React.FC<EditModalProps> = ({
           break;
         }
       }
-
       setMatchingFriends(tempArray);
     } else {
       setMatchingFriends([]);
     }
-  }, [inputData, selectedFriends]);
+  }, [inputData, selectedFriends, friendsList]);
 
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
     if (toggleState === true) {
       if (
         titleState.length >= 6 &&
@@ -115,13 +125,21 @@ const EditModal: React.FC<EditModalProps> = ({
           description: descriptionState,
           climbersOnMap: editMapObject.climbersOnMap,
         });
-
-        return null; // Nothing to render
       }
-      return null; // Invalid input
     } else {
-      editPeopleOnMapCallBack(selectedFriends);
-      return null;
+      try {
+        const promises = selectedFriends.map((friend) =>
+          addUserToMap(mapId, friend.auth0Id),
+        );
+
+        // Wait for all promises to resolve
+        const results = await Promise.all(promises);
+
+        console.log('All friends added successfully:', results);
+      } catch (error) {
+        console.error('Error adding friends to the map:', error);
+      }
+      closeModalCallBack(false);
     }
   };
 
@@ -182,16 +200,19 @@ const EditModal: React.FC<EditModalProps> = ({
         <div className="mt-5 font-semibold text-black">Friends On Map</div>
         <ul className="mt-5 flex w-full list-inside list-disc flex-col gap-2">
           {selectedFriends.map((person) => (
-            <li key={person.userName} className="text-sm font-bold text-black">
-              {person.firstName} {person.lastName}
+            <li key={person.name} className="text-sm font-bold text-black">
+              {person.name}
               <span className="text-sm text-green-500">
-                ({person.userName})
+                ({person.username})
               </span>
             </li>
           ))}
           {editMapObject.climbersOnMap?.map((person) => (
-            <li key={person.userId} className="text-sm font-bold text-black">
-              {person.userId}
+            <li key={person.name} className="text-sm font-bold text-black">
+              {person.name}
+              <span className="text-sm text-green-500">
+                ({person.username})
+              </span>
             </li>
           ))}
         </ul>
@@ -256,14 +277,17 @@ const EditModal: React.FC<EditModalProps> = ({
                       setSelectedFriends((prev) => [...prev, item]);
                       setToggleSearchDropDown(false);
                     }}
-                    className={dropDownStyles}
+                    className="flex cursor-pointer items-center border-b border-neutral-200 bg-white p-2 text-sm text-black hover:bg-neutral-100"
                     key={item.id}
                   >
                     <div className="flex flex-col gap-2 p-2 text-black">
                       <div>
-                        <div className="flex gap-1 font-semibold">
-                          <div> {item.firstName} </div>
-                          <div> {item.lastName} </div>
+                        <div className="flex flex-col gap-1 font-semibold">
+                          <div> {item.name} </div>
+                          <div className="text-xs font-thin">
+                            {' '}
+                            {item.username}{' '}
+                          </div>
                         </div>
                       </div>
 

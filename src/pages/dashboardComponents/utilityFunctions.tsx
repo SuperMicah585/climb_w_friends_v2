@@ -86,7 +86,7 @@ const retrieveClimbsOnMapCount = async (mapId: number) => {
   }
 };
 
-const addUserToMap = async (mapId: number, userId: string, type: string) => {
+const addUserToMap = async (mapId: number, userId: string) => {
   const payload = { UserId: userId };
 
   try {
@@ -114,28 +114,14 @@ then add the user to the map on the client side.
 
 */
 
-      if (data.map) {
-        if (type === 'mapCreate') {
-          data.map['climbersOnMap'] = [
-            {
-              userId: userId,
-              firstName: 'Micah',
-              lastName: 'Phelps',
-              email: 'micahphlps@gmail.com',
-              userName: 'phelpsm4',
-            },
-          ]; //code here will change once we get user table
-          //setMapObject((prev) => [...prev, data.map]); // Update state with new map
-          return data;
-        } else {
-          return false;
-        }
-
-        //code here for when user gets added to an existing map
+      if (data) {
+        console.log(data);
+        return data;
       } else {
-        console.warn('Response does not contain "map" property:', data);
         return false;
       }
+
+      //code here for when user gets added to an existing map
     } else {
       const error = await response.text();
       console.error('Error joining the map:', error);
@@ -193,11 +179,7 @@ const createMap = async (
       const mapObject = await response.json(); // Safely parse JSON
 
       if (mapObject && userID) {
-        const mapData = await addUserToMap(
-          mapObject.mapId,
-          userID,
-          'mapCreate',
-        );
+        const mapData = await addUserToMap(mapObject.mapId, userID);
         if (mapData) {
           return mapData;
         }
@@ -232,7 +214,24 @@ const retrieveUserStats = async (auth0Id: string) => {
   }
 };
 
+const retrieveAllUsers = async () => {
+  const url = `http://localhost:5074/api/User/List`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const json = await response.json();
+    // Update the specific object at the given index in the array
+    return json;
+  } catch (error: any) {
+    console.error(error.message);
+  }
+};
+
 export {
+  retrieveAllUsers,
   retrieveUserStats,
   retrieveMapsAndUsers,
   retrieveUsersOnMap,

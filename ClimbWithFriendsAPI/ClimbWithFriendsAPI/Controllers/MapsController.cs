@@ -56,12 +56,6 @@ namespace ClimbWithFriendsAPI.Controllers
                 .Select(mu => mu.Map)  // Extract only the Map entities
                 .ToListAsync();
 
-            // if we want to return an error response. for now micah has requested an OK and empty list.
-            //if (maps == null || maps.Count == 0)
-            //{
-            //    return NotFound(new { Message = $"No maps found for UserId {userId}" });
-            //}
-
             return Ok(maps);
         }
 
@@ -70,7 +64,7 @@ namespace ClimbWithFriendsAPI.Controllers
 
                 // GET: api/Maps/Userlist/5
 [HttpGet("Userlist/{mapId}")]
-public async Task<ActionResult<IEnumerable<UserObjectForFeature>>> GetUsersByMapId(int mapId)
+public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsersByMapId(int mapId)
 {
     // Get users associated with the map using a join
     var users = await _context.MapToUsers
@@ -79,10 +73,9 @@ public async Task<ActionResult<IEnumerable<UserObjectForFeature>>> GetUsersByMap
             _context.Users,
             mapUser => mapUser.UserId,
             user => user.Auth0ID,
-            (mapUser, user) => new UserObjectForFeature
+            (mapUser, user) => new UserDTO
             {
-                UserId = user.UserId,
-                Auth0ID = user.Auth0ID,
+                Auth0Id = user.Auth0ID,
                 Name = user.Name,
                 Username = user.Username
             })
@@ -178,10 +171,30 @@ public async Task<ActionResult<IEnumerable<UserObjectForFeature>>> GetUsersByMap
                 AssociatedAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")
             };
 
+             var user = await _context.Users.SingleOrDefaultAsync(u => u.Auth0ID == payload.UserId);
+    if (user == null)
+    {
+        return NotFound($"User with ID {payload.UserId} does not exist.");
+    }
+
+            var userInformation = new UserDTO
+            {
+                Auth0Id = user.Auth0ID,
+                Username = user.Username,
+                Name = user.Name,
+
+
+            };
+
+var response = new
+    {
+        UserInformation = userInformation,
+        MapAssociation = newAssociation
+    };
+
             _context.MapToUsers.Add(newAssociation);
             await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(AddUserToMap), new { userId = payload.UserId }, newAssociation);
+                return CreatedAtAction(nameof(AddUserToMap), new { mapId, userId = payload.UserId }, response);
         }
 
         [HttpDelete("{mapId}/users/{userId}")]

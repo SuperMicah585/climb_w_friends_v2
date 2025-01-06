@@ -109,8 +109,8 @@ export interface MapObject {
   mapId: number;
   mapName: string;
   description: string;
-  climbersOnMap?: friendsObject[];
-  climbCountOnMap: number;
+  climbersOnMap?: FriendsList[];
+  climbCountOnMap?: number;
 }
 
 export interface filterObject {
@@ -126,6 +126,19 @@ export interface UserFilter {
   username: string;
 }
 
+export interface FriendsList {
+  auth0Id: string;
+  name: string;
+  username: string;
+}
+
+export interface UsersOnMap {
+  userId: string;
+  auth0ID: string;
+  name: string;
+  username: string;
+}
+
 export interface TagFilter {
   tagId: number;
   tagName: string;
@@ -135,14 +148,6 @@ export interface GradeRange {
   type: string;
   toGrade: string;
   fromGrade: string;
-}
-
-export interface friendsObject {
-  userId: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  userName: string;
 }
 
 export interface userObject {
