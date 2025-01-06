@@ -36,6 +36,21 @@ namespace ClimbWithFriendsAPI.Controllers
             return Ok(users);
         }
 
+        [HttpGet("{climbId}/OnMap/{mapId}")]
+        public async Task<ActionResult<bool>> GetClimbById(int climbId,int mapId)
+        {
+            var DoesClimbExist = await _context.MapToFeatureToClimbs.AnyAsync(mfc => mfc.ClimbId==climbId && mfc.MapId == mapId);
+
+            if(DoesClimbExist){
+                return Ok(true);
+            }
+
+            else{
+                return Ok(false);
+            }
+
+        }
+
 [HttpGet("{climbId}/Dependencies")]
 public async Task<ActionResult<FeatureDependencies>> GetClimbDependenciesById(int climbId)
 {

@@ -29,9 +29,10 @@ import {
   AddAttemptToClimbToUserToMap,
   addTagToClimb,
   AddChatToClimb,
+  checkMapForClimb,
 } from '../mapApiRequests';
 import AttemptOverlay from '../attemptOverlay';
-
+import ToastContainer from '../../../reusableComponents/toastContainer';
 interface AddClimbsModalProps {
   location: string;
   routeType: string;
@@ -62,6 +63,8 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
   const [attemptObject, setAttemptObject] = useState<AttemptObject | null>(
     null,
   );
+  const [toastTrigger, setToastTrigger] = useState<number>(0);
+  const [submitLoading, isSubmitLoading] = useState<boolean>(false);
   const [tickObject, setTickObject] = useState<TickObject | null>(null);
   const [climbNameForChat, setClimbNameForChat] = useState('');
   const [displayTrigger, setDisplayTrigger] = useState(0);
@@ -76,6 +79,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
   const [climbIdForClimbChat, setClimbIdForClimbChat] = useState<number>(-1);
   const [tickinfo, setTickInfo] = useState({});
   const [climbsOnMap, setClimbsOnMap] = useState<number[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const inputRef = useRef(null);
 
@@ -196,7 +200,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
   };
 
   const setTickObjectCallBack = (tickObject: TickObject | null) => {
-    if (attemptObject !== null) {
+    if (tickObject !== null) {
       setTickObject(tickObject);
     } else {
       setTickObject(null);
@@ -208,82 +212,117 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
       // Log for debugging
 
       // First add all climbs to map
-      await addClimbsToMap(mapId, climbsArray);
 
-      // Process each climb's associated data
-      const promises = climbsArray.map(async (item) => {
-        try {
-          // Handle user association
-          const auth0ID = item.userObjectForFeature?.[0]?.auth0ID;
-          if (auth0ID) {
-            await addUserToClimb(item.climb.climbId, auth0ID, mapId);
-          }
-
-          // Handle attempts - fix string comparison
-          if (
-            item.attempts?.userId &&
-            typeof item.attempts.userId === 'string'
-          ) {
-            await AddAttemptToClimbToUserToMap(
-              item.attempts.climbId,
-              item.attempts.userId,
-              item.attempts.mapId,
-              item.attempts.notes,
-              item.attempts.difficulty,
-              item.attempts.attempts,
-            );
-          }
-
-          // Handle ticks - fix string comparison
-          if (item.ticks?.userId && typeof item.ticks.userId === 'string') {
-            await AddTickToClimbToUserToMap(
-              item.ticks.climbId,
-              item.ticks.userId,
-              item.ticks.mapId,
-              item.ticks.notes,
-              item.ticks.difficulty,
-              item.ticks.attempts,
-            );
-          }
-
-          // Handle tags
-          if (Array.isArray(item.tags) && item.tags.length > 0) {
-            const tagPromises = item.tags.map((tag) =>
-              addTagToClimb(tag.tagId, item.climb.climbId),
-            );
-            await Promise.all(tagPromises);
-          }
-        } catch (itemError) {
-          console.error(
-            `Error processing climb ${item.climb?.climbId}:`,
-            itemError,
-          );
-          throw itemError; // Re-throw to be caught by outer try-catch
-        }
+      const doesClimbExistPromises = climbsArray.map(async (item) => {
+        const doesExist = await checkMapForClimb(item.climb.climbId, mapId);
+        return { doesExist, climbName: item.climb.climbName };
       });
 
-      await Promise.all(promises);
-      climbsArray, 'submit';
-      for (let item of climbsArray) {
-        for (let chatObject of item.chatObject) {
-          await AddChatToClimb(
-            chatObject.ClimbChatId,
-            auth0Id,
-            mapId,
-            chatObject.message,
-          );
-        }
-      }
+      // Await the resolution of all promises
+      const doesClimbExistResults = await Promise.all(doesClimbExistPromises);
 
-      setRenderFeatureTrigger((prev) => prev + 1);
+      console.log(doesClimbExistResults);
+
+      const anyClimbsThatExist = doesClimbExistResults.some(
+        (item) => item.doesExist,
+      );
+
+      if (anyClimbsThatExist) {
+        for (const { doesExist, climbName } of doesClimbExistResults) {
+          if (doesExist) {
+            const message = `**${climbName}** already exists. Please Check filters.`;
+            console.log(message);
+
+            // Update state with a delay
+            setErrorMessage(message);
+            setToastTrigger((prev) => prev + 1);
+
+            // Introduce a slight delay (e.g., 200ms)
+            await new Promise((resolve) => setTimeout(resolve, 100));
+          }
+        }
+
+        isSubmitLoading(false);
+      } else {
+        await addClimbsToMap(mapId, climbsArray);
+
+        // Process each climb's associated data
+        const promises = climbsArray.map(async (item) => {
+          try {
+            // Handle user association
+            const auth0ID = item.userObjectForFeature?.[0]?.auth0ID;
+            // Check if climb already exists and is just being filtered
+
+            if (auth0ID) {
+              await addUserToClimb(item.climb.climbId, auth0ID, mapId);
+            }
+
+            // Handle attempts - fix string comparison
+            if (
+              item.attempts?.userId &&
+              typeof item.attempts.userId === 'string'
+            ) {
+              await AddAttemptToClimbToUserToMap(
+                item.attempts.climbId,
+                item.attempts.userId,
+                item.attempts.mapId,
+                item.attempts.notes,
+                item.attempts.difficulty,
+                item.attempts.attempts,
+              );
+            }
+
+            // Handle ticks - fix string comparison
+            if (item.ticks?.userId && typeof item.ticks.userId === 'string') {
+              await AddTickToClimbToUserToMap(
+                item.ticks.climbId,
+                item.ticks.userId,
+                item.ticks.mapId,
+                item.ticks.notes,
+                item.ticks.difficulty,
+                item.ticks.attempts,
+              );
+            }
+
+            // Handle tags
+            if (Array.isArray(item.tags) && item.tags.length > 0) {
+              const tagPromises = item.tags.map((tag) =>
+                addTagToClimb(tag.tagId, item.climb.climbId),
+              );
+              await Promise.all(tagPromises);
+            }
+          } catch (itemError) {
+            console.error(
+              `Error processing climb ${item.climb?.climbId}:`,
+              itemError,
+            );
+            throw itemError; // Re-throw to be caught by outer try-catch
+          }
+        });
+
+        await Promise.all(promises);
+
+        for (let item of climbsArray) {
+          for (let chatObject of item.chatObject) {
+            await AddChatToClimb(
+              chatObject.ClimbChatId,
+              auth0Id,
+              mapId,
+              chatObject.message,
+            );
+          }
+        }
+
+        setRenderFeatureTrigger((prev) => prev + 1);
+        isSubmitLoading(false);
+        closeAddClimbsModalCallBack(false);
+      }
     } catch (error) {
       console.error('Error in handleModalSubmit:', error);
       // Consider adding error handling UI feedback here
       throw error; // Re-throw if you want calling code to handle it
     }
   };
-
-  climbsArray, 'climbsarraty';
 
   const handleClimbSelect = (item: ClimbsTableResponse) => {
     setClimbsArray((prev) => [
@@ -333,6 +372,12 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
 
   return (
     <>
+      <ToastContainer
+        message={errorMessage}
+        type={'error'}
+        trigger={toastTrigger}
+        mode={'dark'}
+      />
       <div
         className="pointer-events-none absolute z-20 flex h-screen w-screen items-center justify-center"
         onClick={(event) => event.stopPropagation()}
@@ -516,11 +561,13 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
         <div
           onClick={() => {
             handleModalSubmit();
-            closeAddClimbsModalCallBack(false);
+            isSubmitLoading(true);
           }}
           className="absolute bottom-0 right-5 flex h-16 w-full items-center justify-end bg-zinc-900"
         >
-          <PurpleButton>Add Climbs</PurpleButton>
+          <PurpleButton>
+            {submitLoading ? 'Loading...' : 'Add Climbs'}
+          </PurpleButton>
         </div>
       </ZincModal>
     </>

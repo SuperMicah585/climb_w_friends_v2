@@ -495,10 +495,7 @@ public async Task<ActionResult<List<FeatureDependencies>>> GetFeatureDependencie
             })
             .ToListAsync();
     
-        if (featureDependencies == null || !featureDependencies.Any())
-        {
-            return NotFound($"No dependencies found for map {mapId}");
-        }
+
 
         return Ok(featureDependencies);
     }

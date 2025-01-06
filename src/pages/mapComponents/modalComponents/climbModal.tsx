@@ -78,7 +78,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   };
 
   const setTickObjectCallBack = (tickObject: TickObject | null) => {
-    if (attemptObject !== null) {
+    if (tickObject !== null) {
       setTickObject(tickObject);
     } else {
       setTickObject(null);
