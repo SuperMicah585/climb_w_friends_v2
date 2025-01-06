@@ -230,7 +230,6 @@ const retrieveFeatureDependenciesByMap = async (
 };
 
 const retrieveFeatureAggregate = async (featureId: number, auth0Id: string) => {
-  console.log(auth0Id, 'Sdfsd');
   const url = `http://localhost:5074/api/Features/${featureId}/Aggregate_climbs/ForUser/${auth0Id}`;
   try {
     const response = await fetch(url);
@@ -709,7 +708,31 @@ const removeGradeRangeFilter = async (auth0Id: string, mapId: number) => {
   }
 };
 
+const checkMapForClimb = async (climbId: number, mapId: number) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5074/api/Climbs/${climbId}/OnMap/${mapId}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(`HTTP error! status: ${error}`);
+  }
+};
+
 export {
+  checkMapForClimb,
   removeGradeRangeFilter,
   removeUserFilter,
   removeTagFilter,

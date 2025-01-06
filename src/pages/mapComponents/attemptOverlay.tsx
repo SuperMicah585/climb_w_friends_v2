@@ -67,6 +67,8 @@ const AttemptOverlay: React.FC<AttemptOverlayProps> = ({
             attemptValue,
           );
 
+          console.log(response);
+
           // Update climbObject if the response is valid
           setClimbObject((prev) =>
             prev.map((dependency) =>
