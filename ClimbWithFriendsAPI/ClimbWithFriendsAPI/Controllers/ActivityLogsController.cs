@@ -25,10 +25,13 @@ namespace ClimbWithFriendsAPI.Controllers
                 return BadRequest(new { Message = "Invalid mapId" });
             }
 
+
+            List<ActivityLog> activities;
+
             // Use raw SQL if sinceTimestamp is provided
             if (sinceTimestamp.HasValue)
             {
-                var activities = await _context.ActivityLogs
+                 activities = await _context.ActivityLogs
                     .FromSqlRaw(
                         @"SELECT * FROM ""ActivityLogs""
                   WHERE ""MapId"" = {0} 
@@ -37,16 +40,28 @@ namespace ClimbWithFriendsAPI.Controllers
                         mapId, sinceTimestamp.Value.ToString("yyyy-MM-ddTHH:mm:ssZ"))
                     .ToListAsync();
 
-                return Ok(activities);
             }
+            else
+            {
+                // If no sinceTimestamp is provided, fetch all activities for the mapId
+                activities = await _context.ActivityLogs
+                    .Where(a => a.MapId == mapId)
+                    .ToListAsync();
 
-            // If no sinceTimestamp is provided, fetch all activities for the mapId
-            var allActivities = await _context.ActivityLogs
-                .Where(a => a.MapId == mapId)
-                .OrderByDescending(a => DateTime.Parse(a.UpdatedAt)) // Safe here since it's parsed after fetching
-                .ToListAsync();
+                // Perform client-side sorting
+                activities = activities
+                    .OrderByDescending(a => DateTime.Parse(a.UpdatedAt))
+                    .ToList();
+            }
+            // Get the current UTC datetime
+            var currentDateTime = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
 
-            return Ok(allActivities);
+            // Return the result with activities and the current datetime
+            return Ok(new
+            {
+                CurrentDateTime = currentDateTime,
+                Activities = activities
+            });
         }
 
     }
