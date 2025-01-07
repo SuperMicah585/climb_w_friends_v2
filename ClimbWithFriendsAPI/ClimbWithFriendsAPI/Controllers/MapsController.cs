@@ -182,7 +182,7 @@ public async Task<ActionResult<IEnumerable<UserObjectForFeature>>> GetUsersByMap
 
             _context.MapToUsers.Add(newAssociation);
             await _context.SaveChangesAsync();
-            await _activityLogService.LogActivity(payload.UserId, "UserJoined", $"User joined map {mapId}");
+            await _activityLogService.LogActivity(payload.UserId, "UserJoined", $"User joined map {await GetMapNameById(mapId)}", mapId);
 
             return CreatedAtAction(nameof(AddUserToMap), new { userId = payload.UserId }, newAssociation);
         }
@@ -215,6 +215,7 @@ public async Task<ActionResult<IEnumerable<UserObjectForFeature>>> GetUsersByMap
             // Remove the user-to-map association
             _context.MapToUsers.Remove(userAssociation);
             await _context.SaveChangesAsync();
+            await _activityLogService.LogActivity(userId, "UserLeft", $"User left map {await GetMapNameById(mapId)}", mapId);
 
             // Check if the map has any remaining users
             var remainingUsers = await _context.MapToUsers
@@ -225,6 +226,7 @@ public async Task<ActionResult<IEnumerable<UserObjectForFeature>>> GetUsersByMap
                 // No users left, delete the map
                 _context.Maps.Remove(map);
                 await _context.SaveChangesAsync();
+
             }
 
             return NoContent();
@@ -270,8 +272,27 @@ public async Task<ActionResult<IEnumerable<UserObjectForFeature>>> GetUsersByMap
 
             return NoContent(); // 204 No Content for a successful update
         }
-    
 
+        // Helper Function to Get Map Name by ID
+        private async Task<string> GetMapNameById(int mapId)
+        {
+            try
+            {
+                // Query the database for the map name
+                var mapName = await _context.Maps
+                    .Where(m => m.MapId == mapId)
+                    .Select(m => m.MapName)
+                    .FirstOrDefaultAsync();
+
+                return mapName; // Returns null if no map is found
+            }
+            catch (Exception ex)
+            {
+                // Log the error (optional)
+                Console.WriteLine($"Error in GetMapNameById: {ex.Message}");
+                throw; // Re-throw the exception for higher-level handling
+            }
+        }
 
 
         //// DELETE: api/Maps/5

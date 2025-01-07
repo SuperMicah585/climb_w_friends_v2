@@ -9,14 +9,15 @@ public class ActivityLogService
         _context = context;
     }
 
-    public async Task LogActivity(string userId, string action, string details)
+    public async Task LogActivity(string userId, string action, string details, int? mapId = null)
     {
         var activity = new ActivityLog
         {
             UserId = userId,
             Action = action,
             UpdatedAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"),
-            Details = details
+            Details = details,
+            MapId = mapId
         };
 
         _context.ActivityLogs.Add(activity);

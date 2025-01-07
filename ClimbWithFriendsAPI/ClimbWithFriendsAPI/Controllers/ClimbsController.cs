@@ -15,9 +15,12 @@ namespace ClimbWithFriendsAPI.Controllers
     public class ClimbsController : ControllerBase
     {
         private readonly AppDbContext _context;
-        public ClimbsController(AppDbContext context)
+        private readonly ActivityLogService _activityLogService;
+
+        public ClimbsController(AppDbContext context, ActivityLogService activityLogService)
         {
             _context = context;
+            _activityLogService = activityLogService;
         }
 
     //api/Climbs/
@@ -102,7 +105,7 @@ public async Task<ActionResult<MapToUserToClimb>> AddMapToUserToClimb(int climbI
 
     _context.MapToUserToClimbs.Add(mapToUserToClimb);
             await _context.SaveChangesAsync();
-            
+            await _activityLogService.LogActivity(userId, "AddClimb", $"Climb added to map {await GetClimbNameById(mapId)}", mapId);
             return Ok(mapToUserToClimb);
         }
         [HttpDelete("{climbId}/FromUser/{userId}/FromMap/{mapId}")]
@@ -128,7 +131,9 @@ public async Task<ActionResult<MapToUserToClimb>> AddMapToUserToClimb(int climbI
     }
 
     _context.MapToUserToClimbs.Remove(mapToUserToClimb);
-    await _context.SaveChangesAsync();
+            await _activityLogService.LogActivity(userId, "RemoveClimb", $"Climb removed from map {await GetClimbNameById(mapId)}", mapId);
+
+            await _context.SaveChangesAsync();
 
     
     // Check if this was the last user for this climb on this map
@@ -170,13 +175,33 @@ public async Task<ActionResult<MapToUserToClimb>> AddMapToUserToClimb(int climbI
             return Ok(mapToUserToClimb);
 }
 
+        // Helper Function to Get Climb Name by ID
+        private async Task<string> GetClimbNameById(int climbId)
+        {
+            try
+            {
+                // Query the database for the climb name
+                var climbName = await _context.Climbs
+                    .Where(m => m.ClimbId == climbId)
+                    .Select(m => m.ClimbName)
+                    .FirstOrDefaultAsync();
+
+                return climbName; // Returns null if no climb is found
+            }
+            catch (Exception ex)
+            {
+                // Log the error (optional)
+                Console.WriteLine($"Error in GetClimbNameById: {ex.Message}");
+                throw; // Re-throw the exception for higher-level handling
+            }
+        }
 
 
 
-//add climb relationship based on inputed climbId and mapId
+        //add climb relationship based on inputed climbId and mapId
 
 
-//remove climb
+        //remove climb
 
 
         //// GET: api/Climbs
