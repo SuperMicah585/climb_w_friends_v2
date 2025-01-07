@@ -42,11 +42,12 @@ public class FilterDTO
 {
        public List<TagDTO> TagFilters { get; set; } = new List<TagDTO>();
         public List<GradeRangeFilter> GradeRangeFilters { get; set; } = new List<GradeRangeFilter>();
-        public List<UserDTO> UserFilters { get; set; } = new List<UserDTO>();
+        public List<UserFilterDTO> UserFilters { get; set; } = new List<UserFilterDTO>();
 }
 
 public class TagDTO 
 {
+public int Id{get;set;}
 public int TagId{get;set;}
 public string TagName{get;set;}
 }
@@ -65,3 +66,14 @@ public class GradeRangeFilterDTO
     public string? Type{get;set;} 
 
 }
+
+public class UserFilterDTO
+{
+    public int Id{get;set;}
+    public string Auth0Id{get;set;}
+    public string Username{get;set;}
+    public string Name{get;set;}
+
+}
+
+

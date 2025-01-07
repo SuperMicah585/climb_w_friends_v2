@@ -8,8 +8,8 @@ const HomeNavBar = () => {
   const { user, isAuthenticated } = useAuth0();
   const navBarItems = ['About', 'Usage', 'Work With Us'];
   return (
-    <div className="relative z-10 flex min-h-96 w-screen items-center justify-center gap-40 font-semibold">
-      <div className="flex flex-col items-center text-6xl font-black text-white"></div>
+    <div className="relative z-10 flex min-h-96 w-screen items-center justify-center gap-40 font-semibold text-white">
+   
 
       <div className="item-center absolute right-5 top-4 z-10 flex">
         {' '}
@@ -18,20 +18,20 @@ const HomeNavBar = () => {
 
       <div className="absolute left-5 top-4 flex w-40">
         <div className="flex items-center justify-center">
-          <div className="text-3xl font-bold"> CLIMB</div>
+          <div className="text-4xl font-bold"> CLIMB</div>
           <div className="text-sm font-bold">W</div>
-          <div className="text-3xl font-bold"> FRIENDS</div>
+          <div className="text-4xl font-bold"> FRIENDS</div>
         </div>
       </div>
 
-      <div className="absolute top-4 flex items-center justify-center gap-10 text-xl">
+      <div className="absolute top-4 flex items-center justify-center gap-10 text-2xl">
         {navBarItems.map((item) => (
           <div
             key={item}
             onClick={() => {
               setCurrentPage(item);
             }}
-            className={`border-b-2 border-transparent font-extrabold hover:cursor-pointer hover:border-white ${currentPage === item ? 'border-white' : ''}`}
+            className={`border-b-4 border-transparent font-extrabold hover:cursor-pointer hover:border-white ${currentPage === item ? 'border-white' : ''}`}
           >
             {item}{' '}
           </div>

@@ -447,6 +447,7 @@ export const addFeatureInteractions = async (
                 currentRoot.render(
                   <div
                     style={{
+                      width:'100%',
                       display: 'flex',
                       gap: '20px',
                       justifyContent: 'center',
@@ -454,10 +455,10 @@ export const addFeatureInteractions = async (
                   >
                     {/* First BarChart */}
                     <BarChart
-                      width={225}
+                      width={250}
                       height={120}
                       data={sortedGradeArray.boulderArray}
-                      margin={{ top: 0, right: 20, bottom: 0, left: 0 }}
+                      margin={{ top: 0, right: 30, bottom: 0, left: 0 }}
                     >
                       <CartesianGrid stroke="white" strokeDasharray="3 3" />
                       <XAxis stroke="white" dataKey="rating" />
@@ -471,10 +472,10 @@ export const addFeatureInteractions = async (
 
                     {/* Second BarChart */}
                     <BarChart
-                      width={225}
+                      width={250}
                       height={120}
                       data={sortedGradeArray.sportArray} // Assuming a similar data structure exists
-                      margin={{ top: 0, right: 20, bottom: 0, left: 0 }}
+                      margin={{ top: 0, right: 30, bottom: 0, left: 0 }}
                     >
                       <CartesianGrid stroke="white" strokeDasharray="3 3" />
                       <XAxis stroke="white" dataKey="rating" />
@@ -490,18 +491,15 @@ export const addFeatureInteractions = async (
               } else {
                 currentRoot.render(
                   <div
-                    style={{
-                      display: 'flex',
-                      gap: '20px',
-                      justifyContent: 'center',
-                    }}
+  
+
                   >
                     {/* First BarChart */}
                     <BarChart
-                      width={225}
+                      width={215}
                       height={120}
                       data={sortedGradeArray.array}
-                      margin={{ top: 0, right: 20, bottom: 0, left: 0 }}
+                      margin={{ top: 0, right: 18, bottom: 0, left: 0 }}
                     >
                       <CartesianGrid stroke="white" strokeDasharray="3 3" />
                       <XAxis stroke="white" dataKey="rating" />

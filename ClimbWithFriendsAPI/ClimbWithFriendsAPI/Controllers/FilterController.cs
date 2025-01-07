@@ -32,6 +32,7 @@ var tagFilters = await (from tf in _context.TagFilters
                         where tf.MapId == mapId && tf.Auth0Id == auth0Id
                         select new TagDTO
                         {
+                            Id = tf.Id,
                             TagId = tf.TagId,
                             TagName = t.TagName
                         })
@@ -49,9 +50,10 @@ var userFilters = await _context.UserFilters
     .Include(uf => uf.MapToUsers)
     .Include(uf => uf.Users)
     .Where(uf => uf.MapId == mapId && uf.Auth0Id == auth0Id)
-    .Select(uf => new UserDTO
+    .Select(uf => new UserFilterDTO
     {
-        Auth0Id = uf.Auth0Id,
+        Id = uf.Id,
+        Auth0Id = uf.Auth0IdToFilter,
         Username = uf.Users.Username, // Assuming `Users` has a `Username` property
         Name = uf.Users.Name         // Assuming `Users` has a `Name` property
     })
@@ -113,7 +115,7 @@ public async Task<ActionResult<UserFilter>> AddUserFilterToMap(int mapId, string
     // Fetch current UTC time for createdAt
     var createdAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"); 
 
-    // Query the MapToTags table for the relationship
+    // Query the MapToUsers table for the relationship
     var mapToUser = await _context.MapToUsers
         .FirstOrDefaultAsync(mu => mu.MapId == mapId && mu.UserId == auth0IdToFilter);
 
@@ -126,24 +128,33 @@ public async Task<ActionResult<UserFilter>> AddUserFilterToMap(int mapId, string
         return BadRequest("The UserFilter to Map relationship doesn't exist");
     }
 
-    // Create the TagFilter object
+    // Create the object
     var userFilterObject = new UserFilter
     {
         UserId = User.UserId,
         MapId = mapId,
+        Auth0IdToFilter = auth0IdToFilter,
         Auth0Id = auth0Id,
         MapToUserId = mapToUser.Id,
         CreatedAt = createdAt
     };
 
-    // Add the object to the TagFilters table
+    // Add the object to the table
     _context.UserFilters.Add(userFilterObject);
 
     // Save changes to the database
     await _context.SaveChangesAsync();
 
+    var UserFilterResponse = new UserFilterDTO
+    {
+    Id = userFilterObject.Id,
+    Auth0Id = userFilterObject.Auth0IdToFilter,
+    Username = userFilterObject.Users.Username,
+    Name = userFilterObject.Users.Name,
+    };
+
     // Return success
-    return Ok(userFilterObject);
+    return Ok(UserFilterResponse);
 }
 
 [HttpPost("GradeRangeFilter/ToMap/{mapId}/ForUser/{auth0Id}")]
@@ -201,13 +212,13 @@ public async Task<ActionResult<GradeRangeFilter>> AddGradeRangeFilterToMap(int m
     }
 }
 
-[HttpDelete("Tag/{tagId}")]
-public async Task<ActionResult<bool>> DeleteTagFilterFromMap(int tagId)
+[HttpDelete("Tag/{Id}")]
+public async Task<ActionResult<bool>> DeleteTagFilterFromMap(int Id)
 {
 
     // Query the MapToTags table for the relationship
     var mapToTag = await _context.TagFilters
-        .FirstOrDefaultAsync(mu => mu.TagId == tagId);
+        .FirstOrDefaultAsync(mu => mu.Id == Id);
 
 
     // Add the object to the TagFilters table
@@ -220,13 +231,13 @@ public async Task<ActionResult<bool>> DeleteTagFilterFromMap(int tagId)
     return Ok(true);
 }
 
-[HttpDelete("User/{auth0Id}")]
-public async Task<ActionResult<bool>> DeleteUserFilterFromMap(string auth0Id)
+[HttpDelete("User/{id}")]
+public async Task<ActionResult<bool>> DeleteUserFilterFromMap(int id)
 {
 
     // Query the MapToTags table for the relationship
     var UserFilter = await _context.UserFilters
-        .FirstOrDefaultAsync(mu => mu.Auth0Id == auth0Id);
+        .FirstOrDefaultAsync(mu => mu.Id == id);
 
 
     // Add the object to the TagFilters table

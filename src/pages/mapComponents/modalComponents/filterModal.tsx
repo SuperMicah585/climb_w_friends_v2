@@ -78,11 +78,13 @@ const FilterModal: React.FC<FilterModalProps> = ({
   };
 
   const modifyFriendArray = async (item: UserFilter) => {
-    const response = await AddUserFilter(item.auth0ID || '', auth0Id, mapId);
+
+    const response = await AddUserFilter(item.auth0Id, auth0Id, mapId);
+
     if (response) {
       setModifiedFiltersOnMap((prev) => ({
         ...prev,
-        userFilters: [...prev.userFilters, item],
+        userFilters: [...prev.userFilters, response],
       }));
     }
   };
@@ -92,15 +94,20 @@ const FilterModal: React.FC<FilterModalProps> = ({
     [],
   );
 
+
   const modifyTagArray = async (item: TagFilter) => {
     const response = await AddTagFilter(auth0Id, mapId, item.tagId);
+   
     if (response) {
+      
       setModifiedFiltersOnMap((prev) => ({
         ...prev,
-        tagFilters: [...prev.tagFilters, item],
+        tagFilters: [...prev.tagFilters, {...item,['id']:response.id}],
       }));
     }
   };
+
+
   const handleClickedTag = (item: TagFilter | UserFilter) => {
     if ('tagName' in item) {
       modifyTagArray(item);
@@ -114,7 +121,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
     if (selectedFilter === 'tag') {
       let filteredTags = tagArrayForSearch.filter(
         (item) =>
-          item.tagName.includes(searchString) &&
+          item.tagName.toLowerCase().includes(searchString.toLowerCase()) &&
           !modifiedFiltersOnMap.tagFilters.find(
             (tag) => item.tagId === tag.tagId,
           ),
@@ -122,17 +129,18 @@ const FilterModal: React.FC<FilterModalProps> = ({
 
       setSearchResults(filteredTags);
     } else if (selectedFilter === 'climber') {
-      let filteredClimber = userArrayForSearch.filter(
-        (item) =>
-          (item.name?.includes(searchString) ||
-            item.username?.includes(searchString)) &&
-          !modifiedFiltersOnMap.userFilters.find((user) => {
-            const itemAuth0ID = item.auth0ID || item.auth0Id; // Check both possible properties
-            const userAuth0ID = user.auth0ID || user.auth0Id; // Check both possible properties
-            return itemAuth0ID && userAuth0ID && itemAuth0ID === userAuth0ID; // Compare if both are set
-          }),
-      );
-      setSearchResults(filteredClimber);
+
+  let filteredClimber = userArrayForSearch.filter(
+    (item) =>
+      item.name.toLowerCase().includes(searchString.toLowerCase()) &&
+      !modifiedFiltersOnMap.userFilters.find(
+        (user) => user.auth0Id === item.auth0Id,
+      ),
+  );
+
+  setSearchResults(filteredClimber);
+
+
     }
   }, [
     searchString,
@@ -158,7 +166,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
   }, [mapId]);
 
   const deleteTagCallBack = async (item: Tags) => {
-    const response = await removeTagFilter(item.tagId);
+    const response = await removeTagFilter(item?.id || -1);
 
     if (response) {
       setModifiedFiltersOnMap((prev) => ({
@@ -168,8 +176,11 @@ const FilterModal: React.FC<FilterModalProps> = ({
     }
   };
 
+
   const deleteUserCallBack = async (item: UserFilter) => {
-    const response = await removeUserFilter(item.auth0Id || item.auth0ID || '');
+
+    const response = await removeUserFilter(item.id);
+
     if (response) {
       setModifiedFiltersOnMap((prev) => ({
         ...prev,

@@ -575,6 +575,12 @@ const AddUserFilter = async (
   auth0Id: string,
   mapId: number,
 ) => {
+
+console.log(
+  auth0IdToFilter,
+  auth0Id,
+  mapId
+)
   try {
     const response = await fetch(
       `http://localhost:5074/api/Filters/User/${auth0IdToFilter}/ToMap/${mapId}/ForUser/${auth0Id}`,
@@ -631,10 +637,10 @@ const AddGradeRangeFilter = async (
   }
 };
 
-const removeTagFilter = async (filterId: number) => {
+const removeTagFilter = async (id: number) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Filters/Tag/${filterId}`,
+      `http://localhost:5074/api/Filters/Tag/${id}`,
       {
         method: 'DELETE',
         headers: {
@@ -658,10 +664,10 @@ const removeTagFilter = async (filterId: number) => {
   }
 };
 
-const removeUserFilter = async (auth0Id: string) => {
+const removeUserFilter = async (id: number) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Filters/User/${auth0Id}`,
+      `http://localhost:5074/api/Filters/User/${id}`,
       {
         method: 'DELETE',
         headers: {
