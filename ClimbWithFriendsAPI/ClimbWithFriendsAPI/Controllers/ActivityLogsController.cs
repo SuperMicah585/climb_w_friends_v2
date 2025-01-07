@@ -25,26 +25,30 @@ namespace ClimbWithFriendsAPI.Controllers
                 return BadRequest(new { Message = "Invalid mapId" });
             }
 
-            // Query the activity logs
-            var query = _context.ActivityLogs.AsQueryable();
-
-            // Filter by mapId
-            query = query.Where(a => a.MapId == mapId);
-
-            // Filter by timestamp if provided
+            // Use raw SQL if sinceTimestamp is provided
             if (sinceTimestamp.HasValue)
             {
-                query = query.Where(a => DateTime.Parse(a.UpdatedAt) > sinceTimestamp.Value);
+                var activities = await _context.ActivityLogs
+                    .FromSqlRaw(
+                        @"SELECT * FROM ""ActivityLogs""
+                  WHERE ""MapId"" = {0} 
+                  AND ""UpdatedAt""::timestamp > {1}::timestamp 
+                  ORDER BY ""UpdatedAt""::timestamp DESC",
+                        mapId, sinceTimestamp.Value.ToString("yyyy-MM-ddTHH:mm:ssZ"))
+                    .ToListAsync();
+
+                return Ok(activities);
             }
 
-            // Execute query
-            var activities = await query
-                .OrderByDescending(a => DateTime.Parse(a.UpdatedAt))
+            // If no sinceTimestamp is provided, fetch all activities for the mapId
+            var allActivities = await _context.ActivityLogs
+                .Where(a => a.MapId == mapId)
+                .OrderByDescending(a => DateTime.Parse(a.UpdatedAt)) // Safe here since it's parsed after fetching
                 .ToListAsync();
 
-            // Return the result
-            return Ok(activities);
+            return Ok(allActivities);
         }
+
     }
 
 }
