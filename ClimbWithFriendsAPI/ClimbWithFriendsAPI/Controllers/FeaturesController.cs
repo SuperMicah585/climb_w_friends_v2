@@ -119,139 +119,67 @@ var features = await _context.Features
 
 private async Task<HashSet<int>> GetFilteredClimbIdsAsync(int mapId, string auth0Id)
 {
-    // Check for existing filters
-    var hasTagFilters = await _context.TagFilters
-        .AnyAsync(tf => tf.MapId == mapId && tf.Auth0Id == auth0Id);
-
-    var hasUserFilters = await _context.UserFilters
-        .AnyAsync(tf => tf.MapId == mapId && tf.Auth0Id == auth0Id);
-
-    var hasGradeFilter = await _context.GradeRangeFilters
-        .AnyAsync(gf => gf.MapId == mapId && gf.Auth0Id == auth0Id);
-
-    var tagClimbIds = new List<int>();
-    var userClimbIds = new List<int>();
-    var gradeFilteredClimbIds = new HashSet<int>();
-
-    // Get tag filter climb IDs if they exist
-    if (hasTagFilters)
-    {
-        tagClimbIds = await _context.TagFilters
-            .Where(tf => tf.MapId == mapId && tf.Auth0Id == auth0Id)
-            .Join(
-                _context.ClimbToTags,
-                tf => tf.TagId,
-                ct => ct.TagId,
-                (tf, ct) => ct.ClimbId
-            )
-            .Distinct()
-            .ToListAsync();
-
-        if (hasGradeFilter)
-        {
-            var gradeRange = await _context.GradeRangeFilters
-                .Where(gf => gf.MapId == mapId && gf.Auth0Id == auth0Id)
-                .FirstOrDefaultAsync();
-
-            if (gradeRange != null)
-            {
-                // Get climbs that match both tag and grade criteria
-                gradeFilteredClimbIds = (await _context.Climbs
-                    .Where(c => tagClimbIds.Contains(c.ClimbId))
-                    .Select(c => new { c.ClimbId, c.Rating })
-                    .ToListAsync())
-                    .Where(c => ClimbingGrades.IsGradeInRange(
-                        c.Rating,
-                        gradeRange.FromGrade,
-                        gradeRange.ToGrade))
-                    .Select(c => c.ClimbId)
-                    .ToHashSet();
-
-                return gradeFilteredClimbIds;
-            }
-        }
-
-        return tagClimbIds.ToHashSet();
-    }
-
-    // Get user filter climb IDs if they exist
-    if (hasUserFilters)
-    {
-        userClimbIds = await _context.UserFilters
-            .Where(uf => uf.MapId == mapId && uf.Auth0Id == auth0Id)
-            .Join(
-                _context.MapToUserToClimbs,
-                uf => uf.Auth0Id,
-                muc => muc.Auth0ID,
-                (uf, muc) => muc.ClimbId
-            )
-            .Distinct()
-            .ToListAsync();
-
-        if (hasGradeFilter)
-        {
-            var gradeRange = await _context.GradeRangeFilters
-                .Where(gf => gf.MapId == mapId && gf.Auth0Id == auth0Id)
-                .FirstOrDefaultAsync();
-
-            if (gradeRange != null)
-            {
-                // Get climbs that match both user and grade criteria
-                gradeFilteredClimbIds = (await _context.Climbs
-                    .Where(c => userClimbIds.Contains(c.ClimbId))
-                    .Select(c => new { c.ClimbId, c.Rating })
-                    .ToListAsync())
-                    .Where(c => ClimbingGrades.IsGradeInRange(
-                        c.Rating,
-                        gradeRange.FromGrade,
-                        gradeRange.ToGrade))
-                    .Select(c => c.ClimbId)
-                    .ToHashSet();
-
-                return gradeFilteredClimbIds;
-            }
-        }
-
-        return userClimbIds.ToHashSet();
-    }
-
-    // If only grade filter exists
-    if (hasGradeFilter)
-    {
-        var gradeRange = await _context.GradeRangeFilters
-            .Where(gf => gf.MapId == mapId && gf.Auth0Id == auth0Id)
-            .FirstOrDefaultAsync();
-
-        if (gradeRange != null)
-        {
-            // Get all climbs for the map that match the grade criteria
-            return (await _context.MapToFeatureToClimbs
-                .Where(mfc => mfc.MapId == mapId)
-                .Join(
-                    _context.Climbs,
-                    mfc => mfc.ClimbId,
-                    c => c.ClimbId,
-                    (mfc, c) => new { c.ClimbId, c.Rating }
-                )
-                .Distinct()
-                .ToListAsync())
-                .Where(c => ClimbingGrades.IsGradeInRange(
-                    c.Rating,
-                    gradeRange.FromGrade,
-                    gradeRange.ToGrade))
-                .Select(c => c.ClimbId)
-                .ToHashSet();
-        }
-    }
-
-    // If no filters exist, return all climb IDs
-    return await _context.MapToFeatureToClimbs
+    var baseQuery = _context.MapToFeatureToClimbs
         .Where(mfc => mfc.MapId == mapId)
         .Select(mfc => mfc.ClimbId)
-        .Distinct()
+        .Distinct();
+
+    var filteredIds = await baseQuery.ToHashSetAsync();
+
+    // Apply tag filters
+    var tagFilters = await _context.TagFilters
+        .Where(tf => tf.MapId == mapId && tf.Auth0Id == auth0Id)
+        .ToListAsync();
+
+    if (tagFilters.Any())
+    {
+        var tagClimbIds = await _context.ClimbToTags
+            .Where(ct => tagFilters.Select(tf => tf.TagId).Contains(ct.TagId))
+            .Select(ct => ct.ClimbId)
+            .ToHashSetAsync();
+            
+        filteredIds.IntersectWith(tagClimbIds);
+    }
+
+    // Apply user filters
+var userFilters = await _context.UserFilters
+    .Where(uf => uf.MapId == mapId && uf.Auth0Id == auth0Id)
+    .ToListAsync();
+
+if (userFilters.Any())
+{
+    var userClimbIds = await _context.MapToUserToClimbs
+        .Where(muc => 
+            muc.MapId == mapId && 
+            userFilters.Select(uf => uf.Auth0IdToFilter).Contains(muc.Auth0ID))
+        .Select(muc => muc.ClimbId)
         .ToHashSetAsync();
+        
+    filteredIds.IntersectWith(userClimbIds);
 }
 
+    // Apply grade filter
+    var gradeRange = await _context.GradeRangeFilters
+        .FirstOrDefaultAsync(gf => gf.MapId == mapId && gf.Auth0Id == auth0Id);
+
+    if (gradeRange != null)
+    {
+        var gradeFilteredClimbs = await _context.Climbs
+            .Where(c => filteredIds.Contains(c.ClimbId))
+            .Select(c => new { c.ClimbId, c.Rating })
+            .ToListAsync();
+
+        filteredIds = gradeFilteredClimbs
+            .Where(c => ClimbingGrades.IsGradeInRange(
+                c.Rating,
+                gradeRange.FromGrade,
+                gradeRange.ToGrade))
+            .Select(c => c.ClimbId)
+            .ToHashSet();
+    }
+
+    return filteredIds;
+}
 
 
 //creates new feature based on MapId and type input

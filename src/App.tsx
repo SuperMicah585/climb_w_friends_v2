@@ -4,7 +4,7 @@ import { FilterProvider } from './pages/filterProvider';
 function App() {
   return (
     <FilterProvider>
-      <Map zoomLevel={2} />
+      <Map zoomLevel={3} />
     </FilterProvider>
   );
 }

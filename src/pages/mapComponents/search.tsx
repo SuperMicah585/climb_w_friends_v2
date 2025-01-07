@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { climbType, usStateAbbreviations } from './mapObjects';
+import { climbType, usStateAbbreviations,usStateDictionary} from './mapObjects';
 import DropDown from '../../reusableComponents/dropDown';
 import InputComponent from '../../reusableComponents/input';
 import SearchDropDown from '../../reusableComponents/searchDropDown';
@@ -55,7 +55,7 @@ const Search: React.FC<SearchProps> = ({
 
     const data = await retrieveClimbs(
       query,
-      stateDropDownName,
+      usStateDictionary[stateDropDownName],
       climbTypeDropDownValue,
     );
 

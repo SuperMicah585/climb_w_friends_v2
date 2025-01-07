@@ -128,9 +128,9 @@ const groupByGrade = (input: any) => {
 
   for (let item of input) {
     const value = parseGrade(item.rating);
-    console.log(value, item.rating);
+
     //boulder climbs
-    if (value < 10004 && value > 90000) {
+    if (value < 10004 && value > 9000) {
       combinedArrayBoulder[0].count += item.count;
       combinedArrayBoulderTrigger = true;
     } else if (value > 10003 && value < 10007) {

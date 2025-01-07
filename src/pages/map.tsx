@@ -247,7 +247,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
         map.current = new mapboxgl.Map({
           container: mapContainer.current, // Container for the map
           style: 'mapbox://styles/mapbox/outdoors-v12', // Mapbox style
-          center: [-74.5, 40], // Starting position [lng, lat]
+          center: [-98.5795, 39.8283], // Starting position [lng, lat]
           zoom: zoomLevel, // Starting zoom level
           projection: 'globe', // Enable the globe projection
         });
