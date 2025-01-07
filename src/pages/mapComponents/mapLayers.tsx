@@ -96,7 +96,7 @@ export const displayLayersInitial = (
     });
   }
 
-  features.features.forEach((feature, index) => {
+  features.features.forEach((feature:any, index) => {
     const fillLayerId = `geojson-fill-layer-${feature.id}`;
     const circleLayerId = `geojson-circle-layer-${feature.id}`;
     const layerId = `geojson-layer-${feature.id}`;
@@ -131,7 +131,7 @@ export const displayLayersInitial = (
             'circle-color': '#0047AB',
             'circle-radius': 12,
             'circle-opacity': 0.5,
-            'circle-stroke-width': 0.5,
+            'circle-stroke-width': 0.8,
             'circle-stroke-color': '#0047AB',
           },
         });
@@ -170,8 +170,8 @@ export const displayLayersInitial = (
           },
           filter: ['==', '$type', 'Polygon'],
           paint: {
-            'fill-color': 'brown', // The fill color of the polygon
-            'fill-opacity': 0.5, // The opacity of the polygon fill
+            'fill-color': 'brown',
+            'fill-opacity': 0.8, 
           },
           layout: {
             visibility: 'none',
@@ -219,7 +219,7 @@ export const displayLayersInitial = (
             'circle-color': 'brown',
             'circle-radius': 14,
             'circle-opacity': 0.8,
-            'circle-stroke-width': 0.5,
+            'circle-stroke-width': 0.8,
             'circle-stroke-color': 'brown',
           },
           layout: {
@@ -382,19 +382,19 @@ export const addFeatureInteractions = async (
           var grouped = false;
           var twoGraphs = false;
           const popUpData = await retrieveFeatureAggregate(featureId, auth0Id);
-          var sortedGradeArray = {
+          var sortedGradeArray:any = {
             type: 'notgrouped',
             array: popUpData.gradeCounts.sort((a: any, b: any) => {
               return compareGrades(a.rating, b.rating);
             }),
           };
-          console.log(sortedGradeArray);
+  
           if (sortedGradeArray.array.length > 3) {
             sortedGradeArray = groupByGrade(sortedGradeArray.array);
             grouped = true;
           }
 
-          console.log(sortedGradeArray);
+
           if (grouped) {
             twoGraphs = IsBothBoulderAndSport(sortedGradeArray.type);
           }

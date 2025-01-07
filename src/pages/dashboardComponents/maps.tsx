@@ -23,7 +23,6 @@ const Maps = () => {
   const [addMapTrigger, setAddMapTrigger] = useState(false);
   const [toastTrigger, setToastTrigger] = useState(0);
   const [toastType, setToastType] = useState('success');
-
   const [toastMessage, setToastMessage] = useState('');
   const [editMapObject, setEditMapObject] = useState<MapObject>({
     mapId: -1,

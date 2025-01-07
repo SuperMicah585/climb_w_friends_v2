@@ -1,0 +1,100 @@
+# Diff Details
+
+Date : 2025-01-06 17:17:46
+
+Directory /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data
+
+Total : 85 files,  -6556 codes, -184 comments, -527 blanks, all -7267 lines
+
+[Summary](results.md) / [Details](details.md) / [Diff Summary](diff.md) / Diff Details
+
+## Files
+| filename | language | code | comment | blank | total |
+| :--- | :--- | ---: | ---: | ---: | ---: |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/AppDbContext.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/AppDbContext.cs) | C# | 51 | 5 | 12 | 68 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Attempt.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Attempt.cs) | C# | 22 | 0 | 3 | 25 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Climb.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Climb.cs) | C# | 72 | 0 | 6 | 78 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/ClimbChat.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/ClimbChat.cs) | C# | 28 | 0 | 5 | 33 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/ClimbToTag.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/ClimbToTag.cs) | C# | 12 | 1 | 4 | 17 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/AttemptConfiguration.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/AttemptConfiguration.cs) | C# | 35 | 1 | 7 | 43 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/ClimbChatConfiguration.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/ClimbChatConfiguration.cs) | C# | 34 | 1 | 9 | 44 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/ClimbConfiguration.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/ClimbConfiguration.cs) | C# | 61 | 4 | 9 | 74 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/ClimbToTagConfiguration.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/ClimbToTagConfiguration.cs) | C# | 33 | 6 | 7 | 46 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/FeatureConfiguration.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/FeatureConfiguration.cs) | C# | 26 | 3 | 9 | 38 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/GradeRangeFilterConfigurations.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/GradeRangeFilterConfigurations.cs) | C# | 24 | 0 | 12 | 36 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/MapConfiguration.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/MapConfiguration.cs) | C# | 57 | 1 | 7 | 65 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/MapToFeatureToClimbConfiguration.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/MapToFeatureToClimbConfiguration.cs) | C# | 29 | 2 | 5 | 36 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/MapToTagConfiguration.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/MapToTagConfiguration.cs) | C# | 33 | 2 | 7 | 42 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/MapToUserConfiguration.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/MapToUserConfiguration.cs) | C# | 27 | 16 | 9 | 52 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/MapToUserToClimbConfiguration.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/MapToUserToClimbConfiguration.cs) | C# | 28 | 1 | 7 | 36 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/TagConfiguration.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/TagConfiguration.cs) | C# | 57 | 1 | 11 | 69 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/TagFilterConfigurations.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/TagFilterConfigurations.cs) | C# | 23 | 0 | 10 | 33 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/TickConfiguration.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/TickConfiguration.cs) | C# | 34 | 1 | 9 | 44 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/UserFilterConfigurations.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Configurations/UserFilterConfigurations.cs) | C# | 27 | 0 | 10 | 37 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Feature.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Feature.cs) | C# | 75 | 1 | 19 | 95 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/GradeRangeFilter.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/GradeRangeFilter.cs) | C# | 16 | 0 | 4 | 20 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Map.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Map.cs) | C# | 16 | 0 | 2 | 18 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/MapToFeatureToClimb.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/MapToFeatureToClimb.cs) | C# | 12 | 1 | 4 | 17 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/MapToTag.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/MapToTag.cs) | C# | 12 | 1 | 4 | 17 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/MapToUser.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/MapToUser.cs) | C# | 11 | 1 | 3 | 15 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/MapToUserToClimb.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/MapToUserToClimb.cs) | C# | 17 | 1 | 6 | 24 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Tag.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Tag.cs) | C# | 18 | 1 | 9 | 28 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/TagFilter.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/TagFilter.cs) | C# | 15 | 0 | 4 | 19 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Ticks.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/Ticks.cs) | C# | 22 | 0 | 4 | 26 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/User.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/User.cs) | C# | 24 | 0 | 10 | 34 |
+| [ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/UserFilter.cs](/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Data/UserFilter.cs) | C# | 17 | 0 | 4 | 21 |
+| [src/App.tsx](/src/App.tsx) | TypeScript JSX | -11 | 0 | -2 | -13 |
+| [src/assets/react.svg](/src/assets/react.svg) | XML | -1 | 0 | 0 | -1 |
+| [src/index.css](/src/index.css) | CSS | -34 | -4 | -5 | -43 |
+| [src/main.tsx](/src/main.tsx) | TypeScript JSX | -29 | -2 | -3 | -34 |
+| [src/pages/dashboard.tsx](/src/pages/dashboard.tsx) | TypeScript JSX | -26 | 0 | -4 | -30 |
+| [src/pages/dashboardComponents/dashboardObjects.tsx](/src/pages/dashboardComponents/dashboardObjects.tsx) | TypeScript JSX | -377 | 0 | -2 | -379 |
+| [src/pages/dashboardComponents/maps.tsx](/src/pages/dashboardComponents/maps.tsx) | TypeScript JSX | -253 | -9 | -27 | -289 |
+| [src/pages/dashboardComponents/mapsComponents/addMapModal.tsx](/src/pages/dashboardComponents/mapsComponents/addMapModal.tsx) | TypeScript JSX | -113 | -1 | -10 | -124 |
+| [src/pages/dashboardComponents/mapsComponents/editModal.tsx](/src/pages/dashboardComponents/mapsComponents/editModal.tsx) | TypeScript JSX | -307 | -2 | -21 | -330 |
+| [src/pages/dashboardComponents/navBar.tsx](/src/pages/dashboardComponents/navBar.tsx) | TypeScript JSX | -87 | 0 | -11 | -98 |
+| [src/pages/dashboardComponents/utilityFunctions.tsx](/src/pages/dashboardComponents/utilityFunctions.tsx) | TypeScript JSX | -199 | -16 | -29 | -244 |
+| [src/pages/filterProvider.tsx](/src/pages/filterProvider.tsx) | TypeScript JSX | -28 | 0 | -7 | -35 |
+| [src/pages/homeComponents/homeNavBar.tsx](/src/pages/homeComponents/homeNavBar.tsx) | TypeScript JSX | -39 | 0 | -5 | -44 |
+| [src/pages/login.tsx](/src/pages/login.tsx) | TypeScript JSX | -17 | -1 | -7 | -25 |
+| [src/pages/map.tsx](/src/pages/map.tsx) | TypeScript JSX | -359 | -14 | -57 | -430 |
+| [src/pages/mapComponents/activityFeed.tsx](/src/pages/mapComponents/activityFeed.tsx) | TypeScript JSX | -62 | -1 | -9 | -72 |
+| [src/pages/mapComponents/attemptOverlay.tsx](/src/pages/mapComponents/attemptOverlay.tsx) | TypeScript JSX | -188 | -3 | -16 | -207 |
+| [src/pages/mapComponents/chatOverlay.tsx](/src/pages/mapComponents/chatOverlay.tsx) | TypeScript JSX | -149 | -1 | -10 | -160 |
+| [src/pages/mapComponents/gradeComparison.ts](/src/pages/mapComponents/gradeComparison.ts) | TypeScript | -131 | -20 | -26 | -177 |
+| [src/pages/mapComponents/mapApiRequests.tsx](/src/pages/mapComponents/mapApiRequests.tsx) | TypeScript JSX | -674 | -22 | -78 | -774 |
+| [src/pages/mapComponents/mapLayers.tsx](/src/pages/mapComponents/mapLayers.tsx) | TypeScript JSX | -448 | -65 | -46 | -559 |
+| [src/pages/mapComponents/mapNavBar.tsx](/src/pages/mapComponents/mapNavBar.tsx) | TypeScript JSX | -95 | 0 | -3 | -98 |
+| [src/pages/mapComponents/mapObjects.tsx](/src/pages/mapComponents/mapObjects.tsx) | TypeScript JSX | -247 | 0 | -9 | -256 |
+| [src/pages/mapComponents/modalComponents/addClimbModal.tsx](/src/pages/mapComponents/modalComponents/addClimbModal.tsx) | TypeScript JSX | -500 | -18 | -59 | -577 |
+| [src/pages/mapComponents/modalComponents/allClimbsModal.tsx](/src/pages/mapComponents/modalComponents/allClimbsModal.tsx) | TypeScript JSX | -32 | 0 | -3 | -35 |
+| [src/pages/mapComponents/modalComponents/climbModal.tsx](/src/pages/mapComponents/modalComponents/climbModal.tsx) | TypeScript JSX | -331 | -9 | -35 | -375 |
+| [src/pages/mapComponents/modalComponents/filterModal.tsx](/src/pages/mapComponents/modalComponents/filterModal.tsx) | TypeScript JSX | -322 | -12 | -46 | -380 |
+| [src/pages/mapComponents/modalComponents/filterModalComponents.tsx/GradeDropDowns.tsx](/src/pages/mapComponents/modalComponents/filterModalComponents.tsx/GradeDropDowns.tsx) | TypeScript JSX | -140 | -2 | -9 | -151 |
+| [src/pages/mapComponents/modalComponents/modalSearch.tsx](/src/pages/mapComponents/modalComponents/modalSearch.tsx) | TypeScript JSX | -83 | -1 | -12 | -96 |
+| [src/pages/mapComponents/modalComponents/modalTag.tsx](/src/pages/mapComponents/modalComponents/modalTag.tsx) | TypeScript JSX | -152 | -4 | -15 | -171 |
+| [src/pages/mapComponents/modalComponents/tagOverlay.tsx](/src/pages/mapComponents/modalComponents/tagOverlay.tsx) | TypeScript JSX | -16 | 0 | -2 | -18 |
+| [src/pages/mapComponents/popup.css](/src/pages/mapComponents/popup.css) | CSS | -28 | -3 | -3 | -34 |
+| [src/pages/mapComponents/search.tsx](/src/pages/mapComponents/search.tsx) | TypeScript JSX | -171 | -5 | -12 | -188 |
+| [src/pages/mapComponents/tickAndAttempt.tsx](/src/pages/mapComponents/tickAndAttempt.tsx) | TypeScript JSX | -157 | -4 | -9 | -170 |
+| [src/pages/mapComponents/tickOverlay.tsx](/src/pages/mapComponents/tickOverlay.tsx) | TypeScript JSX | -186 | -2 | -17 | -205 |
+| [src/pages/mapbox.css](/src/pages/mapbox.css) | CSS | -12 | 0 | -1 | -13 |
+| [src/reusableComponents/chatInput.tsx](/src/reusableComponents/chatInput.tsx) | TypeScript JSX | -33 | 0 | -4 | -37 |
+| [src/reusableComponents/climbModalBar.tsx](/src/reusableComponents/climbModalBar.tsx) | TypeScript JSX | -334 | -6 | -21 | -361 |
+| [src/reusableComponents/downDrop.tsx](/src/reusableComponents/downDrop.tsx) | TypeScript JSX | -53 | 0 | -2 | -55 |
+| [src/reusableComponents/dropDown.tsx](/src/reusableComponents/dropDown.tsx) | TypeScript JSX | -93 | 0 | -9 | -102 |
+| [src/reusableComponents/genericButton.tsx](/src/reusableComponents/genericButton.tsx) | TypeScript JSX | -30 | 0 | -1 | -31 |
+| [src/reusableComponents/genericModal.tsx](/src/reusableComponents/genericModal.tsx) | TypeScript JSX | -48 | -2 | -5 | -55 |
+| [src/reusableComponents/input.tsx](/src/reusableComponents/input.tsx) | TypeScript JSX | -47 | 0 | -8 | -55 |
+| [src/reusableComponents/loginButton.tsx](/src/reusableComponents/loginButton.tsx) | TypeScript JSX | -20 | 0 | -4 | -24 |
+| [src/reusableComponents/logoutButton.tsx](/src/reusableComponents/logoutButton.tsx) | TypeScript JSX | -22 | 0 | -4 | -26 |
+| [src/reusableComponents/searchDropDown.tsx](/src/reusableComponents/searchDropDown.tsx) | TypeScript JSX | -50 | 0 | -6 | -56 |
+| [src/reusableComponents/styles.tsx](/src/reusableComponents/styles.tsx) | TypeScript JSX | -386 | 0 | -26 | -412 |
+| [src/reusableComponents/toastContainer.tsx](/src/reusableComponents/toastContainer.tsx) | TypeScript JSX | -53 | 0 | -8 | -61 |
+| [src/reusableComponents/toastNotification.tsx](/src/reusableComponents/toastNotification.tsx) | TypeScript JSX | -98 | -3 | -9 | -110 |
+| [src/reusableComponents/toolTip.tsx](/src/reusableComponents/toolTip.tsx) | TypeScript JSX | -65 | -2 | -6 | -73 |
+| [src/supaBaseClient.tsx](/src/supaBaseClient.tsx) | TypeScript JSX | -45 | -1 | -12 | -58 |
+| [src/types/Posts.ts](/src/types/Posts.ts) | TypeScript | -5 | 0 | -1 | -6 |
+| [src/types/interfaces.tsx](/src/types/interfaces.tsx) | TypeScript JSX | -138 | 0 | -22 | -160 |
+
+[Summary](results.md) / [Details](details.md) / [Diff Summary](diff.md) / Diff Details

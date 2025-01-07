@@ -1,0 +1,37 @@
+Date : 2025-01-06 17:18:37
+Directory : /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/DTOs
+Total : 10 files,  -1739 codes, -386 comments, -482 blanks, all -2607 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| C#       |         10 |     -1,739 |       -386 |       -482 |     -2,607 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                         | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                            |         10 |     -1,739 |       -386 |       -482 |     -2,607 |
+| . (Files)                                                                                                    |          1 |         64 |          0 |         16 |         80 |
+| ..                                                                                                           |          9 |     -1,803 |       -386 |       -498 |     -2,687 |
+| ../Controllers                                                                                               |          9 |     -1,803 |       -386 |       -498 |     -2,687 |
++--------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                                     | language | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/AttemptsController.cs  | C#       |       -132 |        -10 |        -41 |       -183 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/ClimbChatController.cs | C#       |        -88 |        -40 |        -22 |       -150 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/ClimbsController.cs    | C#       |       -142 |        -88 |        -66 |       -296 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/FeaturesController.cs  | C#       |       -718 |       -129 |       -175 |     -1,022 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/FilterController.cs    | C#       |       -184 |        -33 |        -58 |       -275 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/MapsController.cs      | C#       |       -183 |        -64 |        -62 |       -309 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/TagsController.cs      | C#       |       -135 |         -5 |        -31 |       -171 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/TicksController.cs     | C#       |       -114 |         -8 |        -22 |       -144 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/Controllers/UserController.cs      | C#       |       -107 |         -9 |        -21 |       -137 |
+| /Users/mphelps/climb_w_friends_v2/ClimbWithFriendsAPI/ClimbWithFriendsAPI/DTOs/DTO.cs                        | C#       |         64 |          0 |         16 |         80 |
+| Total                                                                                                        |          |     -1,739 |       -386 |       -482 |     -2,607 |
++--------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
