@@ -12,18 +12,17 @@ interface StatObject {
 }
 
 interface NavBarProps {
-  navBarStatus:string;
+  navBarStatus: string;
   setNavBarStatus: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const NavBar:React.FC<NavBarProps>  = ({navBarStatus,setNavBarStatus}) => {
-
+const NavBar: React.FC<NavBarProps> = ({ navBarStatus, setNavBarStatus }) => {
   const navBarItems = ['Maps', 'Communities', 'Feed', 'Profile'];
   const { user } = useAuth0();
   const [statObject, setStatObject] = useState<StatObject>({
     totalClimbs: 0,
     totalMaps: 0,
-    uniqueClimbers: 0,
+    uniqueClimbers: 1,
   });
 
   useEffect(() => {
@@ -77,7 +76,7 @@ const NavBar:React.FC<NavBarProps>  = ({navBarStatus,setNavBarStatus}) => {
       </div>
 
       <div className="absolute left-5 top-4 flex w-40">
-        <div className="z-10 flex items-center justify-center font-changa ">
+        <div className="z-10 flex items-center justify-center font-changa">
           <div className="text-3xl font-bold"> CLIMB</div>
           <div className="text-sm font-bold">W</div>
           <div className="text-3xl font-bold"> FRIENDS</div>
@@ -97,8 +96,6 @@ const NavBar:React.FC<NavBarProps>  = ({navBarStatus,setNavBarStatus}) => {
           </div>
         ))}
       </div>
-
- 
     </div>
   );
 };

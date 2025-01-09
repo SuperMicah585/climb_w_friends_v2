@@ -393,8 +393,9 @@ export const switchIcon = (
 export const dropDownStyles = (style: string) => {
   return style === 'gray'
     ? 'flex items-center text-sm border-b border-zinc-900 bg-customGray cursor-pointer hover:bg-neutral-700 p-2 text-white '
-    :style==='white'? 'flex items-center text-sm border-b border-zinc-900 bg-white text-black cursor-pointer hover:bg-neutral-200 p-2 '
-    : 'flex items-center text-sm border-b border-customGray bg-zinc-900 cursor-pointer hover:bg-neutral-700 p-2 text-white ';
+    : style === 'white'
+      ? 'flex items-center text-sm border-b border-zinc-900 bg-white text-black cursor-pointer hover:bg-neutral-200 p-2 '
+      : 'flex items-center text-sm border-b border-customGray bg-zinc-900 cursor-pointer hover:bg-neutral-700 p-2 text-white ';
 };
 
 export const climbTypeDropDownStyle =

@@ -96,7 +96,7 @@ export const displayLayersInitial = (
     });
   }
 
-  features.features.forEach((feature:any, index) => {
+  features.features.forEach((feature: any, index) => {
     const fillLayerId = `geojson-fill-layer-${feature.id}`;
     const circleLayerId = `geojson-circle-layer-${feature.id}`;
     const layerId = `geojson-layer-${feature.id}`;
@@ -171,7 +171,7 @@ export const displayLayersInitial = (
           filter: ['==', '$type', 'Polygon'],
           paint: {
             'fill-color': 'brown',
-            'fill-opacity': 0.8, 
+            'fill-opacity': 0.8,
           },
           layout: {
             visibility: 'none',
@@ -382,18 +382,17 @@ export const addFeatureInteractions = async (
           var grouped = false;
           var twoGraphs = false;
           const popUpData = await retrieveFeatureAggregate(featureId, auth0Id);
-          var sortedGradeArray:any = {
+          var sortedGradeArray: any = {
             type: 'notgrouped',
             array: popUpData.gradeCounts.sort((a: any, b: any) => {
               return compareGrades(a.rating, b.rating);
             }),
           };
-  
+
           if (sortedGradeArray.array.length > 3) {
             sortedGradeArray = groupByGrade(sortedGradeArray.array);
             grouped = true;
           }
-
 
           if (grouped) {
             twoGraphs = IsBothBoulderAndSport(sortedGradeArray.type);
@@ -447,7 +446,7 @@ export const addFeatureInteractions = async (
                 currentRoot.render(
                   <div
                     style={{
-                      width:'100%',
+                      width: '100%',
                       display: 'flex',
                       gap: '20px',
                       justifyContent: 'center',
@@ -490,10 +489,7 @@ export const addFeatureInteractions = async (
                 );
               } else {
                 currentRoot.render(
-                  <div
-  
-
-                  >
+                  <div>
                     {/* First BarChart */}
                     <BarChart
                       width={215}

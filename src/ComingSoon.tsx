@@ -1,26 +1,8 @@
-
-
-
-const ComingSoonPage = () =>{
-
-
-
-
-    return(
-        <div className = 'bg-white text-black flex items-center justify-center text-6xl font-bold w-full h-full'>
-
-
-
-COMING SOON...HOPEFULLY
-
-
-
-
-        </div>
-
-
-    )
-
-
-
-}; export default ComingSoonPage;
+const ComingSoonPage = () => {
+  return (
+    <div className="flex h-full w-full items-center justify-center bg-white text-6xl font-bold text-black">
+      COMING SOON...HOPEFULLY
+    </div>
+  );
+};
+export default ComingSoonPage;

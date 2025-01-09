@@ -11,10 +11,10 @@ const LoginButton = () => {
         roundedCorners={'rounded-full'}
         paddingLeft={'pl-5'}
         paddingRight={'pr-5'}
-        paddingBottom='pb-3'
-        paddingTop='pt-3'
+        paddingBottom="pb-3"
+        paddingTop="pt-3"
       >
-        <div className = 'text-white text-md'>SIGN IN</div>
+        <div className="text-md text-white">SIGN IN</div>
       </PurpleButton>
     </div>
   );

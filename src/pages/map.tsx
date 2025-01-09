@@ -5,7 +5,7 @@ import Search from './mapComponents/search';
 import ActivityFeed from './mapComponents/activityFeed';
 import ClimbModal from './mapComponents/modalComponents/climbModal';
 import MapNavBar from './mapComponents/mapNavBar';
-import './mapbox.css'
+import './mapbox.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import {
   ClimbsTableResponse,
@@ -279,12 +279,12 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
 
       const scale = new mapboxgl.ScaleControl({
         maxWidth: 300,
-        unit: 'imperial'
-    });
-    
-    // Add both controls
-    map.current?.addControl(scale, 'bottom-left');
-   // map.current?.addControl(new mapboxgl.NavigationControl(), 'bottom-left');
+        unit: 'imperial',
+      });
+
+      // Add both controls
+      map.current?.addControl(scale, 'bottom-left');
+      // map.current?.addControl(new mapboxgl.NavigationControl(), 'bottom-left');
       return () => map.current?.remove(); // Clean up on unmount
     }
   }, [user]);

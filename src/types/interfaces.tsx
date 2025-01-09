@@ -120,7 +120,7 @@ export interface filterObject {
 }
 
 export interface UserFilter {
-  id:number;
+  id: number;
   auth0Id: string;
   name: string;
   username: string;
