@@ -21,7 +21,7 @@ const PurpleButton: React.FC<purpleButtonProps> = ({
   return (
     <div
       onClick={clickCallBack ? () => clickCallBack() : undefined}
-      className={`flex cursor-pointer items-center justify-center text-center text-xs ${color ? color : 'bg-violet-500'} p-2 ${paddingBottom ? paddingBottom : ''} ${paddingTop ? paddingTop : ''} ${roundedCorners ? roundedCorners : 'rounded-lg'} ${paddingLeft ? paddingLeft : ''} ${paddingRight ? paddingRight : ''} font-semibold text-zinc-900 hover:opacity-75`}
+      className={`flex cursor-pointer items-center justify-center text-center text-xs ${color ? color : 'bg-violet-500'} p-2 ${paddingBottom ? paddingBottom : ''} ${paddingTop ? paddingTop : ''} ${roundedCorners ? roundedCorners : 'rounded-lg'} ${paddingLeft ? paddingLeft : ''} ${paddingRight ? paddingRight : ''} font-semibold text-zinc-900 hover:opacity-90`}
     >
       {children}
     </div>

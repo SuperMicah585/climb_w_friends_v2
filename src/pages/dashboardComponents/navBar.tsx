@@ -3,6 +3,7 @@ import LogoutButton from '../../reusableComponents/logoutButton';
 import camoBackGroundImage from '../homeComponents/black_camo.jpeg';
 import { useAuth0 } from '@auth0/auth0-react';
 import { retrieveUserStats } from './utilityFunctions';
+import ComingSoonPage from '../../ComingSoon';
 
 interface StatObject {
   totalMaps: number;
@@ -10,14 +11,18 @@ interface StatObject {
   uniqueClimbers: number;
 }
 
-const NavBar = () => {
-  const [currentPage, setCurrentPage] = useState<string>('Maps');
+interface NavBarProps {
+  navBarStatus: string;
+  setNavBarStatus: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const NavBar: React.FC<NavBarProps> = ({ navBarStatus, setNavBarStatus }) => {
   const navBarItems = ['Maps', 'Communities', 'Feed', 'Profile'];
   const { user } = useAuth0();
   const [statObject, setStatObject] = useState<StatObject>({
     totalClimbs: 0,
     totalMaps: 0,
-    uniqueClimbers: 0,
+    uniqueClimbers: 1,
   });
 
   useEffect(() => {
@@ -71,7 +76,7 @@ const NavBar = () => {
       </div>
 
       <div className="absolute left-5 top-4 flex w-40">
-        <div className="z-10 flex items-center justify-center">
+        <div className="z-10 flex items-center justify-center font-changa">
           <div className="text-3xl font-bold"> CLIMB</div>
           <div className="text-sm font-bold">W</div>
           <div className="text-3xl font-bold"> FRIENDS</div>
@@ -83,9 +88,9 @@ const NavBar = () => {
           <div
             key={item}
             onClick={() => {
-              setCurrentPage(item);
+              setNavBarStatus(item);
             }}
-            className={`z-10 border-b-4 border-transparent font-extrabold hover:cursor-pointer hover:border-white ${currentPage === item ? 'border-white' : ''}`}
+            className={`z-10 border-b-4 border-transparent font-extrabold hover:cursor-pointer hover:border-white ${navBarStatus === item ? 'border-white' : ''}`}
           >
             {item}{' '}
           </div>

@@ -1,0 +1,14 @@
+.mapboxgl-ctrl-scale {
+  border-color: #8b5cf6;
+  background-color: rgba(139, 92, 246, 1); /* violet-500 with full opacity */
+  color: white;
+  border-width: 2px;
+  border-style: solid;
+  border-bottom-style: solid;
+  border-radius: 12px; /* Added rounded corners */
+  padding: 0 5px;
+  font-size: 15px;
+  line-height: 18px;
+  opacity: 0.8;
+  font-weight: bold;
+}

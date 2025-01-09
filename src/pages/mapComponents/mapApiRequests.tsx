@@ -575,12 +575,7 @@ const AddUserFilter = async (
   auth0Id: string,
   mapId: number,
 ) => {
-
-console.log(
-  auth0IdToFilter,
-  auth0Id,
-  mapId
-)
+  console.log(auth0IdToFilter, auth0Id, mapId);
   try {
     const response = await fetch(
       `http://localhost:5074/api/Filters/User/${auth0IdToFilter}/ToMap/${mapId}/ForUser/${auth0Id}`,

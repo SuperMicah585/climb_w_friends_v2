@@ -78,7 +78,6 @@ const FilterModal: React.FC<FilterModalProps> = ({
   };
 
   const modifyFriendArray = async (item: UserFilter) => {
-
     const response = await AddUserFilter(item.auth0Id, auth0Id, mapId);
 
     if (response) {
@@ -94,19 +93,16 @@ const FilterModal: React.FC<FilterModalProps> = ({
     [],
   );
 
-
   const modifyTagArray = async (item: TagFilter) => {
     const response = await AddTagFilter(auth0Id, mapId, item.tagId);
-   
+
     if (response) {
-      
       setModifiedFiltersOnMap((prev) => ({
         ...prev,
-        tagFilters: [...prev.tagFilters, {...item,['id']:response.id}],
+        tagFilters: [...prev.tagFilters, { ...item, ['id']: response.id }],
       }));
     }
   };
-
 
   const handleClickedTag = (item: TagFilter | UserFilter) => {
     if ('tagName' in item) {
@@ -129,18 +125,15 @@ const FilterModal: React.FC<FilterModalProps> = ({
 
       setSearchResults(filteredTags);
     } else if (selectedFilter === 'climber') {
+      let filteredClimber = userArrayForSearch.filter(
+        (item) =>
+          item.name.toLowerCase().includes(searchString.toLowerCase()) &&
+          !modifiedFiltersOnMap.userFilters.find(
+            (user) => user.auth0Id === item.auth0Id,
+          ),
+      );
 
-  let filteredClimber = userArrayForSearch.filter(
-    (item) =>
-      item.name.toLowerCase().includes(searchString.toLowerCase()) &&
-      !modifiedFiltersOnMap.userFilters.find(
-        (user) => user.auth0Id === item.auth0Id,
-      ),
-  );
-
-  setSearchResults(filteredClimber);
-
-
+      setSearchResults(filteredClimber);
     }
   }, [
     searchString,
@@ -176,9 +169,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
     }
   };
 
-
   const deleteUserCallBack = async (item: UserFilter) => {
-
     const response = await removeUserFilter(item.id);
 
     if (response) {
