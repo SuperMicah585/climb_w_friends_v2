@@ -105,7 +105,7 @@ public async Task<ActionResult<MapToUserToClimb>> AddMapToUserToClimb(int climbI
 
     _context.MapToUserToClimbs.Add(mapToUserToClimb);
             await _context.SaveChangesAsync();
-            await _activityLogService.LogActivity(userId, "AddClimb", $"Climb added to map {await GetClimbNameById(mapId)}", mapId);
+            await _activityLogService.LogActivity(userId, "AddClimb", $"Climb added to map {await GetClimbNameById(climbId)}", mapId, climbId);
             return Ok(mapToUserToClimb);
         }
         [HttpDelete("{climbId}/FromUser/{userId}/FromMap/{mapId}")]
@@ -131,7 +131,7 @@ public async Task<ActionResult<MapToUserToClimb>> AddMapToUserToClimb(int climbI
     }
 
     _context.MapToUserToClimbs.Remove(mapToUserToClimb);
-            await _activityLogService.LogActivity(userId, "RemoveClimb", $"Climb removed from map {await GetClimbNameById(mapId)}", mapId);
+            await _activityLogService.LogActivity(userId, "RemoveClimb", $"Climb removed from map {await GetClimbNameById(climbId)}", mapId, climbId);
 
             await _context.SaveChangesAsync();
 

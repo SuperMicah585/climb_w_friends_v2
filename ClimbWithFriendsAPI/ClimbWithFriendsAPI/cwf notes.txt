@@ -1,8 +1,6 @@
-{DONE?}user joins/leaves map
-
-setup users again
-climbs added/removed
-
+return user metadata on activitylog endpoint
+include climb name in details data
+lastlogin pushed to server
 
 climbing data scraped
 

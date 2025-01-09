@@ -8,6 +8,7 @@ namespace ClimbWithFriendsAPI.DTOs
 
 }
 
+
 public class UpdateMapDto
 {
     public string MapName { get; set; } // For updating MapName

@@ -14,6 +14,7 @@ namespace ClimbWithFriendsAPI.Data
         public string Action { get; set; } //AddClimb RemoveClimb UserJoined UserLeft
         public string Details { get; set; }
 
+        public int? ClimbId { get; set; }
         public string? UpdatedAt { get; set; }
 
     }

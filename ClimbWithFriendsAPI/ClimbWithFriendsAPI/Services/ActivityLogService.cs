@@ -9,7 +9,7 @@ public class ActivityLogService
         _context = context;
     }
 
-    public async Task LogActivity(string userId, string action, string details, int? mapId = null)
+    public async Task LogActivity(string userId, string action, string details, int? mapId = null, int? climbId = null)
     {
         var activity = new ActivityLog
         {
@@ -17,7 +17,8 @@ public class ActivityLogService
             Action = action,
             UpdatedAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"),
             Details = details,
-            MapId = mapId
+            MapId = mapId,
+            ClimbId = climbId
         };
 
         _context.ActivityLogs.Add(activity);

@@ -34,12 +34,33 @@ namespace ClimbWithFriendsAPI.Controllers
                  activities = await _context.ActivityLogs
                     .FromSqlRaw(
                         @"SELECT * FROM ""ActivityLogs""
-                  WHERE ""MapId"" = {0} 
-                  AND ""UpdatedAt""::timestamp > {1}::timestamp 
-                  ORDER BY ""UpdatedAt""::timestamp DESC",
+              WHERE ""MapId"" = {0} 
+              AND ""UpdatedAt""::timestamp > {1}::timestamp 
+              ORDER BY ""UpdatedAt""::timestamp DESC",
                         mapId, sinceTimestamp.Value.ToString("yyyy-MM-ddTHH:mm:ssZ"))
                     .ToListAsync();
 
+                // Fetch user details for each unique UserId, excluding email
+                var userIds = activities.Select(al => al.UserId).Distinct().ToList();
+                var userInfo = await _context.Users
+                    .Where(u => userIds.Contains(u.Auth0ID))
+                    .Select(u => new
+                    {
+                        u.Auth0ID,
+                        u.Name,
+                        u.Username, // Replace with actual fields from the Users table
+                    })
+                    .ToDictionaryAsync(u => u.Auth0ID);
+                // Get the current UTC datetime
+                var currentDateTime = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
+
+                // Return the result with activities and the current datetime
+                return Ok(new
+                {
+                    CurrentDateTime = currentDateTime,
+                    Activities = activities,
+                    UserInfo = userInfo
+                });
             }
             else
             {
@@ -52,16 +73,32 @@ namespace ClimbWithFriendsAPI.Controllers
                 activities = activities
                     .OrderByDescending(a => DateTime.Parse(a.UpdatedAt))
                     .ToList();
-            }
-            // Get the current UTC datetime
-            var currentDateTime = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
 
-            // Return the result with activities and the current datetime
-            return Ok(new
-            {
-                CurrentDateTime = currentDateTime,
-                Activities = activities
-            });
+                // Fetch user details for each unique UserId, excluding email
+                var userIds = activities.Select(al => al.UserId).Distinct().ToList();
+                var userInfo = await _context.Users
+                    .Where(u => userIds.Contains(u.Auth0ID))
+                    .Select(u => new
+                    {
+                        u.Auth0ID,
+                        u.Name,
+                        u.Username, // Replace with actual fields from the Users table
+                    })
+                    .ToDictionaryAsync(u => u.Auth0ID);
+                // Get the current UTC datetime
+                var currentDateTime = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
+
+                // Return the result with activities and the current datetime
+                return Ok(new
+                {
+                    CurrentDateTime = currentDateTime,
+                    Activities = activities,
+                    UserInfo = userInfo
+                });
+            }
+
+
+           
         }
 
     }
