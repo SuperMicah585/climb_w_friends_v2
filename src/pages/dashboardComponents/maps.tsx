@@ -1,12 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect,useRef } from 'react';
 import { MapObject, FriendsList } from '../../types/interfaces';
 import { verticalDotIcon, minusIcon } from '../../reusableComponents/styles';
 import { Link } from 'react-router-dom';
 import AddMapComponent from './mapsComponents/addMapModal';
-import EditModal from './mapsComponents/editModal';
+import EditMapModal from './mapsComponents/editModal';
 import PurpleButton from '../../reusableComponents/genericButton';
 import { useAuth0 } from '@auth0/auth0-react';
 import ToastContainer from '../../reusableComponents/toastContainer';
+import AddFriendModal from './mapsComponents/addFriendModal';
+import ButtonAndDropDown from './buttonAndDropDown';
 import {
   retrieveMapsAndUsers,
   editMap,
@@ -19,9 +21,12 @@ import { submitAirplane } from '../../reusableComponents/styles';
 
 const Maps = () => {
   const [mapObject, setMapObject] = useState<MapObject[]>([]);
+  const [editFriendTrigger, setEditFriendTrigger] = useState(false);
   const [editMapTrigger, setEditMapTrigger] = useState(false);
+  const [modalToDisplay, setModalToDisplay] = useState('')
   const [addMapTrigger, setAddMapTrigger] = useState(false);
   const [toastTrigger, setToastTrigger] = useState(0);
+  const [modalTriggers,setModalTriggers] = useState(0)
   const [toastType, setToastType] = useState('success');
   const [toastMessage, setToastMessage] = useState('');
   const [editMapObject, setEditMapObject] = useState<MapObject>({
@@ -35,12 +40,17 @@ const Maps = () => {
 
   const { user } = useAuth0();
 
-  const closeEditModalCallBack = () => {
+  const closeFriendModalCallBack = () => {
     if (user?.sub) {
       retrieveMaps(user.sub);
     } else {
       console.error('User not found');
     }
+    setEditFriendTrigger(false);
+  };
+
+  const closeEditMaoModalCallBack = () => {
+
     setEditMapTrigger(false);
   };
 
@@ -48,16 +58,30 @@ const Maps = () => {
     setAddMapTrigger(value);
   };
 
-  const editPeopleOnMapCallBack = (data: FriendsList[]) => {
-    setMapObject((prev) =>
-      prev.map((item) =>
-        item.mapId === mapId
-          ? { ...item, climbersOnMap: [...(item.climbersOnMap || []), ...data] } // Spread `item` and update `peopleOnMap`
-          : item,
-      ),
-    );
-  };
+  const setModalToDisplayCallBack = (value:string) =>{
+    setModalTriggers(prev=>prev+1)
+    setModalToDisplay(value)
+  }
 
+
+  useEffect(()=>{
+
+    if(modalToDisplay==='Add Friends'){
+      setEditFriendTrigger(true)
+      setModalToDisplay('')
+    }
+
+    if(modalToDisplay==='Edit Map'){
+      setEditMapTrigger(true)
+      setModalToDisplay('')
+    }
+
+    if(modalToDisplay==='Delete Map'){
+      handleRemoveUserFromMap(editMapObject)
+      setModalToDisplay('')
+    }
+
+  },[modalTriggers,modalToDisplay] )
   //have to keep this function here
   const retrieveMaps = async (userId: string) => {
     try {
@@ -117,6 +141,7 @@ const Maps = () => {
       setToastTrigger((prev) => prev + 1);
     }
   };
+
 
   useEffect(() => {
     if (user?.sub) {
@@ -209,12 +234,6 @@ const Maps = () => {
               {mapObject.map((item, index) => (
                 <div key={item.mapId} className="relative w-full">
                   <div
-                    onClick={() => handleRemoveUserFromMap(item)}
-                    className="absolute left-2 top-2 cursor-pointer rounded-full p-1 text-red-300 hover:bg-neutral-500 hover:opacity-75"
-                  >
-                    {minusIcon}{' '}
-                  </div>
-                  <div
                     className={`flex h-full flex-col items-start justify-start gap-5 overflow-hidden rounded-lg border-2 border-transparent bg-zinc-600 p-16 text-white shadow-sm shadow-zinc-500`}
                   >
                     <div className="flex items-center gap-5">
@@ -247,17 +266,7 @@ const Maps = () => {
                     </div>
                   </div>
 
-                  <div
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      setEditMapTrigger(true);
-                      setEditMapObject(item);
-                      setMapId(item.mapId);
-                    }}
-                    className="absolute right-2 top-2 cursor-pointer rounded-full p-1 text-white hover:bg-neutral-500 hover:opacity-75"
-                  >
-                    {verticalDotIcon}{' '}
-                  </div>
+                  <ButtonAndDropDown setEditMapObject = {setEditMapObject} setMapId = {setMapId} mapItem = {item} setModalToDisplayCallBack = {setModalToDisplayCallBack}/>
                 </div>
               ))}
             </div>
@@ -265,13 +274,19 @@ const Maps = () => {
         </div>
       </div>
 
-      {editMapTrigger ? (
-        <EditModal
+      {editFriendTrigger ? (
+        <AddFriendModal
           mapId={mapId}
-          editPeopleOnMapCallBack={editPeopleOnMapCallBack}
-          EditedClimbCallBack={EditedClimbCallBack}
           editMapObject={editMapObject}
-          closeModalCallBack={closeEditModalCallBack}
+          closeModalCallBack={closeFriendModalCallBack}
+        />
+      ) : null}
+
+{editMapTrigger ? (
+        <EditMapModal
+          editMapObject={editMapObject}
+          closeModalCallBack={closeEditMaoModalCallBack}
+          EditedClimbCallBack = {EditedClimbCallBack}
         />
       ) : null}
 
