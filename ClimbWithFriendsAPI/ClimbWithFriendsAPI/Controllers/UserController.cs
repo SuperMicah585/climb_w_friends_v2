@@ -46,7 +46,7 @@ namespace ClimbWithFriendsAPI.Controllers
         var userId = user.UserId;
         // Get all maps associated with the user's climbs
         var userMaps = await _context.MapToUsers
-            .Where(c => c.UserId == auth0Id)
+            .Where(c => c.UserId == userId)
             .Select(c => c.MapId)
             .Distinct()
             .CountAsync();
@@ -58,7 +58,7 @@ namespace ClimbWithFriendsAPI.Controllers
         // Get unique climbers who climbed the same maps as the user
         var uniqueUserCount = await _context.MapToUsers
             .Where(c => _context.MapToUsers
-                .Where(u => u.UserId == auth0Id)
+                .Where(u => u.UserId == userId)
                 .Select(u => u.MapId)
                 .Contains(c.MapId))          // Find users on the same MapIds
             .Select(c => c.UserId)           // Select UserId values

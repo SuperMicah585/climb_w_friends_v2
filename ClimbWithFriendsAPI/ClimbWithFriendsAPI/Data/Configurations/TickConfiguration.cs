@@ -23,13 +23,14 @@ namespace YourProjectNamespace.Data.Configurations
 
             builder.HasOne(t => t.Map) // Navigation property to Map entity
                    .WithMany()         // Assuming Map doesn't have a collection of Ticks
-                   .HasForeignKey(t => t.MapId)
-                   .OnDelete(DeleteBehavior.Cascade); // Cascade delete when Map is deleted
+                   .HasForeignKey(t => t.MapId);
+
 
             builder.HasOne(t => t.Climb) // Navigation property to Climb entity
                    .WithMany()           // Assuming Climb doesn't have a collection of Ticks
-                   .HasForeignKey(t => t.ClimbId)
-                   .OnDelete(DeleteBehavior.Cascade); // Cascade delete when Climb is deleted
+                   .HasForeignKey(t => t.ClimbId);
+
+
             builder.HasOne(t => t.MapToUserToClimb)
                    .WithMany()
                    .HasForeignKey(t => t.MapToUserToClimbId)  // Changed from Id

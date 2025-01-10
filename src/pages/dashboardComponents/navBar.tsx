@@ -3,7 +3,6 @@ import LogoutButton from '../../reusableComponents/logoutButton';
 import camoBackGroundImage from '../homeComponents/black_camo.jpeg';
 import { useAuth0 } from '@auth0/auth0-react';
 import { retrieveUserStats } from './utilityFunctions';
-import ComingSoonPage from '../../ComingSoon';
 
 interface StatObject {
   totalMaps: number;
@@ -14,9 +13,14 @@ interface StatObject {
 interface NavBarProps {
   navBarStatus: string;
   setNavBarStatus: React.Dispatch<React.SetStateAction<string>>;
+  statsTrigger: number;
 }
 
-const NavBar: React.FC<NavBarProps> = ({ navBarStatus, setNavBarStatus }) => {
+const NavBar: React.FC<NavBarProps> = ({
+  navBarStatus,
+  setNavBarStatus,
+  statsTrigger,
+}) => {
   const navBarItems = ['Maps', 'Communities', 'Feed', 'Profile'];
   const { user } = useAuth0();
   const [statObject, setStatObject] = useState<StatObject>({
@@ -26,6 +30,7 @@ const NavBar: React.FC<NavBarProps> = ({ navBarStatus, setNavBarStatus }) => {
   });
 
   useEffect(() => {
+    console.log('hi');
     const userStats = async () => {
       if (user?.sub) {
         const data = await retrieveUserStats(user?.sub);
@@ -38,9 +43,7 @@ const NavBar: React.FC<NavBarProps> = ({ navBarStatus, setNavBarStatus }) => {
     } else {
       console.error('User not found');
     }
-  }, [user]);
-
-  console.log(statObject);
+  }, [user, statsTrigger]);
 
   return (
     <div className="relative z-10 flex min-h-96 w-screen items-center justify-center gap-40 bg-gradient-to-br from-indigo-600 to-indigo-500 font-semibold">
@@ -65,8 +68,12 @@ const NavBar: React.FC<NavBarProps> = ({ navBarStatus, setNavBarStatus }) => {
         <div> | </div>
         <div className="">
           {' '}
-          <span className="">{statObject.uniqueClimbers - 1}</span>{' '}
-          {statObject.uniqueClimbers - 1 === 1 ? 'Friend' : 'Friends'}
+          <span className="">
+            {statObject.uniqueClimbers > 0
+              ? statObject.uniqueClimbers - 1
+              : statObject.uniqueClimbers}
+          </span>{' '}
+          {statObject.uniqueClimbers === 2 ? 'Friend' : 'Friends'}
         </div>
       </div>
 

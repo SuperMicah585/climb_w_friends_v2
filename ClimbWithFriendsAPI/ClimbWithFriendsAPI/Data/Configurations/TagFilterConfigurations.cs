@@ -15,8 +15,13 @@ namespace YourProjectNamespace.Data.Configurations
             builder.Property(a => a.MaptoTagId).IsRequired();
             builder.Property(tf => tf.Auth0Id).IsRequired();
             builder.Property(tf => tf.CreatedAt).IsRequired();
-        
+            builder.Property(a => a.MapToUserId).IsRequired();
+            
 
+            builder.HasOne(uf => uf.MapToUsers)
+                   .WithMany()
+                   .HasForeignKey(uf => uf.MapToUserId)  // Changed from Id
+                   .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(cc => cc.MapToTags)
                    .WithMany()

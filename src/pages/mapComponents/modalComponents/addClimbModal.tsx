@@ -63,6 +63,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
   const [attemptObject, setAttemptObject] = useState<AttemptObject | null>(
     null,
   );
+  const containerRef = useRef<HTMLDivElement>(null);
   const [toastTrigger, setToastTrigger] = useState<number>(0);
   const [submitLoading, isSubmitLoading] = useState<boolean>(false);
   const [tickObject, setTickObject] = useState<TickObject | null>(null);
@@ -122,9 +123,15 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
   };
 
   useEffect(() => {
-    for (let feature of AllClimbsOnMap.features) {
-      setClimbsOnMap((prev) => [...prev, ...feature.properties.climbs]);
-    }
+    // Guard against undefined AllClimbsOnMap
+    if (!AllClimbsOnMap || !AllClimbsOnMap.features) return;
+
+    // Collect all climbs in a single operation
+    const allClimbs = AllClimbsOnMap.features.flatMap(
+      (feature) => feature.properties.climbs || [], // Add fallback for missing climbs
+    );
+
+    setClimbsOnMap(allClimbs);
   }, [AllClimbsOnMap]);
 
   useEffect(() => {
@@ -323,6 +330,13 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
       throw error; // Re-throw if you want calling code to handle it
     }
   };
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+
+      //Will need to pass the updated chat array to the server along with 'map id, feature id,climb id'
+    }
+  }, [climbsArray, containerRef]);
 
   const handleClimbSelect = (item: ClimbsTableResponse) => {
     setClimbsArray((prev) => [
@@ -480,7 +494,10 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
           </div>
         ) : null}
 
-        <div className="flex w-full flex-col overflow-y-scroll pb-12">
+        <div
+          ref={containerRef}
+          className="flex w-full flex-col overflow-y-scroll pb-12"
+        >
           {climbsArray.map((item) => (
             <div
               key={item.climb.climbId}

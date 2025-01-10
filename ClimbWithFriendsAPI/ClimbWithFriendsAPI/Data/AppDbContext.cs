@@ -46,14 +46,8 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 protected override void OnModelCreating(ModelBuilder modelBuilder)
 {
     // Apply all existing configurations
-    modelBuilder.ApplyConfiguration(new MapConfiguration());
-    modelBuilder.ApplyConfiguration(new MapToUserConfiguration());
     modelBuilder.ApplyConfiguration(new ClimbConfiguration());
-    modelBuilder.ApplyConfiguration(new TagConfiguration());
-    modelBuilder.ApplyConfiguration(new MapToTagConfiguration());
-    modelBuilder.ApplyConfiguration(new ClimbToTagConfiguration());
-    modelBuilder.ApplyConfiguration(new MapToFeatureToClimbConfiguration());
-    modelBuilder.ApplyConfiguration(new FeatureConfiguration());
+
 
     // Apply PostGIS support
     modelBuilder.HasPostgresExtension("postgis"); // Ensure PostGIS is available

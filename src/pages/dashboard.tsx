@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 const Home = () => {
   const [navBarStatus, setNavBarStatus] = useState<string>('Maps');
-
+  const [statsTrigger, setStatsTrigger] = useState<number>(0);
   const {
     getAccessTokenSilently,
     user,
@@ -24,8 +24,16 @@ const Home = () => {
 
   return (
     <div className="absolute left-0 top-0 flex h-screen w-screen flex-col overflow-y-scroll bg-zinc-50">
-      <NavBar navBarStatus={navBarStatus} setNavBarStatus={setNavBarStatus} />
-      {navBarStatus === 'Maps' ? <Maps /> : <ComingSoonPage />}
+      <NavBar
+        statsTrigger={statsTrigger}
+        navBarStatus={navBarStatus}
+        setNavBarStatus={setNavBarStatus}
+      />
+      {navBarStatus === 'Maps' ? (
+        <Maps setStatsTrigger={setStatsTrigger} />
+      ) : (
+        <ComingSoonPage />
+      )}
     </div>
   );
 };
