@@ -15,10 +15,12 @@ namespace ClimbWithFriendsAPI.Controllers
     public class MapsController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly ActivityLogService _activityLogService;
 
-        public MapsController(AppDbContext context)
+        public MapsController(AppDbContext context, ActivityLogService activityLogService)
         {
             _context = context;
+            _activityLogService = activityLogService;
         }
 
         // GET: api/Maps
@@ -208,6 +210,7 @@ var response = new
 
             _context.MapToUsers.Add(newAssociation);
             await _context.SaveChangesAsync();
+            await _activityLogService.LogActivity(payload.UserId, "UserJoined", $"User joined map {await GetMapNameById(mapId)}", mapId);
                 return CreatedAtAction(nameof(AddUserToMap), new { mapId, userId = payload.UserId }, response);
         }
 
@@ -256,6 +259,7 @@ var response = new
             // Remove the user-to-map association
             _context.MapToUsers.Remove(userAssociation);
             await _context.SaveChangesAsync();
+            await _activityLogService.LogActivity(userId, "UserLeft", $"User left map {await GetMapNameById(mapId)}", mapId);
             //delete climbs with no users
             await CleanupOrphanedMapToFeatureToClimbs(mapId);
             //delete features with no climbs
@@ -270,6 +274,7 @@ var response = new
                 // No users left, delete the map
                 _context.Maps.Remove(map);
                 await _context.SaveChangesAsync();
+
             }
 
             return NoContent();
@@ -358,8 +363,27 @@ private async Task CleanupOrphanedMapToFeatureToClimbs(int mapId)
 
             return NoContent(); // 204 No Content for a successful update
         }
-    
 
+        // Helper Function to Get Map Name by ID
+        private async Task<string> GetMapNameById(int mapId)
+        {
+            try
+            {
+                // Query the database for the map name
+                var mapName = await _context.Maps
+                    .Where(m => m.MapId == mapId)
+                    .Select(m => m.MapName)
+                    .FirstOrDefaultAsync();
+
+                return mapName; // Returns null if no map is found
+            }
+            catch (Exception ex)
+            {
+                // Log the error (optional)
+                Console.WriteLine($"Error in GetMapNameById: {ex.Message}");
+                throw; // Re-throw the exception for higher-level handling
+            }
+        }
 
 
         //// DELETE: api/Maps/5

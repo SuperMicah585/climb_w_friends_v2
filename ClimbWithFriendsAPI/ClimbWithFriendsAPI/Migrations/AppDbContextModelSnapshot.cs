@@ -24,6 +24,40 @@ namespace ClimbWithFriendsAPI.Migrations
             NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "postgis");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("ClimbWithFriendsAPI.Data.ActivityLog", b =>
+                {
+                    b.Property<int>("ActivityLogId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ActivityLogId"));
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("ClimbId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("MapId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UpdatedAt")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("ActivityLogId");
+
+                    b.ToTable("ActivityLogs");
+                });
+
             modelBuilder.Entity("ClimbWithFriendsAPI.Data.Attempt", b =>
                 {
                     b.Property<int>("AttemptId")
@@ -148,6 +182,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Horse Fly",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-123.15347 47.7343)"),
+                            CreatedAt = "2025-01-09T18:38:49.2348892Z",
+                            Location = "Roadside Boulder > Jefferson Lake > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V5",
+                            UpdatedAt = "2025-01-09T18:38:49.2353429Z",
+                            Url = "https://www.mountainproject.com/route/106806098/horse-fly"
+=======
                             ClimbName = "Slow Children",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57139 47.81847)"),
@@ -158,6 +203,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5718960Z",
                             Url = "https://www.mountainproject.com/route/105815743/slow-children"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -165,6 +211,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Kelly's Fly",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-123.15347 47.7343)"),
+                            CreatedAt = "2025-01-09T18:38:49.2356483Z",
+                            Location = "Roadside Boulder > Jefferson Lake > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V7",
+                            UpdatedAt = "2025-01-09T18:38:49.2356496Z",
+                            Url = "https://www.mountainproject.com/route/106806101/kellys-fly"
+=======
                             ClimbName = "Davis-Holland Route",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.56581 47.82384)"),
@@ -175,6 +232,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5729990Z",
                             Url = "https://www.mountainproject.com/route/105836583/davis-holland-route"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -182,6 +240,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Top Out Cop Out",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-123.15347 47.7343)"),
+                            CreatedAt = "2025-01-09T18:38:49.2356654Z",
+                            Location = "Anchor Rock > Jefferson Lake > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V2",
+                            UpdatedAt = "2025-01-09T18:38:49.2356655Z",
+                            Url = "https://www.mountainproject.com/route/106806115/top-out-cop-out"
+=======
                             ClimbName = "Rattletale",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.5613 47.8243)"),
@@ -192,6 +261,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5730840Z",
                             Url = "https://www.mountainproject.com/route/106204435/rattletale"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -199,6 +269,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "ODB Left",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-123.15347 47.7343)"),
+                            CreatedAt = "2025-01-09T18:38:49.2356715Z",
+                            Location = "Anchor Rock > Jefferson Lake > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V3",
+                            UpdatedAt = "2025-01-09T18:38:49.2356715Z",
+                            Url = "https://www.mountainproject.com/route/106806120/odb-left"
+=======
                             ClimbName = "Godzilla",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57139 47.81847)"),
@@ -209,6 +290,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5731040Z",
                             Url = "https://www.mountainproject.com/route/105790717/godzilla"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -216,6 +298,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Excelsior",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-123.15347 47.7343)"),
+                            CreatedAt = "2025-01-09T18:38:49.2356772Z",
+                            Location = "Anchor Rock > Jefferson Lake > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V4",
+                            UpdatedAt = "2025-01-09T18:38:49.2356773Z",
+                            Url = "https://www.mountainproject.com/route/106806108/excelsior"
+=======
                             ClimbName = "Thin Fingers",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57101 47.81859)"),
@@ -226,6 +319,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5731240Z",
                             Url = "https://www.mountainproject.com/route/105805741/thin-fingers"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -233,6 +327,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "3 Glazers",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-123.15347 47.7343)"),
+                            CreatedAt = "2025-01-09T18:38:49.2356841Z",
+                            Location = "3 Glazers Boulder > Jefferson Lake > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V5",
+                            UpdatedAt = "2025-01-09T18:38:49.2356842Z",
+                            Url = "https://www.mountainproject.com/route/106806130/3-glazers"
+=======
                             ClimbName = "Iron Horse",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57139 47.81847)"),
@@ -243,6 +348,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5731690Z",
                             Url = "https://www.mountainproject.com/route/105903139/iron-horse"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -250,6 +356,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Olympic New",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-123.15347 47.7343)"),
+                            CreatedAt = "2025-01-09T18:38:49.2356900Z",
+                            Location = "The Olympic Boulder > Jefferson Lake > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V4",
+                            UpdatedAt = "2025-01-09T18:38:49.2356900Z",
+                            Url = "https://www.mountainproject.com/route/106806143/olympic-new"
+=======
                             ClimbName = "An Act of Strange Boar",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.55859 47.82531)"),
@@ -260,6 +377,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5731850Z",
                             Url = "https://www.mountainproject.com/route/107527007/an-act-of-strange-boar"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -267,6 +385,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Olympic New Sit",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-123.15347 47.7343)"),
+                            CreatedAt = "2025-01-09T18:38:49.2357004Z",
+                            Location = "The Olympic Boulder > Jefferson Lake > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V7",
+                            UpdatedAt = "2025-01-09T18:38:49.2357004Z",
+                            Url = "https://www.mountainproject.com/route/106806146/olympic-new-sit"
+=======
                             ClimbName = "Japanese Gardens",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57139 47.81847)"),
@@ -277,6 +406,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5731980Z",
                             Url = "https://www.mountainproject.com/route/105791008/japanese-gardens"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -284,6 +414,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Cranium Cracker",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-123.15347 47.7343)"),
+                            CreatedAt = "2025-01-09T18:38:49.2357063Z",
+                            Location = "Cranium Boulder > Jefferson Lake > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V4",
+                            UpdatedAt = "2025-01-09T18:38:49.2357064Z",
+                            Url = "https://www.mountainproject.com/route/106806154/cranium-cracker"
+=======
                             ClimbName = "Perfect Pitch",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.56988 47.82058)"),
@@ -294,6 +435,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5732120Z",
                             Url = "https://www.mountainproject.com/route/120714098/perfect-pitch"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -301,6 +443,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Warm up that kills your hands",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.41826 47.71369)"),
+                            CreatedAt = "2025-01-09T18:38:49.2357132Z",
+                            Location = "Main stack > Ruby beach boulder stacks > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V0+",
+                            UpdatedAt = "2025-01-09T18:38:49.2357132Z",
+                            Url = "https://www.mountainproject.com/route/116352005/warm-up-that-kills-your-hands"
+=======
                             ClimbName = "Senior Citizens in Space",
                             ClimbType = "Trad, TR",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.55807 47.825)"),
@@ -311,6 +464,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5732350Z",
                             Url = "https://www.mountainproject.com/route/106057429/senior-citizens-in-space"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -318,6 +472,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "RIP hands",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.41826 47.71369)"),
+                            CreatedAt = "2025-01-09T18:38:49.2357192Z",
+                            Location = "Main stack > Ruby beach boulder stacks > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1-2",
+                            UpdatedAt = "2025-01-09T18:38:49.2357192Z",
+                            Url = "https://www.mountainproject.com/route/116351995/rip-hands"
+=======
                             ClimbName = "Toxic Shock",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57568 47.81897)"),
@@ -328,6 +493,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5732490Z",
                             Url = "https://www.mountainproject.com/route/105791086/toxic-shock"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -335,6 +501,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Fun dyno crimp",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.41826 47.71369)"),
+                            CreatedAt = "2025-01-09T18:38:49.2357252Z",
+                            Location = "Main stack > Ruby beach boulder stacks > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V2+",
+                            UpdatedAt = "2025-01-09T18:38:49.2357252Z",
+                            Url = "https://www.mountainproject.com/route/116354168/fun-dyno-crimp"
+=======
                             ClimbName = "Princely Ambitions",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57139 47.81847)"),
@@ -345,6 +522,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5732620Z",
                             Url = "https://www.mountainproject.com/route/105790710/princely-ambitions"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -352,6 +530,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Beach Crack",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.41931 47.71575)"),
+                            CreatedAt = "2025-01-09T18:38:49.2357338Z",
+                            Location = "Northernmost stack > Ruby beach boulder stacks > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V0",
+                            UpdatedAt = "2025-01-09T18:38:49.2357338Z",
+                            Url = "https://www.mountainproject.com/route/119245180/beach-crack"
+=======
                             ClimbName = "Heaven's Gate",
                             ClimbType = "Trad, Sport",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.56683 47.82354)"),
@@ -362,6 +551,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5732750Z",
                             Url = "https://www.mountainproject.com/route/105816053/heavens-gate"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -369,6 +559,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Beach Slab",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.41931 47.71575)"),
+                            CreatedAt = "2025-01-09T18:38:49.2357399Z",
+                            Location = "Northernmost stack > Ruby beach boulder stacks > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V0-1",
+                            UpdatedAt = "2025-01-09T18:38:49.2357400Z",
+                            Url = "https://www.mountainproject.com/route/124538213/beach-slab"
+=======
                             ClimbName = "Wham",
                             ClimbType = "Sport",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.56921 47.81962)"),
@@ -379,6 +580,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5732970Z",
                             Url = "https://www.mountainproject.com/route/106185268/wham"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -386,6 +588,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "5 Karat Traverse",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.41701 47.71192)"),
+                            CreatedAt = "2025-01-09T18:38:49.2357463Z",
+                            Location = "Three-pillar stack > Ruby beach boulder stacks > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1",
+                            UpdatedAt = "2025-01-09T18:38:49.2357464Z",
+                            Url = "https://www.mountainproject.com/route/119174300/5-karat-traverse"
+=======
                             ClimbName = "Even Steven",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57568 47.81897)"),
@@ -396,6 +609,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5733540Z",
                             Url = "https://www.mountainproject.com/route/105791090/even-steven"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -403,6 +617,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Pillar puller",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.41701 47.71192)"),
+                            CreatedAt = "2025-01-09T18:38:49.2357929Z",
+                            Location = "Three-pillar stack > Ruby beach boulder stacks > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V2",
+                            UpdatedAt = "2025-01-09T18:38:49.2357932Z",
+                            Url = "https://www.mountainproject.com/route/123883322/pillar-puller"
+=======
                             ClimbName = "Zoom",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.56921 47.81962)"),
@@ -413,6 +638,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5733690Z",
                             Url = "https://www.mountainproject.com/route/106054444/zoom"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -420,6 +646,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "10 Karat Traverse",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.41701 47.71192)"),
+                            CreatedAt = "2025-01-09T18:38:49.2357997Z",
+                            Location = "Three-pillar stack > Ruby beach boulder stacks > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V3",
+                            UpdatedAt = "2025-01-09T18:38:49.2357998Z",
+                            Url = "https://www.mountainproject.com/route/119174375/10-karat-traverse"
+=======
                             ClimbName = "Lovin' Arms",
                             ClimbType = "Trad, Aid",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.56581 47.82384)"),
@@ -430,6 +667,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5736950Z",
                             Url = "https://www.mountainproject.com/route/106194690/lovin-arms"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -437,6 +675,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Slabface west",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.41826 47.71369)"),
+                            CreatedAt = "2025-01-09T18:38:49.2358062Z",
+                            Location = "Slabface > Ruby beach boulder stacks > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V0-1",
+                            UpdatedAt = "2025-01-09T18:38:49.2358062Z",
+                            Url = "https://www.mountainproject.com/route/116351847/slabface-west"
+=======
                             ClimbName = "Sagittarius",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57139 47.81847)"),
@@ -447,6 +696,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5737350Z",
                             Url = "https://www.mountainproject.com/route/105796710/sagittarius"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -454,6 +704,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Slabface",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.41826 47.71369)"),
+                            CreatedAt = "2025-01-09T18:38:49.2358148Z",
+                            Location = "Slabface > Ruby beach boulder stacks > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1+",
+                            UpdatedAt = "2025-01-09T18:38:49.2358149Z",
+                            Url = "https://www.mountainproject.com/route/114779104/slabface"
+=======
                             ClimbName = "Breakfast of Champions",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57139 47.81847)"),
@@ -464,6 +725,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5737580Z",
                             Url = "https://www.mountainproject.com/route/105795818/breakfast-of-champions"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -471,6 +733,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Undercling crack crimp",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.41826 47.71369)"),
+                            CreatedAt = "2025-01-09T18:38:49.2358213Z",
+                            Location = "Undercling stack > Ruby beach boulder stacks > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V5+",
+                            UpdatedAt = "2025-01-09T18:38:49.2358213Z",
+                            Url = "https://www.mountainproject.com/route/116351912/undercling-crack-crimp"
+=======
                             ClimbName = "PBR",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.5719 47.8191)"),
@@ -481,6 +754,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5737750Z",
                             Url = "https://www.mountainproject.com/route/108140143/pbr"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -488,6 +762,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Chimichangas",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38583 47.63921)"),
+                            CreatedAt = "2025-01-09T18:38:49.2358272Z",
+                            Location = "Low Tide Boulder > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1",
+                            UpdatedAt = "2025-01-09T18:38:49.2358272Z",
+                            Url = "https://www.mountainproject.com/route/120811016/chimichangas"
+=======
                             ClimbName = "Cunning Stunt",
                             ClimbType = "Sport",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.56921 47.81962)"),
@@ -498,6 +783,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5737940Z",
                             Url = "https://www.mountainproject.com/route/105800865/cunning-stunt"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -505,6 +791,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Low Tide Center",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38583 47.63921)"),
+                            CreatedAt = "2025-01-09T18:38:49.2358332Z",
+                            Location = "Low Tide Boulder > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1",
+                            UpdatedAt = "2025-01-09T18:38:49.2358333Z",
+                            Url = "https://www.mountainproject.com/route/118113913/low-tide-center"
+=======
                             ClimbName = "Walking Legend",
                             ClimbType = "Sport",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57599 47.81721)"),
@@ -515,6 +812,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5738250Z",
                             Url = "https://www.mountainproject.com/route/111127336/walking-legend"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -522,6 +820,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Prow Right",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38583 47.63921)"),
+                            CreatedAt = "2025-01-09T18:38:49.2358390Z",
+                            Location = "Low Tide Boulder > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1",
+                            UpdatedAt = "2025-01-09T18:38:49.2358390Z",
+                            Url = "https://www.mountainproject.com/route/118113958/prow-right"
+=======
                             ClimbName = "Model Worker",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57139 47.81847)"),
@@ -532,6 +841,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5738720Z",
                             Url = "https://www.mountainproject.com/route/105814991/model-worker"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -539,6 +849,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Prow Left",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38583 47.63921)"),
+                            CreatedAt = "2025-01-09T18:38:49.2358476Z",
+                            Location = "Low Tide Boulder > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1",
+                            UpdatedAt = "2025-01-09T18:38:49.2358476Z",
+                            Url = "https://www.mountainproject.com/route/118113978/prow-left"
+=======
                             ClimbName = "Climax Control",
                             ClimbType = "Sport",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.56921 47.81962)"),
@@ -549,6 +870,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5739130Z",
                             Url = "https://www.mountainproject.com/route/105805759/climax-control"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -556,6 +878,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Crabclaws",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38583 47.63921)"),
+                            CreatedAt = "2025-01-09T18:38:49.2358534Z",
+                            Location = "Low Tide Boulder > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V3-",
+                            UpdatedAt = "2025-01-09T18:38:49.2358535Z",
+                            Url = "https://www.mountainproject.com/route/119221372/crabclaws"
+=======
                             ClimbName = "Folsom Blues",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.5719 47.8191)"),
@@ -566,6 +899,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5739720Z",
                             Url = "https://www.mountainproject.com/route/108161862/folsom-blues"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -573,6 +907,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Under the Sea",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38636 47.64008)"),
+                            CreatedAt = "2025-01-09T18:38:49.2358593Z",
+                            Location = "Under the Sea > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V2",
+                            UpdatedAt = "2025-01-09T18:38:49.2358594Z",
+                            Url = "https://www.mountainproject.com/route/119690489/under-the-sea"
+=======
                             ClimbName = "Tatoosh",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57101 47.81859)"),
@@ -583,6 +928,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5739880Z",
                             Url = "https://www.mountainproject.com/route/106171292/tatoosh"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -590,6 +936,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Pickpocket",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38684 47.64199)"),
+                            CreatedAt = "2025-01-09T18:38:49.2358652Z",
+                            Location = "Kalaloch Traverse Boulder > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V2",
+                            UpdatedAt = "2025-01-09T18:38:49.2358652Z",
+                            Url = "https://www.mountainproject.com/route/120958791/pickpocket"
+=======
                             ClimbName = "Golden Bucket",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57607 47.81911)"),
@@ -600,6 +957,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5740130Z",
                             Url = "https://www.mountainproject.com/route/113482015/golden-bucket"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -607,6 +965,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Swiss Cheese Arete Right",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38751 47.64562)"),
+                            CreatedAt = "2025-01-09T18:38:49.2358715Z",
+                            Location = "North Cluster > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V-easy",
+                            UpdatedAt = "2025-01-09T18:38:49.2358715Z",
+                            Url = "https://www.mountainproject.com/route/121247249/swiss-cheese-arete-right"
+=======
                             ClimbName = "Pisces",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57219 47.81841)"),
@@ -617,6 +986,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5740260Z",
                             Url = "https://www.mountainproject.com/route/106620653/pisces"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -624,6 +994,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Swiss Cheese Arete Left",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38751 47.64562)"),
+                            CreatedAt = "2025-01-09T18:38:49.2358776Z",
+                            Location = "North Cluster > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V0",
+                            UpdatedAt = "2025-01-09T18:38:49.2358777Z",
+                            Url = "https://www.mountainproject.com/route/121247278/swiss-cheese-arete-left"
+=======
                             ClimbName = "Dr. Sniff and the Tuna Boaters",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57139 47.81847)"),
@@ -634,6 +1015,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5740400Z",
                             Url = "https://www.mountainproject.com/route/105806007/dr-sniff-and-the-tuna-boaters"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -641,6 +1023,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Gunshot",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38751 47.64562)"),
+                            CreatedAt = "2025-01-09T18:38:49.2358936Z",
+                            Location = "North Cluster > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V0-1",
+                            UpdatedAt = "2025-01-09T18:38:49.2358939Z",
+                            Url = "https://www.mountainproject.com/route/126349929/gunshot"
+=======
                             ClimbName = "Plum Pudding",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.5719 47.8191)"),
@@ -651,6 +1044,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5740530Z",
                             Url = "https://www.mountainproject.com/route/106386419/plum-pudding"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -658,6 +1052,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Shoobies",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38751 47.64562)"),
+                            CreatedAt = "2025-01-09T18:38:49.2358995Z",
+                            Location = "North Cluster > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V5",
+                            UpdatedAt = "2025-01-09T18:38:49.2358996Z",
+                            Url = "https://www.mountainproject.com/route/126352156/shoobies"
+=======
                             ClimbName = "Battered Sandwich",
                             ClimbType = "Trad, TR",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.55807 47.825)"),
@@ -668,6 +1073,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5741350Z",
                             Url = "https://www.mountainproject.com/route/106004538/battered-sandwich"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -675,6 +1081,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Shell City",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38643 47.63958)"),
+                            CreatedAt = "2025-01-09T18:38:49.2359100Z",
+                            Location = "The Blob > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V-easy",
+                            UpdatedAt = "2025-01-09T18:38:49.2359101Z",
+                            Url = "https://www.mountainproject.com/route/121247462/shell-city"
+=======
                             ClimbName = "Peanuts To Serve You",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.55905 47.82514)"),
@@ -685,6 +1102,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5741520Z",
                             Url = "https://www.mountainproject.com/route/106457326/peanuts-to-serve-you"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -692,6 +1110,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Bubbles!",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38643 47.63958)"),
+                            CreatedAt = "2025-01-09T18:38:49.2359158Z",
+                            Location = "The Blob > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V0",
+                            UpdatedAt = "2025-01-09T18:38:49.2359158Z",
+                            Url = "https://www.mountainproject.com/route/121247591/bubbles"
+=======
                             ClimbName = "Ride the Lightning",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57748 47.81692)"),
@@ -702,6 +1131,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5742310Z",
                             Url = "https://www.mountainproject.com/route/117722802/ride-the-lightning"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -709,6 +1139,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Unknown Mantle",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38643 47.63958)"),
+                            CreatedAt = "2025-01-09T18:38:49.2359218Z",
+                            Location = "The Blob > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V0",
+                            UpdatedAt = "2025-01-09T18:38:49.2359219Z",
+                            Url = "https://www.mountainproject.com/route/124495228/unknown-mantle"
+=======
                             ClimbName = "Gorilla My Dreams",
                             ClimbType = "Sport",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.5723 47.81891)"),
@@ -719,6 +1160,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5742480Z",
                             Url = "https://www.mountainproject.com/route/105805980/gorilla-my-dreams"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -726,6 +1168,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Rainbow Arete",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38643 47.63958)"),
+                            CreatedAt = "2025-01-09T18:38:49.2359336Z",
+                            Location = "The Blob > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V0",
+                            UpdatedAt = "2025-01-09T18:38:49.2359336Z",
+                            Url = "https://www.mountainproject.com/route/122584043/rainbow-arete"
+=======
                             ClimbName = "GM Route",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.56921 47.81962)"),
@@ -736,6 +1189,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5743370Z",
                             Url = "https://www.mountainproject.com/route/105790678/gm-route"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -743,6 +1197,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "The Poser",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38643 47.63958)"),
+                            CreatedAt = "2025-01-09T18:38:49.2359393Z",
+                            Location = "The Blob > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1",
+                            UpdatedAt = "2025-01-09T18:38:49.2359394Z",
+                            Url = "https://www.mountainproject.com/route/121247206/the-poser"
+=======
                             ClimbName = "Shirley",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57101 47.81859)"),
@@ -753,6 +1218,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5743570Z",
                             Url = "https://www.mountainproject.com/route/106140118/shirley"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -760,6 +1226,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Rainbow Shell",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38643 47.63958)"),
+                            CreatedAt = "2025-01-09T18:38:49.2359462Z",
+                            Location = "The Blob > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1",
+                            UpdatedAt = "2025-01-09T18:38:49.2359463Z",
+                            Url = "https://www.mountainproject.com/route/121247528/rainbow-shell"
+=======
                             ClimbName = "With Apologies to Walter B",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57101 47.81859)"),
@@ -770,6 +1247,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5743730Z",
                             Url = "https://www.mountainproject.com/route/105955198/with-apologies-to-walter-b"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -777,6 +1255,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Rainbow Shell Left",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38643 47.63958)"),
+                            CreatedAt = "2025-01-09T18:38:49.2359537Z",
+                            Location = "The Blob > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1+",
+                            UpdatedAt = "2025-01-09T18:38:49.2359537Z",
+                            Url = "https://www.mountainproject.com/route/122584093/rainbow-shell-left"
+=======
                             ClimbName = "Aries (aka The Lizard)",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57219 47.81841)"),
@@ -787,6 +1276,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5743870Z",
                             Url = "https://www.mountainproject.com/route/105793821/aries-aka-the-lizard"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -794,6 +1284,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Red Spotted Jasper",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38643 47.63958)"),
+                            CreatedAt = "2025-01-09T18:38:49.2359611Z",
+                            Location = "The Blob > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V2",
+                            UpdatedAt = "2025-01-09T18:38:49.2359612Z",
+                            Url = "https://www.mountainproject.com/route/124643341/red-spotted-jasper"
+=======
                             ClimbName = "Special K",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57402 47.81867)"),
@@ -804,6 +1305,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5744160Z",
                             Url = "https://www.mountainproject.com/route/106824109/special-k"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -811,6 +1313,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Pretty Boy",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38643 47.63958)"),
+                            CreatedAt = "2025-01-09T18:38:49.2359683Z",
+                            Location = "The Blob > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V3-4",
+                            UpdatedAt = "2025-01-09T18:38:49.2359684Z",
+                            Url = "https://www.mountainproject.com/route/122749550/pretty-boy"
+=======
                             ClimbName = "Wild Turkey",
                             ClimbType = "Trad, TR",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.55807 47.825)"),
@@ -821,6 +1334,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5744310Z",
                             Url = "https://www.mountainproject.com/route/111859955/wild-turkey"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -828,6 +1342,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Crimp Line",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38646 47.64013)"),
+                            CreatedAt = "2025-01-09T18:38:49.2359792Z",
+                            Location = "Warm-up Slab > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V0-",
+                            UpdatedAt = "2025-01-09T18:38:49.2359793Z",
+                            Url = "https://www.mountainproject.com/route/122584203/crimp-line"
+=======
                             ClimbName = "Chasin' the Lizard",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.5613 47.8243)"),
@@ -838,6 +1363,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5744480Z",
                             Url = "https://www.mountainproject.com/route/106362583/chasin-the-lizard"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -845,6 +1371,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Diagonal",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38646 47.64013)"),
+                            CreatedAt = "2025-01-09T18:38:49.2359862Z",
+                            Location = "Warm-up Slab > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V0",
+                            UpdatedAt = "2025-01-09T18:38:49.2359862Z",
+                            Url = "https://www.mountainproject.com/route/122584129/diagonal"
+=======
                             ClimbName = "Great Northern Slab",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57219 47.81841)"),
@@ -855,6 +1392,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5744670Z",
                             Url = "https://www.mountainproject.com/route/105790657/great-northern-slab"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -862,6 +1400,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Penny Pockets",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38646 47.64013)"),
+                            CreatedAt = "2025-01-09T18:38:49.2359934Z",
+                            Location = "Warm-up Slab > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V0",
+                            UpdatedAt = "2025-01-09T18:38:49.2359934Z",
+                            Url = "https://www.mountainproject.com/route/122584160/penny-pockets"
+=======
                             ClimbName = "Heart of the Country",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.56921 47.81962)"),
@@ -872,6 +1421,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5745470Z",
                             Url = "https://www.mountainproject.com/route/106150810/heart-of-the-country"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -879,6 +1429,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Misty 1",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.3863 47.63983)"),
+                            CreatedAt = "2025-01-09T18:38:49.2360005Z",
+                            Location = "Misty Boulder > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V2",
+                            UpdatedAt = "2025-01-09T18:38:49.2360006Z",
+                            Url = "https://www.mountainproject.com/route/122749602/misty-1"
+=======
                             ClimbName = "Libra Crack",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57219 47.81841)"),
@@ -889,6 +1450,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5745690Z",
                             Url = "https://www.mountainproject.com/route/105795777/libra-crack"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -896,6 +1458,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Misty 2",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.3863 47.63983)"),
+                            CreatedAt = "2025-01-09T18:38:49.2360077Z",
+                            Location = "Misty Boulder > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V2",
+                            UpdatedAt = "2025-01-09T18:38:49.2360078Z",
+                            Url = "https://www.mountainproject.com/route/122749619/misty-2"
+=======
                             ClimbName = "Spineless",
                             ClimbType = "Sport, TR",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.55807 47.825)"),
@@ -906,6 +1479,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5745870Z",
                             Url = "https://www.mountainproject.com/route/107305439/spineless"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -913,6 +1487,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Unknown",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.3863 47.63983)"),
+                            CreatedAt = "2025-01-09T18:38:49.2360175Z",
+                            Location = "Misty Boulder > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V2+",
+                            UpdatedAt = "2025-01-09T18:38:49.2360176Z",
+                            Url = "https://www.mountainproject.com/route/124490697/unknown"
+=======
                             ClimbName = "Wet Dream",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.55807 47.825)"),
@@ -923,6 +1508,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5746050Z",
                             Url = "https://www.mountainproject.com/route/108177373/wet-dream"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -930,6 +1516,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Project",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.3863 47.63983)"),
+                            CreatedAt = "2025-01-09T18:38:49.2360246Z",
+                            Location = "Misty Boulder > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V2-3",
+                            UpdatedAt = "2025-01-09T18:38:49.2360246Z",
+                            Url = "https://www.mountainproject.com/route/124494981/project"
+=======
                             ClimbName = "Happy Puppy",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57496 47.81955)"),
@@ -940,6 +1537,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5746310Z",
                             Url = "https://www.mountainproject.com/route/105872056/happy-puppy"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -947,6 +1545,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Wave to yr dad",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38618 47.64065)"),
+                            CreatedAt = "2025-01-09T18:38:49.2360355Z",
+                            Location = "The Wave > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V2",
+                            UpdatedAt = "2025-01-09T18:38:49.2360355Z",
+                            Url = "https://www.mountainproject.com/route/124642997/wave-to-yr-dad"
+=======
                             ClimbName = "Pressure Drop",
                             ClimbType = "Trad, TR",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.56443 47.82386)"),
@@ -957,6 +1566,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5746510Z",
                             Url = "https://www.mountainproject.com/route/106436379/pressure-drop"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -964,6 +1574,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Wave to yr mom",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38618 47.64065)"),
+                            CreatedAt = "2025-01-09T18:38:49.2360432Z",
+                            Location = "The Wave > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V4",
+                            UpdatedAt = "2025-01-09T18:38:49.2360432Z",
+                            Url = "https://www.mountainproject.com/route/124642933/wave-to-yr-mom"
+=======
                             ClimbName = "Magic Fern",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.55807 47.825)"),
@@ -974,6 +1595,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5746720Z",
                             Url = "https://www.mountainproject.com/route/106141922/magic-fern"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -981,6 +1603,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Bootyhole",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38623 47.63981)"),
+                            CreatedAt = "2025-01-09T18:38:49.2360509Z",
+                            Location = "The Flea Circus > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1-",
+                            UpdatedAt = "2025-01-09T18:38:49.2360509Z",
+                            Url = "https://www.mountainproject.com/route/124643699/bootyhole"
+=======
                             ClimbName = "Roger's Corner",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57139 47.81847)"),
@@ -991,6 +1624,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5747460Z",
                             Url = "https://www.mountainproject.com/route/105838643/rogers-corner"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -998,6 +1632,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Who Farted?",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38623 47.63981)"),
+                            CreatedAt = "2025-01-09T18:38:49.2360585Z",
+                            Location = "The Flea Circus > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1",
+                            UpdatedAt = "2025-01-09T18:38:49.2360586Z",
+                            Url = "https://www.mountainproject.com/route/124643681/who-farted"
+=======
                             ClimbName = "Hell Bent for Glory",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.561 47.8253)"),
@@ -1008,6 +1653,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5747740Z",
                             Url = "https://www.mountainproject.com/route/108136104/hell-bent-for-glory"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1015,6 +1661,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Fleabag",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38623 47.63981)"),
+                            CreatedAt = "2025-01-09T18:38:49.2360770Z",
+                            Location = "The Flea Circus > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1-2",
+                            UpdatedAt = "2025-01-09T18:38:49.2360773Z",
+                            Url = "https://www.mountainproject.com/route/124643645/fleabag"
+=======
                             ClimbName = "Corner Flash",
                             ClimbType = "Trad, TR",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57581 47.81938)"),
@@ -1025,6 +1682,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5747980Z",
                             Url = "https://www.mountainproject.com/route/106677557/corner-flash"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1032,6 +1690,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Starfish Surprise",
+                            ClimbType = "Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.38723 47.64399)"),
+                            CreatedAt = "2025-01-09T18:38:49.2360850Z",
+                            Location = "Waterfall Boulder > Kalaloch Beach 3 > Olympic Bouldering > Olympic National Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V3",
+                            UpdatedAt = "2025-01-09T18:38:49.2360851Z",
+                            Url = "https://www.mountainproject.com/route/126352272/starfish-surprise"
+=======
                             ClimbName = "Smiley Kylee",
                             ClimbType = "Trad, TR",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.5767 47.81678)"),
@@ -1042,6 +1711,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5748160Z",
                             Url = "https://www.mountainproject.com/route/108623329/smiley-kylee"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1049,6 +1719,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Rock Dancer Traverse",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-123.84092 47.37409)"),
+                            CreatedAt = "2025-01-09T18:38:49.2360913Z",
+                            Location = "Chimacum Rock > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V2-",
+                            UpdatedAt = "2025-01-09T18:38:49.2360914Z",
+                            Url = "https://www.mountainproject.com/route/119219313/rock-dancer-traverse"
+=======
                             ClimbName = "CF Route",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57402 47.81867)"),
@@ -1059,6 +1740,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5748330Z",
                             Url = "https://www.mountainproject.com/route/107254704/cf-route"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1066,6 +1748,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Easy Middle",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-122.8269 47.0406)"),
+                            CreatedAt = "2025-01-09T18:38:49.2360973Z",
+                            Location = "Olympia > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V-easy",
+                            UpdatedAt = "2025-01-09T18:38:49.2360973Z",
+                            Url = "https://www.mountainproject.com/route/107835132/easy-middle"
+=======
                             ClimbName = "Even Steven 5.8 Start",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57568 47.81897)"),
@@ -1076,6 +1769,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5748520Z",
                             Url = "https://www.mountainproject.com/route/112118164/even-steven-58-start"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1083,6 +1777,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Easy Left",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-122.8269 47.0406)"),
+                            CreatedAt = "2025-01-09T18:38:49.2361029Z",
+                            Location = "Olympia > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V0-",
+                            UpdatedAt = "2025-01-09T18:38:49.2361030Z",
+                            Url = "https://www.mountainproject.com/route/107835143/easy-left"
+=======
                             ClimbName = "Hag Crack",
                             ClimbType = "Trad, TR",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.55725 47.82545)"),
@@ -1093,6 +1798,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5748780Z",
                             Url = "https://www.mountainproject.com/route/109395698/hag-crack"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1100,6 +1806,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Iceman Traverse",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-122.8269 47.0406)"),
+                            CreatedAt = "2025-01-09T18:38:49.2361083Z",
+                            Location = "Olympia > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1+",
+                            UpdatedAt = "2025-01-09T18:38:49.2361084Z",
+                            Url = "https://www.mountainproject.com/route/107835165/iceman-traverse"
+=======
                             ClimbName = "Mourning Star",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.56921 47.81962)"),
@@ -1110,6 +1827,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5748960Z",
                             Url = "https://www.mountainproject.com/route/107690583/mourning-star"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1117,6 +1835,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "ATV",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-123.0644 46.9465)"),
+                            CreatedAt = "2025-01-09T18:38:49.2361171Z",
+                            Location = "Waddle Creek > Capitol Forest > Olympia Area Bouldering > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V3",
+                            UpdatedAt = "2025-01-09T18:38:49.2361172Z",
+                            Url = "https://www.mountainproject.com/route/107957920/atv"
+=======
                             ClimbName = "Law and Order",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.55859 47.82531)"),
@@ -1127,6 +1856,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5749340Z",
                             Url = "https://www.mountainproject.com/route/107571773/law-and-order"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1134,6 +1864,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Waddeller",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-123.0644 46.9465)"),
+                            CreatedAt = "2025-01-09T18:38:49.2361235Z",
+                            Location = "Waddle Creek > Capitol Forest > Olympia Area Bouldering > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V3",
+                            UpdatedAt = "2025-01-09T18:38:49.2361236Z",
+                            Url = "https://www.mountainproject.com/route/125654507/waddeller"
+=======
                             ClimbName = "Who Put The Purr In My Pussy",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57496 47.81955)"),
@@ -1144,6 +1885,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5749570Z",
                             Url = "https://www.mountainproject.com/route/105872065/who-put-the-purr-in-my-pussy"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1151,6 +1893,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Bolt Action",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-123.0644 46.9465)"),
+                            CreatedAt = "2025-01-09T18:38:49.2361299Z",
+                            Location = "Waddle Creek > Capitol Forest > Olympia Area Bouldering > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V7",
+                            UpdatedAt = "2025-01-09T18:38:49.2361300Z",
+                            Url = "https://www.mountainproject.com/route/107957902/bolt-action"
+=======
                             ClimbName = "Spring Fall",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57402 47.81867)"),
@@ -1161,6 +1914,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5749790Z",
                             Url = "https://www.mountainproject.com/route/107254730/spring-fall"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1168,6 +1922,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Left ventricle",
+                            ClimbType = "TR, Boulder, Alpine",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-123.246 47.53125)"),
+                            CreatedAt = "2025-01-09T18:38:49.2361365Z",
+                            Location = "Mt. Washington > Olympic National Forest > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V0",
+                            UpdatedAt = "2025-01-09T18:38:49.2361365Z",
+                            Url = "https://www.mountainproject.com/route/123309972/left-ventricle"
+=======
                             ClimbName = "The View from the Bridge",
                             ClimbType = "Trad, TR",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57568 47.81897)"),
@@ -1178,6 +1943,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5750000Z",
                             Url = "https://www.mountainproject.com/route/108125711/the-view-from-the-bridge"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1185,6 +1951,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Cattails",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-123.2888 47.49235)"),
+                            CreatedAt = "2025-01-09T18:38:49.2361423Z",
+                            Location = "Boulder With a View > Lake Cushman > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V2-",
+                            UpdatedAt = "2025-01-09T18:38:49.2361424Z",
+                            Url = "https://www.mountainproject.com/route/122291633/cattails"
+=======
                             ClimbName = "The Brett Thompson and Scott Fuller Memorial Route",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.56683 47.82354)"),
@@ -1195,6 +1972,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5750360Z",
                             Url = "https://www.mountainproject.com/route/111825946/the-brett-thompson-and-scott-fuller-memorial-route"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1202,6 +1980,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Mike's Hard",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-123.2888 47.49235)"),
+                            CreatedAt = "2025-01-09T18:38:49.2361483Z",
+                            Location = "Boulder With a View > Lake Cushman > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V3",
+                            UpdatedAt = "2025-01-09T18:38:49.2361484Z",
+                            Url = "https://www.mountainproject.com/route/125227983/mikes-hard"
+=======
                             ClimbName = "I Am In Top a Shader",
                             ClimbType = "Trad, TR",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.55807 47.825)"),
@@ -1212,6 +2001,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5750550Z",
                             Url = "https://www.mountainproject.com/route/107298333/i-am-in-top-a-shader"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1219,6 +2009,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Hard a steppy",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-123.2888 47.49235)"),
+                            CreatedAt = "2025-01-09T18:38:49.2361572Z",
+                            Location = "Boulder With a View > Lake Cushman > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V3-4",
+                            UpdatedAt = "2025-01-09T18:38:49.2361572Z",
+                            Url = "https://www.mountainproject.com/route/122286924/hard-a-steppy"
+=======
                             ClimbName = "With Apologies to Kenny G",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.56988 47.82058)"),
@@ -1229,6 +2030,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5750910Z",
                             Url = "https://www.mountainproject.com/route/120714228/with-apologies-to-kenny-g"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1236,6 +2038,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Long boi cattails",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-123.2888 47.49235)"),
+                            CreatedAt = "2025-01-09T18:38:49.2361638Z",
+                            Location = "Boulder With a View > Lake Cushman > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V3-4",
+                            UpdatedAt = "2025-01-09T18:38:49.2361639Z",
+                            Url = "https://www.mountainproject.com/route/122300275/long-boi-cattails"
+=======
                             ClimbName = "The Amphibian",
                             ClimbType = "Sport",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.5613 47.8243)"),
@@ -1246,6 +2059,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5751090Z",
                             Url = "https://www.mountainproject.com/route/110751229/the-amphibian"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1253,6 +2067,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Party Crack",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-123.30218 47.49542)"),
+                            CreatedAt = "2025-01-09T18:38:49.2361701Z",
+                            Location = "Party Rock > Lake Cushman > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V2",
+                            UpdatedAt = "2025-01-09T18:38:49.2361701Z",
+                            Url = "https://www.mountainproject.com/route/126742128/party-crack"
+=======
                             ClimbName = "Tunnel Vision",
                             ClimbType = "Sport",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.56921 47.81962)"),
@@ -1263,6 +2088,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5751390Z",
                             Url = "https://www.mountainproject.com/route/107818883/tunnel-vision"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1270,6 +2096,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Un drank coffee",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-123.15723 47.62276)"),
+                            CreatedAt = "2025-01-09T18:38:49.2361798Z",
+                            Location = "Lena lake > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1",
+                            UpdatedAt = "2025-01-09T18:38:49.2361799Z",
+                            Url = "https://www.mountainproject.com/route/114156136/un-drank-coffee"
+=======
                             ClimbName = "Journey to the Other Side of the Bridge",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57568 47.81897)"),
@@ -1280,6 +2117,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5751770Z",
                             Url = "https://www.mountainproject.com/route/106812714/journey-to-the-other-side-of-the-bridge"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1287,6 +2125,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Slot Machine",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.0745 46.2956)"),
+                            CreatedAt = "2025-01-09T18:38:49.2361860Z",
+                            Location = "Monolith Wall > Cape Disappointment > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V0",
+                            UpdatedAt = "2025-01-09T18:38:49.2361861Z",
+                            Url = "https://www.mountainproject.com/route/115163251/slot-machine"
+=======
                             ClimbName = "Smilodon Fatalis",
                             ClimbType = "Sport",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57748 47.81692)"),
@@ -1297,6 +2146,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5752470Z",
                             Url = "https://www.mountainproject.com/route/119198566/smilodon-fatalis"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1304,6 +2154,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Left Arete",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.0745 46.2956)"),
+                            CreatedAt = "2025-01-09T18:38:49.2361946Z",
+                            Location = "Monolith Wall > Cape Disappointment > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V0+",
+                            UpdatedAt = "2025-01-09T18:38:49.2361946Z",
+                            Url = "https://www.mountainproject.com/route/115163144/left-arete"
+=======
                             ClimbName = "5.10 in B-minor",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.56988 47.82058)"),
@@ -1314,6 +2175,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5752700Z",
                             Url = "https://www.mountainproject.com/route/120713727/510-in-b-minor"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1321,6 +2183,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Easy Street",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.0745 46.2956)"),
+                            CreatedAt = "2025-01-09T18:38:49.2362010Z",
+                            Location = "Monolith Wall > Cape Disappointment > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1",
+                            UpdatedAt = "2025-01-09T18:38:49.2362010Z",
+                            Url = "https://www.mountainproject.com/route/115163272/easy-street"
+=======
                             ClimbName = "Banana Hammock",
                             ClimbType = "Trad, TR",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.5767 47.81678)"),
@@ -1331,6 +2204,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5752880Z",
                             Url = "https://www.mountainproject.com/route/110818298/banana-hammock"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1338,6 +2212,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Top Out",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.0734 46.29434)"),
+                            CreatedAt = "2025-01-09T18:38:49.2362071Z",
+                            Location = "Lewis and Clark Rock > Cape Disappointment > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V-easy",
+                            UpdatedAt = "2025-01-09T18:38:49.2362072Z",
+                            Url = "https://www.mountainproject.com/route/115163625/top-out"
+=======
                             ClimbName = "Kite Flying Blind",
                             ClimbType = "Sport",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.56921 47.81962)"),
@@ -1348,6 +2233,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5753080Z",
                             Url = "https://www.mountainproject.com/route/106052910/kite-flying-blind"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1355,6 +2241,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Columbia step ladder",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.0734 46.29434)"),
+                            CreatedAt = "2025-01-09T18:38:49.2362137Z",
+                            Location = "Lewis and Clark Rock > Cape Disappointment > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1",
+                            UpdatedAt = "2025-01-09T18:38:49.2362138Z",
+                            Url = "https://www.mountainproject.com/route/115163509/columbia-step-ladder"
+=======
                             ClimbName = "Natural Log Cabin",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57101 47.81859)"),
@@ -1365,6 +2262,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5753430Z",
                             Url = "https://www.mountainproject.com/route/105805752/natural-log-cabin"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1372,6 +2270,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Swiss Flake",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.0734 46.29434)"),
+                            CreatedAt = "2025-01-09T18:38:49.2362199Z",
+                            Location = "Lewis and Clark Rock > Cape Disappointment > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V2",
+                            UpdatedAt = "2025-01-09T18:38:49.2362199Z",
+                            Url = "https://www.mountainproject.com/route/115163587/swiss-flake"
+=======
                             ClimbName = "SS Ultrabrutal",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.56921 47.81962)"),
@@ -1382,6 +2291,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5753610Z",
                             Url = "https://www.mountainproject.com/route/105790674/ss-ultrabrutal"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1389,6 +2299,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Hoot Owl",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.0734 46.29434)"),
+                            CreatedAt = "2025-01-09T18:38:49.2362259Z",
+                            Location = "Lewis and Clark Rock > Cape Disappointment > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V2-3",
+                            UpdatedAt = "2025-01-09T18:38:49.2362259Z",
+                            Url = "https://www.mountainproject.com/route/125057191/hoot-owl"
+=======
                             ClimbName = "Leave My Face Alone",
                             ClimbType = "Sport",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.56921 47.81962)"),
@@ -1399,6 +2320,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5753800Z",
                             Url = "https://www.mountainproject.com/route/106171282/leave-my-face-alone"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1406,6 +2328,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Sea Bluff",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.07224 46.29409)"),
+                            CreatedAt = "2025-01-09T18:38:49.2362336Z",
+                            Location = "Sands of Time Rock > Cape Disappointment > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V0+",
+                            UpdatedAt = "2025-01-09T18:38:49.2362336Z",
+                            Url = "https://www.mountainproject.com/route/115168096/sea-bluff"
+=======
                             ClimbName = "Kubla Khan and the Fountain of Eternal Stoke",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.5613 47.8243)"),
@@ -1416,6 +2349,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5754000Z",
                             Url = "https://www.mountainproject.com/route/113352015/kubla-khan-and-the-fountain-of-eternal-stoke"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1423,6 +2357,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Crest",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.07224 46.29409)"),
+                            CreatedAt = "2025-01-09T18:38:49.2362394Z",
+                            Location = "Sands of Time Rock > Cape Disappointment > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V2",
+                            UpdatedAt = "2025-01-09T18:38:49.2362395Z",
+                            Url = "https://www.mountainproject.com/route/115168078/crest"
+=======
                             ClimbName = "Behind the Tombstone",
                             ClimbType = "Sport",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57748 47.81692)"),
@@ -1433,6 +2378,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5754250Z",
                             Url = "https://www.mountainproject.com/route/117064979/behind-the-tombstone"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1440,6 +2386,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Wall E",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.07361 46.2939)"),
+                            CreatedAt = "2025-01-09T18:38:49.2362447Z",
+                            Location = "Te Fiti > Cape Disappointment > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1",
+                            UpdatedAt = "2025-01-09T18:38:49.2362448Z",
+                            Url = "https://www.mountainproject.com/route/115168152/wall-e"
+=======
                             ClimbName = "Agent Orange",
                             ClimbType = "Trad, TR",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57581 47.81938)"),
@@ -1450,6 +2407,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5754430Z",
                             Url = "https://www.mountainproject.com/route/107819526/agent-orange"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1457,6 +2415,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Tyrolean",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.07361 46.2939)"),
+                            CreatedAt = "2025-01-09T18:38:49.2362500Z",
+                            Location = "Te Fiti > Cape Disappointment > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1 R",
+                            UpdatedAt = "2025-01-09T18:38:49.2362500Z",
+                            Url = "https://www.mountainproject.com/route/115168207/tyrolean"
+=======
                             ClimbName = "Robin's Ramp",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.5719 47.8191)"),
@@ -1467,6 +2436,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5754570Z",
                             Url = "https://www.mountainproject.com/route/106461785/robins-ramp"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1474,6 +2444,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Croc Rock",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.07361 46.2939)"),
+                            CreatedAt = "2025-01-09T18:38:49.2362555Z",
+                            Location = "Te Fiti > Cape Disappointment > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1",
+                            UpdatedAt = "2025-01-09T18:38:49.2362555Z",
+                            Url = "https://www.mountainproject.com/route/115168248/croc-rock"
+=======
                             ClimbName = "Tommy's Sandbox",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57139 47.81847)"),
@@ -1484,6 +2465,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5754710Z",
                             Url = "https://www.mountainproject.com/route/107720333/tommys-sandbox"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1491,6 +2473,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Crumbles",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.07361 46.2939)"),
+                            CreatedAt = "2025-01-09T18:38:49.2362609Z",
+                            Location = "Te Fiti > Cape Disappointment > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1",
+                            UpdatedAt = "2025-01-09T18:38:49.2362610Z",
+                            Url = "https://www.mountainproject.com/route/124665396/crumbles"
+=======
                             ClimbName = "Beetle Bailey P1",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57748 47.81692)"),
@@ -1501,6 +2494,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5754940Z",
                             Url = "https://www.mountainproject.com/route/119108504/beetle-bailey-p1"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1508,6 +2502,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Go Fold Yourself",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.07361 46.2939)"),
+                            CreatedAt = "2025-01-09T18:38:49.2362699Z",
+                            Location = "Te Fiti > Cape Disappointment > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1",
+                            UpdatedAt = "2025-01-09T18:38:49.2362700Z",
+                            Url = "https://www.mountainproject.com/route/124358844/go-fold-yourself"
+=======
                             ClimbName = "Rise Pumpkin Rise",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57402 47.81867)"),
@@ -1518,6 +2523,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5755090Z",
                             Url = "https://www.mountainproject.com/route/107304882/rise-pumpkin-rise"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1525,6 +2531,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Jug Hug",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.07361 46.2939)"),
+                            CreatedAt = "2025-01-09T18:38:49.2362749Z",
+                            Location = "Te Fiti > Cape Disappointment > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V2+",
+                            UpdatedAt = "2025-01-09T18:38:49.2362750Z",
+                            Url = "https://www.mountainproject.com/route/124318061/jug-hug"
+=======
                             ClimbName = "Them",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.5601 47.8249)"),
@@ -1535,6 +2552,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5755370Z",
                             Url = "https://www.mountainproject.com/route/106455191/them"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1542,6 +2560,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Reach for the stars",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.07361 46.2939)"),
+                            CreatedAt = "2025-01-09T18:38:49.2362800Z",
+                            Location = "Te Fiti > Cape Disappointment > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V3",
+                            UpdatedAt = "2025-01-09T18:38:49.2362801Z",
+                            Url = "https://www.mountainproject.com/route/124318163/reach-for-the-stars"
+=======
                             ClimbName = "Racer X",
                             ClimbType = "Sport",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57748 47.81692)"),
@@ -1552,6 +2581,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5755530Z",
                             Url = "https://www.mountainproject.com/route/105805970/racer-x"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1559,6 +2589,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Surprise",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.07361 46.2939)"),
+                            CreatedAt = "2025-01-09T18:38:49.2362847Z",
+                            Location = "Te Fiti > Cape Disappointment > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V3",
+                            UpdatedAt = "2025-01-09T18:38:49.2362847Z",
+                            Url = "https://www.mountainproject.com/route/124665366/surprise"
+=======
                             ClimbName = "Jam Session",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.56988 47.82058)"),
@@ -1569,6 +2610,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5755760Z",
                             Url = "https://www.mountainproject.com/route/120713808/jam-session"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1576,6 +2618,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Lattice",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.07361 46.2939)"),
+                            CreatedAt = "2025-01-09T18:38:49.2362890Z",
+                            Location = "Te Fiti > Cape Disappointment > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V3",
+                            UpdatedAt = "2025-01-09T18:38:49.2362891Z",
+                            Url = "https://www.mountainproject.com/route/115168136/lattice"
+=======
                             ClimbName = "Golden Road",
                             ClimbType = "Sport",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.56683 47.82354)"),
@@ -1586,6 +2639,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5755920Z",
                             Url = "https://www.mountainproject.com/route/106255312/golden-road"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1593,6 +2647,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "schwing and a slap",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.07361 46.2939)"),
+                            CreatedAt = "2025-01-09T18:38:49.2362938Z",
+                            Location = "Te Fiti > Cape Disappointment > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V5",
+                            UpdatedAt = "2025-01-09T18:38:49.2362938Z",
+                            Url = "https://www.mountainproject.com/route/124767873/schwing-and-a-slap"
+=======
                             ClimbName = "Humpback Humpback Humpback Whale",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57607 47.81911)"),
@@ -1603,6 +2668,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5756090Z",
                             Url = "https://www.mountainproject.com/route/113482156/humpback-humpback-humpback-whale"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1610,6 +2676,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "John",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.07396 46.29434)"),
+                            CreatedAt = "2025-01-09T18:38:49.2362984Z",
+                            Location = "The Shark's Fin > Cape Disappointment > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1",
+                            UpdatedAt = "2025-01-09T18:38:49.2363019Z",
+                            Url = "https://www.mountainproject.com/route/115168313/john"
+=======
                             ClimbName = "Leeper's Z Corner",
                             ClimbType = "Trad, TR",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.55725 47.82545)"),
@@ -1620,6 +2697,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5756250Z",
                             Url = "https://www.mountainproject.com/route/108154702/leepers-z-corner"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1627,6 +2705,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Julia",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.07396 46.29434)"),
+                            CreatedAt = "2025-01-09T18:38:49.2363504Z",
+                            Location = "The Shark's Fin > Cape Disappointment > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1",
+                            UpdatedAt = "2025-01-09T18:38:49.2363507Z",
+                            Url = "https://www.mountainproject.com/route/115168347/julia"
+=======
                             ClimbName = "Japanese Gardens (to 1st anchor)",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57139 47.81847)"),
@@ -1637,6 +2726,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5756390Z",
                             Url = "https://www.mountainproject.com/route/119361117/japanese-gardens-to-1st-anchor"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1644,6 +2734,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Stairway to Heaven",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.05749 46.2821)"),
+                            CreatedAt = "2025-01-09T18:38:49.2363558Z",
+                            Location = "Stage Rock > Cape Disappointment > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V-easy",
+                            UpdatedAt = "2025-01-09T18:38:49.2363558Z",
+                            Url = "https://www.mountainproject.com/route/115168912/stairway-to-heaven"
+=======
                             ClimbName = "Terminal Preppie",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57175 47.81838)"),
@@ -1654,6 +2755,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5756640Z",
                             Url = "https://www.mountainproject.com/route/105995079/terminal-preppie"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1661,6 +2763,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Grilled Cheese",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.05749 46.2821)"),
+                            CreatedAt = "2025-01-09T18:38:49.2363604Z",
+                            Location = "Stage Rock > Cape Disappointment > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1-",
+                            UpdatedAt = "2025-01-09T18:38:49.2363605Z",
+                            Url = "https://www.mountainproject.com/route/115168926/grilled-cheese"
+=======
                             ClimbName = "Marginal Karma",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57139 47.81847)"),
@@ -1671,6 +2784,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5756770Z",
                             Url = "https://www.mountainproject.com/route/105795821/marginal-karma"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1678,6 +2792,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Staring blankly",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-122.59067 47.79476)"),
+                            CreatedAt = "2025-01-09T18:38:49.2363720Z",
+                            Location = "Port Gamble Heritage Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V-easy",
+                            UpdatedAt = "2025-01-09T18:38:49.2363723Z",
+                            Url = "https://www.mountainproject.com/route/119282371/staring-blankly"
+=======
                             ClimbName = "Doug Thompson's Unicorn",
                             ClimbType = "Sport",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57496 47.81955)"),
@@ -1688,6 +2813,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5756940Z",
                             Url = "https://www.mountainproject.com/route/114558660/doug-thompsons-unicorn"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1695,6 +2821,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Placed By The Pioneers",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-122.59067 47.79476)"),
+                            CreatedAt = "2025-01-09T18:38:49.2363772Z",
+                            Location = "Port Gamble Heritage Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V0",
+                            UpdatedAt = "2025-01-09T18:38:49.2363773Z",
+                            Url = "https://www.mountainproject.com/route/120038863/placed-by-the-pioneers"
+=======
                             ClimbName = "Frank Presley",
                             ClimbType = "Sport",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.56921 47.81962)"),
@@ -1705,6 +2842,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5757400Z",
                             Url = "https://www.mountainproject.com/route/105808027/frank-presley"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1712,6 +2850,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Tall Timber",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-122.59067 47.79476)"),
+                            CreatedAt = "2025-01-09T18:38:49.2363820Z",
+                            Location = "Port Gamble Heritage Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1",
+                            UpdatedAt = "2025-01-09T18:38:49.2363846Z",
+                            Url = "https://www.mountainproject.com/route/120044477/tall-timber"
+=======
                             ClimbName = "And Say",
                             ClimbType = "Trad, TR",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.55905 47.82514)"),
@@ -1722,6 +2871,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5757700Z",
                             Url = "https://www.mountainproject.com/route/110383269/and-say"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1729,6 +2879,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Logger Rhythm",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-122.59067 47.79476)"),
+                            CreatedAt = "2025-01-09T18:38:49.2363892Z",
+                            Location = "Port Gamble Heritage Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1",
+                            UpdatedAt = "2025-01-09T18:38:49.2363892Z",
+                            Url = "https://www.mountainproject.com/route/120048363/logger-rhythm"
+=======
                             ClimbName = "Flying Salamanders (Full)",
                             ClimbType = "Sport",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57748 47.81692)"),
@@ -1739,6 +2900,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5757880Z",
                             Url = "https://www.mountainproject.com/route/119257785/flying-salamanders-full"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1746,6 +2908,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Undercut",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-122.59067 47.79476)"),
+                            CreatedAt = "2025-01-09T18:38:49.2363935Z",
+                            Location = "Port Gamble Heritage Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1+",
+                            UpdatedAt = "2025-01-09T18:38:49.2363936Z",
+                            Url = "https://www.mountainproject.com/route/120719116/undercut"
+=======
                             ClimbName = "Fifth Force",
                             ClimbType = "Sport",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.56921 47.81962)"),
@@ -1756,6 +2929,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5758030Z",
                             Url = "https://www.mountainproject.com/route/106184824/fifth-force"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1763,6 +2937,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Loggers Lap",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-122.59067 47.79476)"),
+                            CreatedAt = "2025-01-09T18:38:49.2363979Z",
+                            Location = "Port Gamble Heritage Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V1-2",
+                            UpdatedAt = "2025-01-09T18:38:49.2363980Z",
+                            Url = "https://www.mountainproject.com/route/120044482/loggers-lap"
+=======
                             ClimbName = "Sickle Crack",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57219 47.81841)"),
@@ -1773,6 +2958,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5758180Z",
                             Url = "https://www.mountainproject.com/route/106589110/sickle-crack"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1780,6 +2966,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Spidey Dyno",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-122.59067 47.79476)"),
+                            CreatedAt = "2025-01-09T18:38:49.2364024Z",
+                            Location = "Port Gamble Heritage Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V2",
+                            UpdatedAt = "2025-01-09T18:38:49.2364025Z",
+                            Url = "https://www.mountainproject.com/route/119282322/spidey-dyno"
+=======
                             ClimbName = "Timberjack",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.5723 47.81891)"),
@@ -1790,6 +2987,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5758490Z",
                             Url = "https://www.mountainproject.com/route/105805984/timberjack"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1797,6 +2995,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Unnamed",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-122.59067 47.79476)"),
+                            CreatedAt = "2025-01-09T18:38:49.2364068Z",
+                            Location = "Port Gamble Heritage Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V2",
+                            UpdatedAt = "2025-01-09T18:38:49.2364068Z",
+                            Url = "https://www.mountainproject.com/route/120719166/unnamed"
+=======
                             ClimbName = "Flying Salamanders (Short)",
                             ClimbType = "Sport",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57748 47.81692)"),
@@ -1807,6 +3016,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5758790Z",
                             Url = "https://www.mountainproject.com/route/117824423/flying-salamanders-short"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -1814,6 +3024,17 @@ namespace ClimbWithFriendsAPI.Migrations
                             AreaLatitude = 0.0,
                             AreaLongitude = 0.0,
                             AvgStars = 0.0,
+<<<<<<< HEAD
+                            ClimbName = "Stumpjumper",
+                            ClimbType = "Boulder",
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-122.59067 47.79476)"),
+                            CreatedAt = "2025-01-09T18:38:49.2364114Z",
+                            Location = "Port Gamble Heritage Park > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V3+",
+                            UpdatedAt = "2025-01-09T18:38:49.2364114Z",
+                            Url = "https://www.mountainproject.com/route/120065010/stumpjumper"
+=======
                             ClimbName = "Stern Farmer",
                             ClimbType = "Trad",
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.57139 47.81847)"),
@@ -1824,6 +3045,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5758920Z",
                             Url = "https://www.mountainproject.com/route/105821732/stern-farmer"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         },
                         new
                         {
@@ -13784,6 +15006,15 @@ namespace ClimbWithFriendsAPI.Migrations
                             AvgStars = 0.0,
                             ClimbName = "Leggo my Ego",
                             ClimbType = "Boulder",
+<<<<<<< HEAD
+                            Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-124.58668 47.87778)"),
+                            CreatedAt = "2025-01-09T18:38:49.2365134Z",
+                            Location = "Big Fat Beach boulder > La Push Beaches > Olympics & Pacific Coast > Washington",
+                            Pitches = 1,
+                            Rating = "V0-",
+                            UpdatedAt = "2025-01-09T18:38:49.2365135Z",
+                            Url = "https://www.mountainproject.com/route/109572402/talk-a-boat-easy"
+=======
                             Coordinates = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-121.59801 47.81749)"),
                             CreatedAt = "2025-01-10T06:49:52.5891050Z",
                             Location = "Leggo my Ego Boulder > River Boulders > ** Bouldering at Index > Index > Skykomish Valley > Central-West Cascades & Seattle > Washington",
@@ -17022,6 +18253,7 @@ namespace ClimbWithFriendsAPI.Migrations
                             State = "Washington",
                             UpdatedAt = "2025-01-10T06:49:52.5940730Z",
                             Url = "https://www.mountainproject.com/route/126120234/hagakure-low"
+>>>>>>> 514f0531d51cc1981d39f679e76604fcea8195f7
                         });
                 });
 

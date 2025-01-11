@@ -1,0 +1,12 @@
+return user metadata on activitylog endpoint
+include climb name in details data
+lastlogin pushed to server
+
+climbing data scraped
+
+deployment
+
+CICD
+
+
+
