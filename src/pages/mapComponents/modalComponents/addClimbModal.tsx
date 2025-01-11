@@ -228,8 +228,6 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
       // Await the resolution of all promises
       const doesClimbExistResults = await Promise.all(doesClimbExistPromises);
 
-      console.log(doesClimbExistResults);
-
       const anyClimbsThatExist = doesClimbExistResults.some(
         (item) => item.doesExist,
       );
@@ -238,7 +236,6 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
         for (const { doesExist, climbName } of doesClimbExistResults) {
           if (doesExist) {
             const message = `**${climbName}** already exists. Please Check filters.`;
-            console.log(message);
 
             // Update state with a delay
             setErrorMessage(message);
@@ -294,7 +291,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
             // Handle tags
             if (Array.isArray(item.tags) && item.tags.length > 0) {
               const tagPromises = item.tags.map((tag) =>
-                addTagToClimb(tag.tagId, item.climb.climbId),
+                addTagToClimb(tag.tagId, item.climb.climbId,mapId),
               );
               await Promise.all(tagPromises);
             }

@@ -21,8 +21,9 @@ const NavBar: React.FC<NavBarProps> = ({
   setNavBarStatus,
   statsTrigger,
 }) => {
-  const navBarItems = ['Maps', 'Communities', 'Feed', 'Profile'];
   const { user } = useAuth0();
+  const navBarItems = ['Maps', 'Communities', 'Feed', 'Profile'];
+
   const [statObject, setStatObject] = useState<StatObject>({
     totalClimbs: 0,
     totalMaps: 0,
@@ -30,15 +31,14 @@ const NavBar: React.FC<NavBarProps> = ({
   });
 
   useEffect(() => {
-    console.log('hi');
     const userStats = async () => {
-      if (user?.sub) {
+      if (user && user?.sub) {
         const data = await retrieveUserStats(user?.sub);
         setStatObject(data);
       }
     };
 
-    if (user?.sub) {
+    if (user && user?.sub) {
       userStats();
     } else {
       console.error('User not found');

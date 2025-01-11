@@ -121,7 +121,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
           climbItem.tags = [];
         }
         //not waiting to make sure it updates correctly.
-        addTagToClimb(item[0].tagId, item[1]);
+        addTagToClimb(item[0].tagId, item[1],mapId);
 
         climbItem.tags.push(item[0]);
       }
@@ -280,7 +280,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
 
               .map((item: ClimbWithDependencies) => (
                 <div
-                  key={item.climb?.climbId}
+                  key={item.climb.climbId}
                   className="relative mt-5 flex w-full flex-col gap-2 rounded-md bg-customGray p-10 text-black shadow-sm shadow-white"
                 >
                   <div
@@ -352,9 +352,10 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                           <Tooltip
                             deleteItemCallBack={deleteTagCallBack}
                             item={tagsOnClimb}
+                            key={tagsOnClimb.tagId}
                           >
                             <div
-                              key={tagsOnClimb.tagId}
+                              
                               className="rounded-md border-2 border-green-900 bg-green-600 p-1 text-white hover:opacity-75"
                             >
                               {tagsOnClimb.tagName}

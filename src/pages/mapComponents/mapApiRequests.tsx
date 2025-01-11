@@ -64,10 +64,10 @@ const addTagToMap = async (tagId: number, mapId: number) => {
   }
 };
 
-const addTagToClimb = async (tagId: number, climbId: number) => {
+const addTagToClimb = async (tagId: number, climbId: number,mapId:number) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Tags/${tagId}/ToClimb/${climbId}`,
+      `http://localhost:5074/api/Tags/${tagId}/ToClimb/${climbId}/OnMap/${mapId}`,
       {
         method: 'POST',
         headers: {
@@ -575,7 +575,6 @@ const AddUserFilter = async (
   auth0Id: string,
   mapId: number,
 ) => {
-  console.log(auth0IdToFilter, auth0Id, mapId);
   try {
     const response = await fetch(
       `http://localhost:5074/api/Filters/User/${auth0IdToFilter}/ToMap/${mapId}/ForUser/${auth0Id}`,

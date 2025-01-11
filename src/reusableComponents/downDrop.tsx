@@ -25,27 +25,24 @@ const DownDrop = forwardRef<HTMLDivElement, FilterDropDownProps>(
         ref={ref}
         className={`absolute right-0 top-16 z-10 ${basicDropDownStyleContainer(downDropWidth)}`}
       >
-        {filterTypes.map((item) => (
-          <>
-            <div
-              key={item}
-              onClick={() => {
-                setDropDownToggleCallBack(false);
-                setSelectedFilterCallBack(item);
-              }}
-              className={color ? dropDownStyles(color) : dropDownStyles('gray')}
-            >
-              <div className="flex-col">
-                <div> {item} </div>
-
-                <div
-                  className={`${selectedFilter === item ? 'w-content border-b-2 border-violet-500' : null} `}
-                >
-                  {' '}
-                </div>
+        {filterTypes.map((item, index) => (
+          <div
+            key={index}
+            onClick={() => {
+              setDropDownToggleCallBack(false);
+              setSelectedFilterCallBack(item);
+            }}
+            className={color ? dropDownStyles(color) : dropDownStyles('gray')}
+          >
+            <div className="flex-col">
+              <div> {item} </div>
+              <div
+                className={`${selectedFilter === item ? 'w-content border-b-2 border-violet-500' : ''}`}
+              >
+                {' '}
               </div>
             </div>
-          </>
+          </div>
         ))}
       </div>
     );
