@@ -51,7 +51,7 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({ feedToggle }) => {
           {' '}
           Map Events
         </div>
-        <div className="mt-1 flex h-80 flex-col items-center gap-5 overflow-y-scroll pl-2 pr-2">
+        <div className="mt-2 flex h-80 flex-col items-center gap-5 overflow-y-scroll pl-2 pr-2">
           <ul className="flex flex-col gap-2 pl-2 text-white">
             {posts.map((post, index) => (
               <div
