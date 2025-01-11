@@ -14,6 +14,7 @@ namespace YourProjectNamespace.Data.Configurations
             builder.Property(a => a.MapToUserId).IsRequired();
             builder.Property(uf => uf.Auth0Id).IsRequired();
             builder.Property(uf => uf.UserId).IsRequired();
+            builder.Property(uf => uf.Auth0IdToFilter).IsRequired();
             builder.Property(uf => uf.CreatedAt).IsRequired();
         
 

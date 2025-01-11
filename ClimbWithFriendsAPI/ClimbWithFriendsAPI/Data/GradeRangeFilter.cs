@@ -12,8 +12,9 @@ namespace ClimbWithFriendsAPI.Data
         public string ToGrade{get;set;}
         public string Type{get;set;}
         public string CreatedAt { get; set; }
+        public int MapToUserId{get;set;}
 
-
+        public MapToUser MapToUser{get;set;}
         public Map Maps {get;set;}
     }
 }

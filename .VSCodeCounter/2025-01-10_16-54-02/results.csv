@@ -1,0 +1,57 @@
+"filename", "language", "TypeScript JSX", "TypeScript", "CSS", "XML", "comment", "blank", "total"
+"/Users/mphelps/climb_w_friends_v2/src/App.tsx", "TypeScript JSX", 11, 0, 0, 0, 0, 2, 13
+"/Users/mphelps/climb_w_friends_v2/src/ComingSoon.tsx", "TypeScript JSX", 8, 0, 0, 0, 0, 1, 9
+"/Users/mphelps/climb_w_friends_v2/src/assets/react.svg", "XML", 0, 0, 0, 1, 0, 0, 1
+"/Users/mphelps/climb_w_friends_v2/src/index.css", "CSS", 0, 0, 35, 0, 4, 5, 44
+"/Users/mphelps/climb_w_friends_v2/src/main.tsx", "TypeScript JSX", 29, 0, 0, 0, 2, 3, 34
+"/Users/mphelps/climb_w_friends_v2/src/pages/dashboard.tsx", "TypeScript JSX", 37, 0, 0, 0, 0, 4, 41
+"/Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/buttonAndDropDown.tsx", "TypeScript JSX", 70, 0, 0, 0, 2, 8, 80
+"/Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/maps.tsx", "TypeScript JSX", 268, 0, 0, 0, 9, 30, 307
+"/Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/mapsComponents/addFriendModal.tsx", "TypeScript JSX", 179, 0, 0, 0, 2, 12, 193
+"/Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/mapsComponents/addMapModal.tsx", "TypeScript JSX", 113, 0, 0, 0, 1, 10, 124
+"/Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/mapsComponents/editModal.tsx", "TypeScript JSX", 137, 0, 0, 0, 0, 11, 148
+"/Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/navBar.tsx", "TypeScript JSX", 98, 0, 0, 0, 0, 12, 110
+"/Users/mphelps/climb_w_friends_v2/src/pages/dashboardComponents/utilityFunctions.tsx", "TypeScript JSX", 198, 0, 0, 0, 7, 28, 233
+"/Users/mphelps/climb_w_friends_v2/src/pages/filterProvider.tsx", "TypeScript JSX", 28, 0, 0, 0, 0, 7, 35
+"/Users/mphelps/climb_w_friends_v2/src/pages/homeComponents/homeNavBar.tsx", "TypeScript JSX", 48, 0, 0, 0, 0, 3, 51
+"/Users/mphelps/climb_w_friends_v2/src/pages/login.tsx", "TypeScript JSX", 32, 0, 0, 0, 1, 5, 38
+"/Users/mphelps/climb_w_friends_v2/src/pages/map.tsx", "TypeScript JSX", 358, 0, 0, 0, 14, 58, 430
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/activityFeed.tsx", "TypeScript JSX", 63, 0, 0, 0, 1, 9, 73
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/attemptOverlay.tsx", "TypeScript JSX", 189, 0, 0, 0, 3, 15, 207
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/chatOverlay.tsx", "TypeScript JSX", 149, 0, 0, 0, 1, 10, 160
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/gradeComparison.ts", "TypeScript", 0, 131, 0, 0, 20, 26, 177
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/mapApiRequests.tsx", "TypeScript JSX", 669, 0, 0, 0, 22, 77, 768
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/mapLayers.tsx", "TypeScript JSX", 444, 0, 0, 0, 65, 46, 555
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/mapNavBar.tsx", "TypeScript JSX", 95, 0, 0, 0, 0, 3, 98
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/mapObjects.tsx", "TypeScript JSX", 247, 0, 0, 0, 0, 9, 256
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/addClimbModal.tsx", "TypeScript JSX", 509, 0, 0, 0, 21, 61, 591
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/allClimbsModal.tsx", "TypeScript JSX", 32, 0, 0, 0, 0, 3, 35
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/climbModal.tsx", "TypeScript JSX", 331, 0, 0, 0, 9, 36, 376
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/filterModal.tsx", "TypeScript JSX", 321, 0, 0, 0, 2, 37, 360
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/filterModalComponents.tsx/GradeDropDowns.tsx", "TypeScript JSX", 141, 0, 0, 0, 2, 9, 152
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/modalSearch.tsx", "TypeScript JSX", 83, 0, 0, 0, 1, 12, 96
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/modalTag.tsx", "TypeScript JSX", 152, 0, 0, 0, 4, 15, 171
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/modalComponents/tagOverlay.tsx", "TypeScript JSX", 16, 0, 0, 0, 0, 2, 18
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/popup.css", "CSS", 0, 0, 28, 0, 3, 3, 34
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/search.tsx", "TypeScript JSX", 175, 0, 0, 0, 5, 12, 192
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/tickAndAttempt.tsx", "TypeScript JSX", 157, 0, 0, 0, 4, 9, 170
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapComponents/tickOverlay.tsx", "TypeScript JSX", 188, 0, 0, 0, 2, 17, 207
+"/Users/mphelps/climb_w_friends_v2/src/pages/mapbox.css", "CSS", 0, 0, 14, 0, 0, 1, 15
+"/Users/mphelps/climb_w_friends_v2/src/reusableComponents/chatInput.tsx", "TypeScript JSX", 33, 0, 0, 0, 0, 4, 37
+"/Users/mphelps/climb_w_friends_v2/src/reusableComponents/climbModalBar.tsx", "TypeScript JSX", 334, 0, 0, 0, 6, 21, 361
+"/Users/mphelps/climb_w_friends_v2/src/reusableComponents/downDrop.tsx", "TypeScript JSX", 51, 0, 0, 0, 0, 1, 52
+"/Users/mphelps/climb_w_friends_v2/src/reusableComponents/dropDown.tsx", "TypeScript JSX", 93, 0, 0, 0, 0, 9, 102
+"/Users/mphelps/climb_w_friends_v2/src/reusableComponents/genericButton.tsx", "TypeScript JSX", 30, 0, 0, 0, 0, 1, 31
+"/Users/mphelps/climb_w_friends_v2/src/reusableComponents/genericModal.tsx", "TypeScript JSX", 48, 0, 0, 0, 2, 5, 55
+"/Users/mphelps/climb_w_friends_v2/src/reusableComponents/input.tsx", "TypeScript JSX", 47, 0, 0, 0, 0, 8, 55
+"/Users/mphelps/climb_w_friends_v2/src/reusableComponents/loginButton.tsx", "TypeScript JSX", 20, 0, 0, 0, 0, 4, 24
+"/Users/mphelps/climb_w_friends_v2/src/reusableComponents/logoutButton.tsx", "TypeScript JSX", 22, 0, 0, 0, 0, 4, 26
+"/Users/mphelps/climb_w_friends_v2/src/reusableComponents/searchDropDown.tsx", "TypeScript JSX", 50, 0, 0, 0, 0, 6, 56
+"/Users/mphelps/climb_w_friends_v2/src/reusableComponents/styles.tsx", "TypeScript JSX", 388, 0, 0, 0, 0, 26, 414
+"/Users/mphelps/climb_w_friends_v2/src/reusableComponents/toastContainer.tsx", "TypeScript JSX", 53, 0, 0, 0, 0, 8, 61
+"/Users/mphelps/climb_w_friends_v2/src/reusableComponents/toastNotification.tsx", "TypeScript JSX", 98, 0, 0, 0, 3, 9, 110
+"/Users/mphelps/climb_w_friends_v2/src/reusableComponents/toolTip.tsx", "TypeScript JSX", 65, 0, 0, 0, 2, 6, 73
+"/Users/mphelps/climb_w_friends_v2/src/supaBaseClient.tsx", "TypeScript JSX", 45, 0, 0, 0, 1, 12, 58
+"/Users/mphelps/climb_w_friends_v2/src/types/Posts.ts", "TypeScript", 0, 5, 0, 0, 0, 1, 6
+"/Users/mphelps/climb_w_friends_v2/src/types/interfaces.tsx", "TypeScript JSX", 138, 0, 0, 0, 0, 22, 160
+"Total", "-", 7090, 136, 77, 1, 221, 758, 8283

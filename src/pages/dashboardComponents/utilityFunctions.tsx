@@ -104,18 +104,7 @@ const addUserToMap = async (mapId: number, userId: string) => {
     if (response.ok) {
       const data = await response.json(); // Safely parse JSON
 
-      /*tldr when user gets added to a map two things may happen
-
-1) User will join a map without any users. 
-When this happens we will take the map object and manuall create the key/array that contains the one climber for it on the frontend. This happens when createMap is called
-OR
-2) User will join an already created map. When this happens we must get the map objects and all of the users before the user is added. We will
-then add the user to the map on the client side.
-
-*/
-
       if (data) {
-        console.log(data);
         return data;
       } else {
         return false;

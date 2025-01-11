@@ -35,9 +35,9 @@ const AddFriendModal: React.FC<EditFriendModalProps> = ({
       );
 
       // Wait for all promises to resolve
-      const results = await Promise.all(promises);
+      await Promise.all(promises);
 
-      console.log('All friends added successfully:', results);
+     
     } catch (error) {
       console.error('Error adding friends to the map:', error);
     }
@@ -103,16 +103,16 @@ const AddFriendModal: React.FC<EditFriendModalProps> = ({
             </div>
             <div className="mt-5 font-semibold text-black">Friends On Map</div>
             <ul className="mt-5 flex w-full list-inside list-disc flex-col gap-2">
-              {selectedFriends.map((person) => (
-                <li key={person.name} className="text-sm font-bold text-black">
+              {selectedFriends.map((person,index) => (
+                <li key={index} className="text-sm font-bold text-black">
                   {person.name}
                   <span className="text-sm text-green-500">
                     ({person.username})
                   </span>
                 </li>
               ))}
-              {editMapObject.climbersOnMap?.map((person) => (
-                <li key={person.name} className="text-sm font-bold text-black">
+              {editMapObject.climbersOnMap?.map((person,index) => (
+                <li key={index} className="text-sm font-bold text-black">
                   {person.name}
                   <span className="text-sm text-green-500">
                     ({person.username})
@@ -136,14 +136,14 @@ const AddFriendModal: React.FC<EditFriendModalProps> = ({
             bgOpacity={'bg-opacity-100'}
           >
             {matchingFriends.length > 0 ? (
-              matchingFriends.map((item: any) => (
+              matchingFriends.map((item: any,index) => (
                 <div
                   onClick={() => {
                     setSelectedFriends((prev) => [...prev, item]);
                     setToggleSearchDropDown(false);
                   }}
                   className="flex cursor-pointer items-center border-b border-neutral-200 bg-white p-2 text-sm text-black hover:bg-neutral-100"
-                  key={item.id}
+                  key={index}
                 >
                   <div className="flex flex-col gap-2 p-2 text-black">
                     <div>

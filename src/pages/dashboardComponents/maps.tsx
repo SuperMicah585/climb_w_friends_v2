@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
-import { MapObject, FriendsList } from '../../types/interfaces';
-import { verticalDotIcon, minusIcon } from '../../reusableComponents/styles';
+import { useState, useEffect } from 'react';
+import { MapObject } from '../../types/interfaces';
 import { Link } from 'react-router-dom';
 import AddMapComponent from './mapsComponents/addMapModal';
+import EditMapModal from './mapsComponents/editModal';
 import PurpleButton from '../../reusableComponents/genericButton';
 import { useAuth0 } from '@auth0/auth0-react';
 import ToastContainer from '../../reusableComponents/toastContainer';
@@ -13,12 +13,13 @@ import {
   editMap,
   removeUserFromMap,
   createMap,
-  retrieveUserStats,
 } from './utilityFunctions';
 
 import { submitAirplane } from '../../reusableComponents/styles';
-
-const Maps = () => {
+interface MapProps {
+  setStatsTrigger: React.Dispatch<React.SetStateAction<number>>;
+}
+const Maps: React.FC<MapProps> = ({ setStatsTrigger }) => {
   const [mapObject, setMapObject] = useState<MapObject[]>([]);
   const [editFriendTrigger, setEditFriendTrigger] = useState(false);
   const [editMapTrigger, setEditMapTrigger] = useState(false);
@@ -42,6 +43,7 @@ const Maps = () => {
   const closeFriendModalCallBack = () => {
     if (user?.sub) {
       retrieveMaps(user.sub);
+      setStatsTrigger((prev) => prev + 1);
     } else {
       console.error('User not found');
     }
@@ -75,6 +77,7 @@ const Maps = () => {
     if (modalToDisplay === 'Delete Map') {
       handleRemoveUserFromMap(editMapObject);
       setModalToDisplay('');
+      setStatsTrigger((prev) => prev + 1);
     }
   }, [modalTriggers, modalToDisplay]);
   //have to keep this function here
@@ -105,7 +108,7 @@ const Maps = () => {
         newMapObj.description,
         user?.sub,
       );
-      console.log(mapObject, 'map');
+
       const combinedObject = {
         ...mapObject.mapAssociation, // Spread properties from mapAssociation
         map: {
@@ -122,6 +125,7 @@ const Maps = () => {
         setToastType('success');
         setToastMessage('Map was created sucessfully!');
         setToastTrigger((prev) => prev + 1);
+        setStatsTrigger((prev) => prev + 1);
         if (user?.sub) {
           retrieveMaps(user.sub);
         } else {
@@ -159,6 +163,7 @@ const Maps = () => {
         setToastType('success');
         setToastMessage('You were succesfully removed from the map!');
         setToastTrigger((prev) => prev + 1);
+        setStatsTrigger((prev) => prev + 1);
       }
     } else {
       console.error('user or map not defined');
@@ -278,6 +283,14 @@ const Maps = () => {
           mapId={mapId}
           editMapObject={editMapObject}
           closeModalCallBack={closeFriendModalCallBack}
+        />
+      ) : null}
+
+      {editMapTrigger ? (
+        <EditMapModal
+          editMapObject={editMapObject}
+          closeModalCallBack={closeEditMaoModalCallBack}
+          EditedClimbCallBack={EditedClimbCallBack}
         />
       ) : null}
 

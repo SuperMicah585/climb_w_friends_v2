@@ -107,12 +107,15 @@ public async Task<ActionResult<MapToUserToClimb>> AddMapToUserToClimb(int climbI
     var user = await _context.Users
         .FirstOrDefaultAsync(u => u.Auth0ID == userId);
 
+    var userToClimb = await _context.MapToUsers.FirstOrDefaultAsync(mu=>mu.UserId == user.UserId && mu.MapId == mapId);
+
     var mapToUserToClimb = new MapToUserToClimb
     {
         ClimbId = climbId,
         MapId = mapId,
         Auth0ID = userId,
         UserId = user.UserId,
+        MapToUserId = userToClimb.Id,
         AssociatedAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")
 
     };

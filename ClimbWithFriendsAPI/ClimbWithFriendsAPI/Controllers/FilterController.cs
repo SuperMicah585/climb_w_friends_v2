@@ -80,6 +80,13 @@ public async Task<ActionResult<TagFilter>> AddTagFilterToMap(int mapId, string a
     var mapToTag = await _context.MapToTags
         .FirstOrDefaultAsync(mu => mu.MapId == mapId && mu.TagId == tagId);
 
+    var User = await _context.Users
+        .FirstOrDefaultAsync(mu => mu.Auth0ID == auth0Id);
+
+    // Query the MapToUsers table for the relationship
+    var mapToUser = await _context.MapToUsers
+        .FirstOrDefaultAsync(mu => mu.MapId == mapId && mu.UserId == User.UserId);
+
     // Check if the relationship exists
     if (mapToTag == null)
     {
@@ -92,6 +99,7 @@ public async Task<ActionResult<TagFilter>> AddTagFilterToMap(int mapId, string a
         TagId = tagId,
         MapId = mapId,
         Auth0Id = auth0Id,
+        MapToUserId = mapToUser.Id,
         MaptoTagId = mapToTag.Id,
         CreatedAt = createdAt
     };
@@ -112,15 +120,27 @@ public async Task<ActionResult<TagFilter>> AddTagFilterToMap(int mapId, string a
 [HttpPost("User/{auth0IdToFilter}/ToMap/{mapId}/ForUser/{auth0Id}")]
 public async Task<ActionResult<UserFilter>> AddUserFilterToMap(int mapId, string auth0Id, string auth0IdToFilter)
 {
+
+         var userObj = await _context.Users.FirstOrDefaultAsync(u => u.Auth0ID == auth0IdToFilter);
+            if (userObj == null){
+                // Handle the case where no user is found
+                throw new Exception("User not found");
+            }
+    var userIdToFilter = userObj.UserId;
     // Fetch current UTC time for createdAt
     var createdAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"); 
 
-    // Query the MapToUsers table for the relationship
-    var mapToUser = await _context.MapToUsers
-        .FirstOrDefaultAsync(mu => mu.MapId == mapId && mu.UserId == auth0IdToFilter);
-
     var User = await _context.Users
         .FirstOrDefaultAsync(mu => mu.Auth0ID == auth0IdToFilter);
+
+    var UserForMapToUser = await _context.Users
+        .FirstOrDefaultAsync(mu => mu.Auth0ID == auth0Id);
+
+    // Query the MapToUsers table for the relationship
+    var mapToUser = await _context.MapToUsers
+        .FirstOrDefaultAsync(mu => mu.MapId == mapId && mu.UserId == UserForMapToUser.UserId);
+
+
 
     // Check if the relationship exists
     if (mapToUser == null)
@@ -194,6 +214,10 @@ public async Task<ActionResult<GradeRangeFilter>> AddGradeRangeFilterToMap(int m
     }
     else
     {
+    var user = await _context.Users
+        .FirstOrDefaultAsync(u => u.Auth0ID == auth0Id);
+
+    var userToClimb = await _context.MapToUsers.FirstOrDefaultAsync(mu=>mu.UserId == user.UserId && mu.MapId == mapId);
         // Create new entry if one doesn't exist
         var gradeRangeFilterObject = new GradeRangeFilter
         {
@@ -202,6 +226,7 @@ public async Task<ActionResult<GradeRangeFilter>> AddGradeRangeFilterToMap(int m
             FromGrade = payload.FromGrade ?? string.Empty,
             ToGrade = payload.ToGrade ?? string.Empty,
             Type = payload.Type ?? string.Empty,
+            MapToUserId = userToClimb.Id,
             CreatedAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")
         };
 

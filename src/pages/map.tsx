@@ -265,7 +265,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
 
       const renderFeatures = async () => {
         const features = await retrieveFeatures(mapIdNumber, user?.sub || '');
-        console.log(features);
+
         createClimbingShapes(
           map,
           clickedFeatureClimbCallBack,

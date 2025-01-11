@@ -199,7 +199,6 @@ public async Task<ActionResult<ClimbWithFriendsAPI.Data.Feature>> CreateFeature(
         {
             MapId = mapId,
             Type = type,
-            TagId=0,
             CreatedAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"),
             UpdatedAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"),
         };
@@ -712,6 +711,7 @@ public async Task<ActionResult<MapToFeatureToClimb>> AddClimbToFeature(int climb
             return BadRequest("This mapping already exists");
         }
 
+        
         // Create a new entry
         var newMapping = new MapToFeatureToClimb
         {

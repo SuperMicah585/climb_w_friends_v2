@@ -11,7 +11,9 @@ namespace ClimbWithFriendsAPI.Data
         public string Auth0Id{get;set;}
         public int MaptoTagId {get;set;}
         public string CreatedAt { get; set; }
+        public int MapToUserId {get;set;}
 
+        public MapToUser MapToUsers { get; set; }
         public MapToTag MapToTags { get; set; }
 
     }

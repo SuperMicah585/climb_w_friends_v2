@@ -16,16 +16,21 @@ namespace YourProjectNamespace.Data.Configurations
             builder.Property(gf => gf.ToGrade).IsRequired();
             builder.Property(gf => gf.Type).IsRequired();
             builder.Property(gf => gf.CreatedAt).IsRequired();
-        
+            builder.Property(u => u.MapToUserId).IsRequired();
 
 
             builder.HasOne(gf => gf.Maps)
                    .WithMany()
                    .HasForeignKey(gf => gf.MapId)  // Changed from Id
                    .OnDelete(DeleteBehavior.Cascade);
+
+         builder.HasOne(u => u.MapToUser)
+                   .WithMany()
+                   .HasForeignKey(t => t.MapToUserId)  // Changed from Id
+                   .OnDelete(DeleteBehavior.Cascade);
             
 
-            
+            //need to add maptouser dependency
 
             builder.ToTable("GradeRangeFilters");
         }
