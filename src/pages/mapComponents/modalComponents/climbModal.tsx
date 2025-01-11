@@ -121,7 +121,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
           climbItem.tags = [];
         }
         //not waiting to make sure it updates correctly.
-        addTagToClimb(item[0].tagId, item[1],mapId);
+        addTagToClimb(item[0].tagId, item[1], mapId);
 
         climbItem.tags.push(item[0]);
       }
@@ -354,10 +354,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                             item={tagsOnClimb}
                             key={tagsOnClimb.tagId}
                           >
-                            <div
-                              
-                              className="rounded-md border-2 border-green-900 bg-green-600 p-1 text-white hover:opacity-75"
-                            >
+                            <div className="rounded-md border-2 border-green-900 bg-green-600 p-1 text-white hover:opacity-75">
                               {tagsOnClimb.tagName}
                             </div>
                           </Tooltip>

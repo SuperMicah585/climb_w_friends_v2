@@ -36,8 +36,6 @@ const AddFriendModal: React.FC<EditFriendModalProps> = ({
 
       // Wait for all promises to resolve
       await Promise.all(promises);
-
-     
     } catch (error) {
       console.error('Error adding friends to the map:', error);
     }
@@ -103,7 +101,7 @@ const AddFriendModal: React.FC<EditFriendModalProps> = ({
             </div>
             <div className="mt-5 font-semibold text-black">Friends On Map</div>
             <ul className="mt-5 flex w-full list-inside list-disc flex-col gap-2">
-              {selectedFriends.map((person,index) => (
+              {selectedFriends.map((person, index) => (
                 <li key={index} className="text-sm font-bold text-black">
                   {person.name}
                   <span className="text-sm text-green-500">
@@ -111,7 +109,7 @@ const AddFriendModal: React.FC<EditFriendModalProps> = ({
                   </span>
                 </li>
               ))}
-              {editMapObject.climbersOnMap?.map((person,index) => (
+              {editMapObject.climbersOnMap?.map((person, index) => (
                 <li key={index} className="text-sm font-bold text-black">
                   {person.name}
                   <span className="text-sm text-green-500">
@@ -136,7 +134,7 @@ const AddFriendModal: React.FC<EditFriendModalProps> = ({
             bgOpacity={'bg-opacity-100'}
           >
             {matchingFriends.length > 0 ? (
-              matchingFriends.map((item: any,index) => (
+              matchingFriends.map((item: any, index) => (
                 <div
                   onClick={() => {
                     setSelectedFriends((prev) => [...prev, item]);

@@ -144,11 +144,11 @@ const TickOverlay: React.FC<TickOverlayProps> = ({
                   {' '}
                   Attempts:
                 </div>{' '}
-                {AttemptArray.map((item,index) => (
+                {AttemptArray.map((item, index) => (
                   <div
                     className={`${item === attemptValue ? 'border-violet-500' : ''} cursor-pointer border-b-2 border-transparent text-sm font-semibold`}
                     onClick={() => setAttemptValue(item)}
-                    key = {index}
+                    key={index}
                   >
                     {' '}
                     {item}
@@ -161,11 +161,11 @@ const TickOverlay: React.FC<TickOverlayProps> = ({
                   {' '}
                   Difficulty:
                 </div>{' '}
-                {difficultyArray.map((item,index) => (
+                {difficultyArray.map((item, index) => (
                   <div
                     className={`${item === difficultyValue ? 'border-violet-500' : ''} cursor-pointer border-b-2 border-transparent text-sm font-semibold`}
                     onClick={() => setDifficultyValue(item)}
-                    key = {index}
+                    key={index}
                   >
                     {' '}
                     {item}
