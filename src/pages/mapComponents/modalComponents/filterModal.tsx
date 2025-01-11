@@ -39,7 +39,6 @@ const FilterModal: React.FC<FilterModalProps> = ({
   mapId,
   auth0Id,
 }) => {
-
   const [searchString, setSearchString] = useState<string>('');
   const [toggleFilterDropDown, setToggleFilterDropDown] =
     useState<boolean>(false);
@@ -273,7 +272,11 @@ const FilterModal: React.FC<FilterModalProps> = ({
           <div className="font-semibold text-white"> Filters on Map</div>
           <div className="flex flex-wrap gap-2">
             {modifiedFiltersOnMap.tagFilters.map((item, index) => (
-              <Tooltip deleteItemCallBack={deleteTagCallBack} key={index} item={item}>
+              <Tooltip
+                deleteItemCallBack={deleteTagCallBack}
+                key={index}
+                item={item}
+              >
                 {' '}
                 <div
                   className={`flex cursor-pointer rounded-md border-2 border-green-900 bg-green-600 p-1 text-center text-sm hover:opacity-75`}
@@ -283,7 +286,11 @@ const FilterModal: React.FC<FilterModalProps> = ({
               </Tooltip>
             ))}
             {modifiedFiltersOnMap.userFilters.map((item, index) => (
-              <Tooltip key={index} deleteItemCallBack={deleteUserCallBack} item={item}>
+              <Tooltip
+                key={index}
+                deleteItemCallBack={deleteUserCallBack}
+                item={item}
+              >
                 {' '}
                 <div
                   key={index}

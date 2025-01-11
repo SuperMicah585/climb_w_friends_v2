@@ -291,7 +291,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
             // Handle tags
             if (Array.isArray(item.tags) && item.tags.length > 0) {
               const tagPromises = item.tags.map((tag) =>
-                addTagToClimb(tag.tagId, item.climb.climbId,mapId),
+                addTagToClimb(tag.tagId, item.climb.climbId, mapId),
               );
               await Promise.all(tagPromises);
             }

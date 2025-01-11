@@ -64,7 +64,7 @@ const addTagToMap = async (tagId: number, mapId: number) => {
   }
 };
 
-const addTagToClimb = async (tagId: number, climbId: number,mapId:number) => {
+const addTagToClimb = async (tagId: number, climbId: number, mapId: number) => {
   try {
     const response = await fetch(
       `http://localhost:5074/api/Tags/${tagId}/ToClimb/${climbId}/OnMap/${mapId}`,

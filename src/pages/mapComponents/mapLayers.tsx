@@ -294,7 +294,6 @@ export const updateLayerVisibility = (
       const currentZoom = map.current.getZoom();
 
       if (currentZoom > 12) {
-    
         // Show fill layer, hide circle layer
         map.current?.setLayoutProperty(fillLayerId, 'visibility', 'visible');
         map.current?.setLayoutProperty(circleLayerId, 'visibility', 'none');
