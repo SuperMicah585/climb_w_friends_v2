@@ -15,6 +15,7 @@ namespace YourProjectNamespace.Data.Configurations
             builder.Property(ct => ct.ClimbId).IsRequired();
             builder.Property(ct => ct.TagId).IsRequired();
             builder.Property(ct => ct.AssociatedAt).IsRequired();
+            builder.Property(ct => ct.MapId).IsRequired();
 
             // Define relationship with Climb
             builder.HasOne(ct => ct.Climb)
@@ -23,23 +24,20 @@ namespace YourProjectNamespace.Data.Configurations
                    .OnDelete(DeleteBehavior.Cascade); // Cascade delete when Climb is deleted
 
             // Define relationship with Tag
-        builder.HasOne(ct => ct.Tag)
-               .WithMany(t => t.ClimbToTags) // Ensure back-reference in Tag entity
-               .HasForeignKey(ct => ct.TagId)
-               .OnDelete(DeleteBehavior.Cascade); 
+            builder.HasOne(ct => ct.Tag)
+                   .WithMany(t => t.ClimbToTags) // Back-reference in Tag entity
+                   .HasForeignKey(ct => ct.TagId)
+                   .OnDelete(DeleteBehavior.Cascade); // Cascade delete when Tag is deleted
+
+            // Define relationship with Map
+            builder.HasOne(ct => ct.Map)
+                   .WithMany() // Collection in Map entity
+                   .HasForeignKey(ct => ct.MapId)
+                   .OnDelete(DeleteBehavior.Cascade); // Cascade delete when Map is deleted
 
             // Map to database table
             builder.ToTable("ClimbToTags");
 
-            // Seed data
-            builder.HasData(
-                new ClimbToTag { Id = 1, ClimbId = 1, TagId = 101, AssociatedAt = "2024-12-01T10:00:00Z" },
-                new ClimbToTag { Id = 2, ClimbId = 1, TagId = 102, AssociatedAt = "2024-12-01T10:00:00Z" },
-                new ClimbToTag { Id = 3, ClimbId = 2, TagId = 103, AssociatedAt = "2024-12-01T10:00:00Z" },
-                new ClimbToTag { Id = 4, ClimbId = 2, TagId = 104, AssociatedAt = "2024-12-01T10:00:00Z" },
-                new ClimbToTag { Id = 5, ClimbId = 3, TagId = 105, AssociatedAt = "2024-12-01T10:00:00Z" },
-                new ClimbToTag { Id = 6, ClimbId = 4, TagId = 106, AssociatedAt = "2024-12-01T10:00:00Z" }
-            );
         }
     }
 }

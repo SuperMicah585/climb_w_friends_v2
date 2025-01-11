@@ -3,6 +3,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import * as turf from '@turf/turf';
 import * as ReactDOM from 'react-dom/client';
 import './popup.css';
+import { useAuth0 } from '@auth0/auth0-react';
 import {
   sortByGradeDesc,
   compareGrades,
@@ -18,6 +19,7 @@ import {
   CartesianGrid,
 } from 'recharts';
 import { GeoJsonObject } from '../../types/interfaces';
+
 let currentMarker: mapboxgl.Marker | null = null;
 
 export const createMarker = (
@@ -73,9 +75,10 @@ export const createClimbingShapes = (
   map: any,
   clickedFeatureClimbCallBack: (featureId: number) => void,
   features: GeoJsonObject,
+  auth0Id: string,
 ) => {
   map.current?.on('load', () => {
-    displayLayersInitial(map, clickedFeatureClimbCallBack, features);
+    displayLayersInitial(map, clickedFeatureClimbCallBack, features, auth0Id);
   });
 };
 
@@ -83,6 +86,7 @@ export const displayLayersInitial = (
   map: any,
   clickedFeatureClimbCallBack: (featureId: number) => void,
   features: GeoJsonObject,
+  auth0Id: string,
 ) => {
   // Only add the source once
   if (!map?.current?.getSource('geojson-data')) {
@@ -92,7 +96,7 @@ export const displayLayersInitial = (
     });
   }
 
-  features.features.forEach((feature, index) => {
+  features.features.forEach((feature: any, index) => {
     const fillLayerId = `geojson-fill-layer-${feature.id}`;
     const circleLayerId = `geojson-circle-layer-${feature.id}`;
     const layerId = `geojson-layer-${feature.id}`;
@@ -127,11 +131,17 @@ export const displayLayersInitial = (
             'circle-color': '#0047AB',
             'circle-radius': 12,
             'circle-opacity': 0.5,
-            'circle-stroke-width': 0.5,
+            'circle-stroke-width': 0.8,
             'circle-stroke-color': '#0047AB',
           },
         });
-        addFeatureInteractions(map, layerId, clickedFeatureClimbCallBack, 12);
+        addFeatureInteractions(
+          map,
+          layerId,
+          auth0Id,
+          clickedFeatureClimbCallBack,
+          12,
+        );
         break;
       case 'Polygon':
         // Fill layer for polygon
@@ -161,9 +171,7 @@ export const displayLayersInitial = (
           filter: ['==', '$type', 'Polygon'],
           paint: {
             'fill-color': 'brown',
-            'fill-opacity': 0.5,
-            'circle-stroke-width': 0.5,
-            'circle-stroke-color': 'brown',
+            'fill-opacity': 0.8,
           },
           layout: {
             visibility: 'none',
@@ -173,6 +181,7 @@ export const displayLayersInitial = (
         addFeatureInteractions(
           map,
           fillLayerId,
+          auth0Id,
           clickedFeatureClimbCallBack,
           0,
         );
@@ -210,7 +219,7 @@ export const displayLayersInitial = (
             'circle-color': 'brown',
             'circle-radius': 14,
             'circle-opacity': 0.8,
-            'circle-stroke-width': 0.5,
+            'circle-stroke-width': 0.8,
             'circle-stroke-color': 'brown',
           },
           layout: {
@@ -220,6 +229,7 @@ export const displayLayersInitial = (
         addFeatureInteractions(
           map,
           circleLayerId,
+          auth0Id,
           clickedFeatureClimbCallBack,
           14,
         );
@@ -300,6 +310,7 @@ export const updateLayerVisibility = (
 export const addFeatureInteractions = async (
   map: any,
   id: string,
+  auth0Id: string,
   clickedFeatureClimbCallBack: (featureId: number) => void,
   radius: number,
 ) => {
@@ -336,6 +347,13 @@ export const addFeatureInteractions = async (
     }
   };
 
+  const IsBothBoulderAndSport = (type: string) => {
+    if (type === 'Both') {
+      return true;
+    } else {
+      return false;
+    }
+  };
   map.current.on('mouseenter', id, (e: mapboxgl.MapMouseEvent) => {
     if (radius > 0) {
       map.current?.setPaintProperty(id, 'circle-radius', radius * 1.2);
@@ -360,8 +378,24 @@ export const addFeatureInteractions = async (
 
       (async () => {
         try {
-          const popUpData = await retrieveFeatureAggregate(featureId);
+          var grouped = false;
+          var twoGraphs = false;
+          const popUpData = await retrieveFeatureAggregate(featureId, auth0Id);
+          var sortedGradeArray: any = {
+            type: 'notgrouped',
+            array: popUpData.gradeCounts.sort((a: any, b: any) => {
+              return compareGrades(a.rating, b.rating);
+            }),
+          };
 
+          if (sortedGradeArray.array.length > 3) {
+            sortedGradeArray = groupByGrade(sortedGradeArray.array);
+            grouped = true;
+          }
+
+          if (grouped) {
+            twoGraphs = IsBothBoulderAndSport(sortedGradeArray.type);
+          }
           // Check if the feature ID is still the same (prevent stale data)
           if (currentFeatureId !== featureId) return;
 
@@ -385,12 +419,15 @@ export const addFeatureInteractions = async (
   
               <div class="gap-5 items-center pt-2 justify-center rounded-md bg-customGray pb-2 flex flex-col 2"> 
                 <div class="text-white text-lg"> Climbs Per Grade </div>
-                <div id="${chartContainerId}" class="w-[260px] h-28"></div>
+                <div
+                id="${chartContainerId}"
+                class="${twoGraphs ? 'w-[580px] h-28' : 'w-[260px] h-28'}"
+              ></div>
               </div>
             </div>`,
             )
             .addClassName('popupClass')
-            .setMaxWidth('280px')
+            .setMaxWidth(`${twoGraphs ? 'w-[600px] h-28' : 'w-[280px] h-28'}`)
             .addTo(map.current);
 
           // Wait for the next tick to ensure the container is in the DOM
@@ -403,34 +440,74 @@ export const addFeatureInteractions = async (
                 currentRoot = ReactDOM.createRoot(chartContainer);
               }
 
-              var sortedGradeArray = popUpData.gradeCounts.sort(
-                (a: any, b: any) => {
-                  return compareGrades(a.rating, b.rating);
-                },
-              );
+              //boulder,sport, boulder and sport
+              if (sortedGradeArray.type === 'Both') {
+                currentRoot.render(
+                  <div
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      gap: '20px',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {/* First BarChart */}
+                    <BarChart
+                      width={250}
+                      height={120}
+                      data={sortedGradeArray.boulderArray}
+                      margin={{ top: 0, right: 30, bottom: 0, left: 0 }}
+                    >
+                      <CartesianGrid stroke="white" strokeDasharray="3 3" />
+                      <XAxis stroke="white" dataKey="rating" />
+                      <YAxis stroke="white" />
+                      <Bar
+                        dataKey="count"
+                        fill="#8b5cf6"
+                        activeBar={<Rectangle fill="pink" stroke="blue" />}
+                      />
+                    </BarChart>
 
-              if (sortedGradeArray.length > 3) {
-                sortedGradeArray = groupByGrade(sortedGradeArray);
+                    {/* Second BarChart */}
+                    <BarChart
+                      width={250}
+                      height={120}
+                      data={sortedGradeArray.sportArray} // Assuming a similar data structure exists
+                      margin={{ top: 0, right: 30, bottom: 0, left: 0 }}
+                    >
+                      <CartesianGrid stroke="white" strokeDasharray="3 3" />
+                      <XAxis stroke="white" dataKey="rating" />
+                      <YAxis stroke="white" />
+                      <Bar
+                        dataKey="count"
+                        fill="#34d399"
+                        activeBar={<Rectangle fill="yellow" stroke="red" />}
+                      />
+                    </BarChart>
+                  </div>,
+                );
+              } else {
+                currentRoot.render(
+                  <div>
+                    {/* First BarChart */}
+                    <BarChart
+                      width={215}
+                      height={120}
+                      data={sortedGradeArray.array}
+                      margin={{ top: 0, right: 18, bottom: 0, left: 0 }}
+                    >
+                      <CartesianGrid stroke="white" strokeDasharray="3 3" />
+                      <XAxis stroke="white" dataKey="rating" />
+                      <YAxis stroke="white" />
+                      <Bar
+                        dataKey="count"
+                        fill="#8b5cf6"
+                        activeBar={<Rectangle fill="pink" stroke="blue" />}
+                      />
+                    </BarChart>
+                  </div>,
+                );
               }
-
-              // Always use render() to update the content
-              currentRoot.render(
-                <BarChart
-                  width={225}
-                  height={120}
-                  data={sortedGradeArray}
-                  margin={{ top: 0, right: 20, bottom: 0, left: 0 }}
-                >
-                  <CartesianGrid stroke="white" strokeDasharray="3 3" />
-                  <XAxis stroke="white" dataKey="rating" />
-                  <YAxis stroke="white" />
-                  <Bar
-                    dataKey="count"
-                    fill="#8b5cf6"
-                    activeBar={<Rectangle fill="pink" stroke="blue" />}
-                  />
-                </BarChart>,
-              );
             }
           }, 0);
         } catch (error) {

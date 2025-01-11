@@ -5,12 +5,14 @@ namespace ClimbWithFriendsAPI.Data
         public int Id { get; set; } // Primary key
         public int ClimbId { get; set; }
         public int TagId { get; set; }
+        public int MapId {get;set;}
         public string AssociatedAt { get; set; }
         
         
         // Navigation property
     public Climb Climb { get; set; } // Reference to Climb
     public Tag Tag { get; set; }     // Reference to Tag
+    public Map Map {get;set;}
     }
 }
 

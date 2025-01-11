@@ -27,10 +27,18 @@ namespace ClimbWithFriendsAPI.Controllers
 public async Task<ActionResult<List<FilterDTO>>> ListFiltersOnMap(int mapId, string auth0Id)
 {
     // Query tag filters
-    var tagFilters = await _context.TagFilters
-        .Include(tf => tf.MapToTags)
-        .Where(tf => tf.MapId == mapId && tf.Auth0Id == auth0Id)
-        .ToListAsync();
+var tagFilters = await (from tf in _context.TagFilters
+                        join t in _context.Tags on tf.TagId equals t.TagId // Join with Tag table
+                        where tf.MapId == mapId && tf.Auth0Id == auth0Id
+                        select new TagDTO
+                        {
+                            Id = tf.Id,
+                            TagId = tf.TagId,
+                            TagName = t.TagName
+                        })
+                        .ToListAsync();
+
+
 
     // Query grade range filters
     var gradeRangeFilters = await _context.GradeRangeFilters
@@ -38,12 +46,18 @@ public async Task<ActionResult<List<FilterDTO>>> ListFiltersOnMap(int mapId, str
         .Where(grf => grf.MapId == mapId && grf.Auth0Id == auth0Id)
         .ToListAsync();
 
-    // Query user filters
-    var userFilters = await _context.UserFilters
-        .Include(uf => uf.MapToUsers)
-        .Include(uf => uf.Users)
-        .Where(uf => uf.MapId == mapId && uf.Auth0Id == auth0Id)
-        .ToListAsync();
+var userFilters = await _context.UserFilters
+    .Include(uf => uf.MapToUsers)
+    .Include(uf => uf.Users)
+    .Where(uf => uf.MapId == mapId && uf.Auth0Id == auth0Id)
+    .Select(uf => new UserFilterDTO
+    {
+        Id = uf.Id,
+        Auth0Id = uf.Auth0IdToFilter,
+        Username = uf.Users.Username, // Assuming `Users` has a `Username` property
+        Name = uf.Users.Name         // Assuming `Users` has a `Name` property
+    })
+    .ToListAsync();
 
     // Create the DTO
     var filterDTO = new FilterDTO
@@ -66,6 +80,13 @@ public async Task<ActionResult<TagFilter>> AddTagFilterToMap(int mapId, string a
     var mapToTag = await _context.MapToTags
         .FirstOrDefaultAsync(mu => mu.MapId == mapId && mu.TagId == tagId);
 
+    var User = await _context.Users
+        .FirstOrDefaultAsync(mu => mu.Auth0ID == auth0Id);
+
+    // Query the MapToUsers table for the relationship
+    var mapToUser = await _context.MapToUsers
+        .FirstOrDefaultAsync(mu => mu.MapId == mapId && mu.UserId == User.UserId);
+
     // Check if the relationship exists
     if (mapToTag == null)
     {
@@ -78,6 +99,7 @@ public async Task<ActionResult<TagFilter>> AddTagFilterToMap(int mapId, string a
         TagId = tagId,
         MapId = mapId,
         Auth0Id = auth0Id,
+        MapToUserId = mapToUser.Id,
         MaptoTagId = mapToTag.Id,
         CreatedAt = createdAt
     };
@@ -98,15 +120,27 @@ public async Task<ActionResult<TagFilter>> AddTagFilterToMap(int mapId, string a
 [HttpPost("User/{auth0IdToFilter}/ToMap/{mapId}/ForUser/{auth0Id}")]
 public async Task<ActionResult<UserFilter>> AddUserFilterToMap(int mapId, string auth0Id, string auth0IdToFilter)
 {
+
+         var userObj = await _context.Users.FirstOrDefaultAsync(u => u.Auth0ID == auth0IdToFilter);
+            if (userObj == null){
+                // Handle the case where no user is found
+                throw new Exception("User not found");
+            }
+    var userIdToFilter = userObj.UserId;
     // Fetch current UTC time for createdAt
     var createdAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"); 
 
-    // Query the MapToTags table for the relationship
-    var mapToUser = await _context.MapToUsers
-        .FirstOrDefaultAsync(mu => mu.MapId == mapId && mu.UserId == auth0IdToFilter);
-
     var User = await _context.Users
         .FirstOrDefaultAsync(mu => mu.Auth0ID == auth0IdToFilter);
+
+    var UserForMapToUser = await _context.Users
+        .FirstOrDefaultAsync(mu => mu.Auth0ID == auth0Id);
+
+    // Query the MapToUsers table for the relationship
+    var mapToUser = await _context.MapToUsers
+        .FirstOrDefaultAsync(mu => mu.MapId == mapId && mu.UserId == UserForMapToUser.UserId);
+
+
 
     // Check if the relationship exists
     if (mapToUser == null)
@@ -114,64 +148,102 @@ public async Task<ActionResult<UserFilter>> AddUserFilterToMap(int mapId, string
         return BadRequest("The UserFilter to Map relationship doesn't exist");
     }
 
-    // Create the TagFilter object
+    // Create the object
     var userFilterObject = new UserFilter
     {
         UserId = User.UserId,
         MapId = mapId,
+        Auth0IdToFilter = auth0IdToFilter,
         Auth0Id = auth0Id,
         MapToUserId = mapToUser.Id,
         CreatedAt = createdAt
     };
 
-    // Add the object to the TagFilters table
+    // Add the object to the table
     _context.UserFilters.Add(userFilterObject);
 
     // Save changes to the database
     await _context.SaveChangesAsync();
 
+    var UserFilterResponse = new UserFilterDTO
+    {
+    Id = userFilterObject.Id,
+    Auth0Id = userFilterObject.Auth0IdToFilter,
+    Username = userFilterObject.Users.Username,
+    Name = userFilterObject.Users.Name,
+    };
+
     // Return success
-    return Ok(userFilterObject);
+    return Ok(UserFilterResponse);
 }
 
 [HttpPost("GradeRangeFilter/ToMap/{mapId}/ForUser/{auth0Id}")]
-public async Task<ActionResult<GradeRangeFilter>> AddGradeRangeFilterToMap(int mapId, string auth0Id,[FromBody] GradeRangeFilterDTO payload)
+public async Task<ActionResult<GradeRangeFilter>> AddGradeRangeFilterToMap(int mapId, string auth0Id, [FromBody] GradeRangeFilterDTO payload)
 {
-    // Fetch current UTC time for createdAt
-    var createdAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"); 
-    if(payload ==null){
+    if (payload == null)
+    {
         return BadRequest("Payload information is null");
     }
-    // Create the TagFilter object
-    var GradeRangeFilterObject = new GradeRangeFilter
+
+    // Check if an entry already exists
+    var existingFilter = await _context.GradeRangeFilters
+        .FirstOrDefaultAsync(f => f.MapId == mapId && f.Auth0Id == auth0Id);
+
+    if (existingFilter != null)
     {
+        // Update only the properties that are provided in the payload
+        if (!string.IsNullOrEmpty(payload.FromGrade))
+        {
+            existingFilter.FromGrade = payload.FromGrade;
+        }
+        if (!string.IsNullOrEmpty(payload.ToGrade))
+        {
+            existingFilter.ToGrade = payload.ToGrade;
+        }
+        if (!string.IsNullOrEmpty(payload.Type))
+        {
+            existingFilter.Type = payload.Type;
+        }
 
-        MapId = mapId,
-        Auth0Id = auth0Id,
-        FromGrade = payload.FromGrade,
-        ToGrade = payload.ToGrade,
-        Type = payload.Type,
-        CreatedAt = createdAt
-    };
+        existingFilter.CreatedAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
+        
+        _context.GradeRangeFilters.Update(existingFilter);
+        await _context.SaveChangesAsync();
+        
+        return Ok(existingFilter);
+    }
+    else
+    {
+    var user = await _context.Users
+        .FirstOrDefaultAsync(u => u.Auth0ID == auth0Id);
 
-    // Add the object to the TagFilters table
-    _context.GradeRangeFilters.Add(GradeRangeFilterObject);
+    var userToClimb = await _context.MapToUsers.FirstOrDefaultAsync(mu=>mu.UserId == user.UserId && mu.MapId == mapId);
+        // Create new entry if one doesn't exist
+        var gradeRangeFilterObject = new GradeRangeFilter
+        {
+            MapId = mapId,
+            Auth0Id = auth0Id,
+            FromGrade = payload.FromGrade ?? string.Empty,
+            ToGrade = payload.ToGrade ?? string.Empty,
+            Type = payload.Type ?? string.Empty,
+            MapToUserId = userToClimb.Id,
+            CreatedAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")
+        };
 
-    // Save changes to the database
-    await _context.SaveChangesAsync();
+        _context.GradeRangeFilters.Add(gradeRangeFilterObject);
+        await _context.SaveChangesAsync();
 
-    // Return success
-    return Ok(GradeRangeFilterObject);
+        return Ok(gradeRangeFilterObject);
+    }
 }
 
-
-[HttpDelete("Tag/{filterId}")]
-public async Task<ActionResult<bool>> DeleteTagFilterFromMap(int filterId)
+[HttpDelete("Tag/{Id}")]
+public async Task<ActionResult<bool>> DeleteTagFilterFromMap(int Id)
 {
 
     // Query the MapToTags table for the relationship
     var mapToTag = await _context.TagFilters
-        .FirstOrDefaultAsync(mu => mu.Id == filterId);
+        .FirstOrDefaultAsync(mu => mu.Id == Id);
 
 
     // Add the object to the TagFilters table
@@ -184,13 +256,13 @@ public async Task<ActionResult<bool>> DeleteTagFilterFromMap(int filterId)
     return Ok(true);
 }
 
-[HttpDelete("User/{userId}")]
-public async Task<ActionResult<bool>> DeleteUserFilterFromMap(int userId)
+[HttpDelete("User/{id}")]
+public async Task<ActionResult<bool>> DeleteUserFilterFromMap(int id)
 {
 
     // Query the MapToTags table for the relationship
     var UserFilter = await _context.UserFilters
-        .FirstOrDefaultAsync(mu => mu.Id == userId);
+        .FirstOrDefaultAsync(mu => mu.Id == id);
 
 
     // Add the object to the TagFilters table
@@ -203,13 +275,13 @@ public async Task<ActionResult<bool>> DeleteUserFilterFromMap(int userId)
     return Ok(true);
 }
 
-[HttpDelete("GradeRange/{gradeRangeId}")]
-public async Task<ActionResult<bool>> DeleteGradeRangeFilterFromMap(int gradeRangeId)
+[HttpDelete("GradeRange/FromMap/{mapId}/FromUser/{auth0Id}")]
+public async Task<ActionResult<bool>> DeleteGradeRangeFilterFromMap(int mapId,string auth0Id)
 {
 
     // Query the MapToTags table for the relationship
     var gradeRange = await _context.GradeRangeFilters
-        .FirstOrDefaultAsync(mu => mu.Id == gradeRangeId);
+        .FirstOrDefaultAsync(mu => mu.MapId == mapId && mu.Auth0Id == auth0Id);
 
 
     // Add the object to the TagFilters table

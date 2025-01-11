@@ -12,13 +12,11 @@ namespace ClimbWithFriendsAPI.Data
     {
   
         public int FeatureId { get; set; }
-
-        public int TagId { get; set; }
         public int MapId { get; set; }
         public string Type { get; set; }
         public string CreatedAt { get; set; }
         public string UpdatedAt { get; set; }
-
+        public Map Map { get; set; }
         
     }
 

@@ -24,19 +24,36 @@ namespace ClimbWithFriendsAPI.Controllers
         }
 
     //api/Climbs/
-        [HttpGet("List/{name}")]
-        public async Task<ActionResult<IEnumerable<Climb>>> GetClimbsByName(String name)
+        [HttpGet("List/{name}/Within/{state}/IsType/{type}")]
+        public async Task<ActionResult<IEnumerable<Climb>>> GetClimbsByName(String name, String state, String type)
         {
             // Get maps associated with the user
-    var users = await _context.Climbs
-        .Where(c => c.ClimbName.ToLower().Contains(name.ToLower())) // Case-insensitive search
-        .Take(20) // Limit the results to 20
-        .ToListAsync();
+        var users = await _context.Climbs
+            .Where(c => c.ClimbName.ToLower().Contains(name.ToLower()) && 
+                        c.State == state && 
+                       c.ClimbType.Contains(type))
+            .Take(20)
+            .ToListAsync();
 
 
 
 
             return Ok(users);
+        }
+
+        [HttpGet("{climbId}/OnMap/{mapId}")]
+        public async Task<ActionResult<bool>> GetClimbById(int climbId,int mapId)
+        {
+            var DoesClimbExist = await _context.MapToFeatureToClimbs.AnyAsync(mfc => mfc.ClimbId==climbId && mfc.MapId == mapId);
+
+            if(DoesClimbExist){
+                return Ok(true);
+            }
+
+            else{
+                return Ok(false);
+            }
+
         }
 
 [HttpGet("{climbId}/Dependencies")]
@@ -93,12 +110,15 @@ public async Task<ActionResult<MapToUserToClimb>> AddMapToUserToClimb(int climbI
     var user = await _context.Users
         .FirstOrDefaultAsync(u => u.Auth0ID == userId);
 
+    var userToClimb = await _context.MapToUsers.FirstOrDefaultAsync(mu=>mu.UserId == user.UserId && mu.MapId == mapId);
+
     var mapToUserToClimb = new MapToUserToClimb
     {
         ClimbId = climbId,
         MapId = mapId,
         Auth0ID = userId,
         UserId = user.UserId,
+        MapToUserId = userToClimb.Id,
         AssociatedAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")
 
     };

@@ -48,21 +48,22 @@ namespace ClimbWithFriendsAPI.Controllers
 
 
         // GET: api/Maps/User/5
-        [HttpGet("User/{userId}")]
-        public async Task<ActionResult<IEnumerable<Map>>> GetMapsByUserId(string userId)
+        [HttpGet("User/{auth0Id}")]
+        public async Task<ActionResult<IEnumerable<Map>>> GetMapsByUserId(string auth0Id)
         {
+
+             var userObj = await _context.Users.FirstOrDefaultAsync(u => u.Auth0ID == auth0Id);
+            if (userObj == null){
+                // Handle the case where no user is found
+                throw new Exception("User not found");
+            }
+            var userId = userObj.UserId;
             // Get maps associated with the user
             var maps = await _context.MapToUsers
                 .Where(mu => mu.UserId == userId)
                 .Include(mu => mu.Map) // Ensure related maps are included
                 .Select(mu => mu.Map)  // Extract only the Map entities
                 .ToListAsync();
-
-            // if we want to return an error response. for now micah has requested an OK and empty list.
-            //if (maps == null || maps.Count == 0)
-            //{
-            //    return NotFound(new { Message = $"No maps found for UserId {userId}" });
-            //}
 
             return Ok(maps);
         }
@@ -72,7 +73,7 @@ namespace ClimbWithFriendsAPI.Controllers
 
                 // GET: api/Maps/Userlist/5
 [HttpGet("Userlist/{mapId}")]
-public async Task<ActionResult<IEnumerable<UserObjectForFeature>>> GetUsersByMapId(int mapId)
+public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsersByMapId(int mapId)
 {
     // Get users associated with the map using a join
     var users = await _context.MapToUsers
@@ -80,11 +81,10 @@ public async Task<ActionResult<IEnumerable<UserObjectForFeature>>> GetUsersByMap
         .Join(
             _context.Users,
             mapUser => mapUser.UserId,
-            user => user.Auth0ID,
-            (mapUser, user) => new UserObjectForFeature
+            user => user.UserId,
+            (mapUser, user) => new UserDTO
             {
-                UserId = user.UserId,
-                Auth0ID = user.Auth0ID,
+                Auth0Id = user.Auth0ID,
                 Name = user.Name,
                 Username = user.Username
             })
@@ -164,34 +164,78 @@ public async Task<ActionResult<IEnumerable<UserObjectForFeature>>> GetUsersByMap
         return NotFound($"Map with ID {mapId} does not exist.");
     }
 
+
+             var userObj = await _context.Users.FirstOrDefaultAsync(u => u.Auth0ID == payload.UserId);
+            if (userObj == null){
+                // Handle the case where no user is found
+                throw new Exception("User not found");
+            }
+            var userId = userObj.UserId;
             // Check if the user is already associated with the map
             var existingAssociation = await _context.MapToUsers
-                .AnyAsync(mu => mu.MapId == mapId && mu.UserId.Equals(payload.UserId));
+                .AnyAsync(mu => mu.MapId == mapId && mu.UserId.Equals(userId));
             if (existingAssociation)
             {
-                return Conflict($"User with ID {payload.UserId} is already associated with map ID {mapId}.");
+                return Conflict($"User with ID {userId} is already associated with map ID {mapId}.");
             }
 
             // Add the user-to-map association
             var newAssociation = new MapToUser
             {
                 MapId = mapId,
-                UserId = payload.UserId,
+                UserId = userId,
                 AssociatedAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")
             };
+
+             var user = await _context.Users.SingleOrDefaultAsync(u => u.Auth0ID == payload.UserId);
+    if (user == null)
+    {
+        return NotFound($"User with ID {payload.UserId} does not exist.");
+    }
+
+            var userInformation = new UserDTO
+            {
+                Auth0Id = user.Auth0ID,
+                Username = user.Username,
+                Name = user.Name,
+
+
+            };
+
+var response = new
+    {
+        UserInformation = userInformation,
+        MapAssociation = newAssociation
+    };
 
             _context.MapToUsers.Add(newAssociation);
             await _context.SaveChangesAsync();
             await _activityLogService.LogActivity(payload.UserId, "UserJoined", $"User joined map {await GetMapNameById(mapId)}", mapId);
-
-            return CreatedAtAction(nameof(AddUserToMap), new { userId = payload.UserId }, newAssociation);
+                return CreatedAtAction(nameof(AddUserToMap), new { mapId, userId = payload.UserId }, response);
         }
 
-        [HttpDelete("{mapId}/users/{userId}")]
-        public async Task<ActionResult> RemoveUserFromMap(int mapId, String userId)
+        [HttpDelete("{mapId}/users/{auth0Id}")]
+        public async Task<ActionResult> RemoveUserFromMap(int mapId, String auth0Id)
         {
+            var user = await _context.Users.FirstOrDefaultAsync(u=>u.Auth0ID == auth0Id);
+
+            //Join MapToFeatureToClimb with MapToUserToClimb on ClimbId and mapId to get all climbID's that have the user.UserId listed on it
+            //Get the count of entries within the table for each entry
+            //Delete climbId/MapId combinations from the MapToFeatureToClimb table where count ==1
+
+            //For each featureId in the MapToFeatureToClimb table that gets deleted, need to check if there are any other MapToFeatureToClimb that reference that featureID
+            //If not, need to delete the FeatureId
+
+              var userObj = await _context.Users.FirstOrDefaultAsync(u => u.Auth0ID == auth0Id);
+            if (userObj == null){
+                // Handle the case where no user is found
+                throw new Exception("User not found");
+            }
+            var userId = userObj.UserId;
+
+
             // Validate input
-            if (mapId <= 0 || userId.Length == 0)
+            if (mapId <= 0 || userId < 0)
             {
                 return BadRequest("Invalid mapId or userId.");
             }
@@ -216,6 +260,10 @@ public async Task<ActionResult<IEnumerable<UserObjectForFeature>>> GetUsersByMap
             _context.MapToUsers.Remove(userAssociation);
             await _context.SaveChangesAsync();
             await _activityLogService.LogActivity(userId, "UserLeft", $"User left map {await GetMapNameById(mapId)}", mapId);
+            //delete climbs with no users
+            await CleanupOrphanedMapToFeatureToClimbs(mapId);
+            //delete features with no climbs
+            await CleanupOrphanedFeatures(mapId);
 
             // Check if the map has any remaining users
             var remainingUsers = await _context.MapToUsers
@@ -231,6 +279,49 @@ public async Task<ActionResult<IEnumerable<UserObjectForFeature>>> GetUsersByMap
 
             return NoContent();
         }
+
+
+private async Task CleanupOrphanedFeatures(int mapId)
+{
+    var featuresToDelete = _context.Features
+        .Where(f => f.MapId == mapId)
+        .GroupJoin(
+            _context.MapToFeatureToClimbs,
+            f => new { f.FeatureId, f.MapId },
+            mft => new { mft.FeatureId, mft.MapId },
+            (f, mftGroup) => new { f, mftGroup }
+        )
+        .SelectMany(
+            x => x.mftGroup.DefaultIfEmpty(),
+            (x, mft) => new { Feature = x.f, MapToFeature = mft }
+        )
+        .Where(x => x.MapToFeature == null)
+        .Select(x => x.Feature);
+
+    _context.Features.RemoveRange(featuresToDelete);
+    await _context.SaveChangesAsync();
+}
+private async Task CleanupOrphanedMapToFeatureToClimbs(int mapId)
+{
+    var featuresToDelete = _context.MapToFeatureToClimbs
+        .Where(mft => mft.MapId == mapId)
+        .GroupJoin(
+            _context.MapToUserToClimbs,
+            mft => new { mft.ClimbId, mft.MapId },
+            mut => new { mut.ClimbId, mut.MapId },
+            (mft, mutGroup) => new { mft, mutGroup }
+        )
+        .SelectMany(
+            x => x.mutGroup.DefaultIfEmpty(),
+            (x, mut) => new { Feature = x.mft, User = mut }
+        )
+        .Where(x => x.User == null)
+        .Select(x => x.Feature);
+
+    _context.MapToFeatureToClimbs.RemoveRange(featuresToDelete);
+    await _context.SaveChangesAsync();
+}
+
 
         //Put Request to update a Map object. 
         [HttpPut("{id}")]

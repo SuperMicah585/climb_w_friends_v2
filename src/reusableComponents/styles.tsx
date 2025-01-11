@@ -378,7 +378,7 @@ export const switchIcon = (
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
-    stroke-width="1.5"
+    strokeWidth="1.5"
     stroke="currentColor"
     className="size-6"
   >
@@ -393,8 +393,11 @@ export const switchIcon = (
 export const dropDownStyles = (style: string) => {
   return style === 'gray'
     ? 'flex items-center text-sm border-b border-zinc-900 bg-customGray cursor-pointer hover:bg-neutral-700 p-2 text-white '
-    : 'flex items-center text-sm border-b border-customGray bg-zinc-900 cursor-pointer hover:bg-neutral-700 p-2 text-white ';
+    : style === 'white'
+      ? 'flex items-center text-sm border-b border-zinc-900 bg-white text-black cursor-pointer hover:bg-neutral-200 p-2 '
+      : 'flex items-center text-sm border-b border-customGray bg-zinc-900 cursor-pointer hover:bg-neutral-700 p-2 text-white ';
 };
+
 export const climbTypeDropDownStyle =
   'bg-customGray text-white flex font-semibold text-sm w-[84px] justify-between gap-1 items-center cursor-pointer rounded-l-xl p-2 z-10';
 export const stateDropDownStyle =

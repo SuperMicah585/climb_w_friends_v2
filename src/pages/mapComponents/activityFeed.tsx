@@ -47,13 +47,18 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({ feedToggle }) => {
   return feedToggle ? (
     <Draggable>
       <div className="absolute right-5 top-20 z-10 flex cursor-grab flex-col items-center justify-center rounded-lg border border-slate-500 bg-zinc-900 bg-opacity-90 pb-3 pt-3 text-white">
-        <div className="flex h-80 flex-col items-center gap-5 overflow-y-scroll pl-5 pr-5">
+        <div className="flex w-full items-center justify-center border-b border-slate-500 pb-2 font-semibold">
+          {' '}
+          Map Events
+        </div>
+        <div className="mt-1 flex h-80 flex-col items-center gap-5 overflow-y-scroll pl-2 pr-2">
           <ul className="flex flex-col gap-2 pl-2 text-white">
-            {posts.map((post) => (
+            {posts.map((post, index) => (
               <div
-                className={`flex flex-col items-center justify-center ${colors[post.name] || 'bg-gray-500'} rounded-lg border-2 pb-2 pl-5 pr-5 pt-2 opacity-75`}
+                className={`flex flex-col justify-center ${colors[post.name] || 'bg-gray-500'} border-l-2 pb-2 pl-5 pr-5 pt-2 opacity-75`}
+                key={index}
               >
-                <li className="font-sm font-semibold" key={post.id}>
+                <li className="text-sm font-semibold" key={post.id}>
                   {post.name + ' ' + 'joined'}
                 </li>
                 <div className="text-xs">

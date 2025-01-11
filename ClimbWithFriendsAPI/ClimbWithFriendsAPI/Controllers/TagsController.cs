@@ -85,8 +85,8 @@ public async Task<ActionResult<bool>> AddTagToMap(int tagId, int mapId)
 }
 
 
-[HttpPost("{tagId}/ToClimb/{climbId}")]
-public async Task<ActionResult<bool>> AddTagToClimb(int tagId, int climbId)
+[HttpPost("{tagId}/ToClimb/{climbId}/OnMap/{mapId}")]
+public async Task<ActionResult<bool>> AddTagToClimb(int tagId, int climbId,int mapId)
 {
     try
     {
@@ -94,6 +94,7 @@ public async Task<ActionResult<bool>> AddTagToClimb(int tagId, int climbId)
         {
             ClimbId = climbId,
             TagId = tagId,
+            MapId = mapId,
             AssociatedAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")
         };
 

@@ -109,25 +109,61 @@ const compareGrades = (
 };
 
 const groupByGrade = (input: any) => {
-  const combinedArray = [
+  var combinedArrayBoulderTrigger = false;
+  var combinedArrayRopeTrigger = false;
+
+  const combinedArrayBoulder = [
     { rating: 'v0-v3', count: 0 },
+
     { rating: 'v4-v6', count: 0 },
+
     { rating: 'v7+', count: 0 },
+  ];
+
+  const combinedArrayRope = [
+    { rating: '5.0-9', count: 0 },
+    { rating: '5.10-11d', count: 0 },
+    { rating: '5.12+', count: 0 },
   ];
 
   for (let item of input) {
     const value = parseGrade(item.rating);
-    console.log(value, item.rating);
-    if (value < 10004) {
-      combinedArray[0].count += item.count;
+
+    //boulder climbs
+    if (value < 10004 && value > 9000) {
+      combinedArrayBoulder[0].count += item.count;
+      combinedArrayBoulderTrigger = true;
     } else if (value > 10003 && value < 10007) {
-      combinedArray[1].count += item.count;
+      combinedArrayBoulder[1].count += item.count;
+      combinedArrayBoulderTrigger = true;
     } else if (value > 10006) {
-      combinedArray[2].count += item.count;
+      combinedArrayBoulder[2].count += item.count;
+      combinedArrayBoulderTrigger = true;
+    }
+    //sport climbs
+    else if (value < 1000) {
+      combinedArrayRope[0].count += item.count;
+      combinedArrayRopeTrigger = true;
+    } else if (value >= 1000 && value < 1200) {
+      combinedArrayRope[1].count += item.count;
+      combinedArrayRopeTrigger = true;
+    } else if (value >= 1200) {
+      combinedArrayRope[2].count += item.count;
+      combinedArrayRopeTrigger = true;
     }
   }
-
-  return combinedArray;
+  if (combinedArrayBoulderTrigger && combinedArrayRopeTrigger) {
+    return {
+      type: 'Both',
+      boulderArray: combinedArrayBoulder,
+      sportArray: combinedArrayRope,
+    };
+  } else if (combinedArrayBoulderTrigger) {
+    return { type: 'boulder', array: combinedArrayBoulder };
+  }
+  {
+    return { type: 'sport', array: combinedArrayRope };
+  }
 };
 
 const sortByGradeDesc = (

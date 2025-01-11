@@ -10,6 +10,7 @@ using NetTopologySuite;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
+using System.Text.RegularExpressions;
 
 namespace ClimbWithFriendsAPI.Controllers
 {
@@ -45,49 +46,140 @@ namespace ClimbWithFriendsAPI.Controllers
         //    return feature;
         //}
 
-        ///Get: api/Features/ByMap/{mapId}
-[HttpGet("ByMap/{mapId}")]
-public ActionResult ListFeatures(int mapId)
+[HttpGet("ByMap/{mapId}/ForUser/{auth0Id}")]
+public async Task<ActionResult<GeoJsonShell>> ListFeaturesAsync(int mapId, string auth0Id)
 {
-    // Initialize the GeoJSON shell
-    var geoJsonShell = new GeoJsonShell();
+    try
+    {
+        // Validate input parameters
+        if (mapId <= 0)
+            return BadRequest("Invalid mapId");
+        if (string.IsNullOrEmpty(auth0Id))
+            return BadRequest("Invalid auth0Id");
 
-    // Query to fetch features and join with MapToFeatureToClimb and Climb tables
-    var featureResults = _context.Features
-        .Where(f => f.MapId == mapId)
-        .Select(f => new FeatureResult
+        // Check if map exists
+        if (!await _context.Maps.AnyAsync(m => m.MapId == mapId))
+            return NotFound($"Map with ID {mapId} not found");
+
+        // Get filtered climb IDs in a single query
+var filteredClimbIds = await GetFilteredClimbIdsAsync(mapId, auth0Id);
+
+// Fetch features and related data in a single query
+// Fetch features and related data in a single query
+var features = await _context.Features
+    .Where(f => f.MapId == mapId)
+    .Select(f => new FeatureResult
+    {
+        Feature = new ClimbWithFriendsAPI.Data.Feature
         {
-            Feature = new ClimbWithFriendsAPI.Data.Feature
-            {
-                FeatureId = f.FeatureId
-            },
-            Climbs = new ClimbResult
-            {
-                ClimbIds = _context.MapToFeatureToClimbs
-                    .Where(mtf => mtf.FeatureId == f.FeatureId)
-                    .Select(mtf => mtf.ClimbId)
-                    .ToList(),
-Coordinates = _context.MapToFeatureToClimbs
-    .Where(mtf => mtf.FeatureId == f.FeatureId)
-    .Join(
-        _context.Climbs,
-        mtf => mtf.ClimbId,
-        c => c.ClimbId,
-        (mtf, c) => new double[] { c.Coordinates.X, c.Coordinates.Y }  // Use Coordinates directly
-    )
-    .ToList()
-            }
-        })
-        .ToList();
+            FeatureId = f.FeatureId,
+            // Add other feature properties as needed
+        },
+        Climbs = new ClimbResult
+        {
+            // Get climb IDs for the feature, filtered by filteredClimbIds if available
+            ClimbIds = _context.MapToFeatureToClimbs
+                .Where(mtf => mtf.FeatureId == f.FeatureId &&
+                    filteredClimbIds.Contains(mtf.ClimbId))  
+                .Select(mtf => mtf.ClimbId)
+                .ToList(),
+
+            // Get coordinates for the climbs, filtered by filteredClimbIds if available
+            Coordinates = _context.MapToFeatureToClimbs
+                .Where(mtf => mtf.FeatureId == f.FeatureId &&
+                   filteredClimbIds.Contains(mtf.ClimbId))
+                .Join(
+                    _context.Climbs,
+                    mtf => mtf.ClimbId,
+                    c => c.ClimbId,
+                    (mtf, c) => new double[] { c.Coordinates.X, c.Coordinates.Y }
+                )
+                .ToList()
+        }
+    })
+    .AsSplitQuery() // Split the query to avoid cartesian explosion
+    .Where(f => f.Climbs.ClimbIds.Any())  // Only include features that have associated climbs
+    .ToListAsync();
 
 
-    // Create GeoFeatureObjects
-    geoJsonShell.Features = CreateGeoFeature(featureResults);
 
-    // Return the result as a GeoJSON response
-    return Ok(geoJsonShell);
+
+        var geoJsonShell = new GeoJsonShell
+        {
+            Features = CreateGeoFeature(features)
+        };
+
+        return Ok(geoJsonShell);
+    }
+    catch (Exception)
+    {
+        return StatusCode(500, "An error occurred while processing your request");
+    }
 }
 
+private async Task<HashSet<int>> GetFilteredClimbIdsAsync(int mapId, string auth0Id)
+{
+    var baseQuery = _context.MapToFeatureToClimbs
+        .Where(mfc => mfc.MapId == mapId)
+        .Select(mfc => mfc.ClimbId)
+        .Distinct();
+
+    var filteredIds = await baseQuery.ToHashSetAsync();
+
+    // Apply tag filters
+    var tagFilters = await _context.TagFilters
+        .Where(tf => tf.MapId == mapId && tf.Auth0Id == auth0Id)
+        .ToListAsync();
+
+    if (tagFilters.Any())
+    {
+        var tagClimbIds = await _context.ClimbToTags
+            .Where(ct => tagFilters.Select(tf => tf.TagId).Contains(ct.TagId))
+            .Select(ct => ct.ClimbId)
+            .ToHashSetAsync();
+            
+        filteredIds.IntersectWith(tagClimbIds);
+    }
+
+    // Apply user filters
+var userFilters = await _context.UserFilters
+    .Where(uf => uf.MapId == mapId && uf.Auth0Id == auth0Id)
+    .ToListAsync();
+
+if (userFilters.Any())
+{
+    var userClimbIds = await _context.MapToUserToClimbs
+        .Where(muc => 
+            muc.MapId == mapId && 
+            userFilters.Select(uf => uf.Auth0IdToFilter).Contains(muc.Auth0ID))
+        .Select(muc => muc.ClimbId)
+        .ToHashSetAsync();
+        
+    filteredIds.IntersectWith(userClimbIds);
+}
+
+    // Apply grade filter
+    var gradeRange = await _context.GradeRangeFilters
+        .FirstOrDefaultAsync(gf => gf.MapId == mapId && gf.Auth0Id == auth0Id);
+
+    if (gradeRange != null)
+    {
+        var gradeFilteredClimbs = await _context.Climbs
+            .Where(c => filteredIds.Contains(c.ClimbId))
+            .Select(c => new { c.ClimbId, c.Rating })
+            .ToListAsync();
+
+        filteredIds = gradeFilteredClimbs
+            .Where(c => ClimbingGrades.IsGradeInRange(
+                c.Rating,
+                gradeRange.FromGrade,
+                gradeRange.ToGrade))
+            .Select(c => c.ClimbId)
+            .ToHashSet();
+    }
+
+    return filteredIds;
+}
 
 
 //creates new feature based on MapId and type input
@@ -107,7 +199,6 @@ public async Task<ActionResult<ClimbWithFriendsAPI.Data.Feature>> CreateFeature(
         {
             MapId = mapId,
             Type = type,
-            TagId=0,
             CreatedAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"),
             UpdatedAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"),
         };
@@ -176,20 +267,29 @@ public async Task<ActionResult> RemoveFeature(int featureId)
 [HttpGet("{featureId}/Dependencies/UserId/{auth0Id}")]
 public async Task<ActionResult<List<FeatureDependencies>>> GetFeatureDependenciesById(int featureId, string auth0Id)
 {
-
     try 
     {
-
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Auth0ID == auth0Id);
+        
+        // Get the single mapId for this feature
+        var mapId = await _context.MapToFeatureToClimbs
+            .Where(m => m.FeatureId == featureId)
+            .Select(m => m.MapId)
+            .FirstOrDefaultAsync();
+
+        // Get filtered climb IDs for this map
+        var filteredClimbIds = await GetFilteredClimbIdsAsync(mapId, auth0Id);
+
         var featureDependencies = await _context.MapToFeatureToClimbs
             .Where(m => m.FeatureId == featureId)
             .Select(m => new { m.ClimbId, m.MapId })
             .Distinct()
+            // Add filter to only include climbs that are in the filtered set
+            .Where(map => filteredClimbIds.Contains(map.ClimbId))
             .Select(map => new FeatureDependencies
             {
                 Climb = _context.Climbs
-                    .FirstOrDefault(c => c.ClimbId == map.ClimbId),  // Consider using Include to load Climb's relationships
-
+                    .FirstOrDefault(c => c.ClimbId == map.ClimbId),
 
                 Tags = _context.ClimbToTags
                     .Where(ct => ct.ClimbId == map.ClimbId)
@@ -267,10 +367,15 @@ public async Task<ActionResult<List<FeatureDependencies>>> GetFeatureDependencie
     {
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Auth0ID == auth0Id);
         
+        // Get filtered climb IDs for this map
+        var filteredClimbIds = await GetFilteredClimbIdsAsync(mapId, auth0Id);
+        
         var featureDependencies = await _context.MapToFeatureToClimbs
             .Where(m => m.MapId == mapId)
             .Select(m => new { m.ClimbId, m.MapId })
             .Distinct()
+            // Add filter to only include climbs that are in the filtered set
+            .Where(map => filteredClimbIds.Contains(map.ClimbId))
             .Select(map => new FeatureDependencies
             {
                 Climb = _context.Climbs.FirstOrDefault(c => c.ClimbId == map.ClimbId),
@@ -317,10 +422,7 @@ public async Task<ActionResult<List<FeatureDependencies>>> GetFeatureDependencie
             })
             .ToListAsync();
     
-        if (featureDependencies == null || !featureDependencies.Any())
-        {
-            return NotFound($"No dependencies found for map {mapId}");
-        }
+
 
         return Ok(featureDependencies);
     }
@@ -329,13 +431,27 @@ public async Task<ActionResult<List<FeatureDependencies>>> GetFeatureDependencie
         // Log the exception
         return StatusCode(500, $"An error occurred while retrieving feature dependencies: {ex.Message}");
     }
-}[HttpGet("{featureId}/Aggregate_climbs")]
-public async Task<ActionResult> getGradeCounts(int featureId)
+}
+
+
+[HttpGet("{featureId}/Aggregate_climbs/ForUser/{auth0Id}")]
+public async Task<ActionResult> getGradeCounts(int featureId, string auth0Id)
 {
     try 
     {
+        // Get the single mapId for this feature
+        var mapId = await _context.MapToFeatureToClimbs
+            .Where(m => m.FeatureId == featureId)
+            .Select(m => m.MapId)
+            .FirstOrDefaultAsync();
+
+        // Get filtered climb IDs for this map
+        var filteredClimbIds = await GetFilteredClimbIdsAsync(mapId, auth0Id);
+
         var ClimbOnGrade = await _context.MapToFeatureToClimbs
             .Where(m => m.FeatureId == featureId)
+            // Add filter for filtered climbs
+            .Where(m => filteredClimbIds.Contains(m.ClimbId))
             .Join(_context.Climbs, 
                   mapping => mapping.ClimbId, 
                   climb => climb.ClimbId, 
@@ -348,9 +464,11 @@ public async Task<ActionResult> getGradeCounts(int featureId)
             })
             .ToListAsync();
 
-        // Get unique user count for the feature
+        // Get unique user count for the feature (filtered)
         var uniqueUserCount = await _context.MapToFeatureToClimbs
             .Where(m => m.FeatureId == featureId)
+            // Add filter for filtered climbs
+            .Where(m => filteredClimbIds.Contains(m.ClimbId))
             .Join(_context.MapToUserToClimbs,
                   feature => new { ClimbId = feature.ClimbId, MapId = feature.MapId },
                   user => new { ClimbId = user.ClimbId, MapId = user.MapId },
@@ -363,10 +481,11 @@ public async Task<ActionResult> getGradeCounts(int featureId)
             return NotFound($"No Climbs found for map {featureId}");
         }
 
+        // Assuming GetClimbCount needs to be filtered as well
         return Ok(new 
         {
             GradeCounts = ClimbOnGrade,
-            TotalCount = await GetClimbCount(featureId),
+            TotalCount = await GetFilteredClimbCount(featureId, filteredClimbIds),
             UniqueUserCount = uniqueUserCount
         });
     }
@@ -376,6 +495,18 @@ public async Task<ActionResult> getGradeCounts(int featureId)
         return StatusCode(500, $"An error occurred while retrieving feature dependencies: {ex.Message}");
     }
 }
+
+// New helper method for filtered climb count
+private async Task<int> GetFilteredClimbCount(int featureId, HashSet<int> filteredClimbIds)
+{
+    return await _context.MapToFeatureToClimbs
+        .Where(m => m.FeatureId == featureId)
+        .Where(m => filteredClimbIds.Contains(m.ClimbId))
+        .Select(m => m.ClimbId)
+        .Distinct()
+        .CountAsync();
+}
+
         [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<int> GetClimbCount(int featureId)
 {
@@ -580,6 +711,7 @@ public async Task<ActionResult<MapToFeatureToClimb>> AddClimbToFeature(int climb
             return BadRequest("This mapping already exists");
         }
 
+        
         // Create a new entry
         var newMapping = new MapToFeatureToClimb
         {
@@ -702,7 +834,124 @@ public static List<object> AddShapeType(List<double[]> coordinates)
 }
 
 
+//////If grade filter is set, climbs must run through logic below
 
+// example bool isInRange = ClimbingGrades.IsGradeInRange("V4", "V2", "V6");
+
+public class ClimbingGrades
+{
+    private static readonly Dictionary<string, int> SPECIAL_GRADES = new()
+    {
+        { "VEASY", -1 },
+        { "VBASIC", -1 },
+        { "VBEGINNER", -1 },
+        { "VB", -1 },
+        { "EASY", -1 },
+        { "BEGINNER", -1 },
+        { "BASIC", -1 }
+    };
+
+    private static string CleanGradeString(string? gradeStr)
+    {
+        if (string.IsNullOrEmpty(gradeStr)) return "";
+
+        gradeStr = gradeStr.ToUpper().Replace(" ", "").Replace("V-", "V");
+
+        if (gradeStr.Contains('-'))
+        {
+            gradeStr = gradeStr.Split('-')[0];
+        }
+
+        gradeStr = gradeStr.TrimEnd('-');
+
+        if (gradeStr.StartsWith("5."))
+        {
+    if (gradeStr.StartsWith("5."))
+    {
+        // Match "5.0" to "5.9" explicitly (only one digit after "5.")
+        if (Regex.IsMatch(gradeStr, @"^5\.[0-9]$|^5\.[0-9][^0-9]"))
+        {
+            return gradeStr.Substring(0, 3);
+        }
+
+        // Match "5.10" to "5.16" and optionally include "a", "b", or "c"
+        Match match = Regex.Match(gradeStr, @"^(5\.1[0-6])([a-cA-C]?)");
+        if (match.Success)
+        {
+            return match.Groups[1].Value + match.Groups[2].Value;
+        }
+    }
+        }
+     
+        // Return the original string if no conditions are met
+        return gradeStr;
+    
+    }
+
+    public static int ParseGrade(string? gradeStr)
+    {
+        gradeStr = CleanGradeString(gradeStr);
+
+        if (SPECIAL_GRADES.ContainsKey(gradeStr))
+        {
+            return SPECIAL_GRADES[gradeStr];
+        }
+
+        if (gradeStr.StartsWith("V"))
+        {
+            if (int.TryParse(gradeStr[1..], out int vGrade))
+            {
+                return 10000 + vGrade;
+            }
+            return SPECIAL_GRADES.ContainsKey(gradeStr) ? SPECIAL_GRADES[gradeStr] : 0;
+        }
+
+        if (gradeStr.StartsWith("5."))
+        {
+            string baseGrade = gradeStr[2..];
+            double numeric = 0;
+
+            if (Regex.IsMatch(baseGrade, @"\d+[a-d]", RegexOptions.IgnoreCase))
+            {
+                int number = int.Parse(Regex.Match(baseGrade, @"\d+").Value);
+                char letter = char.ToLower(baseGrade[^1]);
+                var letterValue = new Dictionary<char, double>
+                {
+                    { 'a', 0.25 },
+                    { 'b', 0.50 },
+                    { 'c', 0.75 },
+                    { 'd', 1.00 }
+                };
+
+                numeric = number * 100 + (letterValue.ContainsKey(letter) ? letterValue[letter] : 0);
+            }
+            else
+            {
+                numeric = double.Parse(baseGrade) * 100;
+            }
+
+            return (int)numeric;
+        }
+
+        return 0;
+    }
+
+    public static bool IsGradeInRange(string? gradeToCheck, string? fromGrade, string? toGrade)
+    {
+        int gradeValue = ParseGrade(gradeToCheck);
+        int fromValue = ParseGrade(fromGrade);
+        int toValue = ParseGrade(toGrade);
+
+
+        // Handle cases where fromGrade is higher than toGrade
+        if (fromValue > toValue)
+        {
+            (fromValue, toValue) = (toValue, fromValue); // Swap the values
+        }
+
+        return gradeValue >= fromValue && gradeValue <= toValue;
+    }
+}
 
         //// PUT: api/Features/5
         //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

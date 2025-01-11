@@ -145,10 +145,11 @@ const AttemptOverlay: React.FC<AttemptOverlayProps> = ({
                   {' '}
                   Attempts:
                 </div>{' '}
-                {AttemptArray.map((item) => (
+                {AttemptArray.map((item, index) => (
                   <div
                     className={`${item === attemptValue ? 'border-violet-500' : ''} cursor-pointer border-b-2 border-transparent text-sm font-semibold`}
                     onClick={() => setAttemptValue(item)}
+                    key={index}
                   >
                     {' '}
                     {item}
@@ -161,10 +162,11 @@ const AttemptOverlay: React.FC<AttemptOverlayProps> = ({
                   {' '}
                   Difficulty:
                 </div>{' '}
-                {difficultyArray.map((item) => (
+                {difficultyArray.map((item, index) => (
                   <div
                     className={`${item === difficultyValue ? 'border-violet-500' : ''} cursor-pointer border-b-2 border-transparent text-sm font-semibold`}
                     onClick={() => setDifficultyValue(item)}
+                    key={index}
                   >
                     {' '}
                     {item}

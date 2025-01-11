@@ -109,28 +109,45 @@ export interface MapObject {
   mapId: number;
   mapName: string;
   description: string;
-  climbersOnMap?: friendsObject[];
-  climbCountOnMap: number;
+  climbersOnMap?: FriendsList[];
+  climbCountOnMap?: number;
 }
 
 export interface filterObject {
-  users: UserObjectForFeature[];
-  tags: Tags[];
-  gradeRange: GradeRange;
+  userFilters: UserFilter[];
+  tagFilters: TagFilter[];
+  gradeRangeFilters: GradeRange[];
+}
+
+export interface UserFilter {
+  id: number;
+  auth0Id: string;
+  name: string;
+  username: string;
+}
+
+export interface FriendsList {
+  auth0Id: string;
+  name: string;
+  username: string;
+}
+
+export interface UsersOnMap {
+  userId: string;
+  auth0ID: string;
+  name: string;
+  username: string;
+}
+
+export interface TagFilter {
+  tagId: number;
+  tagName: string;
 }
 
 export interface GradeRange {
   type: string;
-  gradeStart: string;
-  gradeEnd: string;
-}
-
-export interface friendsObject {
-  userId: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  userName: string;
+  toGrade: string;
+  fromGrade: string;
 }
 
 export interface userObject {

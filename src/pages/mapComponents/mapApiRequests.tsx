@@ -64,10 +64,10 @@ const addTagToMap = async (tagId: number, mapId: number) => {
   }
 };
 
-const addTagToClimb = async (tagId: number, climbId: number) => {
+const addTagToClimb = async (tagId: number, climbId: number, mapId: number) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Tags/${tagId}/ToClimb/${climbId}`,
+      `http://localhost:5074/api/Tags/${tagId}/ToClimb/${climbId}/OnMap/${mapId}`,
       {
         method: 'POST',
         headers: {
@@ -141,8 +141,12 @@ const removeTagFromMap = async (mapId: number, tagId: number) => {
   }
 };
 
-const retrieveClimbs = async (searchString: string) => {
-  const url = `http://localhost:5074/api/Climbs/List/${searchString}`;
+const retrieveClimbs = async (
+  searchString: string,
+  State: string,
+  type: string,
+) => {
+  const url = `http://localhost:5074/api/Climbs/List/${searchString}/Within/${State}/IsType/${type}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -157,8 +161,8 @@ const retrieveClimbs = async (searchString: string) => {
   }
 };
 
-const retrieveFeatures = async (mapId: number) => {
-  const url = `http://localhost:5074/api/Features/ByMap/${mapId}`;
+const retrieveFeatures = async (mapId: number, auth0Id: string) => {
+  const url = `http://localhost:5074/api/Features/ByMap/${mapId}/ForUser/${auth0Id}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -229,8 +233,8 @@ const retrieveFeatureDependenciesByMap = async (
   }
 };
 
-const retrieveFeatureAggregate = async (featureId: number) => {
-  const url = `http://localhost:5074/api/Features/${featureId}/Aggregate_climbs`;
+const retrieveFeatureAggregate = async (featureId: number, auth0Id: string) => {
+  const url = `http://localhost:5074/api/Features/${featureId}/Aggregate_climbs/ForUser/${auth0Id}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -627,10 +631,10 @@ const AddGradeRangeFilter = async (
   }
 };
 
-const removeTagFilter = async (filterId: number) => {
+const removeTagFilter = async (id: number) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Filters/Tag/${filterId}`,
+      `http://localhost:5074/api/Filters/Tag/${id}`,
       {
         method: 'DELETE',
         headers: {
@@ -654,10 +658,10 @@ const removeTagFilter = async (filterId: number) => {
   }
 };
 
-const removeUserFilter = async (userId: number) => {
+const removeUserFilter = async (id: number) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Filters/User/${userId}`,
+      `http://localhost:5074/api/Filters/User/${id}`,
       {
         method: 'DELETE',
         headers: {
@@ -681,10 +685,10 @@ const removeUserFilter = async (userId: number) => {
   }
 };
 
-const removeGradeRangeFilter = async (gradeRangeId: number) => {
+const removeGradeRangeFilter = async (auth0Id: string, mapId: number) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Filters/GradeRange/${gradeRangeId}`,
+      `http://localhost:5074/api/Filters/GradeRange/FromMap/${mapId}/FromUser/${auth0Id}`,
       {
         method: 'DELETE',
         headers: {
@@ -705,10 +709,34 @@ const removeGradeRangeFilter = async (gradeRangeId: number) => {
   } catch (err) {
     console.error('Network error:', err);
     return false;
+  }
+};
+
+const checkMapForClimb = async (climbId: number, mapId: number) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5074/api/Climbs/${climbId}/OnMap/${mapId}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(`HTTP error! status: ${error}`);
   }
 };
 
 export {
+  checkMapForClimb,
   removeGradeRangeFilter,
   removeUserFilter,
   removeTagFilter,
