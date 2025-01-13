@@ -40,7 +40,6 @@
         public int Pitches { get; set; }
         public string CreatedAt { get; set; }
         public string UpdatedAt { get; set; }
-        public double AvgStars { get; set; }
         public double AreaLatitude { get; set; }
         public double AreaLongitude { get; set; }
     }
@@ -56,7 +55,6 @@
         public string RouteType { get; set; }
         public string Grade { get; set; }
         public int Pitches { get; set; }
-        public double AvgStars { get; set; }
     }
 
     public class ClimbCsvMap : ClassMap<ClimbCsvRecord>
@@ -72,7 +70,6 @@
             Map(m => m.RouteType).Name("Route Type");
             Map(m => m.Grade).Name("grade");
             Map(m => m.Pitches).Name("Pitches");
-            Map(m => m.AvgStars).Name("Avg Stars");
         }
     }
 }

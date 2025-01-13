@@ -54,6 +54,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   const [clickedFeatureClimbs, setClickedFeatureClimbs] = useState<number>(-1);
   const [addClimbsModalDisplay, setAddClimbsModalDisplay] = useState(false);
   const [geoJsonObject, setGeoJsonObject] = useState<GeoJsonObject | {}>({});
+  const [getTimeForAuditLog, setGetTimeForAuditLog] = useState<string>('');
   const [
     clickedFeatureModalTriggerBoolean,
     setClickedFeatureModalTriggerBoolean,
@@ -128,6 +129,11 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
       }
     }
   };
+
+  useEffect(() => {
+    const currentTimestamp = new Date();
+    setGetTimeForAuditLog(currentTimestamp.toISOString());
+  }, []);
 
   const closeFilterModalCallBack = async (trigger: boolean) => {
     setClickedFeatureClimbs(-1);
@@ -376,7 +382,12 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
         {' '}
         <LogoutButton />{' '}
       </div>
-      <ActivityFeed feedToggle={feedToggle} />
+      {feedToggle && (
+        <ActivityFeed
+          getTimeForAuditLog={getTimeForAuditLog}
+          mapId={mapIdNumber}
+        />
+      )}
       {clickedFeatureModalTriggerBoolean ? (
         <ClimbModal
           closeModalCallBack={closeModalCallBack}

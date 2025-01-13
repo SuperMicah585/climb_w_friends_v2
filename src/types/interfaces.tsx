@@ -113,6 +113,14 @@ export interface MapObject {
   climbCountOnMap?: number;
 }
 
+export interface MapEvent {
+  action: string;
+  details: string;
+  updatedAt: string;
+  name: string;
+  username: string;
+}
+
 export interface filterObject {
   userFilters: UserFilter[];
   tagFilters: TagFilter[];

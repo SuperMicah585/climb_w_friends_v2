@@ -59,4 +59,13 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
     base.OnModelCreating(modelBuilder);
 }
      }
+
+     public static class DbContextExtensions
+{
+    public static async Task SeedClimbDataAsync(this DbContext context, string csvFilePath)
+    {
+        var configuration = new ClimbConfiguration();
+        await configuration.SeedDataAsync(context, csvFilePath);
+    }
+}
 }
