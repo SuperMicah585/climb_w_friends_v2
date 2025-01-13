@@ -36,17 +36,21 @@
 
    Update-Database
 ```
+
 ## Database Commands Part 2
 
 1. Drop tables from psql
+
 ```bash
    DROP SCHEMA public CASCADE;
    CREATE SCHEMA public;
 ```
-2. Delete migrations and history 
+
+2. Delete migrations and history
 
 3. Add migration and update database
-```bash   
+
+```bash
    dotnet ef add migrations {insertname}
    dotnet ef database update
 ```

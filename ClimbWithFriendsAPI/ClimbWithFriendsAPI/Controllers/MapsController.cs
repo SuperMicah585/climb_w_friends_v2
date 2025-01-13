@@ -259,7 +259,7 @@ var response = new
             // Remove the user-to-map association
             _context.MapToUsers.Remove(userAssociation);
             await _context.SaveChangesAsync();
-            await _activityLogService.LogActivity(userId, "UserLeft", $"User left map {await GetMapNameById(mapId)}", mapId);
+            await _activityLogService.LogActivity(auth0Id, "UserLeft", $"User left map {await GetMapNameById(mapId)}", mapId);
             //delete climbs with no users
             await CleanupOrphanedMapToFeatureToClimbs(mapId);
             //delete features with no climbs

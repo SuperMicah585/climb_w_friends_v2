@@ -735,7 +735,44 @@ const checkMapForClimb = async (climbId: number, mapId: number) => {
   }
 };
 
+const eventLogDataFetch = async (mapId: number, timestamp?: string) => {
+  // Construct the base URL
+  let url = `http://localhost:5074/api/ActivityLog?mapId=${mapId}`;
+
+  // Append the timestamp if provided
+  if (timestamp) {
+    url += `&sinceTimestamp=${encodeURIComponent(timestamp)}`;
+  }
+
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    // Check if the response is OK
+    if (!response.ok) {
+      // Extract and log error details if available
+      const errorText = await response.text();
+      console.error('Error Response:', errorText);
+      throw new Error(
+        `HTTP error! Status: ${response.status}, Message: ${errorText}`,
+      );
+    }
+
+    // Parse and return the response data
+    const data = await response.json();
+    return data;
+  } catch (error: any) {
+    console.error('Fetch Error:', error);
+    throw new Error(`Fetch failed: ${error.message || error}`);
+  }
+};
+
 export {
+  eventLogDataFetch,
   checkMapForClimb,
   removeGradeRangeFilter,
   removeUserFilter,

@@ -4,17 +4,14 @@ using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {
         options.SerializerSettings.Converters.Add(new FeatureConverter());
         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-        // Add converters for GeoJSON and Features
         options.SerializerSettings.Converters.Add(new FeatureConverter());
     });
 
@@ -23,13 +20,12 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", builder =>
     {
-        builder.AllowAnyOrigin()  // Allows all origins
-               .AllowAnyMethod()  // Allows any HTTP method (GET, POST, etc.)
-               .AllowAnyHeader(); // Allows any HTTP header
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
     });
 });
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -37,20 +33,47 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("databaseConnection")));
 
-// Register ActivityLogService with dependency injection
 builder.Services.AddScoped<ActivityLogService>();
 
 var app = builder.Build();
 
-// Use EnsureCreated() to create the database and schema
-// DO NOT USE IN PRODUCTION
+// Database initialization and seeding
 using (var scope = app.Services.CreateScope())
 {
-    var appDbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    appDbContext.Database.EnsureCreated(); // Ensures the database and tables are created
+    var services = scope.ServiceProvider;
+    try
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        var context = services.GetRequiredService<AppDbContext>();
+
+        // Ensure database is created
+        context.Database.EnsureCreated();
+
+        // Setup the CSV file path
+        string csvFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Configurations", "climb_data.csv");
+        
+        // Log the path we're trying to use
+        logger.LogInformation($"Looking for CSV file at: {csvFilePath}");
+
+        // Verify file exists
+        if (!File.Exists(csvFilePath))
+        {
+            logger.LogError($"CSV file not found at: {csvFilePath}");
+            throw new FileNotFoundException($"Required CSV file not found at: {csvFilePath}");
+        }
+
+        // Attempt to seed the data
+        logger.LogInformation("Beginning data seeding...");
+        await context.SeedClimbDataAsync(csvFilePath);
+        logger.LogInformation("Data seeding completed successfully");
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while initializing the database");
+        throw; // Rethrow to halt startup if database initialization fails
+    }
 }
-
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -60,12 +83,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-// Enable CORS middleware
 app.UseCors("AllowAll");
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

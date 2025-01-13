@@ -25,7 +25,6 @@ namespace ClimbWithFriendsAPI.Controllers
                 return BadRequest(new { Message = "Invalid mapId" });
             }
 
-
             List<ActivityLog> activities;
 
             // Use raw SQL if sinceTimestamp is provided

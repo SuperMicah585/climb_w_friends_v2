@@ -624,7 +624,7 @@ public async Task<List<Bucket>> ConvertDataAsync([FromBody] List<ClimbData> clim
          
 
 
-                    if (distance < 1000) 
+                    if (distance < 200) 
                     {
                         
                         overlappingBuckets.Add(i);
