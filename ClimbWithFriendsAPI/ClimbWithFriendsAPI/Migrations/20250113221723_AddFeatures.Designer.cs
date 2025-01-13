@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClimbWithFriendsAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250112195330_AddFeatures")]
+    [Migration("20250113221723_AddFeatures")]
     partial class AddFeatures
     {
         /// <inheritdoc />
