@@ -540,6 +540,9 @@ export const addFeatureInteractions = async (
     }
   });
 
+
+
+
   // Return a cleanup function
   return () => {
     if (map.current) {
@@ -551,3 +554,5 @@ export const addFeatureInteractions = async (
     }
   };
 };
+
+
