@@ -93,42 +93,6 @@ public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsersByMapId(int mapId)
     return Ok(users);
 }
 
-        //GET: api/Maps/Tags/{id}
-
-
-
-
-        //// PUT: api/Maps/5
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutMap(int id, Map map)
-        //{
-        //    if (id != map.MapId)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    _context.Entry(map).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!MapExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
-
         // POST: api/Maps
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]

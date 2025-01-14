@@ -25,27 +25,6 @@ namespace ClimbWithFriendsAPI.Controllers
             _context = context;
         }
 
-        //// GET: api/Features
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Feature>>> GetFeatures()
-        //{
-        //    return await _context.Features.ToListAsync();
-        //}
-
-        //// GET: api/Features/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Feature>> GetFeature(int id)
-        //{
-        //    var feature = await _context.Features.FindAsync(id);
-
-        //    if (feature == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return feature;
-        //}
-
 [HttpGet("ByMap/{mapId}/ForUser/{auth0Id}")]
 public async Task<ActionResult<GeoJsonShell>> ListFeaturesAsync(int mapId, string auth0Id)
 {
@@ -64,7 +43,6 @@ public async Task<ActionResult<GeoJsonShell>> ListFeaturesAsync(int mapId, strin
         // Get filtered climb IDs in a single query
 var filteredClimbIds = await GetFilteredClimbIdsAsync(mapId, auth0Id);
 
-// Fetch features and related data in a single query
 // Fetch features and related data in a single query
 var features = await _context.Features
     .Where(f => f.MapId == mapId)
@@ -952,70 +930,5 @@ public class ClimbingGrades
         return gradeValue >= fromValue && gradeValue <= toValue;
     }
 }
-
-        //// PUT: api/Features/5
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutFeature(int id, Feature feature)
-        //{
-        //    if (id != feature.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    _context.Entry(feature).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!FeatureExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
-
-        //// POST: api/Features
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPost]
-        //public async Task<ActionResult<Feature>> PostFeature(Feature feature)
-        //{
-        //    _context.Features.Add(feature);
-        //    await _context.SaveChangesAsync();
-
-        //    return CreatedAtAction("GetFeature", new { id = feature.Id }, feature);
-        //}
-
-        //// DELETE: api/Features/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteFeature(int id)
-        //{
-        //    var feature = await _context.Features.FindAsync(id);
-        //    if (feature == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Features.Remove(feature);
-        //    await _context.SaveChangesAsync();
-
-        //    return NoContent();
-        //}
-
-     //   private bool FeatureExists(int FeatureId)
-       // {
-         //   return _context.Features.Any(e => e.FeatureId == featureId);
-        //}
-
-        
     
 }

@@ -112,39 +112,5 @@ namespace ClimbWithFriendsAPI.Controllers
             return NoContent();
         }
 
-        //Put Request to update a Map object. 
-        //In case we want to allow people to edit their messages
-        /*
-        [HttpPut("{climbChatId}")]
-        public async Task<IActionResult> UpdateClimbChat(int climbChatId, [FromBody] ClimbChatDTO climbChatDTO)
-        {
-            var existingClimbChat = await _context.ClimbChats.FindAsync(climbChatId);
-
-            if (existingClimbChat == null)
-            {
-                return NotFound($"Map with ID {climbChatId} not found.");
-            }
-
-            // Update the fields
-            existingClimbChat.Message = climbChatDTO.Message;
-            existingClimbChat.UpdatedAt = DateTime.UtcNow.ToString("o"); // Update the timestamp
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-
-            return NoContent(); // 204 No Content for a successful update
-        }
-
-        private bool MapExists(int id)
-        {
-            return _context.Maps.Any(e => e.MapId == id);
-        }
-        */
     }
 }
