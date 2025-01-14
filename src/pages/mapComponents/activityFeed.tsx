@@ -91,8 +91,8 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({
           {' '}
           Event Log
         </div>
-        <div className="mt-2 flex h-80 w-96 flex-col items-center gap-5 overflow-y-scroll pl-2 pr-2">
-          <ul className="flex flex-col gap-2 pl-2 text-white">
+        <div className="mt-2 flex h-80 w-96 flex-col items-center gap-5 overflow-y-scroll pl-5 pr-2">
+          <div className="flex w-full flex-col gap-2 text-white">
             {events.map((item, index) => (
               <div
                 className={`flex flex-col justify-center gap-2 ${borderColors[item.action] || 'border-gray-500'} border-l-2 bg-opacity-75 pb-2 pl-5 pr-5 pt-2`}
@@ -115,7 +115,7 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({
                 </div>
               </div>
             ))}
-          </ul>
+          </div>
         </div>
       </div>
     </Draggable>
