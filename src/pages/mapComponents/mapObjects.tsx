@@ -58,44 +58,6 @@ export const boulderingClimbingGrades = [
   'V16',
 ];
 
-export const friendsOnMapExample = [
-  {
-    id: 1,
-    firstName: 'Liam',
-    lastName: 'Brown',
-    email: 'liam.brown@example.com',
-    userName: 'liamthelion',
-  },
-  {
-    id: 5,
-    firstName: 'Elijah',
-    lastName: 'Smith',
-    email: 'elijah.smith@example.com',
-    userName: 'elirunner',
-  },
-  {
-    id: 3,
-    firstName: 'Noah',
-    lastName: 'Williams',
-    email: 'noah.wills@example.com',
-    userName: 'noahwave',
-  },
-  {
-    id: 2,
-    firstName: 'Emma',
-    lastName: 'Johnson',
-    email: 'emma.johnson@example.com',
-    userName: 'emmajay',
-  },
-  {
-    id: 6,
-    firstName: 'Ava',
-    lastName: 'Miller',
-    email: 'ava.miller@example.com',
-    userName: 'avamuse',
-  },
-];
-
 export const climbType: Array<string> = ['Sport', 'Trad', 'TR', 'Boulder'];
 
 export const climbTypeForFilter: Array<string> = ['Rock', 'Boulder', 'None'];
@@ -208,48 +170,4 @@ export const usStateDictionary: { [key: string]: string } = {
 export const filterTypes: string[] = [
   'Order By Grade ASC',
   'Order By Grade DESC',
-];
-
-export const conversation = [
-  { name: 'Micah', message: 'Hey everyone, how’s it going?' },
-  {
-    name: 'Theresa',
-    message: 'Pretty good! Just finished a big project at work. How about you?',
-  },
-  {
-    name: 'Ben',
-    message:
-      'I’m doing well, just enjoying the weekend. What project were you working on, Theresa?',
-  },
-  {
-    name: 'Theresa',
-    message:
-      'It was a website redesign for a client. Took a lot longer than expected, but it’s finally done!',
-  },
-  {
-    name: 'Micah',
-    message:
-      'Congrats on finishing it, Theresa! That must feel like a big relief.',
-  },
-  {
-    name: 'Theresa',
-    message: 'Definitely! Thanks, Micah. Any plans for the weekend?',
-  },
-  {
-    name: 'Ben',
-    message:
-      'I’m thinking of going hiking tomorrow if the weather’s good. You guys interested?',
-  },
-  {
-    name: 'Micah',
-    message: 'I’m down! Been wanting to get out and stretch my legs.',
-  },
-  {
-    name: 'Theresa',
-    message: 'Sounds like fun! Count me in if I’m not too tired.',
-  },
-  {
-    name: 'Ben',
-    message: 'Awesome! Let’s meet up in the morning then. Can’t wait!',
-  },
 ];

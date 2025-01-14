@@ -3,9 +3,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import * as turf from '@turf/turf';
 import * as ReactDOM from 'react-dom/client';
 import './popup.css';
-import { useAuth0 } from '@auth0/auth0-react';
 import {
-  sortByGradeDesc,
   compareGrades,
   groupByGrade,
 } from './gradeComparison';
@@ -242,47 +240,7 @@ export const displayLayersInitial = (
 };
 
 export const filterClimbsOnMap = () => {};
-/*
-export const shapeColors = (map: any, climberCountTotal: number) => {
-  testData.features.forEach((feature, index) => {
-    switch (feature.geometry.type) {
-      case 'Polygon':
-        const fillLayerId = `geojson-fill-layer-${index}`;
-        const circleLayerId = `geojson-circle-layer-${index}`;
-        const Polygoncolor = shapeColorHelperFunction(
-          climberCountTotal,
-          feature.properties.climbs,
-        );
-        map.current?.setPaintProperty(fillLayerId, 'fill-color', Polygoncolor);
-        map.current?.setPaintProperty(
-          circleLayerId,
-          'circle-color',
-          Polygoncolor,
-        );
 
-        break;
-
-      case 'Point':
-        const pointLayerId = `geojson-layer-${index}`;
-        const pointcolor = shapeColorHelperFunction(
-          climberCountTotal,
-          feature.properties.climbs,
-        );
-        map.current?.setPaintProperty(pointLayerId, 'circle-color', pointcolor);
-        break;
-
-      case 'LineString':
-        const layerId = `geojson-layer-${index}`;
-        const layercolor = shapeColorHelperFunction(
-          climberCountTotal,
-          feature.properties.climbs,
-        );
-        map.current?.setPaintProperty(layerId, 'line-color', layercolor);
-        break;
-    }
-  });
-};
-*/
 export const updateLayerVisibility = (
   map: any,
   geoJsonObject: GeoJsonObject,

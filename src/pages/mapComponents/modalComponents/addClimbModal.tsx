@@ -1,4 +1,3 @@
-import { supabase } from '../../../supaBaseClient';
 import {
   Tags,
   GeoJsonObject,
@@ -17,7 +16,7 @@ import { dropDownStyles } from '../../../reusableComponents/styles';
 import PurpleButton from '../../../reusableComponents/genericButton';
 import ClimbModalBar from '../../../reusableComponents/climbModalBar';
 import Tooltip from '../../../reusableComponents/toolTip';
-import { newWindowIcon, minusIcon } from '../../../reusableComponents/styles';
+import { newWindowIcon } from '../../../reusableComponents/styles';
 import TickOverlay from '../tickOverlay';
 import { useAuth0 } from '@auth0/auth0-react';
 import ModalChat from '../chatOverlay';
@@ -78,7 +77,6 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
   const [attemptOverlayDisplayTrigger, setAttemptOverlayDisplayTrigger] =
     useState<number>(0);
   const [climbIdForClimbChat, setClimbIdForClimbChat] = useState<number>(-1);
-  const [tickinfo, setTickInfo] = useState({});
   const [climbsOnMap, setClimbsOnMap] = useState<number[]>([]);
   const [errorMessage, setErrorMessage] = useState<string>('');
 

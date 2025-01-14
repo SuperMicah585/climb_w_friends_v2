@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import DownDrop from '../../reusableComponents/downDrop';
 import {
-  GeoJsonFeature,
   ClimbsTableResponse,
   AttemptObject,
   ClimbWithDependencies,
@@ -27,7 +26,6 @@ const TickClimbsComponent: React.FC<TickClimbsComponent> = ({
   setClimbGradeForChatCallBack,
   setClimbNameForChatCallBack,
   setDropDownItemsState,
-  setTickClimbColor,
   setDropDownItemsStateCallBack,
   setTickOverlayDisplayTrigger,
   setAttemptOverlayDisplayTrigger,

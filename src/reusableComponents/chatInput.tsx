@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef, useRef } from 'react';
+import { useState, useEffect, forwardRef } from 'react';
 import { submitAirplane } from './styles';
 interface InputComponentProps {
   handleSearch: (query: string) => void;

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '../../supaBaseClient';
 import { MapEvent } from '../../types/interfaces';
 import Draggable from 'react-draggable';
 import { eventLogDataFetch } from './mapApiRequests';

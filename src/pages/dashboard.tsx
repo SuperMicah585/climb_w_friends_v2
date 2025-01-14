@@ -9,8 +9,6 @@ const Home = () => {
   const [navBarStatus, setNavBarStatus] = useState<string>('Maps');
   const [statsTrigger, setStatsTrigger] = useState<number>(0);
   const {
-    getAccessTokenSilently,
-    user,
     isAuthenticated,
     loginWithRedirect,
     isLoading,

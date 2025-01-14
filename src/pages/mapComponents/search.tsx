@@ -43,7 +43,6 @@ const Search: React.FC<SearchProps> = ({
   map,
 }) => {
   const [searchDropDown, setSearchDrownDown] = useState(false);
-  const [searchInput, setSearchInput] = useState('');
   const [searchResults, setsearchResults] = useState<ClimbsTableResponse[]>([]);
 
   const inputRef = useRef(null);

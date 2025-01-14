@@ -1,4 +1,3 @@
-import { Tags } from '../types/interfaces';
 import { useState, useRef, useEffect } from 'react';
 import { closeIcon, triangleIcon } from './styles';
 interface TooltipProps {

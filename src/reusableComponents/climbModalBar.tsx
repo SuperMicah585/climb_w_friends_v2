@@ -1,7 +1,6 @@
 import {
   checkBadge,
   chatIcon,
-  newWindowIcon,
   backArrowIcon,
   expandArrowIcon,
   dropDownStyles,
@@ -27,7 +26,6 @@ import {
   addUserToClimb,
   RemoveUserFromClimb,
 } from '../pages/mapComponents/mapApiRequests';
-import { retrieveFeatures } from '../pages/mapComponents/mapApiRequests';
 type ClimbTagItem = [Tags, number];
 
 interface ClimbModalBarProps {

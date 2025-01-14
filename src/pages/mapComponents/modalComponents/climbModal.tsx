@@ -1,9 +1,6 @@
 import {
-  GeoJsonFeature,
   ChatObject,
   Tags,
-  TempDic,
-  deleteTagItem,
   ClimbTagItem,
   ClimbWithDependencies,
   AttemptObject,
@@ -18,10 +15,8 @@ import { useState, useEffect } from 'react';
 import ClimbModalBar from '../../../reusableComponents/climbModalBar';
 import TickOverlay from '../tickOverlay';
 import AttemptOverlay from '../attemptOverlay';
-import { useAuth0 } from '@auth0/auth0-react';
-import { sortByGradeDesc, compareGrades } from '../gradeComparison';
+import { compareGrades } from '../gradeComparison';
 import {
-  retrieveClimbDependencies,
   addTagToClimb,
   removeTagFromClimb,
   retrieveFeatureDependencies,

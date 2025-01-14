@@ -1,12 +1,8 @@
-import { addUserIcon, pencilIcon } from '../../../reusableComponents/styles';
-import { MapObject, FriendsList } from '../../../types/interfaces';
-import InputComponent from '../../../reusableComponents/input';
+import { MapObject } from '../../../types/interfaces';
 import ZincModal from '../../../reusableComponents/genericModal';
-import SearchDropDown from '../../../reusableComponents/searchDropDown';
 import ToastContainer from '../../../reusableComponents/toastContainer';
-import { retrieveAllUsers, addUserToMap } from '../utilityFunctions';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 type EditModalProps = {
   editMapObject: MapObject;

@@ -1,7 +1,6 @@
 import ZincModal from '../../../reusableComponents/genericModal';
 import { useState } from 'react';
 import { MapObject } from '../../../types/interfaces';
-import GenericToast from '../../../reusableComponents/toastNotification';
 import ToastContainer from '../../../reusableComponents/toastContainer';
 
 interface AddMapComponentInterface {
