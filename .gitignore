@@ -7,12 +7,16 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependency directories
 node_modules
+
+# Build directories
 dist
 dist-ssr
-*.local
+bin/
+obj/
 
-# Environment variables
+# Local environment variables
 .env*
 
 # Editor directories and files
@@ -26,7 +30,25 @@ dist-ssr
 *.sln
 *.sw?
 .vs/
-bin/
-obj/
 
+# Specific app settings
 **/appsettings.json
+
+# .NET Build Artifacts
+*.dll
+*.pdb
+*.cache
+*.sourcelink.json
+*.deps.json
+*.runtimeconfig.json
+*.runtimeconfig.dev.json
+*.xml
+
+# Publish Output
+.publish/
+
+# Additional OS-generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
