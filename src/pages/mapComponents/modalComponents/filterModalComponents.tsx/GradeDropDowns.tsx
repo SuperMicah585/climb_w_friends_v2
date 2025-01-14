@@ -3,9 +3,7 @@ import {
   climbTypeForFilter,
   ropeClimbingGrades,
   boulderingClimbingGrades,
-  filterItems,
 } from '../../mapObjects';
-import { useState, useEffect } from 'react';
 import { filterObject } from '../../../../types/interfaces';
 import {
   AddGradeRangeFilter,

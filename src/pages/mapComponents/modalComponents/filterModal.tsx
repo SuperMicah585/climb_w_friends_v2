@@ -2,13 +2,11 @@ import ZincModal from '../../../reusableComponents/genericModal';
 import DownDrop from '../../../reusableComponents/downDrop';
 import Tooltip from '../../../reusableComponents/toolTip';
 import Input from '../../../reusableComponents/input';
-import PurpleButton from '../../../reusableComponents/genericButton';
 import { useState, useRef, useEffect } from 'react';
 import SearchDropDown from '../../../reusableComponents/searchDropDown';
 
 import {
   Tags,
-  UserObjectForFeature,
   filterObject,
   UserFilter,
   TagFilter,

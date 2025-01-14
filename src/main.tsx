@@ -1,4 +1,3 @@
-import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
@@ -30,4 +29,3 @@ if (root !== null) {
     </Auth0Provider>,
   );
 }
-//RF5MCRM347S9C6G4X5Q5VXJ3 recovery code for Auth0

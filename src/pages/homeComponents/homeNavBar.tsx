@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import LoginButton from '../../reusableComponents/loginButton';
 import LogoutButton from '../../reusableComponents/logoutButton';
 import { useAuth0 } from '@auth0/auth0-react';
-import camoBackGroundImage from './black_camo.jpeg';
 interface NavBarProps {
   selectedPage: string;
   setSelectedPage: React.Dispatch<React.SetStateAction<string>>;
@@ -11,7 +10,7 @@ const HomeNavBar: React.FC<NavBarProps> = ({
   selectedPage,
   setSelectedPage,
 }) => {
-  const { user, isAuthenticated } = useAuth0();
+  const {isAuthenticated } = useAuth0();
   const navBarItems = ['About', 'Usage', 'Work With Us'];
   return (
     <div className="relative z-10 flex min-h-20 w-screen items-center justify-center gap-40 font-semibold text-black">

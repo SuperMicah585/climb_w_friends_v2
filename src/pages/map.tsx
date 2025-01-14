@@ -1,4 +1,3 @@
-// Import Mapbox GL, and CSS
 import { useState, useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import Search from './mapComponents/search';
@@ -10,7 +9,6 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import {
   ClimbsTableResponse,
   GeoJsonObject,
-  filterObject,
 } from '../types/interfaces';
 import TagModal from './mapComponents/modalComponents/modalTag';
 import FilterModal from './mapComponents/modalComponents/filterModal';
@@ -30,7 +28,6 @@ import {
 } from './mapComponents/mapLayers';
 import {
   retrieveFeatures,
-  AddUserFilter,
 } from './mapComponents/mapApiRequests';
 // Set Mapbox access token
 mapboxgl.accessToken = import.meta.env.VITE_MAP_BOX_KEY;
@@ -75,7 +72,6 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   const [renderFeatureTrigger, setRenderFeatureTrigger] = useState<number>(0);
 
   const {
-    getAccessTokenSilently,
     user,
     isAuthenticated,
     loginWithRedirect,
