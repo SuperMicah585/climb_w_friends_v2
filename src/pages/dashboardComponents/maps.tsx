@@ -230,7 +230,7 @@ const Maps: React.FC<MapProps> = ({ setStatsTrigger }) => {
           <div className="flex flex-col">
             <div className="mt-5 grid w-screen max-w-[1800px] grid-cols-1 gap-5 pl-10 pr-10 md:pl-20 md:pr-20 lg:grid-cols-2 lg:pl-40 lg:pr-40">
               {/*bg-gradient-to-br from-zinc-950 to-zinc-800*/}
-              {mapObject.map((item, index) => (
+              {mapObject.map((item) => (
                 <div key={item.mapId} className="relative w-full">
                   <div
                     className={`flex h-full flex-col items-start justify-start gap-5 overflow-hidden rounded-lg border-2 border-transparent bg-zinc-600 p-16 text-white shadow-sm shadow-zinc-500`}

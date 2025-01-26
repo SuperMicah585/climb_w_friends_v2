@@ -1,9 +1,9 @@
 // AuthComponent.tsx
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import HomeNavBar from './homeComponents/homeNavBar';
 import ComingSoonPage from '../ComingSoon';
-import backGroundImage from './homeComponents/HomeBackGround.png';
+import backGroundImage from './homeComponents/homeBackGround.png'
 const AuthComponent: React.FC = () => {
   const [selectedPage, setSelectedPage] = useState('Home');
   return (

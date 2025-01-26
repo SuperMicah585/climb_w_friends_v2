@@ -95,7 +95,7 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({
           <div className="flex w-full flex-col gap-2 text-white">
             {events.map((item, index) => (
               <div
-                className={`flex flex-col justify-center gap-2 ${borderColors[item.action] || 'border-gray-500'} border-l-2 bg-opacity-75 pb-2 pl-5 pr-5 pt-2`}
+                className={`flex flex-col justify-center gap-2 ${borderColors[item.action as keyof typeof borderColors] || 'border-gray-500'} border-l-2 bg-opacity-75 pb-2 pl-5 pr-5 pt-2`}
                 key={index}
               >
                 <div className="flex flex-col justify-center gap-1">
@@ -110,7 +110,7 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({
                     {item.updatedAt + ' ' + 'PT'}
                   </div>
                 </div>
-                <div className={` ${textColors[item.action]}`}>
+                <div className={` ${textColors[item.action as keyof typeof borderColors]}`}>
                   {item.details}{' '}
                 </div>
               </div>

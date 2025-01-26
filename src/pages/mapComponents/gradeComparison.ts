@@ -1,6 +1,5 @@
 // Type for valid special grade strings
 import {
-  ClimbsTableResponse,
   ClimbWithDependencies,
 } from '../../types/interfaces';
 type SpecialGrade =

@@ -94,7 +94,7 @@ export const displayLayersInitial = (
     });
   }
 
-  features.features.forEach((feature: any, index) => {
+  features.features.forEach((feature: any) => {
     const fillLayerId = `geojson-fill-layer-${feature.id}`;
     const circleLayerId = `geojson-circle-layer-${feature.id}`;
     const layerId = `geojson-layer-${feature.id}`;
@@ -245,7 +245,7 @@ export const updateLayerVisibility = (
   map: any,
   geoJsonObject: GeoJsonObject,
 ) => {
-  geoJsonObject.features.forEach((feature, index) => {
+  geoJsonObject.features.forEach((feature) => {
     if (feature.geometry.type === 'Polygon') {
       const fillLayerId = `geojson-fill-layer-${feature.id}`;
       const circleLayerId = `geojson-circle-layer-${feature.id}`;

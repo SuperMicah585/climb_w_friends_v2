@@ -1,7 +1,6 @@
 import NavBar from './dashboardComponents/navBar';
 import Maps from './dashboardComponents/maps';
 import { useAuth0 } from '@auth0/auth0-react';
-import camoBackGroundImage from './homeComponents/black_camo.jpeg';
 import ComingSoonPage from '../ComingSoon';
 import { useEffect, useState } from 'react';
 

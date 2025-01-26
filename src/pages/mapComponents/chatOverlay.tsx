@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { backArrowIcon } from '../../reusableComponents/styles';
 import { ClimbWithDependencies, ChatObject } from '../../types/interfaces';
 import ChatInput from '../../reusableComponents/chatInput';
-import { AddChatToClimb, ListChatsForClimb } from './mapApiRequests';
+import { AddChatToClimb } from './mapApiRequests';
 
 export interface ChatProps {
   displayTrigger: number;

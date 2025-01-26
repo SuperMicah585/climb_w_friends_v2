@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
 import { backArrowIcon } from '../../reusableComponents/styles';
-import ChatInput from '../../reusableComponents/chatInput';
 import {
   AttemptObject,
   ClimbWithDependencies,

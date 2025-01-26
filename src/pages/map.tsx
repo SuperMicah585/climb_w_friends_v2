@@ -7,12 +7,10 @@ import MapNavBar from './mapComponents/mapNavBar';
 import './mapbox.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import {
-  ClimbsTableResponse,
   GeoJsonObject,
 } from '../types/interfaces';
 import TagModal from './mapComponents/modalComponents/modalTag';
 import FilterModal from './mapComponents/modalComponents/filterModal';
-import TagOverlay from './mapComponents/modalComponents/tagOverlay';
 import AllClimbsModal from './mapComponents/modalComponents/allClimbsModal';
 import AddClimbModal from './mapComponents/modalComponents/addClimbModal';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -20,7 +18,6 @@ import { usStateDictionary } from './mapComponents/mapObjects';
 import { useParams } from 'react-router-dom';
 import LogoutButton from '../reusableComponents/logoutButton';
 import {
-  createMarker,
   createClimbingShapes,
   updateLayerVisibility,
   displayLayersInitial,
@@ -38,13 +35,9 @@ type MapProps = {
 
 const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   const map = useRef<mapboxgl.Map>();
-  const [displayTagOverlay, setDisplayTagOverlay] = useState<boolean>(false);
   const mapContainer = useRef<HTMLDivElement>(null);
-  const [selectedClimb, setSelectedClimb] =
-    useState<ClimbsTableResponse | null>(null);
   const { id } = useParams();
   const mapIdNumber = Number(id);
-  const [currentMarker, setCurrentMarker] = useState<any>(null);
   const [polygonOrCircleDisplay, setpolygonOrCircleDisplay] =
     useState<boolean>(false);
   const [mapLoaded, setMapLoaded] = useState(false);
@@ -315,24 +308,6 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
     };
   }, [map.current]); // Re-run when map.current changes
 
-  useEffect(() => {
-    if (selectedClimb && map?.current) {
-      if (currentMarker) {
-        currentMarker.remove();
-      }
-
-      const newMarker = createMarker(
-        selectedClimb.areaLatitude,
-        selectedClimb.areaLongitude,
-        selectedClimb.climbName,
-        selectedClimb.location,
-        selectedClimb.rating,
-        map.current,
-      );
-
-      setCurrentMarker(newMarker);
-    }
-  }, [selectedClimb]);
 
   useEffect(() => {
     if (mapLoaded && 'type' in geoJsonObject) {
@@ -421,13 +396,12 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
       {allClimbsModalDisplay ? (
         <AllClimbsModal
           mapId={mapIdNumber}
-          climbsObject={geoJsonObject}
           closeModalCallBack={closeAllClimbsModalCallBack}
           auth0Id={user?.sub || ''}
         />
       ) : null}
 
-      {displayTagOverlay ? <TagOverlay /> : null}
+
 
       <div className="h-screen w-screen" ref={mapContainer} />
     </div>

@@ -5,11 +5,11 @@ import {
   AttemptObject,
   ClimbWithDependencies,
   TickObject,
+  TickAndAttemptObjectBeforeResponse
 } from '../../types/interfaces';
 import { removeAttempt, removeTick } from './mapApiRequests';
 
 interface TickClimbsComponent {
-  setTickClimbColor: React.Dispatch<React.SetStateAction<string>>;
   setDropDownItemsState: boolean;
   setDropDownItemsStateCallBack: (value: boolean) => void;
   climbObject: ClimbsTableResponse;
@@ -17,8 +17,8 @@ interface TickClimbsComponent {
   setAttemptOverlayDisplayTrigger: React.Dispatch<React.SetStateAction<number>>;
   setClimbNameForChatCallBack: (climbName: string) => void;
   setClimbGradeForChatCallBack: (climbGrade: string) => void;
-  attemptObject: AttemptObject;
-  tickObject: TickObject;
+  attemptObject: AttemptObject | null | TickAndAttemptObjectBeforeResponse;
+  tickObject: TickObject | null | TickAndAttemptObjectBeforeResponse;
   setClimbObject: React.Dispatch<React.SetStateAction<ClimbWithDependencies[]>>;
   type: string;
 }
@@ -74,7 +74,7 @@ const TickClimbsComponent: React.FC<TickClimbsComponent> = ({
     }
 
     if (item === 'Remove Attempt') {
-      if (type === 'climb') {
+      if (type === 'climb' && attemptObject!==null && 'attemptId' in attemptObject) {
         const responseBoolean = await removeAttempt(attemptObject.attemptId);
         if (responseBoolean) {
           setClimbObject((prev) =>
@@ -111,7 +111,7 @@ const TickClimbsComponent: React.FC<TickClimbsComponent> = ({
     }
 
     if (item === 'Remove Tick') {
-      if (type === 'climb') {
+      if (type === 'climb' && tickObject!==null && 'tickId' in tickObject) {
         const responseBoolean = await removeTick(tickObject.tickId);
 
         if (responseBoolean) {
