@@ -5,6 +5,7 @@ import {
   ClimbWithDependencies,
   AttemptObject,
   TickObject,
+  TickAndAttemptObjectBeforeResponse
 } from '../../../types/interfaces';
 import { newWindowIcon } from '../../../reusableComponents/styles';
 import ModalSearch from './modalSearch';
@@ -39,10 +40,10 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   const [displayTrigger, setDisplayTrigger] = useState(0);
   const [climbNameForChat, setClimbNameForChat] = useState('');
   const [climbGradeForChat, setClimbGradeForChat] = useState('');
-  const [attemptObject, setAttemptObject] = useState<AttemptObject | null>(
+  const [attemptObject, setAttemptObject] = useState<AttemptObject | null | TickAndAttemptObjectBeforeResponse>(
     null,
   );
-  const [tickObject, setTickObject] = useState<TickObject | null>(null);
+  const [tickObject, setTickObject] = useState<TickObject | null | TickAndAttemptObjectBeforeResponse>(null);
   const [climbIdForAttemptAndTick, setClimbIdForAttemptAndTick] =
     useState<number>(-1);
   const [climbChatForChat, setClimbChatForChat] = useState<ChatObject[]>([]);
@@ -64,7 +65,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
     setClimbGradeForChat(climbGrade);
   };
 
-  const setAttemptObjectCallBack = (attemptObject: AttemptObject | null) => {
+  const setAttemptObjectCallBack = (attemptObject: AttemptObject | null | TickAndAttemptObjectBeforeResponse) => {
     if (attemptObject !== null) {
       setAttemptObject(attemptObject);
     } else {
@@ -72,7 +73,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
     }
   };
 
-  const setTickObjectCallBack = (tickObject: TickObject | null) => {
+  const setTickObjectCallBack = (tickObject: TickObject | null | TickAndAttemptObjectBeforeResponse) => {
     if (tickObject !== null) {
       setTickObject(tickObject);
     } else {

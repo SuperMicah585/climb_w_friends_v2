@@ -274,7 +274,7 @@ const addClimbsToMap = async (
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const buckets = await response.json();
+    await response.json();
   } catch (error) {
     console.error('Error sending climbing data:', error);
     throw error;

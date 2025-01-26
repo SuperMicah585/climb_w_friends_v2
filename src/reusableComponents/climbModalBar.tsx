@@ -16,6 +16,7 @@ import {
   UserObjectForFeature,
   AttemptObject,
   TickObject,
+  TickAndAttemptObjectBeforeResponse
 } from '../types/interfaces';
 import SearchDropDown from './searchDropDown';
 import TagInput from './input';
@@ -32,24 +33,24 @@ interface ClimbModalBarProps {
   tagInputCallBack: (item: string) => void;
   climbObject: ClimbsTableResponse;
   tagObject: Tags[];
-  attemptObject: AttemptObject;
-  tickObject: TickObject;
+  attemptObject: AttemptObject | null | TickAndAttemptObjectBeforeResponse;
+  tickObject: TickObject | null | TickAndAttemptObjectBeforeResponse;
   handleTagSelect: (item: ClimbTagItem) => void;
   featureTagObject: Tags[];
   climberObject: UserObjectForFeature[] | null;
   chatDisplayTriggerCallBack: () => void;
   setClimbNameForChatCallBack: (climbName: string) => void;
   setClimbGradeForChatCallBack: (climbGrade: string) => void;
-  setAttemptObjectCallBack: (attemptObject: AttemptObject) => void;
+  setAttemptObjectCallBack: (attemptObject: AttemptObject | null | TickAndAttemptObjectBeforeResponse) => void;
   setClimbChatForChatCallBack: (climbConversation: ChatObject[]) => void;
   setClimbObject: React.Dispatch<React.SetStateAction<ClimbWithDependencies[]>>;
   setTickOverlayDisplayTrigger: React.Dispatch<React.SetStateAction<number>>;
   setAttemptOverlayDisplayTrigger: React.Dispatch<React.SetStateAction<number>>;
   setClimbIdForAttemptAndTick: React.Dispatch<React.SetStateAction<number>>;
-  setTickObjectCallBack: (tickObject: TickObject) => void;
+  setTickObjectCallBack: (tickObject: TickObject | null | TickAndAttemptObjectBeforeResponse) => void;
   mapId: number;
-  closeModalCallBack: (trigger: boolean) => void;
-  AllClimbsOnModal: ClimbWithDependencies[];
+  closeModalCallBack?: (trigger: boolean) => void;
+  AllClimbsOnModal?: ClimbWithDependencies[];
   setClimbIdForClimbChat: React.Dispatch<React.SetStateAction<number>>;
   chatObject: ChatObject[];
   type: string;
@@ -78,11 +79,9 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
   setClimbIdForAttemptAndTick,
   setClimbIdForClimbChat,
   attemptObject,
-  AllClimbsOnModal,
   type,
 }) => {
   const [dropDownToggle, setDropDownToggle] = useState<boolean>(false);
-  const [tickClimbColor, setTickClimbColor] = useState('text-neutral-500');
   const [configToggle, setConfigToggle] = useState<number>(0);
   const [dropDownItemsState, setDropDownItemsState] = useState<boolean>(false);
   const tagInputRef = useRef(null);
@@ -95,7 +94,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
   const tickButtonDropDown = useRef<HTMLDivElement>(null);
 
   const setDropDownItemsStateCallBack = (value: boolean) => {
-    setDropDownItemsState(false);
+    setDropDownItemsState(value);
   };
 
   const handleClickOutside = (event: any) => {
@@ -138,7 +137,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
       try {
         // Wait for the database update
         if (type === 'climb') {
-          const data = await RemoveUserFromClimb(id, user?.sub || '', mapId);
+           await RemoveUserFromClimb(id, user?.sub || '', mapId);
         }
         setClimbObject((prev) => {
           const updatedArray = prev
@@ -164,7 +163,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
             .filter((item): item is ClimbWithDependencies => item !== null);
 
           // Schedule modal close after state update
-          if (updatedArray.length === 0 && type === 'climb') {
+          if (updatedArray.length === 0 && type === 'climb' && closeModalCallBack) {
             setTimeout(() => closeModalCallBack(false), 0);
           }
 
@@ -318,7 +317,6 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
               setTickOverlayDisplayTrigger={setTickOverlayDisplayTrigger}
               climbObject={climbObject}
               setDropDownItemsStateCallBack={setDropDownItemsStateCallBack}
-              setTickClimbColor={setTickClimbColor}
               attemptObject={attemptObject}
               setDropDownItemsState={dropDownItemsState}
               setAttemptOverlayDisplayTrigger={setAttemptOverlayDisplayTrigger}

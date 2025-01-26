@@ -22,7 +22,7 @@ const retrieveMapsAndUsers = async (mapsJson: MapObject[] | undefined) => {
     // Create a new array to store updated maps
 
     const updatedMaps = await Promise.all(
-      mapsJson.map(async (item, index) => {
+      mapsJson.map(async (item) => {
         const [usersOnMap, climbCountOnMap] = await Promise.all([
           retrieveUsersOnMap(item.mapId),
           retrieveClimbsOnMapCount(item.mapId),

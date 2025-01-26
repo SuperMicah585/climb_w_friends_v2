@@ -7,6 +7,7 @@ import {
   AttemptObject,
   TickObject,
   ChatObject,
+  TickAndAttemptObjectBeforeResponse
 } from '../../../types/interfaces';
 import InputComponent from '../../../reusableComponents/input';
 import SearchDropDown from '../../../reusableComponents/searchDropDown';
@@ -38,7 +39,7 @@ interface AddClimbsModalProps {
   closeAddClimbsModalCallBack: (trigger: boolean) => void;
   mapId: number;
   setRenderFeatureTrigger: React.Dispatch<React.SetStateAction<number>>;
-  AllClimbsOnMap: GeoJsonObject;
+  AllClimbsOnMap: GeoJsonObject | {};
   auth0Id: string;
 }
 
@@ -59,13 +60,13 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
   const [tagObject, setTagObject] = useState<Tags[]>([]);
   const [tagsOnMount, setTagsOnMount] = useState<Tags[]>([]);
   const [tagInput, setTagInput] = useState<string>('');
-  const [attemptObject, setAttemptObject] = useState<AttemptObject | null>(
+  const [attemptObject, setAttemptObject] = useState<AttemptObject | null | TickAndAttemptObjectBeforeResponse>(
     null,
   );
   const containerRef = useRef<HTMLDivElement>(null);
   const [toastTrigger, setToastTrigger] = useState<number>(0);
   const [submitLoading, isSubmitLoading] = useState<boolean>(false);
-  const [tickObject, setTickObject] = useState<TickObject | null>(null);
+  const [tickObject, setTickObject] = useState<TickObject | null | TickAndAttemptObjectBeforeResponse>(null);
   const [climbNameForChat, setClimbNameForChat] = useState('');
   const [displayTrigger, setDisplayTrigger] = useState(0);
   const [climbGradeForChat, setClimbGradeForChat] = useState('');
@@ -122,7 +123,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
 
   useEffect(() => {
     // Guard against undefined AllClimbsOnMap
-    if (!AllClimbsOnMap || !AllClimbsOnMap.features) return;
+    if (!AllClimbsOnMap || !('features' in AllClimbsOnMap)) return;
 
     // Collect all climbs in a single operation
     const allClimbs = AllClimbsOnMap.features.flatMap(
@@ -196,7 +197,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
     filerResults();
   }, [climbsArray, inputQuery]);
 
-  const setAttemptObjectCallBack = (attemptObject: AttemptObject | null) => {
+  const setAttemptObjectCallBack = (attemptObject: AttemptObject | null | TickAndAttemptObjectBeforeResponse) => {
     if (attemptObject !== null) {
       setAttemptObject(attemptObject);
     } else {
@@ -204,7 +205,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
     }
   };
 
-  const setTickObjectCallBack = (tickObject: TickObject | null) => {
+  const setTickObjectCallBack = (tickObject: TickObject | null | TickAndAttemptObjectBeforeResponse) => {
     if (tickObject !== null) {
       setTickObject(tickObject);
     } else {
@@ -548,6 +549,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
                 setAttemptOverlayDisplayTrigger={
                   setAttemptOverlayDisplayTrigger
                 }
+                mapId = {mapId}
                 climbObject={item.climb}
                 setClimbIdForAttemptAndTick={setClimbIdForAttemptAndTick}
                 climberObject={item.userObjectForFeature}

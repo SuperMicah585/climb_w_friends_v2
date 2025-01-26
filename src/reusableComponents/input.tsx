@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef } from 'react';
+import { useState, useEffect, forwardRef } from 'react';
 
 interface InputComponentProps {
   handleSearch: (query: string) => void;
