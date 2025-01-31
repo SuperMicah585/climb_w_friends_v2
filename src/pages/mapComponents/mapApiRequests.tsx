@@ -1,7 +1,8 @@
 import { ClimbWithDependencies } from '../../types/interfaces';
+const domain = import.meta.env.VITE_DOMAIN;
 const createTag = async (TagName: string, mapId: number) => {
   try {
-    const response = await fetch(`http://localhost:5074/api/Tags`, {
+    const response = await fetch(`${domain}api/Tags`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -38,7 +39,7 @@ const createTag = async (TagName: string, mapId: number) => {
 const addTagToMap = async (tagId: number, mapId: number) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Tags/${tagId}/ToMap/${mapId}`,
+      `${domain}api/Tags/${tagId}/ToMap/${mapId}`,
       {
         method: 'POST',
         headers: {
@@ -67,7 +68,7 @@ const addTagToMap = async (tagId: number, mapId: number) => {
 const addTagToClimb = async (tagId: number, climbId: number, mapId: number) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Tags/${tagId}/ToClimb/${climbId}/OnMap/${mapId}`,
+      `${domain}api/Tags/${tagId}/ToClimb/${climbId}/OnMap/${mapId}`,
       {
         method: 'POST',
         headers: {
@@ -92,7 +93,7 @@ const addTagToClimb = async (tagId: number, climbId: number, mapId: number) => {
 const removeTagFromClimb = async (tagId: number, climbId: number) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Tags/${tagId}/FromClimb/${climbId}`,
+      `${domain}api/Tags/${tagId}/FromClimb/${climbId}`,
       {
         method: 'DELETE',
         headers: {
@@ -119,7 +120,7 @@ const removeTagFromClimb = async (tagId: number, climbId: number) => {
 const removeTagFromMap = async (mapId: number, tagId: number) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Tags/${tagId}/Maps/${mapId}`,
+      `${domain}api/Tags/${tagId}/Maps/${mapId}`,
       {
         method: 'DELETE',
         headers: {
@@ -146,7 +147,7 @@ const retrieveClimbs = async (
   State: string,
   type: string,
 ) => {
-  const url = `http://localhost:5074/api/Climbs/List/${searchString}/Within/${State}/IsType/${type}`;
+  const url = `${domain}api/Climbs/List/${searchString}/Within/${State}/IsType/${type}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -162,7 +163,7 @@ const retrieveClimbs = async (
 };
 
 const retrieveFeatures = async (mapId: number, auth0Id: string) => {
-  const url = `http://localhost:5074/api/Features/ByMap/${mapId}/ForUser/${auth0Id}`;
+  const url = `${domain}api/Features/ByMap/${mapId}/ForUser/${auth0Id}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -179,7 +180,7 @@ const retrieveFeatures = async (mapId: number, auth0Id: string) => {
 };
 
 const retrieveClimbDependencies = async (climbId: number) => {
-  const url = `http://localhost:5074/api/Climbs/${climbId}/Dependencies`;
+  const url = `${domain}api/Climbs/${climbId}/Dependencies`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -198,7 +199,7 @@ const retrieveFeatureDependencies = async (
   featureId: number,
   auth0Id: string,
 ) => {
-  const url = `http://localhost:5074/api/Features/${featureId}/Dependencies/UserId/${auth0Id}`;
+  const url = `${domain}api/Features/${featureId}/Dependencies/UserId/${auth0Id}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -218,7 +219,7 @@ const retrieveFeatureDependenciesByMap = async (
   mapId: number,
   auth0Id: string,
 ) => {
-  const url = `http://localhost:5074/api/Features/ByMapId/${mapId}/Dependencies/UserId/${auth0Id}`;
+  const url = `${domain}api/Features/ByMapId/${mapId}/Dependencies/UserId/${auth0Id}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -234,7 +235,7 @@ const retrieveFeatureDependenciesByMap = async (
 };
 
 const retrieveFeatureAggregate = async (featureId: number, auth0Id: string) => {
-  const url = `http://localhost:5074/api/Features/${featureId}/Aggregate_climbs/ForUser/${auth0Id}`;
+  const url = `${domain}api/Features/${featureId}/Aggregate_climbs/ForUser/${auth0Id}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -260,7 +261,7 @@ const addClimbsToMap = async (
 
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Features/Climbs/ToMap/${mapId}`,
+      `${domain}api/Features/Climbs/ToMap/${mapId}`,
       {
         method: 'POST',
         headers: {
@@ -288,7 +289,7 @@ const addUserToClimb = async (
 ) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Climbs/${climbId}/ToUser/${userId}/ToMap/${mapId}`,
+      `${domain}api/Climbs/${climbId}/ToUser/${userId}/ToMap/${mapId}`,
       {
         method: 'POST',
         headers: {
@@ -317,7 +318,7 @@ const RemoveUserFromClimb = async (
 ) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Climbs/${climbId}/FromUser/${userId}/FromMap/${mapId}`,
+      `${domain}api/Climbs/${climbId}/FromUser/${userId}/FromMap/${mapId}`,
       {
         method: 'DELETE',
         headers: {
@@ -349,7 +350,7 @@ const AddAttemptToClimbToUserToMap = async (
 ) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Attempts/ToMap/${mapId}/ToUser/${userId}/ToClimb/${climbId}`,
+      `${domain}api/Attempts/ToMap/${mapId}/ToUser/${userId}/ToClimb/${climbId}`,
       {
         method: 'POST',
         headers: {
@@ -378,7 +379,7 @@ const AddAttemptToClimbToUserToMap = async (
 const removeAttempt = async (attemptId: number) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Attempts/${attemptId}`,
+      `${domain}api/Attempts/${attemptId}`,
       {
         method: 'DELETE',
         headers: {
@@ -412,7 +413,7 @@ const AddTickToClimbToUserToMap = async (
 ) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Ticks/ToMap/${mapId}/ToUser/${userId}/ToClimb/${climbId}`,
+      `${domain}api/Ticks/ToMap/${mapId}/ToUser/${userId}/ToClimb/${climbId}`,
       {
         method: 'POST',
         headers: {
@@ -439,7 +440,7 @@ const AddTickToClimbToUserToMap = async (
 
 const removeTick = async (tickId: number) => {
   try {
-    const response = await fetch(`http://localhost:5074/api/Ticks/${tickId}`, {
+    const response = await fetch(`${domain}api/Ticks/${tickId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -469,7 +470,7 @@ const AddChatToClimb = async (
 ) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/ClimbChats/ToMap/${mapId}/ToUser/${userId}/ToClimb/${climbId}`,
+      `${domain}api/ClimbChats/ToMap/${mapId}/ToUser/${userId}/ToClimb/${climbId}`,
       {
         method: 'POST',
         headers: {
@@ -495,7 +496,7 @@ const AddChatToClimb = async (
 const ListChatsForClimb = async (climbId: number, mapId: number) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/ClimbChats/${climbId}/OnMap/${mapId}/List`,
+      `${domain}api/ClimbChats/${climbId}/OnMap/${mapId}/List`,
       {
         method: 'GET',
         headers: {
@@ -516,7 +517,7 @@ const ListChatsForClimb = async (climbId: number, mapId: number) => {
 };
 
 const retrieveTagsOnMap = async (mapId: number) => {
-  const url = `http://localhost:5074/api/Tags/ByMap/${mapId}`;
+  const url = `${domain}api/Tags/ByMap/${mapId}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -532,7 +533,7 @@ const retrieveTagsOnMap = async (mapId: number) => {
 };
 
 const retrieveFiltersOnMap = async (mapId: number, auth0Id: string) => {
-  const url = `http://localhost:5074/api/Filters/OnMap/${mapId}/ForUser/${auth0Id}/List`;
+  const url = `${domain}api/Filters/OnMap/${mapId}/ForUser/${auth0Id}/List`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -550,7 +551,7 @@ const retrieveFiltersOnMap = async (mapId: number, auth0Id: string) => {
 const AddTagFilter = async (auth0Id: string, mapId: number, tagId: number) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Filters/Tag/${tagId}/ToMap/${mapId}/ForUser/${auth0Id}`,
+      `${domain}api/Filters/Tag/${tagId}/ToMap/${mapId}/ForUser/${auth0Id}`,
       {
         method: 'POST',
         headers: {
@@ -577,7 +578,7 @@ const AddUserFilter = async (
 ) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Filters/User/${auth0IdToFilter}/ToMap/${mapId}/ForUser/${auth0Id}`,
+      `${domain}api/Filters/User/${auth0IdToFilter}/ToMap/${mapId}/ForUser/${auth0Id}`,
       {
         method: 'POST',
         headers: {
@@ -606,7 +607,7 @@ const AddGradeRangeFilter = async (
 ) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Filters/GradeRangeFilter/ToMap/${mapId}/ForUser/${auth0Id}`,
+      `${domain}api/Filters/GradeRangeFilter/ToMap/${mapId}/ForUser/${auth0Id}`,
       {
         method: 'POST',
         headers: {
@@ -634,7 +635,7 @@ const AddGradeRangeFilter = async (
 const removeTagFilter = async (id: number) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Filters/Tag/${id}`,
+      `${domain}api/Filters/Tag/${id}`,
       {
         method: 'DELETE',
         headers: {
@@ -661,7 +662,7 @@ const removeTagFilter = async (id: number) => {
 const removeUserFilter = async (id: number) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Filters/User/${id}`,
+      `${domain}api/Filters/User/${id}`,
       {
         method: 'DELETE',
         headers: {
@@ -688,7 +689,7 @@ const removeUserFilter = async (id: number) => {
 const removeGradeRangeFilter = async (auth0Id: string, mapId: number) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Filters/GradeRange/FromMap/${mapId}/FromUser/${auth0Id}`,
+      `${domain}api/Filters/GradeRange/FromMap/${mapId}/FromUser/${auth0Id}`,
       {
         method: 'DELETE',
         headers: {
@@ -715,7 +716,7 @@ const removeGradeRangeFilter = async (auth0Id: string, mapId: number) => {
 const checkMapForClimb = async (climbId: number, mapId: number) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Climbs/${climbId}/OnMap/${mapId}`,
+      `${domain}api/Climbs/${climbId}/OnMap/${mapId}`,
       {
         method: 'GET',
         headers: {
@@ -737,7 +738,7 @@ const checkMapForClimb = async (climbId: number, mapId: number) => {
 
 const eventLogDataFetch = async (mapId: number, timestamp?: string) => {
   // Construct the base URL
-  let url = `http://localhost:5074/api/ActivityLog?mapId=${mapId}`;
+  let url = `${domain}api/ActivityLog?mapId=${mapId}`;
 
   // Append the timestamp if provided
   if (timestamp) {

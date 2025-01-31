@@ -6,16 +6,18 @@ import Login from './pages/login.tsx';
 import Home from './pages/dashboard.tsx';
 import { Auth0Provider } from '@auth0/auth0-react';
 //npx prettier --write .
-
+const baseUrl = import.meta.env.REDIRECT_URI; 
 const root = document.getElementById('root');
 
 if (root !== null) {
   createRoot(root).render(
+    //Need to update this - specifically the redirect_uri for dev vs prod. Need to confirm with ben regarding domain and clientID.
+     //https://icy-mushroom-0a940671e.4.azurestaticapps.net/ 
     <Auth0Provider
       domain="dev-qvplotxzdb57f6vf.us.auth0.com"
       clientId="VOq0a56M5GZho3Okd9oEqqGUUzlS2BUC"
       authorizationParams={{
-        redirect_uri: 'http://localhost:5173/maps',
+        redirect_uri: `${baseUrl}maps`,
       }}
     >
       <BrowserRouter>

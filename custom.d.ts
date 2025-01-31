@@ -17,6 +17,8 @@ declare module '*.png' {
     readonly VITE_SUPABASE_URL: string;
     readonly VITE_SUPABASE_ANON_KEY: string;
     readonly VITE_MAP_BOX_KEY: string;
+    readonly VITE_DOMAIN:string;
+    readonly REDIRECT_URI:string;
   }
   
   interface ImportMeta {

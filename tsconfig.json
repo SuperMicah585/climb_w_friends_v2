@@ -4,5 +4,7 @@
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
   ],
-  "compilerOptions": { "types": ["node", "vite-env.d.ts"] }
+  "compilerOptions": {
+    "types": ["node", "vite/client"]
+  }
 }
