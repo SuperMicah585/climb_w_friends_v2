@@ -60,7 +60,8 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   const setClimbNameForChatCallBack = (climbName: string) => {
     setClimbNameForChat(climbName);
   };
-
+  
+  const domain = import.meta.env.VITE_DOMAIN;
   const setClimbGradeForChatCallBack = (climbGrade: string) => {
     setClimbGradeForChat(climbGrade);
   };
@@ -168,7 +169,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
 
   useEffect(() => {
     const retrieveTagsOnMap = async (mapId: number) => {
-      const url = `http://localhost:5074/api/Tags/ByMap/${mapId}`;
+      const url = `${domain}api/Tags/ByMap/${mapId}`;
       try {
         const response = await fetch(url);
         if (!response.ok) {

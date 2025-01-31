@@ -21,6 +21,7 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
   const [toastTrigger, setToastTrigger] = useState(0);
   const [toastType, setToastType] = useState('success');
   const [toastMessage, setToastMessage] = useState('');
+  const domain = import.meta.env.VITE_DOMAIN;
   //generating random number to test id
 
   const newTag = async () => {
@@ -34,7 +35,7 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
 
   useEffect(() => {
     const retrieveTagsOnMap = async (mapId: number) => {
-      const url = `http://localhost:5074/api/Tags/ByMap/${mapId}`;
+      const url = `${domain}api/Tags/ByMap/${mapId}`;
       try {
         const response = await fetch(url);
         if (!response.ok) {
