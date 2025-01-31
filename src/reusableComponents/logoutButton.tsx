@@ -3,11 +3,11 @@ import PurpleButton from './genericButton';
 
 const LogoutButton = () => {
   const { logout } = useAuth0();
-
+  const baseUrl = import.meta.env.VITE_REDIRECT_URI;
   return (
     <div
       onClick={() =>
-        logout({ logoutParams: { returnTo: 'http://localhost:5173/' } })
+        logout({ logoutParams: { returnTo: baseUrl } })
       }
     >
       <PurpleButton

@@ -63,6 +63,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
   const [attemptObject, setAttemptObject] = useState<AttemptObject | null | TickAndAttemptObjectBeforeResponse>(
     null,
   );
+  const domain = import.meta.env.VITE_DOMAIN;
   const containerRef = useRef<HTMLDivElement>(null);
   const [toastTrigger, setToastTrigger] = useState<number>(0);
   const [submitLoading, isSubmitLoading] = useState<boolean>(false);
@@ -135,7 +136,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
 
   useEffect(() => {
     const retrieveTagsOnMap = async (mapId: number) => {
-      const url = `http://localhost:5074/api/Tags/ByMap/${mapId}`;
+      const url = `${domain}api/Tags/ByMap/${mapId}`;
       try {
         const response = await fetch(url);
         if (!response.ok) {

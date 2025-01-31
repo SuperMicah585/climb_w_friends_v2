@@ -37,7 +37,7 @@ const Maps: React.FC<MapProps> = ({ setStatsTrigger }) => {
     climbCountOnMap: 0,
   });
   const [mapId, setMapId] = useState<number>(0);
-
+  const domain = import.meta.env.VITE_DOMAIN;
   const { user } = useAuth0();
 
   const closeFriendModalCallBack = () => {
@@ -84,7 +84,7 @@ const Maps: React.FC<MapProps> = ({ setStatsTrigger }) => {
   const retrieveMaps = async (userId: string) => {
     try {
       const mapsResponse = await fetch(
-        `http://localhost:5074/api/Maps/User/${userId}`,
+        `${domain}api/Maps/User/${userId}`,
       );
 
       if (!mapsResponse.ok) {
