@@ -1,0 +1,17 @@
+{
+    "routes": [
+      {
+        "route": "/Maps/*",
+        "serve": "/index.html"
+      },
+      {
+        "route": "/Maps/:id",
+        "serve": "/index.html"
+      },
+      {
+        "route": "/",
+        "serve": "/index.html"
+      }
+    ]
+  }
+  
