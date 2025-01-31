@@ -47,7 +47,7 @@ jobs:
           ###### End of Repository/Build Configurations ######
 
         env:
-          VITE_REDIRECT_URI: ${{VITE_REDIRECT_URI}}
+          VITE_REDIRECT_URI: ${{secrets.VITE_REDIRECT_URI}}
           VITE_MAP_BOX_KEY: ${{ secrets.VITE_MAP_BOX_KEY }}
           VITE_DOMAIN: ${{ secrets.VITE_DOMAIN }}
 
