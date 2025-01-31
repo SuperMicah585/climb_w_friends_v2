@@ -1,19 +1,9 @@
 {
-  "routes": [
-    {
-      "route": "/Maps/:id",
-      "serve": "/dist/index.html",
-      "statusCode": 200
-    },
-    {
-      "route": "/Maps/*",
-      "serve": "/dist/index.html",
-      "statusCode": 200
-    },
-    {
-      "route": "/",
-      "serve": "/dist/index.html",
-      "statusCode": 200
-    }
-  ]
+  "navigationFallback": {
+    "rewrite": "index.html",
+    "exclude": ["/static/media/*.{png,jpg,jpeg,gif,bmp}",   "/static/css/*"]
+  },
+  "mimeTypes": {
+    ".json": "text/json"
+  }
 }
