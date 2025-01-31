@@ -7,6 +7,7 @@ import Home from './pages/dashboard.tsx';
 import { Auth0Provider } from '@auth0/auth0-react';
 //npx prettier --write .
 const baseUrl = import.meta.env.VITE_REDIRECT_URI;
+console.log(baseUrl,"check")
 console.log("great") 
 const root = document.getElementById('root');
 
