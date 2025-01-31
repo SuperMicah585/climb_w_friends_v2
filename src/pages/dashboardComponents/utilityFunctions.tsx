@@ -1,7 +1,7 @@
 import { MapObject } from '../../types/interfaces';
-
+const domain = import.meta.env.VITE_DOMAIN;
 const retrieveUsersOnMap = async (mapId: number) => {
-  const url = `http://localhost:5074/api/Maps/Userlist/${mapId}`;
+  const url = `${domain}api/Maps/Userlist/${mapId}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -45,7 +45,7 @@ const retrieveMapsAndUsers = async (mapsJson: MapObject[] | undefined) => {
 //need to edit users on map in the future
 const editMap = async (title: string, description: string, id: number) => {
   try {
-    const response = await fetch(`http://localhost:5074/api/Maps/${id}`, {
+    const response = await fetch(`${domain}api/Maps/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ const editMap = async (title: string, description: string, id: number) => {
 };
 
 const retrieveClimbsOnMapCount = async (mapId: number) => {
-  const url = `http://localhost:5074/api/Climbs/ByMap/${mapId}/Count`;
+  const url = `${domain}api/Climbs/ByMap/${mapId}/Count`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -91,7 +91,7 @@ const addUserToMap = async (mapId: number, userId: string) => {
 
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Maps/${mapId}/users`,
+      `${domain}api/Maps/${mapId}/users`,
       {
         method: 'POST',
         headers: {
@@ -125,7 +125,7 @@ const addUserToMap = async (mapId: number, userId: string) => {
 const removeUserFromMap = async (mapId: number, userId: string) => {
   try {
     const response = await fetch(
-      `http://localhost:5074/api/Maps/${mapId}/users/${userId}`,
+      `${domain}api/Maps/${mapId}/users/${userId}`,
       {
         method: 'DELETE',
         headers: {
@@ -153,7 +153,7 @@ const createMap = async (
   userID: string,
 ) => {
   try {
-    const response = await fetch(`http://localhost:5074/api/Maps/`, {
+    const response = await fetch(`${domain}api/Maps/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -188,7 +188,7 @@ const createMap = async (
 };
 
 const retrieveUserStats = async (auth0Id: string) => {
-  const url = `http://localhost:5074/api/User/${auth0Id}/GetStats`;
+  const url = `${domain}api/User/${auth0Id}/GetStats`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -204,7 +204,7 @@ const retrieveUserStats = async (auth0Id: string) => {
 };
 
 const retrieveAllUsers = async () => {
-  const url = `http://localhost:5074/api/User/List`;
+  const url = `${domain}api/User/List`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
