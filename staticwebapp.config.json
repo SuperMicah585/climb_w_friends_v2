@@ -1,42 +1,19 @@
 {
-    "routes": [
-      {
-        "route": "/Maps/*",
-        "serve": "/index.html"
-      },
-      {
-        "route": "/Maps/:id",
-        "serve": "/index.html"
-      },
-      {
-        "route": "/",
-        "serve": "/index.html"
-      },
-      {
-        "route": "/login",
-        "auth": {
-          "identityProviders": {
-            "customOpenIdConnectProviders": {
-              "myProvider": {
-                "registration": {
-                  "clientIdSettingName": "MSLPGbI26LcOahOn5185CU-4upbMSgHnc6Rrhw1MIZJdcBzFjwwATqCVALpF_GXS",
-                  "clientCredential": {
-                    "clientSecretSettingName": "MSLPGbI26LcOahOn5185CU-4upbMSgHnc6Rrhw1MIZJdcBzFjwwATqCVALpF_GXS"
-                  },
-                  "openIdConnectConfiguration": {
-                    "wellKnownOpenIdConfiguration": "https://dev-qvplotxzdb57f6vf.us.auth0.com/.well-known/openid-configuration"
-                  }
-                },
-                "login": {
-                  "nameClaimType": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name",
-                  "scopes": ["openid", "profile", "email"],
-                  "loginParameterNames": []
-                }
-              }
-            }
-          }
-        }
-      }
-    ]
-  }
-  
+  "routes": [
+    {
+      "route": "/Maps/:id",
+      "serve": "/dist/index.html",
+      "statusCode": 200
+    },
+    {
+      "route": "/Maps/*",
+      "serve": "/dist/index.html",
+      "statusCode": 200
+    },
+    {
+      "route": "/",
+      "serve": "/dist/index.html",
+      "statusCode": 200
+    }
+  ]
+}
