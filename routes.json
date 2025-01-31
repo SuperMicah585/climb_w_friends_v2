@@ -11,6 +11,31 @@
       {
         "route": "/",
         "serve": "/index.html"
+      },
+      {
+        "route": "/login",
+        "auth": {
+          "identityProviders": {
+            "customOpenIdConnectProviders": {
+              "myProvider": {
+                "registration": {
+                  "clientIdSettingName": "MSLPGbI26LcOahOn5185CU-4upbMSgHnc6Rrhw1MIZJdcBzFjwwATqCVALpF_GXS",
+                  "clientCredential": {
+                    "clientSecretSettingName": "MSLPGbI26LcOahOn5185CU-4upbMSgHnc6Rrhw1MIZJdcBzFjwwATqCVALpF_GXS"
+                  },
+                  "openIdConnectConfiguration": {
+                    "wellKnownOpenIdConfiguration": "https://dev-qvplotxzdb57f6vf.us.auth0.com/.well-known/openid-configuration"
+                  }
+                },
+                "login": {
+                  "nameClaimType": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name",
+                  "scopes": ["openid", "profile", "email"],
+                  "loginParameterNames": []
+                }
+              }
+            }
+          }
+        }
       }
     ]
   }
