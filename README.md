@@ -13,4 +13,4 @@ Live Demo: TBA
 - **Frontend**: React, Thailwind
 - **Backend**: C#,.NET,Entity Framework
 - **Database**: Postgres SQL, Post GIS Extension
-- **Deployment**: Azure
+- **Deployment**: Azure,Github Actions(CI/CD)
