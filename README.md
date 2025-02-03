@@ -10,7 +10,7 @@ Try it here: https://icy-mushroom-0a940671e.4.azurestaticapps.net/
 ** There is a lot **
 
 ## Technologies Used
-- **Frontend**: React, Thailwind
+- **Frontend**: React, Thailwind,Typescript
 - **Backend**: C#,.NET,Entity Framework
 - **Database**: Postgres SQL, Post GIS Extension
 - **Deployment**: Azure,Github Actions(CI/CD)
