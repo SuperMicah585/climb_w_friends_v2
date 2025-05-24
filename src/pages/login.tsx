@@ -5,7 +5,7 @@ import HomeNavBar from './homeComponents/homeNavBar';
 import ComingSoonPage from '../ComingSoon';
 import { useAuth0 } from '@auth0/auth0-react';
 
-import backGroundImage from './homeComponents/homeBackGround.png'
+//import backGroundImage from './homeComponents/homeBackGround.png'
 
 const AuthComponent: React.FC = () => {
   const [selectedPage, setSelectedPage] = useState('Home');
@@ -24,13 +24,29 @@ const AuthComponent: React.FC = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % phrases.length);
-    }, 5000); // Switch every 2 seconds
+    }, 5000); // Switch every 5 seconds
   
     return () => clearInterval(interval);
   }, [phrases.length]);
 
   return (
     <div className="absolute left-0 top-0 box-border flex h-full w-screen flex-col bg-white overflow-y-scroll">
+      
+      {/* Add the CSS animation directly in a style tag */}
+      <style>{`
+        @keyframes gradient-x {
+          0%, 100% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+        }
+        
+        .animate-gradient-x {
+          animation: gradient-x 3s ease infinite;
+        }
+      `}</style>
       
       <HomeNavBar
         selectedPage={selectedPage}
@@ -48,22 +64,24 @@ const AuthComponent: React.FC = () => {
               <div 
                 className="bg-gradient-to-r from-violet-500 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-gradient-x"
                 style={{
-                  backgroundSize: '200% 200%',
-                  animation: 'gradient-x 3s ease infinite'
+                  backgroundSize: '200% 200%'
                 }}
               >
                 {phrases[currentIndex]}
               </div>
             </div>
 
-            <div className = "text-center mt-12">
-              <div className = "text-stone-400 font-changa text-2xl">Turn climbing trip planning into an </div>
-              <div className = "text-stone-400 font-changa text-2xl font-bold ">interactive and collaborative experience </div>
+            <div className="text-center mt-12">
+              <div className="text-stone-400 font-changa text-2xl">Turn climbing trip planning into an </div>
+              <div className="text-stone-400 font-changa text-2xl font-bold">interactive and collaborative experience</div>
             </div>
 
-            <div onClick={() => loginWithRedirect()} className = 'text-stone-600 font-bold flex p-5 bg-green-400 rounded-lg mt-12 hover:cursor-pointer hover:bg-green-300'>
+            <button 
+              onClick={() => loginWithRedirect()} 
+              className="text-stone-600 font-bold flex p-5 bg-green-400 rounded-lg mt-12 hover:cursor-pointer hover:bg-green-300 transition-colors duration-200"
+            >
               Get Started - It's free
-            </div>
+            </button>
           </div>
 
           {/* Feature Grid Section */}
@@ -87,7 +105,7 @@ const AuthComponent: React.FC = () => {
               </div>
 
               {/* Feature 2 */}
-              <div className="flex flex-col md:flex-row items-center gap-8">
+              <div className="flex flex-col md:flex-row-reverse items-center gap-8">
                 <div className="w-full md:w-1/2">
                   <div className="w-full h-64 bg-gradient-to-br from-green-200 to-green-400 rounded-lg flex items-center justify-center">
                     <div className="text-green-800 font-changa text-xl font-bold">Feature Image 2</div>
@@ -119,7 +137,7 @@ const AuthComponent: React.FC = () => {
               </div>
 
               {/* Feature 4 */}
-              <div className="flex flex-col md:flex-row items-center gap-8">
+              <div className="flex flex-col md:flex-row-reverse items-center gap-8">
                 <div className="w-full md:w-1/2">
                   <div className="w-full h-64 bg-gradient-to-br from-orange-200 to-orange-400 rounded-lg flex items-center justify-center">
                     <div className="text-orange-800 font-changa text-xl font-bold">Feature Image 4</div>
@@ -136,17 +154,6 @@ const AuthComponent: React.FC = () => {
 
             </div>
           </div>
-
-          <style jsx>{`
-            @keyframes gradient-x {
-              0%, 100% {
-                background-position: 0% 50%;
-              }
-              50% {
-                background-position: 100% 50%;
-              }
-            }
-          `}</style>
         </>
       ) : (
         <ComingSoonPage />
