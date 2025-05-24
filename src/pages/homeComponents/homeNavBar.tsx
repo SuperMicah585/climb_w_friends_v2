@@ -10,11 +10,10 @@ interface NavBarProps {
 }
 
 const HomeNavBar: React.FC<NavBarProps> = ({
-  selectedPage,
   setSelectedPage,
 }) => {
   const { isAuthenticated } = useAuth0();
-  const navBarItems = ['About', 'Usage', 'Work With Us'];
+  //const navBarItems = ['About', 'Usage', 'Work With Us'];
 
   return (
     <div className="relative z-10 flex min-h-20 w-screen items-center justify-center gap-40 font-semibold text-black">
