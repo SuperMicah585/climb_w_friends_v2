@@ -4,6 +4,10 @@ import React, { useState, useEffect } from 'react';
 import HomeNavBar from './homeComponents/homeNavBar';
 import ComingSoonPage from '../ComingSoon';
 import { useAuth0 } from '@auth0/auth0-react';
+import LoginMap from './homeComponents/login_map.png'
+import LoginClimbDetails from './homeComponents/climbDetails_login.png'
+import MapFilter from './homeComponents/mapFilter_login.png'
+import HoverLogin from './homeComponents/hover_login.png'
 
 //import backGroundImage from './homeComponents/homeBackGround.png'
 
@@ -78,7 +82,7 @@ const AuthComponent: React.FC = () => {
 
             <button 
               onClick={() => loginWithRedirect()} 
-              className="text-stone-600 font-bold flex p-5 bg-green-400 rounded-lg mt-12 hover:cursor-pointer hover:bg-green-300 transition-colors duration-200"
+              className="z-20 text-stone-600 font-bold flex p-5 bg-green-400 rounded-lg mt-12 hover:cursor-pointer hover:bg-green-300 transition-colors duration-200"
             >
               Get Started - It's free
             </button>
@@ -91,63 +95,84 @@ const AuthComponent: React.FC = () => {
               {/* Feature 1 */}
               <div className="flex flex-col md:flex-row items-center gap-8">
                 <div className="w-full md:w-1/2">
-                  <div className="w-full h-64 bg-gradient-to-br from-blue-200 to-blue-400 rounded-lg flex items-center justify-center">
-                    <div className="text-blue-800 font-changa text-xl font-bold">Feature Image 1</div>
+                  {/* Option 1: Remove fixed height, let image determine container size */}
+                  <img
+                    src={LoginMap}
+                    alt="Login Map"
+                    className="w-full object-cover rounded-lg"
+                  />
+                  
+                  {/* Option 2: Use object-cover to fill the space (may crop image)
+                  <img
+                    src={LoginMap}
+                    alt="Login Map"
+                    className="w-full h-64 object-cover rounded-lg"
+                  />
+                  */}
+                  
+                  {/* Option 3: Flexible height that maintains aspect ratio
+                  <div className="w-full min-h-64">
+                    <img
+                      src={LoginMap}
+                      alt="Login Map"
+                      className="w-full h-full object-contain rounded-lg"
+                    />
                   </div>
+                  */}
                 </div>
                 <div className="w-full md:w-1/2">
-                  <h3 className="font-changa text-2xl font-bold text-stone-700 mb-3">Plan Your Routes</h3>
+                  <h3 className="font-changa text-2xl font-bold text-stone-700 mb-3">Create Your Map  </h3>
                   <p className="text-stone-600 font-changa text-lg leading-relaxed">
-                    Discover and plan climbing routes with interactive maps. Mark your favorite spots, 
-                    save difficulty ratings, and create detailed itineraries for your next adventure.
-                  </p>
+                  Explore climbing routes on interactive maps. Add climbs you're interested in, collaborate with friends to build your shared map, and track everyone's activity through the event log. Shapes on the map automatically group nearby climbs for easier navigation and prioritization.                  </p>
                 </div>
               </div>
 
               {/* Feature 2 */}
-              <div className="flex flex-col md:flex-row-reverse items-center gap-8">
-                <div className="w-full md:w-1/2">
-                  <div className="w-full h-64 bg-gradient-to-br from-green-200 to-green-400 rounded-lg flex items-center justify-center">
-                    <div className="text-green-800 font-changa text-xl font-bold">Feature Image 2</div>
-                  </div>
+              <div className="flex flex-col md:flex-row items-center gap-8">
+              <div className="w-full md:w-1/2">
+              <img
+                    src={LoginClimbDetails}
+                    alt="Login Map"
+                    className="w-full object-cover rounded-lg"
+                  />
                 </div>
                 <div className="w-full md:w-1/2">
-                  <h3 className="font-changa text-2xl font-bold text-stone-700 mb-3">Track Progress</h3>
+                  <h3 className="font-changa text-2xl font-bold text-stone-700 mb-3">Give Your Climbs Context</h3>
                   <p className="text-stone-600 font-changa text-lg leading-relaxed">
-                    Log your climbs, track your progress over time, and celebrate your achievements. 
-                    Monitor your skill development and set new goals for future climbing sessions.
-                  </p>
+                  Log ticks or attempts on climbs, join routes your friends are eyeing, add tags for context, and chat about each climb — all in one place.               </p>
                 </div>
               </div>
 
               {/* Feature 3 */}
               <div className="flex flex-col md:flex-row items-center gap-8">
-                <div className="w-full md:w-1/2">
-                  <div className="w-full h-64 bg-gradient-to-br from-purple-200 to-purple-400 rounded-lg flex items-center justify-center">
-                    <div className="text-purple-800 font-changa text-xl font-bold">Feature Image 3</div>
-                  </div>
+              <div className="w-full md:w-1/2">
+              <img
+                    src={MapFilter}
+                    alt="Login Map"
+                    className="w-full object-cover rounded-lg"
+                  />
                 </div>
                 <div className="w-full md:w-1/2">
-                  <h3 className="font-changa text-2xl font-bold text-stone-700 mb-3">Share Adventures</h3>
+                  <h3 className="font-changa text-2xl font-bold text-stone-700 mb-3">Filter Climbs</h3>
                   <p className="text-stone-600 font-changa text-lg leading-relaxed">
-                    Connect with fellow climbers, share your epic routes, and discover new locations 
-                    through the community. Build lasting friendships through shared climbing experiences.
+                  Filter climbs based on attributes such as tags, difficulty grade, and the people who have added them to their to-do lists.
                   </p>
                 </div>
               </div>
 
               {/* Feature 4 */}
-              <div className="flex flex-col md:flex-row-reverse items-center gap-8">
+              <div className="flex flex-col md:flex-row items-center gap-8">
                 <div className="w-full md:w-1/2">
-                  <div className="w-full h-64 bg-gradient-to-br from-orange-200 to-orange-400 rounded-lg flex items-center justify-center">
-                    <div className="text-orange-800 font-changa text-xl font-bold">Feature Image 4</div>
-                  </div>
+                <img
+                    src={HoverLogin}
+                    alt="Login Map"
+                    className="w-full object-cover rounded-lg"
+                  />
                 </div>
                 <div className="w-full md:w-1/2">
-                  <h3 className="font-changa text-2xl font-bold text-stone-700 mb-3">Collaborate</h3>
+                  <h3 className="font-changa text-2xl font-bold text-stone-700 mb-3">Hover Shapes For Details</h3>
                   <p className="text-stone-600 font-changa text-lg leading-relaxed">
-                    Plan group trips together, coordinate schedules, and share resources. 
-                    Make climbing a truly collaborative experience with real-time planning tools.
+                  Hover over shapes to see grade distribution, number of interested climbers, and total climbs in the area.
                   </p>
                 </div>
               </div>
