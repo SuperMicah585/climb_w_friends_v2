@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import HomeNavBar from './homeComponents/homeNavBar';
 import ComingSoonPage from '../ComingSoon';
 import { useAuth0 } from '@auth0/auth0-react';
-import LoginMap from './homeComponents/login_map.png'
 import LoginClimbDetails from './homeComponents/climbDetails_login.png'
 import MapFilter from './homeComponents/mapFilter_login.png'
 import HoverLogin from './homeComponents/hover_login.png'
