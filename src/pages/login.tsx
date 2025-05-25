@@ -8,6 +8,8 @@ import LoginMap from './homeComponents/login_map.png'
 import LoginClimbDetails from './homeComponents/climbDetails_login.png'
 import MapFilter from './homeComponents/mapFilter_login.png'
 import HoverLogin from './homeComponents/hover_login.png'
+import MapDashboard from './homeComponents/mapDashboard.png'
+import MapEventLog from './homeComponents/mapEventLog.png'
 
 //import backGroundImage from './homeComponents/homeBackGround.png'
 
@@ -155,77 +157,96 @@ const AuthComponent: React.FC = () => {
           {/* Feature Grid Section */}
           <div className="max-w-6xl mx-auto px-6 py-16 mt-16">
             <div className="flex flex-col gap-12">
-              
-              {/* Feature 1 */}
-              <div className="flex flex-col md:flex-row items-center gap-8">
+             
+              {/* Feature 1 - Dashboard */}
+              <div className="flex flex-col md:flex-row items-top gap-8">
                 <div className="w-full md:w-1/2">
-                  <img
-                    src={LoginMap}
-                    alt="Create Your Map"
-                    className="w-full object-cover rounded-lg image-clickable"
-                    onClick={() => setModalImage(LoginMap)}
-                  />
-                </div>
-                <div className="w-full md:w-1/2">
-                  <h3 className="font-changa text-2xl font-bold text-stone-700 mb-3">Create Your Map  </h3>
+                  <h3 className="font-changa text-3xl font-bold text-stone-700 mb-3">Create and Manage Your Maps</h3>
                   <p className="text-stone-600 font-changa text-lg leading-relaxed">
-                  Explore climbing routes on interactive maps. Add climbs you're interested in, collaborate with friends to build your shared map, and track everyone's activity through the event log. Shapes on the map automatically group nearby climbs for easier navigation and prioritization.                  </p>
-                </div>
-              </div>
-
-              {/* Feature 2 */}
-              <div className="flex flex-col md:flex-row items-center gap-8">
-              <div className="w-full md:w-1/2">
-              <img
-                    src={LoginClimbDetails}
-                    alt="Give Your Climbs Context"
-                    className="w-full object-cover rounded-lg image-clickable"
-                    onClick={() => setModalImage(LoginClimbDetails)}
-                  />
-                </div>
-                <div className="w-full md:w-1/2">
-                  <h3 className="font-changa text-2xl font-bold text-stone-700 mb-3">Give Your Climbs Context</h3>
-                  <p className="text-stone-600 font-changa text-lg leading-relaxed">
-                  Log ticks or attempts on climbs, join routes your friends are eyeing, add tags for context, and chat about each climb — all in one place.               </p>
-                </div>
-              </div>
-
-              {/* Feature 3 */}
-              <div className="flex flex-col md:flex-row items-center gap-8">
-              <div className="w-full md:w-1/2">
-              <img
-                    src={MapFilter}
-                    alt="Filter Climbs"
-                    className="w-full object-cover rounded-lg image-clickable"
-                    onClick={() => setModalImage(MapFilter)}
-                  />
-                </div>
-                <div className="w-full md:w-1/2">
-                  <h3 className="font-changa text-2xl font-bold text-stone-700 mb-3">Filter Climbs</h3>
-                  <p className="text-stone-600 font-changa text-lg leading-relaxed">
-                  Filter climbs based on attributes such as tags, difficulty grade, and the people who have added them to their to-do lists.
+                    <span className="text-purple-700 font-semibold">Create and edit maps</span>, <span className="text-purple-700 font-semibold">add friends</span>, and view <span className="text-purple-700 font-semibold">statistics</span> for individual maps as well as <span className="text-purple-700 font-semibold">overall stats across all your maps</span>.
                   </p>
                 </div>
+                <div className="w-full md:w-1/2">
+                  <img
+                    src={MapDashboard}
+                    alt="Create Your Map"
+                    className="w-full object-cover rounded-lg image-clickable"
+                    onClick={() => setModalImage(MapDashboard)}
+                  />
+                </div>
               </div>
 
-              {/* Feature 4 */}
-              <div className="flex flex-col md:flex-row items-center gap-8">
+              {/* Feature 2 - Adding Climbs */}
+              <div className="flex flex-col md:flex-row items-top gap-8">
                 <div className="w-full md:w-1/2">
-                <img
+                  <h3 className="font-changa text-3xl font-bold text-stone-700 mb-3">Start Adding Climbs</h3>
+                  <p className="text-stone-600 font-changa text-lg leading-relaxed">
+                    Explore <span className="text-purple-700 font-semibold">climbing routes</span> on <span className="text-purple-700 font-semibold">interactive maps</span> and add <span className="text-purple-700 font-semibold">climbs you're interested in</span>. <span className="text-purple-700 font-semibold">Collaborate with friends</span> to build your <span className="text-purple-700 font-semibold">shared map</span>, and track everyone's activity through the <span className="text-purple-700 font-semibold">event log</span>.
+                  </p>
+                </div>
+                <div className="w-full md:w-1/2">
+                  <img
+                    src={MapEventLog}
+                    alt="Start Adding Climbs"
+                    className="w-full object-cover rounded-lg image-clickable"
+                    onClick={() => setModalImage(MapEventLog)}
+                  />
+                </div>
+              </div>
+
+              {/* Feature 3 - Hover Details */}
+              <div className="flex flex-col md:flex-row items-top gap-8">
+                <div className="w-full md:w-1/2">
+                  <h3 className="font-changa text-3xl font-bold text-stone-700 mb-3">Zoom in For More Details</h3>
+                  <p className="text-stone-600 font-changa text-lg leading-relaxed">
+                    <span className="text-purple-700 font-semibold">Zoom in</span> on areas that interest you to get a more <span className="text-purple-700 font-semibold">detailed view</span>. <span className="text-purple-700 font-semibold">Hover over shapes</span> to see <span className="text-purple-700 font-semibold">grade distribution</span>, <span className="text-purple-700 font-semibold">number of interested climbers</span>, and <span className="text-purple-700 font-semibold">total climbs in the area</span>.
+                  </p>
+                </div>
+                <div className="w-full md:w-1/2">
+                  <img
                     src={HoverLogin}
                     alt="Hover Shapes For Details"
                     className="w-full object-cover rounded-lg image-clickable"
                     onClick={() => setModalImage(HoverLogin)}
                   />
                 </div>
+              </div>
+
+              {/* Feature 4 - Climb Context */}
+              <div className="flex flex-col md:flex-row items-top gap-8">
                 <div className="w-full md:w-1/2">
-                  <h3 className="font-changa text-2xl font-bold text-stone-700 mb-3">Hover Shapes For Details</h3>
+                  <h3 className="font-changa text-3xl font-bold text-stone-700 mb-3">Give Your Climbs Context</h3>
                   <p className="text-stone-600 font-changa text-lg leading-relaxed">
-                  Hover over shapes to see grade distribution, number of interested climbers, and total climbs in the area.
+                    <span className="text-purple-700 font-semibold">Click on shapes</span> to give your climbs more context. <span className="text-purple-700 font-semibold">Log ticks or attempts</span> on climbs, <span className="text-purple-700 font-semibold">join routes your friends are eyeing</span>, add <span className="text-purple-700 font-semibold">tags for context</span>, and <span className="text-purple-700 font-semibold">chat about each climb</span> — all in one place.
                   </p>
+                </div>
+                <div className="w-full md:w-1/2">
+                  <img
+                    src={LoginClimbDetails}
+                    alt="Give Your Climbs Context"
+                    className="w-full object-cover rounded-lg image-clickable"
+                    onClick={() => setModalImage(LoginClimbDetails)}
+                  />
                 </div>
               </div>
 
+              {/* Feature 5 - Filtering */}
+              <div className="flex flex-col md:flex-row items-top gap-8">
+                <div className="w-full md:w-1/2">
+                  <h3 className="font-changa text-3xl font-bold text-stone-700 mb-3">Filter Climbs</h3>
+                  <p className="text-stone-600 font-changa text-lg leading-relaxed">
+                    <span className="text-purple-700 font-semibold">Filter climbs</span> based on attributes such as <span className="text-purple-700 font-semibold">tags</span>, <span className="text-purple-700 font-semibold">difficulty grade</span>, and <span className="text-purple-700 font-semibold">the people who have added them</span> to their <span className="text-purple-700 font-semibold">to-do lists</span>.
+                  </p>
+                </div>
+                <div className="w-full md:w-1/2">
+                  <img
+                    src={MapFilter}
+                    alt="Filter Climbs"
+                    className="w-full object-cover rounded-lg image-clickable"
+                    onClick={() => setModalImage(MapFilter)}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </>
