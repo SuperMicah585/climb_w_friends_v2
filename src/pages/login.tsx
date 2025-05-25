@@ -13,6 +13,7 @@ import HoverLogin from './homeComponents/hover_login.png'
 
 const AuthComponent: React.FC = () => {
   const [selectedPage, setSelectedPage] = useState('Home');
+  const [modalImage, setModalImage] = useState<string | null>(null);
   const { loginWithRedirect } = useAuth0();
 
   const phrases = [
@@ -49,6 +50,69 @@ const AuthComponent: React.FC = () => {
         
         .animate-gradient-x {
           animation: gradient-x 3s ease infinite;
+        }
+        
+        .image-clickable {
+          cursor: pointer;
+          transition: opacity 0.2s ease-in-out;
+        }
+        
+        .image-clickable:hover {
+          opacity: 0.8;
+        }
+        
+        .modal-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background-color: rgba(0, 0, 0, 0.9);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 1000;
+          animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        .modal-image {
+          max-width: 90vw;
+          max-height: 90vh;
+          object-fit: contain;
+          border-radius: 8px;
+          animation: scaleIn 0.3s ease-in-out;
+        }
+        
+        .close-button {
+          position: absolute;
+          top: 20px;
+          right: 30px;
+          color: white;
+          font-size: 40px;
+          font-weight: bold;
+          cursor: pointer;
+          z-index: 1001;
+          transition: opacity 0.2s ease-in-out;
+        }
+        
+        .close-button:hover {
+          opacity: 0.7;
+        }
+        
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        
+        @keyframes scaleIn {
+          from { 
+            opacity: 0;
+            transform: scale(0.8);
+          }
+          to { 
+            opacity: 1;
+            transform: scale(1);
+          }
         }
       `}</style>
       
@@ -95,30 +159,12 @@ const AuthComponent: React.FC = () => {
               {/* Feature 1 */}
               <div className="flex flex-col md:flex-row items-center gap-8">
                 <div className="w-full md:w-1/2">
-                  {/* Option 1: Remove fixed height, let image determine container size */}
                   <img
                     src={LoginMap}
-                    alt="Login Map"
-                    className="w-full object-cover rounded-lg"
+                    alt="Create Your Map"
+                    className="w-full object-cover rounded-lg image-clickable"
+                    onClick={() => setModalImage(LoginMap)}
                   />
-                  
-                  {/* Option 2: Use object-cover to fill the space (may crop image)
-                  <img
-                    src={LoginMap}
-                    alt="Login Map"
-                    className="w-full h-64 object-cover rounded-lg"
-                  />
-                  */}
-                  
-                  {/* Option 3: Flexible height that maintains aspect ratio
-                  <div className="w-full min-h-64">
-                    <img
-                      src={LoginMap}
-                      alt="Login Map"
-                      className="w-full h-full object-contain rounded-lg"
-                    />
-                  </div>
-                  */}
                 </div>
                 <div className="w-full md:w-1/2">
                   <h3 className="font-changa text-2xl font-bold text-stone-700 mb-3">Create Your Map  </h3>
@@ -132,8 +178,9 @@ const AuthComponent: React.FC = () => {
               <div className="w-full md:w-1/2">
               <img
                     src={LoginClimbDetails}
-                    alt="Login Map"
-                    className="w-full object-cover rounded-lg"
+                    alt="Give Your Climbs Context"
+                    className="w-full object-cover rounded-lg image-clickable"
+                    onClick={() => setModalImage(LoginClimbDetails)}
                   />
                 </div>
                 <div className="w-full md:w-1/2">
@@ -148,8 +195,9 @@ const AuthComponent: React.FC = () => {
               <div className="w-full md:w-1/2">
               <img
                     src={MapFilter}
-                    alt="Login Map"
-                    className="w-full object-cover rounded-lg"
+                    alt="Filter Climbs"
+                    className="w-full object-cover rounded-lg image-clickable"
+                    onClick={() => setModalImage(MapFilter)}
                   />
                 </div>
                 <div className="w-full md:w-1/2">
@@ -165,8 +213,9 @@ const AuthComponent: React.FC = () => {
                 <div className="w-full md:w-1/2">
                 <img
                     src={HoverLogin}
-                    alt="Login Map"
-                    className="w-full object-cover rounded-lg"
+                    alt="Hover Shapes For Details"
+                    className="w-full object-cover rounded-lg image-clickable"
+                    onClick={() => setModalImage(HoverLogin)}
                   />
                 </div>
                 <div className="w-full md:w-1/2">
@@ -182,6 +231,27 @@ const AuthComponent: React.FC = () => {
         </>
       ) : (
         <ComingSoonPage />
+      )}
+      
+      {/* Image Modal */}
+      {modalImage && (
+        <div 
+          className="modal-overlay"
+          onClick={() => setModalImage(null)}
+        >
+          <span 
+            className="close-button"
+            onClick={() => setModalImage(null)}
+          >
+            ×
+          </span>
+          <img
+            src={modalImage}
+            alt="Full size view"
+            className="modal-image"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
       )}
     </div>
   );
