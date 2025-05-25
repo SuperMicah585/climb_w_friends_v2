@@ -25,9 +25,9 @@ const HomeNavBar: React.FC<NavBarProps> = ({
         onClick={() => setSelectedPage('Home')}
         className="absolute left-32 flex w-60 cursor-pointer items-center gap-2 font-changa hover:opacity-75"
       >
-        <img src={climbwfriendsLogo} alt="Climb With Friends Logo" className="h-16 w-16 object-contain" />
+        <img src={climbwfriendsLogo} alt="Climb With Friends Logo" className="h-16 w-16 object-contain rounded-full bg-white" />
         <div className="flex items-center justify-center">
-          <div className="text-3xl">CLIMB</div>
+          <div className="text-3xl text-violet-700">CLIMB</div>
           <div className="text-sm">W</div>
           <div className="text-3xl">FRIENDS</div>
         </div>
