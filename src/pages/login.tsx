@@ -212,7 +212,7 @@ const AuthComponent: React.FC = () => {
                 </div>
               </div>
 
-              {/* Feature 4 - Climb Context */}
+              {/* Feature 4 - Climb Contehhhhhxt */}
               <div className="flex flex-col md:flex-row items-top gap-8">
                 <div className="w-full md:w-1/2">
                   <h3 className="font-changa text-3xl font-bold text-stone-700 mb-3">Give Your Climbs Context</h3>
