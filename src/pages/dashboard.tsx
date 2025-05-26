@@ -18,7 +18,7 @@ const Home = () => {
       loginWithRedirect();
     }
   }, [isAuthenticated, isLoading, loginWithRedirect]);
-
+/*return statement wowowo */
   return (
     <div className="absolute left-0 top-0 flex h-screen w-screen flex-col overflow-y-scroll bg-zinc-50">
       <NavBar
