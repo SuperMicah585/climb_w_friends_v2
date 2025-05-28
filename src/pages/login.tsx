@@ -36,7 +36,7 @@ const AuthComponent: React.FC = () => {
   }, [phrases.length]);
 
   return (
-    <div className="absolute left-0 top-0 box-border flex h-full w-screen flex-col bg-white overflow-y-scroll">
+    <div className="absolute top-0 left-0 h-full box-border w-screen flex-col bg-white overflow-y-scroll">
       
       {/* Add the CSS animation directly in a style tag */}
       <style>{`
@@ -123,7 +123,7 @@ const AuthComponent: React.FC = () => {
       />
 
       {selectedPage === 'Home' ? (
-        <>
+        <div>
           <div className='flex flex-col mt-32 gap-2 items-center'>
             <div className="font-changa text-4xl text-stone-600 text-center">
               <div>Visualize your climbing trips</div>
@@ -154,6 +154,7 @@ const AuthComponent: React.FC = () => {
           </div>
 
           {/* Feature Grid Section */}
+          
           <div className="max-w-6xl mx-auto px-6 py-16 mt-16">
             <div className="flex flex-col gap-12">
              
@@ -248,7 +249,7 @@ const AuthComponent: React.FC = () => {
               </div>
             </div>
           </div>
-        </>
+        </div>
       ) : (
         <ComingSoonPage />
       )}
@@ -273,6 +274,14 @@ const AuthComponent: React.FC = () => {
           />
         </div>
       )}
+
+<footer className="bg-violet-600 flex flex-col items-center justify-center text-white gap-4 py-10 px-4">
+        <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 text-center sm:text-left">
+          <div className="text-2xl sm:text-3xl font-bold font-changa">ClimbWithFriends</div>
+          <div className="text-base sm:text-lg sm:border-l border-violet-300 sm:pl-6">cwfauth@gmail.com</div>
+        </div>
+        <div className="text-xs sm:text-sm text-violet-200">© 2025 All rights reserved</div>
+      </footer>
     </div>
   );
 };
