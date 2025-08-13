@@ -11,6 +11,13 @@ Console.WriteLine($"Current Directory: {Directory.GetCurrentDirectory()}");
 Console.WriteLine($"Runtime Version: {Environment.Version}");
 Console.WriteLine($"OS Version: {Environment.OSVersion}");
 
+// Check for .NET 8 compatibility
+var runtimeVersion = Environment.Version;
+if (runtimeVersion.Major == 8 && runtimeVersion.Minor == 0 && runtimeVersion.Build == 0)
+{
+    Console.WriteLine("WARNING: Running on .NET 8.0.0 - some features may not be available");
+}
+
 try
 {
 

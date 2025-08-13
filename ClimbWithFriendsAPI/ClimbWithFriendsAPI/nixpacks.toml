@@ -1,2 +1,2 @@
 [phases.setup]
-nixPkgs = ['dotnet-sdk_8_0_119']
+nixPkgs = ['dotnet-sdk_8']
