@@ -102,7 +102,7 @@ private async Task<HashSet<int>> GetFilteredClimbIdsAsync(int mapId, string auth
         .Select(mfc => mfc.ClimbId)
         .Distinct();
 
-    var filteredIds = await baseQuery.ToHashSetAsync();
+    var filteredIds = new HashSet<int>(await baseQuery.ToListAsync());
 
     // Apply tag filters
     var tagFilters = await _context.TagFilters
@@ -111,10 +111,10 @@ private async Task<HashSet<int>> GetFilteredClimbIdsAsync(int mapId, string auth
 
     if (tagFilters.Any())
     {
-        var tagClimbIds = await _context.ClimbToTags
+        var tagClimbIds = new HashSet<int>(await _context.ClimbToTags
             .Where(ct => tagFilters.Select(tf => tf.TagId).Contains(ct.TagId))
             .Select(ct => ct.ClimbId)
-            .ToHashSetAsync();
+            .ToListAsync());
             
         filteredIds.IntersectWith(tagClimbIds);
     }
@@ -126,12 +126,12 @@ var userFilters = await _context.UserFilters
 
 if (userFilters.Any())
 {
-    var userClimbIds = await _context.MapToUserToClimbs
+    var userClimbIds = new HashSet<int>(await _context.MapToUserToClimbs
         .Where(muc => 
             muc.MapId == mapId && 
             userFilters.Select(uf => uf.Auth0IdToFilter).Contains(muc.Auth0ID))
         .Select(muc => muc.ClimbId)
-        .ToHashSetAsync();
+        .ToListAsync());
         
     filteredIds.IntersectWith(userClimbIds);
 }

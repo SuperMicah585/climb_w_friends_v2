@@ -19,9 +19,6 @@ namespace ClimbWithFriendsAPI.Data
 
 protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 {
-    // Suppress the warning for pending model changes
-    optionsBuilder.ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
-    
     // Connect to PostgreSQL with connection string from app settings
     optionsBuilder.UseNpgsql(Configuration.GetConnectionString("databaseConnection"), 
         o => o.UseNetTopologySuite());
