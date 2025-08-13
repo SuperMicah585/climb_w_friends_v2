@@ -37,7 +37,32 @@ builder.Services.AddSwaggerGen();
 
 // Register AppDbContext with dependency injection
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("databaseConnection")));
+{
+    // Get connection string from environment variable (Railway) or configuration (local)
+    var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") ?? 
+                          builder.Configuration.GetConnectionString("databaseConnection");
+    
+    // If no connection string is found, use a default for development
+    if (string.IsNullOrEmpty(connectionString))
+    {
+        connectionString = "Host=localhost; Port=5432; Database=ClimbWithFriendsDB; Username=postgres; Password=climb";
+    }
+    
+    // If using Railway's DATABASE_URL, convert it to Npgsql format
+    if (connectionString?.StartsWith("postgres://") == true)
+    {
+        var uri = new Uri(connectionString);
+        var username = uri.UserInfo.Split(':')[0];
+        var password = uri.UserInfo.Split(':')[1];
+        var host = uri.Host;
+        var port = uri.Port;
+        var database = uri.AbsolutePath.TrimStart('/');
+        
+        connectionString = $"Host={host};Port={port};Database={database};Username={username};Password={password};SSL Mode=Require;Trust Server Certificate=true;";
+    }
+    
+    options.UseNpgsql(connectionString);
+});
 
 builder.Services.AddScoped<ActivityLogService>();
 
@@ -52,16 +77,35 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = services.GetRequiredService<AppDbContext>();
+        
+        // Log connection info
+        logger.LogInformation("Attempting to connect to database...");
+        if (Environment.GetEnvironmentVariable("DATABASE_URL") != null)
+        {
+            logger.LogInformation("Using DATABASE_URL from environment variables");
+        }
+        else
+        {
+            logger.LogInformation("Using connection string from configuration");
+        }
 
-        // Use migrations instead of EnsureCreated for production
+        // Use migrations for production, EnsureCreated for development
         if (app.Environment.IsDevelopment())
         {
             context.Database.EnsureCreated();
         }
         else
         {
-            // For production, ensure database exists but don't recreate
-            context.Database.EnsureCreated();
+            // For production, apply migrations instead of EnsureCreated
+            try
+            {
+                context.Database.Migrate();
+            }
+            catch (Exception migrationEx)
+            {
+                logger.LogWarning(migrationEx, "Migration failed, trying EnsureCreated as fallback");
+                context.Database.EnsureCreated();
+            }
         }
 
         // Only seed if no data exists
@@ -95,7 +139,7 @@ using (var scope = app.Services.CreateScope())
     {
         logger.LogError(ex, "An error occurred while initializing the database");
         
-        // In production, you might want to continue without seeding rather than crash
+        // In production, log the error but don't crash the app
         if (app.Environment.IsDevelopment())
         {
             throw; // Rethrow in development
@@ -103,6 +147,7 @@ using (var scope = app.Services.CreateScope())
         else
         {
             logger.LogError("Database initialization failed, but continuing startup...");
+            // Don't throw - let the app start even if database initialization fails
         }
     }
 }
