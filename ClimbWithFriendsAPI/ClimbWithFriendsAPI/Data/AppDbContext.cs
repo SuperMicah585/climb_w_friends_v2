@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using NetTopologySuite.Geometries;
-using YourProjectNamespace.Data.Configurations;
+using ClimbWithFriendsAPI.Data.Configurations;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 

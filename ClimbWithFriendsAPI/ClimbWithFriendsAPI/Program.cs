@@ -8,6 +8,8 @@ using System.Text.Json.Serialization;
 Console.WriteLine("=== APPLICATION STARTING ===");
 Console.WriteLine($"Environment: {Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Not set"}");
 Console.WriteLine($"Current Directory: {Directory.GetCurrentDirectory()}");
+Console.WriteLine($"Runtime Version: {Environment.Version}");
+Console.WriteLine($"OS Version: {Environment.OSVersion}");
 
 try
 {

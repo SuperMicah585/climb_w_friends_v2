@@ -5,7 +5,7 @@ using System.Globalization;
 using ClimbWithFriendsAPI.Data;
 using CsvHelper;
 
-namespace YourProjectNamespace.Data.Configurations
+namespace ClimbWithFriendsAPI.Data.Configurations
 {
     public class ClimbConfiguration : IEntityTypeConfiguration<Climb>
     {

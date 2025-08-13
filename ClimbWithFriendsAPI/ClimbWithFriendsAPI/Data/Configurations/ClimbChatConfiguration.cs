@@ -2,7 +2,7 @@ using ClimbWithFriendsAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace YourProjectNamespace.Data.Configurations
+namespace ClimbWithFriendsAPI.Data.Configurations
 {
     public class ClimbChatConfiguration : IEntityTypeConfiguration<ClimbChat>
     {
