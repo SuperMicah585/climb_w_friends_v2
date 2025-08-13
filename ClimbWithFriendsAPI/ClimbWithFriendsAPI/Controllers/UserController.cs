@@ -38,10 +38,15 @@ namespace ClimbWithFriendsAPI.Controllers
         }
 
     [HttpGet("{auth0Id}/GetStats")]
-    public async Task<UserStatistics> GetUserStatisticsAsync(string auth0Id)
+    public async Task<ActionResult<UserStatistics>> GetUserStatisticsAsync(string auth0Id)
     {
         var user = await _context.Users
         .FirstOrDefaultAsync(u => u.Auth0ID == auth0Id);
+
+        if (user == null)
+        {
+            return NotFound($"User with Auth0ID {auth0Id} not found");
+        }
 
         var userId = user.UserId;
         // Get all maps associated with the user's climbs
