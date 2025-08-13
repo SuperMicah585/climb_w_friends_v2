@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
+    <PackageReference Include="NetTopologySuite" Version="2.6.0" />
+    <PackageReference Include="CsvHelper" Version="30.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="simple-seed.cs" />
+    <Compile Include="Data\AppDbContext.cs" />
+    <Compile Include="Data\Climb.cs" />
+    <Compile Include="Data\Configurations\ClimbConfiguration.cs" />
+    <Compile Include="Data\Configurations\ClimbCsvMap.cs" />
+    <Compile Include="Data\Configurations\ClimbCsvRecord.cs" />
+    <None Include="appsettings*.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Data\Configurations\climb_data.csv" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project> 
