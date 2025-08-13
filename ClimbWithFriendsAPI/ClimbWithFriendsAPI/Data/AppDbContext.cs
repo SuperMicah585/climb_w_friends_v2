@@ -20,8 +20,26 @@ namespace ClimbWithFriendsAPI.Data
 protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 {
     // Connect to PostgreSQL with connection string from environment or app settings
-    var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") ?? 
-                          Configuration.GetConnectionString("databaseConnection");
+    var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+    string connectionString;
+    
+    if (!string.IsNullOrEmpty(databaseUrl))
+    {
+        // Convert PostgreSQL URL format to .NET connection string format
+        var uri = new Uri(databaseUrl);
+        var username = uri.UserInfo.Split(':')[0];
+        var password = uri.UserInfo.Split(':')[1];
+        var host = uri.Host;
+        var port = uri.Port;
+        var database = uri.AbsolutePath.TrimStart('/');
+        
+        connectionString = $"Host={host};Port={port};Database={database};Username={username};Password={password}";
+    }
+    else
+    {
+        connectionString = Configuration.GetConnectionString("databaseConnection");
+    }
+    
     optionsBuilder.UseNpgsql(connectionString, 
         o => o.UseNetTopologySuite());
 }
