@@ -1,25 +1,3 @@
-
-var builder = WebApplication.CreateBuilder(args);
-
-// Configure port for Railway
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
-
-// Add basic services
-builder.Services.AddControllers();
-
-var app = builder.Build();
-
-// Simple test endpoint
-app.MapGet("/", () => "API is running!");
-app.MapGet("/health", () => new { status = "healthy", timestamp = DateTime.UtcNow });
-
-app.MapControllers();
-
-Console.WriteLine($"Starting application on port {port}");
-app.Run();
-
-/*
 using ClimbWithFriendsAPI.Data;
 using NetTopologySuite.IO.Converters;
 using Newtonsoft.Json;
@@ -144,5 +122,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-*/
