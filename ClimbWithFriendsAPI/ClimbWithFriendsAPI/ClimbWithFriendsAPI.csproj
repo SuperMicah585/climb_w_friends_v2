@@ -21,6 +21,7 @@
   <!-- Additional compiler flags to prevent nullable attributes -->
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
+    <NoWarn>CS8632</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
