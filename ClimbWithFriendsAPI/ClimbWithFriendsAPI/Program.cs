@@ -64,10 +64,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") ?? 
                               builder.Configuration.GetConnectionString("databaseConnection");
         
+        Console.WriteLine($"Raw DATABASE_URL: {Environment.GetEnvironmentVariable("DATABASE_URL")}");
+        Console.WriteLine($"Raw connection string from config: {builder.Configuration.GetConnectionString("databaseConnection")}");
+        
         // If no connection string is found, use a default for development
         if (string.IsNullOrEmpty(connectionString))
         {
             connectionString = "Host=localhost; Port=5432; Database=ClimbWithFriendsDB; Username=postgres; Password=climb";
+            Console.WriteLine("Using default connection string");
         }
         
         // If using Railway's DATABASE_URL, convert it to Npgsql format
@@ -75,6 +79,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         {
             try
             {
+                Console.WriteLine("Converting Railway DATABASE_URL format...");
                 var uri = new Uri(connectionString);
                 var username = uri.UserInfo.Split(':')[0];
                 var password = uri.UserInfo.Split(':')[1];
@@ -83,12 +88,18 @@ builder.Services.AddDbContext<AppDbContext>(options =>
                 var database = uri.AbsolutePath.TrimStart('/');
                 
                 connectionString = $"Host={host};Port={port};Database={database};Username={username};Password={password};SSL Mode=Require;Trust Server Certificate=true;";
+                Console.WriteLine($"Converted connection string: Host={host};Port={port};Database={database};Username={username};Password=***;SSL Mode=Require;Trust Server Certificate=true;");
             }
             catch (Exception uriEx)
             {
                 // If URI parsing fails, log and use original connection string
                 Console.WriteLine($"Failed to parse DATABASE_URL: {uriEx.Message}");
+                Console.WriteLine($"Using original connection string: {connectionString}");
             }
+        }
+        else
+        {
+            Console.WriteLine($"Using connection string as-is: {connectionString}");
         }
         
         options.UseNpgsql(connectionString, npgsqlOptions =>
@@ -112,9 +123,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     Console.WriteLine("=== BUILDING APPLICATION ===");
     var app = builder.Build();
 
-// Database initialization and seeding (only run if needed)
-using (var scope = app.Services.CreateScope())
+// Database initialization and seeding (run in background to avoid blocking startup)
+_ = Task.Run(async () =>
 {
+    await Task.Delay(5000); // Wait 5 seconds for app to fully start
+    
+    using var scope = app.Services.CreateScope();
     var services = scope.ServiceProvider;
     var logger = services.GetRequiredService<ILogger<Program>>();
     
@@ -146,40 +160,38 @@ using (var scope = app.Services.CreateScope())
             // Continue anyway - the app should start even if database is not available
         }
 
-        // Use migrations for production, EnsureCreated for development
-        if (app.Environment.IsDevelopment())
+        // Always try migrations first, then fallback to EnsureCreated
+        bool databaseInitialized = false;
+        
+        // Try migrations first (preferred for production)
+        try
         {
+            logger.LogInformation("Attempting to run database migrations...");
+            context.Database.Migrate();
+            logger.LogInformation("Database migrations completed successfully");
+            databaseInitialized = true;
+        }
+        catch (Exception migrationEx)
+        {
+            logger.LogWarning(migrationEx, "Migration failed, trying EnsureCreated as fallback");
+            
+            // Fallback to EnsureCreated
             try
             {
+                logger.LogInformation("Attempting to ensure database is created...");
                 context.Database.EnsureCreated();
-                logger.LogInformation("Database EnsureCreated completed");
+                logger.LogInformation("Database EnsureCreated completed successfully");
+                databaseInitialized = true;
             }
             catch (Exception ensureEx)
             {
-                logger.LogWarning(ensureEx, "EnsureCreated failed, continuing without database initialization");
+                logger.LogWarning(ensureEx, "EnsureCreated also failed, continuing without database initialization");
             }
         }
-        else
+        
+        if (!databaseInitialized)
         {
-            // For production, apply migrations instead of EnsureCreated
-            try
-            {
-                context.Database.Migrate();
-                logger.LogInformation("Database migrations completed");
-            }
-            catch (Exception migrationEx)
-            {
-                logger.LogWarning(migrationEx, "Migration failed, trying EnsureCreated as fallback");
-                try
-                {
-                    context.Database.EnsureCreated();
-                    logger.LogInformation("EnsureCreated fallback completed");
-                }
-                catch (Exception ensureEx)
-                {
-                    logger.LogWarning(ensureEx, "EnsureCreated fallback also failed, continuing without database initialization");
-                }
-            }
+            logger.LogWarning("Database initialization failed - tables may not exist");
         }
 
         // Only seed if no data exists
@@ -231,7 +243,7 @@ using (var scope = app.Services.CreateScope())
             // Don't throw - let the app start even if database initialization fails
         }
     }
-}
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -257,9 +269,26 @@ app.UseExceptionHandler(errorApp =>
     app.UseCors("AllowAll");
     app.UseAuthorization();
     app.MapControllers();
+    
+    // Add health check endpoint for Railway
+    app.MapGet("/health", () => "OK");
+    app.MapGet("/", () => "ClimbWithFriends API is running!");
 
     Console.WriteLine("=== STARTING APPLICATION ===");
-    app.Run();
+    
+    // Add startup timeout for Railway
+    var startupTimeout = TimeSpan.FromMinutes(2);
+    var cts = new CancellationTokenSource(startupTimeout);
+    
+    try
+    {
+        app.Run(cts.Token);
+    }
+    catch (OperationCanceledException)
+    {
+        Console.WriteLine("Application startup timed out after 2 minutes");
+        throw;
+    }
 }
 catch (Exception ex)
 {
