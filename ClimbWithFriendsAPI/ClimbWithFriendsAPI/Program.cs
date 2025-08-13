@@ -4,16 +4,26 @@ using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
+// Add very early logging to catch startup issues
+Console.WriteLine("=== APPLICATION STARTING ===");
+Console.WriteLine($"Environment: {Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Not set"}");
+Console.WriteLine($"Current Directory: {Directory.GetCurrentDirectory()}");
 
+try
+{
 
-var builder = WebApplication.CreateBuilder(args);
+    Console.WriteLine("=== CREATING WEB APPLICATION BUILDER ===");
+    var builder = WebApplication.CreateBuilder(args);
 
-// Configure port for Railway
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+    Console.WriteLine("=== CONFIGURING PORT ===");
+    // Configure port for Railway
+    var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+    Console.WriteLine($"Using port: {port}");
+    builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
-// Add services to the container.
-builder.Services.AddControllers()
+    Console.WriteLine("=== ADDING SERVICES ===");
+    // Add services to the container.
+    builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {
         options.SerializerSettings.Converters.Add(new FeatureConverter());
@@ -32,10 +42,11 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen();
 
-// Register AppDbContext with dependency injection
+    Console.WriteLine("=== CONFIGURING DATABASE ===");
+    // Register AppDbContext with dependency injection
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     try
@@ -87,9 +98,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     }
 });
 
-builder.Services.AddScoped<ActivityLogService>();
+    builder.Services.AddScoped<ActivityLogService>();
 
-var app = builder.Build();
+    Console.WriteLine("=== BUILDING APPLICATION ===");
+    var app = builder.Build();
 
 // Database initialization and seeding (only run if needed)
 using (var scope = app.Services.CreateScope())
@@ -233,8 +245,28 @@ app.UseExceptionHandler(errorApp =>
     });
 });
 
-app.UseCors("AllowAll");
-app.UseAuthorization();
-app.MapControllers();
+    app.UseCors("AllowAll");
+    app.UseAuthorization();
+    app.MapControllers();
 
-app.Run();
+    Console.WriteLine("=== STARTING APPLICATION ===");
+    app.Run();
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"=== CRITICAL STARTUP ERROR ===");
+    Console.WriteLine($"Error Type: {ex.GetType().Name}");
+    Console.WriteLine($"Error Message: {ex.Message}");
+    Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+    
+    // Log inner exception if it exists
+    if (ex.InnerException != null)
+    {
+        Console.WriteLine($"Inner Exception Type: {ex.InnerException.GetType().Name}");
+        Console.WriteLine($"Inner Exception Message: {ex.InnerException.Message}");
+        Console.WriteLine($"Inner Exception Stack Trace: {ex.InnerException.StackTrace}");
+    }
+    
+    // Re-throw to ensure the process exits with error code
+    throw;
+}
