@@ -194,39 +194,9 @@ _ = Task.Run(async () =>
             logger.LogWarning("Database initialization failed - tables may not exist");
         }
 
-        // Only seed if no data exists
-        try
-        {
-            if (!context.Set<Climb>().Any()) // Check if any climbs exist
-            {
-                // Setup the CSV file path
-                string csvFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Configurations", "climb_data.csv");
-                
-                // Log the path we're trying to use
-                logger.LogInformation($"Looking for CSV file at: {csvFilePath}");
-
-                // Verify file exists before trying to seed
-                if (File.Exists(csvFilePath))
-                {
-                    logger.LogInformation("Beginning data seeding...");
-                    await context.SeedClimbDataAsync(csvFilePath);
-                    logger.LogInformation("Data seeding completed successfully");
-                }
-                else
-                {
-                    logger.LogWarning($"CSV file not found at: {csvFilePath}. Skipping data seeding.");
-                    // Don't throw - let app start without seeding if file is missing
-                }
-            }
-            else
-            {
-                logger.LogInformation("Database already contains data. Skipping seeding.");
-            }
-        }
-        catch (Exception seedEx)
-        {
-            logger.LogWarning(seedEx, "Data seeding failed, continuing without seeding");
-        }
+        // Data seeding is disabled for faster deployment
+        // To seed data, run the separate seeding script: ./seed-data.sh
+        logger.LogInformation("Data seeding disabled for faster deployment. Use seed-data.sh to seed data separately.");
     }
     catch (Exception ex)
     {

@@ -87,7 +87,7 @@ public async Task<ActionResult<Attempt>> PostAttempt(int mapId, string auth0Id, 
             await _context.SaveChangesAsync();
             return Ok(existingAttempt);
         }
-        catch (DbUpdateException ex)
+        catch (DbUpdateException)
         {
             return StatusCode(500, "Failed to update the attempt. Please try again.");
         }
@@ -113,7 +113,7 @@ public async Task<ActionResult<Attempt>> PostAttempt(int mapId, string auth0Id, 
             await _context.SaveChangesAsync();
             return CreatedAtAction("GetAttempt", new { attemptId = attempt.AttemptId }, attempt);
         }
-        catch (DbUpdateException ex)
+        catch (DbUpdateException)
         {
             return StatusCode(500, "Failed to create the attempt. Please try again.");
         }

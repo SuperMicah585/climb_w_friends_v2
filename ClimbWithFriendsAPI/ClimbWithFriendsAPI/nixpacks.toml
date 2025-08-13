@@ -1,11 +1,11 @@
 [phases.setup]
-nixPkgs = ["dotnet-sdk_8"]
+nixPkgs = ["dotnet-sdk_8_0"]
 
 [phases.install]
-cmds = ["dotnet restore"]
+cmds = ["dotnet restore --no-cache"]
 
 [phases.build]
-cmds = ["dotnet publish -c Release -o /app/publish"]
+cmds = ["dotnet publish -c Release -o /app/publish --no-restore"]
 
 [start]
 cmd = "dotnet ClimbWithFriendsAPI.dll" 

@@ -1,0 +1,72 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Build outputs
+bin/
+obj/
+*.user
+*.suo
+*.cache
+
+# IDE
+.vs/
+.vscode/
+*.sln.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Railway
+railway.toml
+railway.json
+
+# Nixpacks
+nixpacks.toml
+.nixpacks/
+
+# Documentation
+README.md
+*.md
+
+# Test files
+**/test/
+**/tests/
+**/*.Tests/
+**/*.Test/
+
+# Node.js (if any)
+node_modules/
+npm-debug.log*
+
+# Large data files
+*.json
+!appsettings*.json
+
+# Backup files
+*.bak
+*.backup
+
+# Compressed files
+*.zip
+*.tar.gz
+*.rar
+
+# Database files
+*.db
+*.sqlite
+*.mdf
+*.ldf 

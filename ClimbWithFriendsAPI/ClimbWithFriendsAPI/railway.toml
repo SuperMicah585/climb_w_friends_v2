@@ -1,5 +1,5 @@
 [build]
-builder = "nixpacks"
+builder = "dockerfile"
 
 [deploy]
 startCommand = "dotnet ClimbWithFriendsAPI.dll"
@@ -7,6 +7,7 @@ healthcheckPath = "/health"
 healthcheckTimeout = 300
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 3
+numReplicas = 1
 
 [env]
 ASPNETCORE_ENVIRONMENT = "Production" 
