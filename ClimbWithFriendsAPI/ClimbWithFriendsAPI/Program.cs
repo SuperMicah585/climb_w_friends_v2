@@ -275,20 +275,7 @@ app.UseExceptionHandler(errorApp =>
     app.MapGet("/", () => "ClimbWithFriends API is running!");
 
     Console.WriteLine("=== STARTING APPLICATION ===");
-    
-    // Add startup timeout for Railway
-    var startupTimeout = TimeSpan.FromMinutes(2);
-    var cts = new CancellationTokenSource(startupTimeout);
-    
-    try
-    {
-        app.Run(cts.Token);
-    }
-    catch (OperationCanceledException)
-    {
-        Console.WriteLine("Application startup timed out after 2 minutes");
-        throw;
-    }
+    app.Run();
 }
 catch (Exception ex)
 {
