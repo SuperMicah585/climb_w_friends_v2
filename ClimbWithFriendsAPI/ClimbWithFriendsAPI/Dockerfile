@@ -19,12 +19,12 @@ COPY ["Data/Configurations/climb_data.csv", "Data/Configurations/"]
 # Copy the rest of the source code
 COPY . .
 
-# Build the application (skip restore since we already did it)
-RUN dotnet build "ClimbWithFriendsAPI.csproj" -c Release -o /app/build --no-restore
+# Build the application
+RUN dotnet build "ClimbWithFriendsAPI.csproj" -c Release -o /app/build
 
 # Publish the application
 FROM build AS publish
-RUN dotnet publish "ClimbWithFriendsAPI.csproj" -c Release -o /app/publish --no-restore --no-build
+RUN dotnet publish "ClimbWithFriendsAPI.csproj" -c Release -o /app/publish
 
 # Build the final runtime image
 FROM base AS final
