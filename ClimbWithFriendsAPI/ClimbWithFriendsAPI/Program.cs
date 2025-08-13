@@ -6,6 +6,10 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure port for Railway
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
 // Add services to the container.
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
@@ -37,41 +41,67 @@ builder.Services.AddScoped<ActivityLogService>();
 
 var app = builder.Build();
 
-// Database initialization and seeding
+// Database initialization and seeding (only run if needed)
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    
     try
     {
-        var logger = services.GetRequiredService<ILogger<Program>>();
         var context = services.GetRequiredService<AppDbContext>();
 
-        // Ensure database is created
-        context.Database.EnsureCreated();
-
-        // Setup the CSV file path
-        string csvFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Configurations", "climb_data.csv");
-        
-        // Log the path we're trying to use
-        logger.LogInformation($"Looking for CSV file at: {csvFilePath}");
-
-        // Verify file exists
-        if (!File.Exists(csvFilePath))
+        // Use migrations instead of EnsureCreated for production
+        if (app.Environment.IsDevelopment())
         {
-            logger.LogError($"CSV file not found at: {csvFilePath}");
-            throw new FileNotFoundException($"Required CSV file not found at: {csvFilePath}");
+            context.Database.EnsureCreated();
+        }
+        else
+        {
+            // For production, ensure database exists but don't recreate
+            context.Database.EnsureCreated();
         }
 
-        // Attempt to seed the data
-        logger.LogInformation("Beginning data seeding...");
-        await context.SeedClimbDataAsync(csvFilePath);
-        logger.LogInformation("Data seeding completed successfully");
+        // Only seed if no data exists
+        if (!context.Set<Climb>().Any()) // Check if any climbs exist
+        {
+            // Setup the CSV file path
+            string csvFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Configurations", "climb_data.csv");
+            
+            // Log the path we're trying to use
+            logger.LogInformation($"Looking for CSV file at: {csvFilePath}");
+
+            // Verify file exists before trying to seed
+            if (File.Exists(csvFilePath))
+            {
+                logger.LogInformation("Beginning data seeding...");
+                await context.SeedClimbDataAsync(csvFilePath);
+                logger.LogInformation("Data seeding completed successfully");
+            }
+            else
+            {
+                logger.LogWarning($"CSV file not found at: {csvFilePath}. Skipping data seeding.");
+                // Don't throw - let app start without seeding if file is missing
+            }
+        }
+        else
+        {
+            logger.LogInformation("Database already contains data. Skipping seeding.");
+        }
     }
     catch (Exception ex)
     {
-        var logger = services.GetRequiredService<ILogger<Program>>();
         logger.LogError(ex, "An error occurred while initializing the database");
-        throw; // Rethrow to halt startup if database initialization fails
+        
+        // In production, you might want to continue without seeding rather than crash
+        if (app.Environment.IsDevelopment())
+        {
+            throw; // Rethrow in development
+        }
+        else
+        {
+            logger.LogError("Database initialization failed, but continuing startup...");
+        }
     }
 }
 
@@ -82,7 +112,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// Remove HTTPS redirect for Railway (they handle SSL termination)
+// app.UseHttpsRedirection();
+
 app.UseCors("AllowAll");
 app.UseAuthorization();
 app.MapControllers();
