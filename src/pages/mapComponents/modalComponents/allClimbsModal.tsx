@@ -13,14 +13,24 @@ const AllClimbsModal: React.FC<AllClimbsProps> = ({
   auth0Id,
 }) => {
   const [climbsOnMap, setClimbsOnMap] = useState<ClimbWithDependencies[]>([]);
-
+  const [isLoading, setIsLoading] = useState(false)
+  
   useEffect(() => {
     const getClimbsWithDependencies = async () => {
-      const results = await retrieveFeatureDependenciesByMap(mapId, auth0Id);
-      setClimbsOnMap(results);
+      setIsLoading(true);
+      
+      try {
+        const results = await retrieveFeatureDependenciesByMap(mapId, auth0Id);
+        setClimbsOnMap(results);
+      } catch (error) {
+        console.error('Error fetching climbs:', error);
+      } finally {
+        setIsLoading(false);
+      }
     };
+    
     getClimbsWithDependencies();
-  }, [mapId]);
+  }, [mapId, auth0Id]);
 
   return (
     <ClimbModal
@@ -28,6 +38,7 @@ const AllClimbsModal: React.FC<AllClimbsProps> = ({
       closeModalCallBack={closeModalCallBack}
       mapId={mapId}
       auth0Id={auth0Id}
+      isLoading={isLoading}
     />
   );
 };

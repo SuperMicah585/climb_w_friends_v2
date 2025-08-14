@@ -17,6 +17,7 @@ import ClimbModalBar from '../../../reusableComponents/climbModalBar';
 import TickOverlay from '../tickOverlay';
 import AttemptOverlay from '../attemptOverlay';
 import { compareGrades } from '../gradeComparison';
+import { LoadingOverlay } from '../../../reusableComponents';
 import {
   addTagToClimb,
   removeTagFromClimb,
@@ -27,6 +28,7 @@ export type ClimbModalProps = {
   closeModalCallBack: (trigger: boolean) => void;
   mapId: number;
   auth0Id: string;
+  isLoading?:boolean
 };
 
 const ClimbModal: React.FC<ClimbModalProps> = ({
@@ -34,6 +36,8 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
   closeModalCallBack = () => {},
   mapId,
   auth0Id,
+  isLoading = false
+  
 }) => {
   const [routeFilterString, setRouteFilterString] = useState<string>('');
   const [sortString, setSortString] = useState('Order Grade ASC');
@@ -56,7 +60,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
     useState<number>(0);
   const [tagsOnMount, setTagsOnMount] = useState<Tags[]>([]);
   const [climbIdForClimbChat, setClimbIdForClimbChat] = useState<number>(-1);
-
+  const [loading,notLoading] = useState<boolean>(false)
   const setClimbNameForChatCallBack = (climbName: string) => {
     setClimbNameForChat(climbName);
   };
@@ -131,16 +135,21 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
     const fetchClimbs = async () => {
       try {
         if (typeof clickedFeatureClimbs === 'number') {
+          notLoading(true)
           const results = await retrieveFeatureDependencies(
             clickedFeatureClimbs,
             auth0Id,
           );
           setClimbObject(results);
+          
         } else {
           setClimbObject(clickedFeatureClimbs);
         }
       } catch (error) {
         console.error('Error fetching climbs:', error);
+      }
+      finally {
+        notLoading(false)
       }
     };
 
@@ -252,11 +261,12 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
         maxWidth={'max-w-[700px] min-w-[600px]'}
         closeModalCallBack={closeModalCallBack}
       >
+        
         <ModalSearch
           sortStringCallBack={sortStringCallBack}
           searchFilterCallBack={searchFilterCallBack}
         />
-
+        <LoadingOverlay className = 'w-full h-full' isLoading = {isLoading || loading} text = "loading..."> 
         <div className="w-full">
           <div className="w-full rounded-md bg-zinc-900">
             {climbObject
@@ -362,6 +372,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
               ))}
           </div>
         </div>
+        </LoadingOverlay>
       </ZincModal>
     </>
   );
