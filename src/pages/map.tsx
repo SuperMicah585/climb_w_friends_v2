@@ -112,10 +112,14 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
         features,
         user?.sub || '',
       );
-      if (mapLoaded && 'type' in geoJsonObject) {
-        updateLayerVisibility(map, geoJsonObject);
-        setGeoJsonObject(features);
-      }
+      
+      // Update geoJsonObject first, then update layer visibility with a delay
+      setGeoJsonObject(features);
+      setTimeout(() => {
+        if (mapLoaded && 'type' in features) {
+          updateLayerVisibility(map, features);
+        }
+      }, 100);
     }
   };
 
@@ -138,10 +142,14 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
         features,
         user?.sub || '',
       );
-      if (mapLoaded && 'type' in geoJsonObject) {
-        updateLayerVisibility(map, geoJsonObject);
-        setGeoJsonObject(features);
-      }
+      
+      // Update geoJsonObject first, then update layer visibility with a delay
+      setGeoJsonObject(features);
+      setTimeout(() => {
+        if (mapLoaded && 'type' in features) {
+          updateLayerVisibility(map, features);
+        }
+      }, 100);
     }
   };
 
@@ -162,9 +170,14 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
         features,
         user?.sub || '',
       );
-      if (mapLoaded && 'type' in geoJsonObject) {
-        updateLayerVisibility(map, geoJsonObject);
-      }
+      
+      // Update geoJsonObject first, then update layer visibility with a delay
+      setGeoJsonObject(features);
+      setTimeout(() => {
+        if (mapLoaded && 'type' in features) {
+          updateLayerVisibility(map, features);
+        }
+      }, 100);
     }
   };
 
@@ -311,7 +324,10 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
 
   useEffect(() => {
     if (mapLoaded && 'type' in geoJsonObject) {
-      updateLayerVisibility(map, geoJsonObject);
+      // Add a small delay to ensure layers are fully set up
+      setTimeout(() => {
+        updateLayerVisibility(map, geoJsonObject);
+      }, 100);
     }
   }, [polygonOrCircleDisplay, mapLoaded, geoJsonObject]);
 

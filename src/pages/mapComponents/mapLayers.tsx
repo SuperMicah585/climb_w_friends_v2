@@ -75,9 +75,14 @@ export const createClimbingShapes = (
   features: GeoJsonObject,
   auth0Id: string,
 ) => {
-  map.current?.on('load', () => {
+  // Set up layers immediately if map is already loaded, otherwise wait for load event
+  if (map.current?.isStyleLoaded()) {
     displayLayersInitial(map, clickedFeatureClimbCallBack, features, auth0Id);
-  });
+  } else {
+    map.current?.on('load', () => {
+      displayLayersInitial(map, clickedFeatureClimbCallBack, features, auth0Id);
+    });
+  }
 };
 
 export const displayLayersInitial = (
@@ -86,6 +91,12 @@ export const displayLayersInitial = (
   features: GeoJsonObject,
   auth0Id: string,
 ) => {
+  // Ensure map is ready
+  if (!map?.current || !map.current.isStyleLoaded()) {
+    console.warn('Map not ready for layer setup');
+    return;
+  }
+
   // Only add the source once
   if (!map?.current?.getSource('geojson-data')) {
     map.current?.addSource('geojson-data', {
@@ -94,6 +105,9 @@ export const displayLayersInitial = (
     });
   }
 
+  // Track layers that need interactions
+  const layersToSetup: Array<{id: string, radius: number}> = [];
+
   features.features.forEach((feature: any) => {
     const fillLayerId = `geojson-fill-layer-${feature.id}`;
     const circleLayerId = `geojson-circle-layer-${feature.id}`;
@@ -101,6 +115,11 @@ export const displayLayersInitial = (
 
     switch (feature.geometry.type) {
       case 'Point':
+        // Check if layer already exists
+        if (map.current?.getLayer(layerId)) {
+          map.current.removeLayer(layerId);
+        }
+        
         map.current?.addLayer({
           id: layerId,
           type: 'circle',
@@ -133,15 +152,18 @@ export const displayLayersInitial = (
             'circle-stroke-color': '#0047AB',
           },
         });
-        addFeatureInteractions(
-          map,
-          layerId,
-          auth0Id,
-          clickedFeatureClimbCallBack,
-          12,
-        );
+        
+        layersToSetup.push({id: layerId, radius: 12});
         break;
       case 'Polygon':
+        // Check if layers already exist
+        if (map.current?.getLayer(fillLayerId)) {
+          map.current.removeLayer(fillLayerId);
+        }
+        if (map.current?.getLayer(circleLayerId)) {
+          map.current.removeLayer(circleLayerId);
+        }
+        
         // Fill layer for polygon
         map.current?.addLayer({
           id: fillLayerId,
@@ -176,13 +198,8 @@ export const displayLayersInitial = (
           },
         });
 
-        addFeatureInteractions(
-          map,
-          fillLayerId,
-          auth0Id,
-          clickedFeatureClimbCallBack,
-          0,
-        );
+        layersToSetup.push({id: fillLayerId, radius: 0});
+        
         // Circle layer for polygon (alternative representation)
 
         const centroid = turf.centroid(feature);
@@ -224,19 +241,27 @@ export const displayLayersInitial = (
             visibility: 'visible', // Initially visible
           },
         });
-        addFeatureInteractions(
-          map,
-          circleLayerId,
-          auth0Id,
-          clickedFeatureClimbCallBack,
-          14,
-        );
+        
+        layersToSetup.push({id: circleLayerId, radius: 14});
         break;
 
       default:
         console.warn(`Unsupported GeoJSON type: ${feature.geometry.type}`);
     }
   });
+
+  // Set up interactions for all layers after they're added
+  setTimeout(() => {
+    layersToSetup.forEach(({id, radius}) => {
+      addFeatureInteractions(
+        map,
+        id,
+        auth0Id,
+        clickedFeatureClimbCallBack,
+        radius,
+      );
+    });
+  }, 50);
 };
 
 export const filterClimbsOnMap = () => {};
@@ -245,20 +270,34 @@ export const updateLayerVisibility = (
   map: any,
   geoJsonObject: GeoJsonObject,
 ) => {
+  if (!map?.current) return;
+  
   geoJsonObject.features.forEach((feature) => {
     if (feature.geometry.type === 'Polygon') {
       const fillLayerId = `geojson-fill-layer-${feature.id}`;
       const circleLayerId = `geojson-circle-layer-${feature.id}`;
       const currentZoom = map.current.getZoom();
 
+      // Check if layers exist before trying to set properties
+      const fillLayerExists = map.current.getLayer(fillLayerId);
+      const circleLayerExists = map.current.getLayer(circleLayerId);
+
       if (currentZoom > 12) {
         // Show fill layer, hide circle layer
-        map.current?.setLayoutProperty(fillLayerId, 'visibility', 'visible');
-        map.current?.setLayoutProperty(circleLayerId, 'visibility', 'none');
+        if (fillLayerExists) {
+          map.current?.setLayoutProperty(fillLayerId, 'visibility', 'visible');
+        }
+        if (circleLayerExists) {
+          map.current?.setLayoutProperty(circleLayerId, 'visibility', 'none');
+        }
       } else {
         // Show circle layer, hide fill layer
-        map.current?.setLayoutProperty(fillLayerId, 'visibility', 'none');
-        map.current?.setLayoutProperty(circleLayerId, 'visibility', 'visible');
+        if (fillLayerExists) {
+          map.current?.setLayoutProperty(fillLayerId, 'visibility', 'none');
+        }
+        if (circleLayerExists) {
+          map.current?.setLayoutProperty(circleLayerId, 'visibility', 'visible');
+        }
       }
     }
   });
@@ -334,6 +373,36 @@ export const addFeatureInteractions = async (
 
       map.current.getCanvas().style.cursor = 'pointer';
 
+      // Show loading tooltip immediately
+      popup
+        .setLngLat(e.lngLat)
+        .setHTML(
+          `<div class='flex flex-col gap-5 items-center justify-center z-50'>
+            <div class="flex w-full items-start gap-5 font-bold">
+              <div class="flex flex-col gap-2 w-1/2 text-center rounded-md bg-customGray p-2 text-white">
+                <div class="text-neutral-200 font-thin"> CLIMBERS </div>
+                <div class="text-xl">-</div>
+              </div>
+  
+              <div class="flex flex-col gap-2 w-1/2 text-center rounded-md bg-customGray p-2 text-white">
+                <div class="text-neutral-200 font-thin"> CLIMBS </div>
+                <div class="text-xl">-</div>
+              </div>
+            </div>
+  
+            <div class="gap-5 items-center pt-2 justify-center rounded-md bg-customGray pb-2 flex flex-col"> 
+              <div class="text-white text-lg"> Climbs Per Grade </div>
+              <div class="flex items-center justify-center w-[260px] h-28">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+                <span class="ml-2 text-white">Loading...</span>
+              </div>
+            </div>
+          </div>`
+        )
+        .addClassName('popupClass')
+        .setMaxWidth('w-[280px] h-28')
+        .addTo(map.current);
+
       (async () => {
         try {
           var grouped = false;
@@ -359,6 +428,7 @@ export const addFeatureInteractions = async (
 
           const chartContainerId = `chart-container-${featureId}`;
 
+          // Update tooltip with actual data
           popup
             .setLngLat(e.lngLat)
             .setHTML(
@@ -470,6 +540,34 @@ export const addFeatureInteractions = async (
           }, 0);
         } catch (error) {
           console.error('Error processing feature:', error);
+          // Show error state in tooltip
+          popup
+            .setLngLat(e.lngLat)
+            .setHTML(
+              `<div class='flex flex-col gap-5 items-center justify-center z-50'>
+                <div class="flex w-full items-start gap-5 font-bold">
+                  <div class="flex flex-col gap-2 w-1/2 text-center rounded-md bg-customGray p-2 text-white">
+                    <div class="text-neutral-200 font-thin"> CLIMBERS </div>
+                    <div class="text-xl">-</div>
+                  </div>
+      
+                  <div class="flex flex-col gap-2 w-1/2 text-center rounded-md bg-customGray p-2 text-white">
+                    <div class="text-neutral-200 font-thin"> CLIMBS </div>
+                    <div class="text-xl">-</div>
+                  </div>
+                </div>
+      
+                <div class="gap-5 items-center pt-2 justify-center rounded-md bg-customGray pb-2 flex flex-col"> 
+                  <div class="text-white text-lg"> Climbs Per Grade </div>
+                  <div class="flex items-center justify-center w-[260px] h-28">
+                    <span class="text-red-300">Error loading data</span>
+                  </div>
+                </div>
+              </div>`
+            )
+            .addClassName('popupClass')
+            .setMaxWidth('w-[280px] h-28')
+            .addTo(map.current);
           currentFeatureId = null;
           cleanupChart();
         }
