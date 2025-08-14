@@ -40,7 +40,8 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         connectionString = Configuration.GetConnectionString("databaseConnection");
     }
     
-    optionsBuilder.UseNpgsql(connectionString);
+    optionsBuilder.UseNpgsql(connectionString,
+        o => o.UseNetTopologySuite());
 }
 
         public DbSet<Map> Maps { get; set; }
