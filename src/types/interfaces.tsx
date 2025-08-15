@@ -54,6 +54,7 @@ export interface ClimbWithDependencies {
   attempts: null | AttemptObject | TickAndAttemptObjectBeforeResponse;
   ticks: null | TickObject | TickAndAttemptObjectBeforeResponse;
   chatObject: ChatObject[];
+  associatedAt?: string; // Date when climb was added to the map
 }
 
 export interface AttemptObject {
@@ -160,8 +161,9 @@ export interface GradeRange {
 
 export interface userObject {
   userId: number;
-  auth0Id: string;
-  userName: string;
+  auth0ID: string;
+  username: string;
   name: string;
   email: string;
+  createdAt: string;
 }

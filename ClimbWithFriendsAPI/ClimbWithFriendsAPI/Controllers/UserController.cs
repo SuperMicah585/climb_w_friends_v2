@@ -92,6 +92,78 @@ public async Task<List<UserDTO>> ListUsers()
     }).ToList();
 }
 
+// GET: api/User/{auth0Id}
+[HttpGet("{auth0Id}")]
+public async Task<ActionResult<User>> GetUserByAuth0Id(string auth0Id)
+{
+    try
+    {
+        var user = await _context.Users
+            .FirstOrDefaultAsync(u => u.Auth0ID == auth0Id);
+
+        if (user == null)
+        {
+            return NotFound($"User with Auth0ID {auth0Id} not found");
+        }
+
+        return Ok(user);
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, $"Internal server error: {ex.Message}");
+    }
+}
+
+// PUT: api/User/{auth0Id}
+[HttpPut("{auth0Id}")]
+public async Task<ActionResult<User>> UpdateUser(string auth0Id, [FromBody] UserUpdateRequest request)
+{
+    try
+    {
+        var user = await _context.Users
+            .FirstOrDefaultAsync(u => u.Auth0ID == auth0Id);
+
+        if (user == null)
+        {
+            return NotFound($"User with Auth0ID {auth0Id} not found");
+        }
+
+        // Check if username is already taken by another user
+        if (!string.IsNullOrWhiteSpace(request.UserName))
+        {
+            var existingUser = await _context.Users
+                .FirstOrDefaultAsync(u => u.Username == request.UserName && u.Auth0ID != auth0Id);
+            
+            if (existingUser != null)
+            {
+                return Conflict("Username is already taken");
+            }
+        }
+
+        // Update user properties
+        if (!string.IsNullOrWhiteSpace(request.UserName))
+        {
+            user.Username = request.UserName;
+        }
+        if (!string.IsNullOrWhiteSpace(request.Name))
+        {
+            user.Name = request.Name;
+        }
+        if (!string.IsNullOrWhiteSpace(request.Email))
+        {
+            user.Email = request.Email;
+        }
+
+        await _context.SaveChangesAsync();
+
+        return Ok(user);
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, $"Internal server error: {ex.Message}");
+    }
+}
+
 
         // POST: api/User
         [HttpPost]
@@ -134,6 +206,31 @@ public async Task<List<UserDTO>> ListUsers()
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex.InnerException?.Message ?? ex.Message}");
+            }
+        }
+
+        // DELETE: api/User/{userId}
+        [HttpDelete("{userId}")]
+        public async Task<ActionResult> DeleteUser(int userId)
+        {
+            try
+            {
+                var user = await _context.Users
+                    .FirstOrDefaultAsync(u => u.UserId == userId);
+
+                if (user == null)
+                {
+                    return NotFound($"User with ID {userId} not found");
+                }
+
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
 

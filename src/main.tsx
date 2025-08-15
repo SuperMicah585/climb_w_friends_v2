@@ -4,6 +4,7 @@ import './index.css';
 import App from './App.tsx';
 import Login from './pages/login.tsx';
 import Home from './pages/dashboard.tsx';
+import Profile from './pages/profile.tsx';
 import { Auth0Provider } from '@auth0/auth0-react';
 //npx prettier --write .
 const baseUrl = import.meta.env.VITE_REDIRECT_URI;
@@ -25,6 +26,7 @@ if (root !== null) {
           <Route path="/" element={<Login />} />
           <Route path="/Maps/:id" element={<App />} />
           <Route path="/Maps" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </BrowserRouter>
       ,

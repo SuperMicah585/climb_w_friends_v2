@@ -1,6 +1,6 @@
 import React from 'react';
 import LoginButton from '../../reusableComponents/loginButton';
-import LogoutButton from '../../reusableComponents/logoutButton';
+import ProfileDropdown from '../../reusableComponents/profileDropdown';
 import { useAuth0 } from '@auth0/auth0-react';
 import climbwfriendsLogo from './climbwfriends.png';
 
@@ -36,7 +36,7 @@ const HomeNavBar: React.FC<NavBarProps> = ({
 
       {/* Auth Button */}
       <div className="flex">
-        {isAuthenticated ? <LogoutButton /> : <LoginButton />}
+        {isAuthenticated ? <ProfileDropdown /> : <LoginButton />}
       </div>
     </div>
   );

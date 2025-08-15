@@ -20,8 +20,6 @@ namespace ClimbWithFriendsAPI.Data
         public string Email { get; set; } = string.Empty;
 
         public DateTime? CreatedAt { get; set; } // When the user was created
-
-        
     }
 
     public class UserStatistics

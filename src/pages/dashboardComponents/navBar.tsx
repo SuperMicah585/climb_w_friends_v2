@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import LogoutButton from '../../reusableComponents/logoutButton';
+import ProfileDropdown from '../../reusableComponents/profileDropdown';
 import camoBackGroundImage from '../homeComponents/black_camo.jpeg';
 import { useAuth0 } from '@auth0/auth0-react';
 import { retrieveUserStats } from './utilityFunctions';
@@ -79,7 +79,7 @@ const NavBar: React.FC<NavBarProps> = ({
 
       <div className="item-center absolute right-5 top-4 z-10 flex">
         {' '}
-        <LogoutButton />{' '}
+        <ProfileDropdown />{' '}
       </div>
 
       <div className="absolute left-5 top-4 flex w-40">

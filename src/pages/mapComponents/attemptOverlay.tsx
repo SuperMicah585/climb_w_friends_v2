@@ -178,7 +178,7 @@ const AttemptOverlay: React.FC<AttemptOverlayProps> = ({
               value={value}
               onChange={handleChange}
               placeholder="input attempt notes here"
-              className="h-full w-full rounded-md border-2 border-neutral-500 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+              className="h-full w-full bg-zinc-900 rounded-md border-2 border-neutral-500 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
             />
           </div>
           <div className="absolute bottom-0 flex h-16 w-full items-center justify-between border-t border-neutral-500 bg-zinc-900 p-2">

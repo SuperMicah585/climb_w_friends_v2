@@ -146,18 +146,24 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
               <div className="flex flex-col gap-5">
                 <div className="text-lg font-semibold text-white"> Tags</div>
                 <div className="flex flex-wrap gap-2">
-                  {modifiedTags?.map((item) => (
-                    <Tooltip
-                      key={item.tagId}
-                      deleteItemCallBack={deleteTagCallBack}
-                      item={item}
-                    >
-                      {' '}
-                      <div className="flex cursor-pointer rounded-md border-2 border-green-900 bg-green-600 p-1 text-center text-sm hover:opacity-75">
-                        {item.tagName}{' '}
-                      </div>{' '}
-                    </Tooltip>
-                  ))}
+                  {modifiedTags && modifiedTags.length > 0 ? (
+                    modifiedTags.map((item) => (
+                      <Tooltip
+                        key={item.tagId}
+                        deleteItemCallBack={deleteTagCallBack}
+                        item={item}
+                      >
+                        {' '}
+                        <div className="flex cursor-pointer rounded-md border-2 border-green-900 bg-green-600 p-1 text-center text-sm hover:opacity-75">
+                          {item.tagName}{' '}
+                        </div>{' '}
+                      </Tooltip>
+                    ))
+                  ) : (
+                    <div className="text-neutral-400 text-sm italic">
+                      No tags have been added yet
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

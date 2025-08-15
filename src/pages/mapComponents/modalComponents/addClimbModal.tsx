@@ -17,7 +17,13 @@ import { dropDownStyles } from '../../../reusableComponents/styles';
 import PurpleButton from '../../../reusableComponents/genericButton';
 import ClimbModalBar from '../../../reusableComponents/climbModalBar';
 import Tooltip from '../../../reusableComponents/toolTip';
-import { newWindowIcon } from '../../../reusableComponents/styles';
+import { 
+  newWindowIcon, 
+  locationIcon, 
+  usersIcon, 
+  gradeIcon,
+  tagIcon 
+} from '../../../reusableComponents/styles';
 import TickOverlay from '../tickOverlay';
 import { useAuth0 } from '@auth0/auth0-react';
 import ModalChat from '../chatOverlay';
@@ -508,25 +514,47 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
                 {newWindowIcon}{' '}
               </div>
 
-              <div className="mt-5 flex gap-5 font-semibold text-white">
-                <div>{item.climb.climbName}</div>
+              <div className="mt-5 flex items-center gap-5 font-semibold text-white">
+                <div className="">{item.climb.climbName}</div>
                 <div className="white border-r"></div>
-                <div>{item.climb.rating}</div>
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <div className="w-4 h-4 flex-shrink-0">
+                    {gradeIcon}
+                  </div>
+                  {item.climb.rating}
+                </div>
+                <div className="white border-r"></div>
+                <div className="text-sm italic flex-shrink-0">
+                  {item.climb.climbType}
+                </div>
               </div>
-              <div className="text-sm italic text-white">
-                {item.climb.climbType}
+
+              <div className="flex items-center gap-1 text-xs text-white">
+                <div className="w-4 h-4 flex-shrink-0">
+                  {locationIcon}
+                </div>
+                {item.climb.location}
               </div>
-              <div className="text-xs text-white">{item.climb.location}</div>
 
               <div className="mt-2 flex min-h-8 items-center gap-2 text-xs font-bold text-white">
-                Climbers:
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <div className="w-4 h-4 flex-shrink-0">
+                    {usersIcon}
+                  </div>
+                  Climbers:
+                </div>
                 <div className="rounded-md border-2 border-violet-900 bg-violet-600 p-1">
                   {item.userObjectForFeature?.map((item) => item.username)}
                 </div>
               </div>
 
               <div className="mt-2 flex min-h-8 w-2/3 flex-wrap items-center gap-2 text-xs font-bold text-white">
-                Tags:
+                <div className="flex items-start gap-2 flex-shrink-0">
+                  <div className="w-4 h-4 flex-shrink-0">
+                    {tagIcon}
+                  </div>
+                  Tags:
+                </div>
                 {item.tags?.length > 0
                   ? item.tags.map((tagsOnClimb) => (
                       <Tooltip

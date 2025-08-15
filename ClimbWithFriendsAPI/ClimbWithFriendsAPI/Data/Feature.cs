@@ -29,6 +29,7 @@ public class FeatureDependencies
     public Attempt Attempts {get;set;}
     public Tick Ticks {get;set;}
     public List<ClimbChatResponse> ChatObject {get;set;}
+    public string AssociatedAt { get; set; } // Date when climb was added to the map
 }
 
 public class FeatureResult

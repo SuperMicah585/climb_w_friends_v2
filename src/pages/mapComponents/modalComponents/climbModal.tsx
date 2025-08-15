@@ -7,7 +7,14 @@ import {
   TickObject,
   TickAndAttemptObjectBeforeResponse
 } from '../../../types/interfaces';
-import { newWindowIcon } from '../../../reusableComponents/styles';
+import { 
+  newWindowIcon, 
+  calendarIcon, 
+  locationIcon, 
+  usersIcon, 
+  gradeIcon,
+  tagIcon 
+} from '../../../reusableComponents/styles';
 import ModalSearch from './modalSearch';
 import ModalChat from '../chatOverlay';
 import ZincModal from '../../../reusableComponents/genericModal';
@@ -328,21 +335,43 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                     type="climb"
                   />
 
-                  <div className="mt-5 flex gap-5 font-semibold text-white">
-                    <div>{item.climb.climbName}</div>
+                  <div className="mt-5 flex items-center gap-5 font-semibold text-white">
+                    <div className="">{item.climb.climbName}</div>
                     <div className="white border-r"></div>
-                    <div>{item.climb.rating}</div>
+                    <div className="flex items-center gap-1 flex-shrink-0">
+                      <div className="w-4 h-4 flex-shrink-0">
+                        {gradeIcon}
+                      </div>
+                      {item.climb.rating}
+                    </div>
+                    <div className="white border-r"></div>
+                    <div className="text-sm italic flex-shrink-0">
+                      {item.climb.climbType}
+                    </div>
                   </div>
 
-                  <div className="text-sm italic text-white">
-                    {item.climb.climbType}
-                  </div>
+                  {item.associatedAt && (
+                    <div className="flex items-center gap-1 text-xs text-neutral-400 italic">
+                      <div className="w-4 h-4 flex-shrink-0">
+                        {calendarIcon}
+                      </div>
+                      Added on {new Date(item.associatedAt).toLocaleDateString()}
+                    </div>
+                  )}
 
-                  <div className="text-xs text-white">
+                  <div className="flex items-center gap-1 text-xs text-white">
+                    <div className="w-4 h-4 flex-shrink-0">
+                      {locationIcon}
+                    </div>
                     {item.climb.location}
                   </div>
                   <div className="mt-2 flex min-h-8 items-center gap-2 text-xs font-bold text-white">
-                    Climbers:
+                    <div className="flex items-center gap-1 flex-shrink-0">
+                      <div className="w-4 h-4 flex-shrink-0">
+                        {usersIcon}
+                      </div>
+                      Climbers:
+                    </div>
                     {item.userObjectForFeature?.map((item, index) => (
                       <div
                         key={index}
@@ -353,7 +382,12 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                     ))}
                   </div>
                   <div className="mt-2 flex min-h-8 w-2/3 flex-wrap items-center gap-2 text-xs font-bold text-white">
-                    Tags:
+                    <div className="flex items-start gap-2 flex-shrink-0">
+                      <div className="w-4 h-4 flex-shrink-0">
+                        {tagIcon}
+                      </div>
+                      Tags:
+                    </div>
                     {item.tags?.length > 0
                       ? item.tags.map((tagsOnClimb) => (
                           <Tooltip

@@ -269,35 +269,43 @@ const FilterModal: React.FC<FilterModalProps> = ({
 
           <div className="font-semibold text-white"> Filters on Map</div>
           <div className="flex flex-wrap gap-2">
-            {modifiedFiltersOnMap.tagFilters.map((item, index) => (
-              <Tooltip
-                deleteItemCallBack={deleteTagCallBack}
-                key={index}
-                item={item}
-              >
-                {' '}
-                <div
-                  className={`flex cursor-pointer rounded-md border-2 border-green-900 bg-green-600 p-1 text-center text-sm hover:opacity-75`}
-                >
-                  {item.tagName}
-                </div>
-              </Tooltip>
-            ))}
-            {modifiedFiltersOnMap.userFilters.map((item, index) => (
-              <Tooltip
-                key={index}
-                deleteItemCallBack={deleteUserCallBack}
-                item={item}
-              >
-                {' '}
-                <div
-                  key={index}
-                  className={`flex cursor-pointer rounded-md border-2 border-violet-900 bg-violet-600 p-1 text-center text-sm hover:opacity-75`}
-                >
-                  {item.username}
-                </div>
-              </Tooltip>
-            ))}
+            {modifiedFiltersOnMap.tagFilters.length > 0 || modifiedFiltersOnMap.userFilters.length > 0 ? (
+              <>
+                {modifiedFiltersOnMap.tagFilters.map((item, index) => (
+                  <Tooltip
+                    deleteItemCallBack={deleteTagCallBack}
+                    key={index}
+                    item={item}
+                  >
+                    {' '}
+                    <div
+                      className={`flex cursor-pointer rounded-md border-2 border-green-900 bg-green-600 p-1 text-center text-sm hover:opacity-75`}
+                    >
+                      {item.tagName}
+                    </div>
+                  </Tooltip>
+                ))}
+                {modifiedFiltersOnMap.userFilters.map((item, index) => (
+                  <Tooltip
+                    key={index}
+                    deleteItemCallBack={deleteUserCallBack}
+                    item={item}
+                  >
+                    {' '}
+                    <div
+                      key={index}
+                      className={`flex cursor-pointer rounded-md border-2 border-violet-900 bg-violet-600 p-1 text-center text-sm hover:opacity-75`}
+                    >
+                      {item.username}
+                    </div>
+                  </Tooltip>
+                ))}
+              </>
+            ) : (
+              <div className="text-neutral-400 text-sm italic">
+                No filters have been added yet
+              </div>
+            )}
           </div>
         </div>
 

@@ -8,6 +8,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import ToastContainer from '../../reusableComponents/toastContainer';
 import AddFriendModal from './mapsComponents/addFriendModal';
 import ButtonAndDropDown from './buttonAndDropDown';
+import LoadingOverlay from '../../reusableComponents/loadingOverlay';
 import {
   retrieveMapsAndUsers,
   editMap,
@@ -15,12 +16,13 @@ import {
   createMap,
 } from './utilityFunctions';
 
-import { submitAirplane } from '../../reusableComponents/styles';
+
 interface MapProps {
   setStatsTrigger: React.Dispatch<React.SetStateAction<number>>;
 }
 const Maps: React.FC<MapProps> = ({ setStatsTrigger }) => {
   const [mapObject, setMapObject] = useState<MapObject[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [editFriendTrigger, setEditFriendTrigger] = useState(false);
   const [editMapTrigger, setEditMapTrigger] = useState(false);
   const [modalToDisplay, setModalToDisplay] = useState('');
@@ -83,6 +85,7 @@ const Maps: React.FC<MapProps> = ({ setStatsTrigger }) => {
   //have to keep this function here
   const retrieveMaps = async (userId: string) => {
     try {
+      setIsLoading(true);
       const mapsResponse = await fetch(
         `${domain}api/Maps/User/${userId}`,
       );
@@ -98,6 +101,8 @@ const Maps: React.FC<MapProps> = ({ setStatsTrigger }) => {
       setMapObject(mapsWithUsers);
     } catch (error: any) {
       console.error(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -228,52 +233,65 @@ const Maps: React.FC<MapProps> = ({ setStatsTrigger }) => {
       <div className="border-box 10 relative z-10 w-screen flex-grow pl-10 pr-10">
         <div className="flex justify-center">
           <div className="flex flex-col">
-            <div className="mt-5 grid w-screen max-w-[1800px] grid-cols-1 gap-5 pl-10 pr-10 md:pl-20 md:pr-20 lg:grid-cols-2 lg:pl-40 lg:pr-40">
-              {/*bg-gradient-to-br from-zinc-950 to-zinc-800*/}
-              {mapObject.map((item) => (
-                <div key={item.mapId} className="relative w-full">
-                  <div
-                    className={`flex h-full flex-col items-start justify-start gap-5 overflow-hidden rounded-lg border-2 border-transparent bg-zinc-600 p-16 text-white shadow-sm shadow-zinc-500`}
-                  >
-                    <div className="flex items-center gap-5">
-                      <div className="text-2xl font-bold"> {item.mapName} </div>
-                      <div className="font-semibold text-violet-400">
-                        {' '}
-                        {item.climbCountOnMap}{' '}
-                        {item.climbCountOnMap === 1 ? 'Climb' : 'Climbs'}{' '}
-                      </div>
-                      <div className="font-semibold text-green-400">
-                        {' '}
-                        {item.climbersOnMap?.length}{' '}
-                        {item.climbersOnMap?.length === 1
-                          ? 'Climber'
-                          : 'Climbers'}{' '}
-                      </div>
-                    </div>
-                    <div className="text-thin text-sm">
-                      {' '}
-                      {item.description}{' '}
-                    </div>
-
-                    <div className="absolute bottom-2 right-2 flex w-full justify-end">
-                      <Link to={`/maps/${item.mapId}`}>
-                        {' '}
-                        <div className="flex items-center justify-center rounded-full bg-white pb-1 pl-2 pr-2 pt-1 text-black hover:opacity-75">
-                          <div>{submitAirplane}</div>
+                         <LoadingOverlay className = "mt-10 z-10" isLoading={isLoading} text="Loading maps..." overlay={true} transparency="medium" color="gray">
+              <div className="mt-5 grid w-screen max-w-[1800px] grid-cols-1 gap-5 pl-10 pr-10 md:pl-20 md:pr-20 lg:grid-cols-2 lg:pl-40 lg:pr-40">
+                {/*bg-gradient-to-br from-zinc-950 to-zinc-800*/}
+                {mapObject.map((item) => (
+                  <div key={item.mapId} className="relative w-full">
+                    <Link to={`/maps/${item.mapId}`} className="block">
+                      <div
+                        className={`relative flex h-full flex-col items-start justify-start gap-5 overflow-hidden rounded-lg border-2 border-transparent bg-zinc-600 p-16 text-white shadow-sm shadow-zinc-500 hover:bg-zinc-500 transition-colors duration-200 cursor-pointer group`}
+                      >
+                        <div className="flex items-center gap-5">
+                          <div className="text-2xl font-bold"> {item.mapName} </div>
+                          <div className="font-semibold text-violet-400">
+                            {' '}
+                            {item.climbCountOnMap}{' '}
+                            {item.climbCountOnMap === 1 ? 'Climb' : 'Climbs'}{' '}
+                          </div>
+                          <div className="font-semibold text-green-400">
+                            {' '}
+                            {item.climbersOnMap?.length}{' '}
+                            {item.climbersOnMap?.length === 1
+                              ? 'Climber'
+                              : 'Climbers'}{' '}
+                          </div>
                         </div>
-                      </Link>
-                    </div>
-                  </div>
+                        <div className="text-thin text-sm">
+                          {' '}
+                          {item.description}{' '}
+                        </div>
+                        
+                        {/* Right Arrow - appears on hover */}
+                        <div className="absolute right-8 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="2"
+                            stroke="currentColor"
+                            className="w-12 h-12 text-white"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    </Link>
 
-                  <ButtonAndDropDown
-                    setEditMapObject={setEditMapObject}
-                    setMapId={setMapId}
-                    mapItem={item}
-                    setModalToDisplayCallBack={setModalToDisplayCallBack}
-                  />
-                </div>
-              ))}
-            </div>
+                    <ButtonAndDropDown
+                      setEditMapObject={setEditMapObject}
+                      setMapId={setMapId}
+                      mapItem={item}
+                      setModalToDisplayCallBack={setModalToDisplayCallBack}
+                    />
+                  </div>
+                ))}
+              </div>
+            </LoadingOverlay>
           </div>
         </div>
       </div>

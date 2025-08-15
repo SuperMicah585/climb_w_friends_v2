@@ -16,7 +16,7 @@ import AddClimbModal from './mapComponents/modalComponents/addClimbModal';
 import { useAuth0 } from '@auth0/auth0-react';
 import { usStateDictionary } from './mapComponents/mapObjects';
 import { useParams } from 'react-router-dom';
-import LogoutButton from '../reusableComponents/logoutButton';
+import ProfileDropdown from '../reusableComponents/profileDropdown';
 import {
   createClimbingShapes,
   updateLayerVisibility,
@@ -368,7 +368,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
       </MapNavBar>
       <div className="absolute right-5 top-4 z-10">
         {' '}
-        <LogoutButton />{' '}
+        <ProfileDropdown />{' '}
       </div>
       {feedToggle && (
         <ActivityFeed

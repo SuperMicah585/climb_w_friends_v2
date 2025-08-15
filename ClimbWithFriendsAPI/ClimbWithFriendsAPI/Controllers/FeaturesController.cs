@@ -318,7 +318,11 @@ public async Task<ActionResult<List<FeatureDependencies>>> GetFeatureDependencie
                             .Select(u => u.Username)
                             .FirstOrDefault()
                     })
-                    .ToList()
+                    .ToList(),
+                AssociatedAt = _context.MapToFeatureToClimbs
+                    .Where(mfc => mfc.ClimbId == map.ClimbId && mfc.MapId == map.MapId)
+                    .Select(mfc => mfc.AssociatedAt)
+                    .FirstOrDefault()
             })
             .ToListAsync();
 
@@ -396,7 +400,11 @@ public async Task<ActionResult<List<FeatureDependencies>>> GetFeatureDependencie
                         Name = _context.Users.FirstOrDefault(u => u.UserId == uc.UserId).Name,
                         Username = _context.Users.FirstOrDefault(u => u.UserId == uc.UserId).Username
                     })
-                    .ToList()
+                    .ToList(),
+                AssociatedAt = _context.MapToFeatureToClimbs
+                    .Where(mfc => mfc.ClimbId == map.ClimbId && mfc.MapId == map.MapId)
+                    .Select(mfc => mfc.AssociatedAt)
+                    .FirstOrDefault()
             })
             .ToListAsync();
     
