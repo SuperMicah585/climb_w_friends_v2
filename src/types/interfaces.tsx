@@ -110,6 +110,7 @@ export interface MapObject {
   mapId: number;
   mapName: string;
   description: string;
+  imageUrl?: string;
   climbersOnMap?: FriendsList[];
   climbCountOnMap?: number;
 }

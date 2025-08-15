@@ -112,12 +112,14 @@ const Maps: React.FC<MapProps> = ({ setStatsTrigger }) => {
         newMapObj.mapName,
         newMapObj.description,
         user?.sub,
+        newMapObj.imageUrl,
       );
 
       const combinedObject = {
         ...mapObject.mapAssociation, // Spread properties from mapAssociation
         map: {
           ...mapObject.mapAssociation.map, // Spread properties from the existing map
+          imageUrl: newMapObj.imageUrl, // Include the imageUrl from the new map
           climbersOnMap: mapObject.userInformation, // Add the new property
         },
       };
@@ -234,50 +236,77 @@ const Maps: React.FC<MapProps> = ({ setStatsTrigger }) => {
         <div className="flex justify-center">
           <div className="flex flex-col">
                          <LoadingOverlay className = "mt-10 z-10" isLoading={isLoading} text="Loading maps..." overlay={true} transparency="medium" color="gray">
-              <div className="mt-5 grid w-screen max-w-[1800px] grid-cols-1 gap-5 pl-10 pr-10 md:pl-20 md:pr-20 lg:grid-cols-2 lg:pl-40 lg:pr-40">
-                {/*bg-gradient-to-br from-zinc-950 to-zinc-800*/}
+              <div className="mt-5 grid w-screen max-w-[1800px] grid-cols-1 gap-6 pl-10 pr-10 md:pl-20 md:pr-20 lg:grid-cols-2 lg:pl-40 lg:pr-40 xl:grid-cols-3">
                 {mapObject.map((item) => (
                   <div key={item.mapId} className="relative w-full">
                     <Link to={`/maps/${item.mapId}`} className="block">
-                      <div
-                        className={`relative flex h-full flex-col items-start justify-start gap-5 overflow-hidden rounded-lg border-2 border-transparent bg-zinc-600 p-16 text-white shadow-sm shadow-zinc-500 hover:bg-zinc-500 transition-colors duration-200 cursor-pointer group`}
-                      >
-                        <div className="flex items-center gap-5">
-                          <div className="text-2xl font-bold"> {item.mapName} </div>
-                          <div className="font-semibold text-violet-400">
-                            {' '}
-                            {item.climbCountOnMap}{' '}
-                            {item.climbCountOnMap === 1 ? 'Climb' : 'Climbs'}{' '}
-                          </div>
-                          <div className="font-semibold text-green-400">
-                            {' '}
-                            {item.climbersOnMap?.length}{' '}
-                            {item.climbersOnMap?.length === 1
-                              ? 'Climber'
-                              : 'Climbers'}{' '}
-                          </div>
-                        </div>
-                        <div className="text-thin text-sm">
-                          {' '}
-                          {item.description}{' '}
-                        </div>
-                        
-                        {/* Right Arrow - appears on hover */}
-                        <div className="absolute right-8 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="2"
-                            stroke="currentColor"
-                            className="w-12 h-12 text-white"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                      <div className="relative bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group overflow-hidden h-80">
+                        {/* Image Section - Fixed height */}
+                        <div className="relative h-48 bg-gradient-to-br from-violet-500 to-purple-600 rounded-t-xl overflow-hidden">
+                          {item.imageUrl ? (
+                            /* Display uploaded image */
+                            <img
+                              src={item.imageUrl}
+                              alt={`${item.mapName} map`}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                // Fallback to placeholder if image fails to load
+                                const target = e.target as HTMLImageElement;
+                                target.style.display = 'none';
+                                target.nextElementSibling?.classList.remove('hidden');
+                              }}
                             />
-                          </svg>
+                          ) : null}
+                          {/* Placeholder for map image - shown when no image or image fails to load */}
+                          <div className={`absolute inset-0 flex items-center justify-center ${item.imageUrl ? 'hidden' : ''}`}>
+                            <svg
+                              className="w-16 h-16 text-white opacity-80"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                          </div>
+                        </div>
+
+                        {/* Information Section - Fixed height */}
+                        <div className="p-4 h-32 flex flex-col justify-between">
+                          {/* Title and Description */}
+                          <div className="flex-1">
+                            {/* Map Title */}
+                            <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-1">
+                              {item.mapName}
+                            </h3>
+                            
+                            {/* Map Description */}
+                            <p className="text-sm text-gray-600 line-clamp-2">
+                              {item.description || 'No description available'}
+                            </p>
+                          </div>
+                          
+                          {/* Stats Row */}
+                          <div className="flex items-center justify-between text-xs text-gray-500 mt-2">
+                            <div className="flex items-center gap-1">
+                              <svg className="w-4 h-4 text-violet-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
+                              </svg>
+                              <span className="font-medium text-violet-600 truncate">
+                                {item.climbCountOnMap} {item.climbCountOnMap === 1 ? 'Climb' : 'Climbs'}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <svg className="w-4 h-4 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z" />
+                              </svg>
+                              <span className="font-medium text-green-600 truncate">
+                                {item.climbersOnMap?.length || 0} {item.climbersOnMap?.length === 1 ? 'Climber' : 'Climbers'}
+                              </span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </Link>

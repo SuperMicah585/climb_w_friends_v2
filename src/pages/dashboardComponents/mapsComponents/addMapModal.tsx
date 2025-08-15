@@ -2,6 +2,7 @@ import ZincModal from '../../../reusableComponents/genericModal';
 import { useState } from 'react';
 import { MapObject } from '../../../types/interfaces';
 import ToastContainer from '../../../reusableComponents/toastContainer';
+import ImageUpload from '../../../reusableComponents/imageUpload';
 
 interface AddMapComponentInterface {
   closeAddModalCallBack: (value: boolean) => void;
@@ -14,6 +15,7 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
 }) => {
   const [titleState, setTitleState] = useState<string>('');
   const [descriptionState, setDescriptionState] = useState<string>('');
+  const [imageUrl, setImageUrl] = useState<string>('');
   const [titleInputValid, setTitleInputValid] = useState<boolean>(true);
   const [toastTrigger, setToastTrigger] = useState(0);
   const [toastType, setToastType] = useState('success');
@@ -33,6 +35,7 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
         mapId: 0,
         mapName: titleState,
         description: descriptionState,
+        imageUrl: imageUrl,
       });
     }
   };
@@ -67,7 +70,7 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
       />
 
       <ZincModal
-        maxHeight={'max-h-[500px]'}
+        maxHeight={'max-h-[700px]'}
         maxWidth={'max-w-[500px]'}
         opacityColor={'bg-zinc-700'}
         bgColor={'bg-zinc-50'}
@@ -100,6 +103,15 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
                 placeholder="Add a Description to Your Map"
                 className={`text-thin h-20 w-full rounded-md bg-white ${!descriptionInputValid ? 'border-2 border-red-500' : 'border border-black'} p-2 text-sm text-black focus:outline-none focus:ring-1 focus:ring-violet-500`}
               ></textarea>
+            </div>
+
+            <div className="flex flex-col gap-5">
+              <div className="font-semibold text-black"> Map Image (Optional)</div>
+              <ImageUpload
+                onImageUploaded={setImageUrl}
+                currentImageUrl={imageUrl}
+                className="w-full"
+              />
             </div>
           </div>
           <div className="flex-grow"> </div>

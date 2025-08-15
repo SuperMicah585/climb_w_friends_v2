@@ -14,8 +14,9 @@ declare module '*.png' {
   }
 
   interface ImportMetaEnv {
-    readonly VITE_SUPABASE_URL: string;
-    readonly VITE_SUPABASE_ANON_KEY: string;
+      readonly VITE_SUPABASE_URL: string;
+  readonly VITE_SUPABASE_ANON_KEY: string;
+  readonly VITE_API_URL: string;
     readonly VITE_MAP_BOX_KEY: string;
     readonly VITE_DOMAIN:string;
     readonly VITE_REDIRECT_URI:string;

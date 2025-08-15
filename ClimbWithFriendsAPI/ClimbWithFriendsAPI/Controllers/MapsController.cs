@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ClimbWithFriendsAPI.Data;
 using ClimbWithFriendsAPI.DTOs;
+using ClimbWithFriendsAPI.Services;
 
 namespace ClimbWithFriendsAPI.Controllers
 {
@@ -16,11 +17,13 @@ namespace ClimbWithFriendsAPI.Controllers
     {
         private readonly AppDbContext _context;
         private readonly ActivityLogService _activityLogService;
+        private readonly SupabaseStorageService _storageService;
 
-        public MapsController(AppDbContext context, ActivityLogService activityLogService)
+        public MapsController(AppDbContext context, ActivityLogService activityLogService, SupabaseStorageService storageService)
         {
             _context = context;
             _activityLogService = activityLogService;
+            _storageService = storageService;
         }
 
         // GET: api/Maps
@@ -108,6 +111,48 @@ public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsersByMapId(int mapId)
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetMap", new { id = map.MapId }, map);
+        }
+
+        // POST: api/Maps/upload-image
+        [HttpPost("upload-image")]
+        public async Task<ActionResult<object>> UploadMapImage(IFormFile file)
+        {
+            try
+            {
+                if (file == null || file.Length == 0)
+                {
+                    return BadRequest("No file provided");
+                }
+
+                // Validate file type
+                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
+                var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
+                
+                if (!allowedExtensions.Contains(fileExtension))
+                {
+                    return BadRequest("Invalid file type. Only JPG, PNG, GIF, and WebP files are allowed.");
+                }
+
+                // Validate file size (max 10MB)
+                if (file.Length > 10 * 1024 * 1024)
+                {
+                    return BadRequest("File size too large. Maximum size is 10MB.");
+                }
+
+                // Upload image to Supabase
+                using var stream = file.OpenReadStream();
+                var imageUrl = await _storageService.UploadImageAsync(stream, file.FileName);
+
+                return Ok(new { 
+                    success = true, 
+                    imageUrl = imageUrl,
+                    fileName = file.FileName
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = $"Failed to upload image: {ex.Message}" });
+            }
         }
 
 

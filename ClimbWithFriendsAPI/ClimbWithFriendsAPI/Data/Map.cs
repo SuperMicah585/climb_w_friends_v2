@@ -12,6 +12,7 @@ namespace ClimbWithFriendsAPI.Data
         public string Description { get; set; }
         public string? CreatedAt { get; set; }
         public string? UpdatedAt { get; set; }
+        public string? ImageUrl { get; set; } // URL to the image stored in Supabase
 
         public ICollection<MapToTag>? MapToTags { get; set; }
     }

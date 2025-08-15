@@ -151,6 +151,7 @@ const createMap = async (
   title: string,
   description: string,
   userID: string,
+  imageUrl?: string,
 ) => {
   try {
     const response = await fetch(`${domain}api/Maps/`, {
@@ -161,6 +162,7 @@ const createMap = async (
       body: JSON.stringify({
         description,
         mapName: title, // Ensure this matches backend expectations
+        imageUrl: imageUrl || null,
       }),
     });
 

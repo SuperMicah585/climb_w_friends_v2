@@ -3,6 +3,7 @@ using NetTopologySuite.IO.Converters;
 using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using ClimbWithFriendsAPI.Services;
 
 // Add very early logging to catch startup issues
 Console.WriteLine("=== APPLICATION STARTING ===");
@@ -119,6 +120,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
     builder.Services.AddScoped<ActivityLogService>();
+    builder.Services.AddScoped<SupabaseStorageService>();
 
     Console.WriteLine("=== BUILDING APPLICATION ===");
     var app = builder.Build();
