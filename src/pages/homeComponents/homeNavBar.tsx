@@ -1,5 +1,5 @@
 import React from 'react';
-import LoginButton from '../../reusableComponents/loginButton';
+import AuthButtons from '../../reusableComponents/authButtons';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate } from 'react-router-dom';
 import climbwfriendsLogo from './climbwfriends.png';
@@ -54,7 +54,7 @@ const HomeNavBar: React.FC<NavBarProps> = ({
             {profileIcon}
           </button>
         ) : (
-          <LoginButton />
+          <AuthButtons />
         )}
       </div>
     </div>
