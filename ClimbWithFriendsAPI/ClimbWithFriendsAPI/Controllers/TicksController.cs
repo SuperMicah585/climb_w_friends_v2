@@ -35,6 +35,44 @@ namespace ClimbWithFriendsAPI.Controllers
             return tick;
         }
 
+        // GET: api/Ticks/Map/{mapId}
+        [HttpGet("Map/{mapId}")]
+        public async Task<ActionResult<IEnumerable<object>>> GetTicksByMap(int mapId)
+        {
+            var ticks = await _context.Ticks
+                .Where(t => t.MapId == mapId)
+                .Include(t => t.User)
+                .Include(t => t.Climb)
+                .Select(t => new
+                {
+                    t.TickId,
+                    t.MapId,
+                    t.ClimbId,
+                    t.Attempts,
+                    t.Difficulty,
+                    t.Notes,
+                    t.CreatedAt,
+                    t.UpdatedAt,
+                    User = new
+                    {
+                        t.User.UserId,
+                        t.User.Auth0ID,
+                        t.User.Name,
+                        t.User.Username
+                    },
+                    Climb = new
+                    {
+                        t.Climb.ClimbId,
+                        t.Climb.ClimbName,
+                        t.Climb.Rating,
+                        t.Climb.ClimbType
+                    }
+                })
+                .ToListAsync();
+
+            return Ok(ticks);
+        }
+
         [HttpPost("ToMap/{mapId}/ToUser/{auth0Id}/ToClimb/{climbId}")]
         public async Task<ActionResult<Tick>> PostTick(int mapId, string auth0Id, int climbId, [FromBody] TickDTO payloadTick)
         {

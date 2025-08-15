@@ -772,6 +772,48 @@ const eventLogDataFetch = async (mapId: number, timestamp?: string) => {
   }
 };
 
+const getTicksByMap = async (mapId: number) => {
+  try {
+    const response = await fetch(`${domain}api/Ticks/Map/${mapId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching ticks:', error);
+    throw error;
+  }
+};
+
+const getAttemptsByMap = async (mapId: number) => {
+  try {
+    const response = await fetch(`${domain}api/Attempts/Map/${mapId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching attempts:', error);
+    throw error;
+  }
+};
+
 export {
   eventLogDataFetch,
   checkMapForClimb,
@@ -802,4 +844,6 @@ export {
   retrieveFeatureDependenciesByMap,
   retrieveFeatureAggregate,
   addClimbsToMap,
+  getTicksByMap,
+  getAttemptsByMap,
 };

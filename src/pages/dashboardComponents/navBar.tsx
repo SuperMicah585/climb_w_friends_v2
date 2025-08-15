@@ -22,7 +22,7 @@ const NavBar: React.FC<NavBarProps> = ({
   statsTrigger,
 }) => {
   const { user } = useAuth0();
-  const navBarItems = ['Maps', 'Communities', 'Feed', 'Profile'];
+  const navBarItems = ['Maps','Invitations'];
 
   const [statObject, setStatObject] = useState<StatObject>({
     totalClimbs: 0,

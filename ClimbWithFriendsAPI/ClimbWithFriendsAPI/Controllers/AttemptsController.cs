@@ -37,6 +37,44 @@ namespace ClimbWithFriendsAPI.Controllers
             return attempt;
         }
 
+        // GET: api/Attempts/Map/{mapId}
+        [HttpGet("Map/{mapId}")]
+        public async Task<ActionResult<IEnumerable<object>>> GetAttemptsByMap(int mapId)
+        {
+            var attempts = await _context.Attempts
+                .Where(a => a.MapId == mapId)
+                .Include(a => a.User)
+                .Include(a => a.Climb)
+                .Select(a => new
+                {
+                    a.AttemptId,
+                    a.MapId,
+                    a.ClimbId,
+                    a.Attempts,
+                    a.Difficulty,
+                    a.Notes,
+                    a.CreatedAt,
+                    a.UpdatedAt,
+                    User = new
+                    {
+                        a.User.UserId,
+                        a.User.Auth0ID,
+                        a.User.Name,
+                        a.User.Username
+                    },
+                    Climb = new
+                    {
+                        a.Climb.ClimbId,
+                        a.Climb.ClimbName,
+                        a.Climb.Rating,
+                        a.Climb.ClimbType
+                    }
+                })
+                .ToListAsync();
+
+            return Ok(attempts);
+        }
+
 
 
 

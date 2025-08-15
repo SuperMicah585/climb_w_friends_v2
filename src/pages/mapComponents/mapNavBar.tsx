@@ -4,6 +4,7 @@ import {
   tagIcon,
   notificationSVG,
   globeIcon,
+  summaryIcon,
 } from '../../reusableComponents/styles';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -12,9 +13,11 @@ interface MapNavBarProps {
   feedToggleCallBack: () => void;
   tagToggleCallBack: () => void;
   allClimbsCallBack: () => void;
+  summaryToggleCallBack: () => void;
   feedToggle: boolean;
   tagToggle: boolean;
   allClimbsToggle: boolean;
+  summaryToggle: boolean;
   filterModalDisplay: boolean;
   filterToggleCallBack: () => void;
 }
@@ -23,10 +26,12 @@ const MapNavBar: React.FC<MapNavBarProps> = ({
   tagToggleCallBack,
   filterToggleCallBack,
   allClimbsCallBack,
+  summaryToggleCallBack,
   filterModalDisplay,
   allClimbsToggle,
   feedToggle,
   tagToggle,
+  summaryToggle,
   children,
 }) => {
   const [navBarStateExpanded, setNavBarStateExpanded] = useState(false);
@@ -67,6 +72,13 @@ const MapNavBar: React.FC<MapNavBarProps> = ({
           >
             {' '}
             {globeIcon}{' '}
+          </div>{' '}
+          <div
+            onClick={() => summaryToggleCallBack()}
+            className={`cursor-pointer flex items-center justify-center ${summaryToggle ? 'border-violet-500 fill-none text-violet-500' : 'border-slate-500 fill-none'} z-10 rounded-full border border-slate-500 p-2 opacity-90 shadow-lg hover:bg-slate-500 hover:bg-opacity-75`}
+          >
+            {' '}
+            {summaryIcon}{' '}
           </div>{' '}
           <div className="flex items-center gap-5 border-l pl-5">
             {navBarOptions.map((item, index) => (

@@ -4,6 +4,7 @@ import Search from './mapComponents/search';
 import ActivityFeed from './mapComponents/activityFeed';
 import ClimbModal from './mapComponents/modalComponents/climbModal';
 import MapNavBar from './mapComponents/mapNavBar';
+import TickAttemptModal from './mapComponents/modalComponents/tickAttemptModal';
 import './mapbox.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import {
@@ -54,6 +55,7 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
   const [filterModalDisplay, setFilterModalDisplay] = useState<boolean>(false);
   const [allClimbsModalDisplay, setAllClimbsModalDisplay] =
     useState<boolean>(false);
+  const [summaryModalDisplay, setSummaryModalDisplay] = useState<boolean>(false);
   const [feedToggle, setFeedToggle] = useState<boolean>(false);
   const [climbTypeDropDownValue, setclimbTypeDropDown] =
     useState<string>('Boulder');
@@ -84,6 +86,10 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
 
   const allClimbsCallBack = () => {
     setAllClimbsModalDisplay((prev) => !prev);
+  };
+
+  const summaryToggleCallBack = () => {
+    setSummaryModalDisplay((prev) => !prev);
   };
 
   const closeAddClimbsModalCallBack = async (trigger: boolean) => {
@@ -345,10 +351,12 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
         allClimbsCallBack={allClimbsCallBack}
         feedToggle={feedToggle}
         tagToggle={tagModalDisplay}
+        summaryToggle={summaryModalDisplay}
         filterModalDisplay={filterModalDisplay}
         filterToggleCallBack={filterToggleCallBack}
         feedToggleCallBack={feedToggleCallBack}
         tagToggleCallBack={tagToggleCallBack}
+        summaryToggleCallBack={summaryToggleCallBack}
       >
         <div className="flex w-full items-center justify-start">
           <div className="z-10 flex-grow">
@@ -414,6 +422,13 @@ const Map: React.FC<MapProps> = ({ zoomLevel }) => {
           mapId={mapIdNumber}
           closeModalCallBack={closeAllClimbsModalCallBack}
           auth0Id={user?.sub || ''}
+        />
+      ) : null}
+
+      {summaryModalDisplay ? (
+        <TickAttemptModal
+          mapId={mapIdNumber}
+          closeModalCallBack={() => setSummaryModalDisplay(false)}
         />
       ) : null}
 
