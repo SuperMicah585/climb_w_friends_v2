@@ -224,7 +224,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
       <div className="relative flex h-full w-full flex-col pb-12">
         <div className="mt-10 flex flex-grow flex-col gap-5 overflow-y-scroll">
           <div className="flex w-80 flex-col gap-2">
-            <div className="font-semibold text-white"> Add Filters</div>
+            <div className="font-semibold text-gray-800"> Add Filters</div>
             <div className="relative">
               <Input
                 ref={inputFilterRef}
@@ -237,7 +237,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
               <div
                 ref={filterIconRef}
                 onClick={() => setFilterToggle((prev) => !prev)}
-                className="absolute right-2 top-2 flex cursor-pointer items-center justify-center rounded-full p-1 hover:bg-slate-500"
+                className="absolute right-2 top-2 flex cursor-pointer items-center justify-center rounded-full p-1 text-gray-800 hover:bg-gray-200"
               >
                 {threeLineDropDownIcon}
               </div>
@@ -248,7 +248,8 @@ const FilterModal: React.FC<FilterModalProps> = ({
                   <DownDrop
                     ref={downDropRef}
                     selectedFilter={selectedFilter}
-                    color="zinc"
+                    color="gray"
+                    theme="light"
                     downDropWidth={'w-40'}
                     setDropDownToggleCallBack={setFilterToggleCallBack}
                     filterTypes={filterItems}
@@ -259,7 +260,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
             </div>
           </div>
 
-          <div className="font-semibold text-white">Filter by Grade/Type</div>
+          <div className="font-semibold text-gray-800">Filter by Grade/Type</div>
           <GradeDropDowns
             filtersOnMap={modifiedFiltersOnMap}
             setModifiedFiltersOnMap={setModifiedFiltersOnMap}
@@ -267,7 +268,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
             auth0Id={auth0Id}
           />
 
-          <div className="font-semibold text-white"> Filters on Map</div>
+          <div className="font-semibold text-gray-800"> Filters on Map</div>
           <div className="flex flex-wrap gap-2">
             {modifiedFiltersOnMap.tagFilters.length > 0 || modifiedFiltersOnMap.userFilters.length > 0 ? (
               <>
@@ -279,7 +280,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
                   >
                     {' '}
                     <div
-                      className={`flex cursor-pointer rounded-md border-2 border-green-900 bg-green-600 p-1 text-center text-sm hover:opacity-75`}
+                      className={`flex cursor-pointer rounded-md border-2 border-green-300 bg-green-200 p-1 text-center text-sm text-green-800 hover:opacity-75`}
                     >
                       {item.tagName}
                     </div>
@@ -294,7 +295,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
                     {' '}
                     <div
                       key={index}
-                      className={`flex cursor-pointer rounded-md border-2 border-violet-900 bg-violet-600 p-1 text-center text-sm hover:opacity-75`}
+                      className={`flex cursor-pointer rounded-md border-2 border-violet-300 bg-violet-200 p-1 text-center text-sm text-violet-800 hover:opacity-75`}
                     >
                       {item.username}
                     </div>
@@ -302,7 +303,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
                 ))}
               </>
             ) : (
-              <div className="text-neutral-400 text-sm italic">
+              <div className="text-gray-500 text-sm italic">
                 No filters have been added yet
               </div>
             )}
@@ -321,6 +322,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
               dropDownStatus={toggleFilterDropDown}
               inputRef={inputFilterRef}
               closeDropDownCallBack={setToggleFilterDropDownCallBack}
+              theme="light"
             >
               {searchResults?.length > 0 ? (
                 searchResults.map((item, index) => (
@@ -329,7 +331,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
                       handleClickedTag(item);
                       setToggleFilterDropDown(false);
                     }}
-                    className={dropDownStyles('zinc')}
+                    className={dropDownStyles('gray')}
                     key={index}
                   >
                     <div className="flex flex-col gap-2 p-2">
@@ -356,7 +358,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
                   onClick={() => {
                     setToggleFilterDropDown(false);
                   }}
-                  className="flex w-96 items-center p-2 text-sm text-white"
+                  className="flex w-96 items-center p-2 text-sm text-gray-700"
                 >
                   {' '}
                   No Results{' '}

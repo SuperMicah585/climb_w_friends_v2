@@ -379,22 +379,22 @@ export const addFeatureInteractions = async (
         .setHTML(
           `<div class='flex flex-col gap-5 items-center justify-center z-50'>
             <div class="flex w-full items-start gap-5 font-bold">
-              <div class="flex flex-col gap-2 w-1/2 text-center rounded-md bg-customGray p-2 text-white">
-                <div class="text-neutral-200 font-thin"> CLIMBERS </div>
+              <div class="flex flex-col gap-2 w-1/2 text-center rounded-md bg-white p-2 text-gray-800 border border-gray-200">
+                <div class="text-gray-600 font-thin"> CLIMBERS </div>
                 <div class="text-xl">-</div>
               </div>
   
-              <div class="flex flex-col gap-2 w-1/2 text-center rounded-md bg-customGray p-2 text-white">
-                <div class="text-neutral-200 font-thin"> CLIMBS </div>
+              <div class="flex flex-col gap-2 w-1/2 text-center rounded-md bg-white p-2 text-gray-800 border border-gray-200">
+                <div class="text-gray-600 font-thin"> CLIMBS </div>
                 <div class="text-xl">-</div>
               </div>
             </div>
   
-            <div class="gap-5 items-center pt-2 justify-center rounded-md bg-customGray pb-2 flex flex-col"> 
-              <div class="text-white text-lg"> Climbs Per Grade </div>
+            <div class="gap-5 items-center pt-2 justify-center rounded-md bg-white pb-2 flex flex-col border border-gray-200"> 
+              <div class="text-gray-800 text-lg"> Climbs Per Grade </div>
               <div class="flex items-center justify-center w-[260px] h-28">
-                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
-                <span class="ml-2 text-white">Loading...</span>
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-600"></div>
+                <span class="ml-2 text-gray-800">Loading...</span>
               </div>
             </div>
           </div>`
@@ -432,21 +432,21 @@ export const addFeatureInteractions = async (
           popup
             .setLngLat(e.lngLat)
             .setHTML(
-              `<div class='flex flex-col gap-5 items-center justify-center z-50'>
-              <div class="flex w-full items-start gap-5 font-bold">
-                <div class="flex flex-col gap-2 w-1/2 text-center rounded-md bg-customGray p-2 text-white">
-                  <div class="text-neutral-200 font-thin"> CLIMBERS </div>
-                  <div class="text-xl">${popUpData.uniqueUserCount}</div>
-                </div>
-  
-                <div class="flex flex-col gap-2 w-1/2 text-center rounded-md bg-customGray p-2 text-white">
-                  <div class="text-neutral-200 font-thin"> CLIMBS </div>
-                  <div class="text-xl"> ${popUpData.totalCount} </div>
-                </div>
-              </div>
-  
-              <div class="gap-5 items-center pt-2 justify-center rounded-md bg-customGray pb-2 flex flex-col 2"> 
-                <div class="text-white text-lg"> Climbs Per Grade </div>
+                               `<div class='flex flex-col gap-5 items-center justify-center z-50'>
+                 <div class="flex w-full items-start gap-5 font-bold">
+                   <div class="flex flex-col gap-2 w-1/2 text-center rounded-md bg-white p-2 text-gray-800 border border-gray-200">
+                     <div class="text-gray-600 font-thin"> CLIMBERS </div>
+                       <div class="text-xl">${popUpData.uniqueUserCount}</div>
+                     </div>
+
+                   <div class="flex flex-col gap-2 w-1/2 text-center rounded-md bg-white p-2 text-gray-800 border border-gray-200">
+                     <div class="text-gray-600 font-thin"> CLIMBS </div>
+                       <div class="text-xl"> ${popUpData.totalCount} </div>
+                     </div>
+                   </div>
+
+                 <div class="gap-5 items-center pt-2 justify-center rounded-md bg-white pb-2 flex flex-col 2 border border-gray-200">
+                   <div class="text-gray-800 text-lg"> Climbs Per Grade </div>
                 <div
                 id="${chartContainerId}"
                 class="${twoGraphs ? 'w-[580px] h-28' : 'w-[260px] h-28'}"
@@ -486,9 +486,9 @@ export const addFeatureInteractions = async (
                       data={sortedGradeArray.boulderArray}
                       margin={{ top: 0, right: 30, bottom: 0, left: 0 }}
                     >
-                      <CartesianGrid stroke="white" strokeDasharray="3 3" />
-                      <XAxis stroke="white" dataKey="rating" />
-                      <YAxis stroke="white" />
+                      <CartesianGrid stroke="black" strokeDasharray="3 3" />
+                      <XAxis stroke="black" dataKey="rating" />
+                      <YAxis stroke="black" />
                       <Bar
                         dataKey="count"
                         fill="#8b5cf6"
@@ -503,9 +503,9 @@ export const addFeatureInteractions = async (
                       data={sortedGradeArray.sportArray} // Assuming a similar data structure exists
                       margin={{ top: 0, right: 30, bottom: 0, left: 0 }}
                     >
-                      <CartesianGrid stroke="white" strokeDasharray="3 3" />
-                      <XAxis stroke="white" dataKey="rating" />
-                      <YAxis stroke="white" />
+                      <CartesianGrid stroke="black" strokeDasharray="3 3" />
+                      <XAxis stroke="black" dataKey="rating" />
+                      <YAxis stroke="black" />
                       <Bar
                         dataKey="count"
                         fill="#34d399"
@@ -524,9 +524,9 @@ export const addFeatureInteractions = async (
                       data={sortedGradeArray.array}
                       margin={{ top: 0, right: 18, bottom: 0, left: 0 }}
                     >
-                      <CartesianGrid stroke="white" strokeDasharray="3 3" />
-                      <XAxis stroke="white" dataKey="rating" />
-                      <YAxis stroke="white" />
+                      <CartesianGrid stroke="black" strokeDasharray="3 3" />
+                      <XAxis stroke="black" dataKey="rating" />
+                      <YAxis stroke="black" />
                       <Bar
                         dataKey="count"
                         fill="#8b5cf6"
@@ -546,21 +546,21 @@ export const addFeatureInteractions = async (
             .setHTML(
               `<div class='flex flex-col gap-5 items-center justify-center z-50'>
                 <div class="flex w-full items-start gap-5 font-bold">
-                  <div class="flex flex-col gap-2 w-1/2 text-center rounded-md bg-customGray p-2 text-white">
-                    <div class="text-neutral-200 font-thin"> CLIMBERS </div>
+                  <div class="flex flex-col gap-2 w-1/2 text-center rounded-md bg-white p-2 text-gray-800 border border-gray-200">
+                    <div class="text-gray-600 font-thin"> CLIMBERS </div>
                     <div class="text-xl">-</div>
                   </div>
       
-                  <div class="flex flex-col gap-2 w-1/2 text-center rounded-md bg-customGray p-2 text-white">
-                    <div class="text-neutral-200 font-thin"> CLIMBS </div>
+                  <div class="flex flex-col gap-2 w-1/2 text-center rounded-md bg-white p-2 text-gray-800 border border-gray-200">
+                    <div class="text-gray-600 font-thin"> CLIMBS </div>
                     <div class="text-xl">-</div>
                   </div>
                 </div>
       
-                <div class="gap-5 items-center pt-2 justify-center rounded-md bg-customGray pb-2 flex flex-col"> 
-                  <div class="text-white text-lg"> Climbs Per Grade </div>
+                <div class="gap-5 items-center pt-2 justify-center rounded-md bg-white pb-2 flex flex-col border border-gray-200"> 
+                  <div class="text-gray-800 text-lg"> Climbs Per Grade </div>
                   <div class="flex items-center justify-center w-[260px] h-28">
-                    <span class="text-red-300">Error loading data</span>
+                    <span class="text-red-600">Error loading data</span>
                   </div>
                 </div>
               </div>`

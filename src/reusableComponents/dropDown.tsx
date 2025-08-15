@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import {
   basicDropDownStyleContainer,
+  darkDropDownStyleContainer,
   dropDownStyles,
   dropDownSvgOpen,
   dropDownSvgClosed,
@@ -14,6 +15,7 @@ interface DropDownProps {
   dropDownWidth: string;
   dropDownHeight?: string;
   color?: string;
+  theme?: 'light' | 'dark';
 }
 const DropDown: React.FC<DropDownProps> = ({
   dropDownItems,
@@ -23,6 +25,7 @@ const DropDown: React.FC<DropDownProps> = ({
   dropDownWidth,
   dropDownHeight,
   color,
+  theme = 'light',
 }) => {
   const [dropDownItemsState, setDropDownItemsState] = useState<boolean>(false);
   const [stateDropDownItem, setStateDropDownItem] = useState<string>('');
@@ -53,11 +56,22 @@ const DropDown: React.FC<DropDownProps> = ({
     };
   }, [dropDownItemsRef]);
 
+  const getItemStyle = () => {
+    if (theme === 'dark') {
+      return 'flex items-center text-sm border-b border-zinc-700 bg-customGray cursor-pointer hover:bg-neutral-700 p-2 text-white';
+    }
+    return color ? dropDownStyles(color) : dropDownStyles('gray');
+  };
+
   const DropDownItems = () => {
+    const containerStyle = theme === 'dark' 
+      ? darkDropDownStyleContainer(dropDownWidth, dropDownHeight)
+      : basicDropDownStyleContainer(dropDownWidth, dropDownHeight);
+      
     return (
       <div
         ref={dropDownItemsRef}
-        className={basicDropDownStyleContainer(dropDownWidth, dropDownHeight)}
+        className={containerStyle}
       >
         {dropDownItems.map((item) =>
           item !== stateDropDownItem ? (
@@ -67,7 +81,7 @@ const DropDown: React.FC<DropDownProps> = ({
                 setDropDownItemsState(false);
                 selectedDropDownItemCallBack(item);
               }}
-              className={color ? dropDownStyles(color) : dropDownStyles('gray')}
+              className={getItemStyle()}
               key={item}
             >
               {' '}

@@ -100,6 +100,7 @@ const Search: React.FC<SearchProps> = ({
                   handleSearch={handleClimbSearch}
                   paddingLeft={'pl-40'}
                   focusColor={'focus:ring-green-500'}
+                  bgColor={'bg-zinc-900'}
                   ref={inputRef}
                 />
               </div>
@@ -112,6 +113,7 @@ const Search: React.FC<SearchProps> = ({
                     dropDownStatus={searchDropDown}
                     inputRef={inputRef}
                     closeDropDownCallBack={setToggleSearchDropDownCallBack}
+                    theme="dark"
                   >
                     {searchResults.length > 0 ? (
                       searchResults.map((item) => (
@@ -120,7 +122,7 @@ const Search: React.FC<SearchProps> = ({
                             handleClimbSelect(item);
                             setSearchDrownDown(false);
                           }}
-                          className={dropDownStyles('gray')}
+                          className={dropDownStyles('zinc')}
                           key={item.climbId}
                         >
                           <div className="flex flex-col gap-2 p-2">
@@ -146,7 +148,7 @@ const Search: React.FC<SearchProps> = ({
                         onClick={() => {
                           setSearchDrownDown(false);
                         }}
-                        className="flex w-96 items-center p-2 text-sm text-white"
+                        className="flex w-96 items-center p-2 text-sm text-gray-700"
                       >
                         {' '}
                         No Results{' '}
@@ -165,6 +167,7 @@ const Search: React.FC<SearchProps> = ({
               dropDownItems={climbType}
               selectedDropDownItemCallBack={climbTypeDropDownValueCallBack}
               initDropDownItem={climbTypeDropDownValue}
+              theme="dark"
             />
             <DropDown
               dropDownWidth={'w-14'}
@@ -172,6 +175,7 @@ const Search: React.FC<SearchProps> = ({
               dropDownItems={usStateAbbreviations}
               selectedDropDownItemCallBack={stateDropDownNameCallBack}
               initDropDownItem={stateDropDownName}
+              theme="dark"
             />
           </div>
         </div>

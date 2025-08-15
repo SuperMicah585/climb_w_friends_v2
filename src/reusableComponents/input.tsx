@@ -45,7 +45,7 @@ const InputComponent = forwardRef<HTMLInputElement, InputComponentProps>(
         onChange={(e) => setQuery(e.target.value)}
         type="text"
         placeholder={`${setPlaceHolder ? setPlaceHolder : 'Search for Climbs'}`}
-        className={`rounded-xl ${bgColor ? bgColor + ' ' + 'border-black text-black' : 'border-neutral-500 bg-zinc-900 text-white'} bg-opacity-90 ${paddingLeft} w-full flex-grow border p-3 focus:outline-none focus:ring-1 ${focusColor ? focusColor : 'focus:ring-violet-500'}`}
+        className={`rounded-xl ${bgColor ? bgColor + ' ' + 'border-gray-300 text-gray-800' : 'border-gray-300 bg-white text-gray-800'} bg-opacity-90 ${paddingLeft} w-full flex-grow border p-3 focus:outline-none focus:ring-1 ${focusColor ? focusColor : 'focus:ring-violet-500'}`}
       />
     );
   },

@@ -205,7 +205,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
         <div className="flex h-12 items-center">
           <div
             onClick={() => setConfigToggle(0)}
-            className="text-white hover:cursor-pointer hover:text-violet-500"
+            className="text-gray-700 hover:cursor-pointer hover:text-violet-500"
           >
             {expandArrowIcon}{' '}
           </div>
@@ -229,6 +229,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
                 dropDownStatus={dropDownToggle}
                 inputRef={tagInputRef}
                 closeDropDownCallBack={closeDropDownCallBack}
+                theme="light"
               >
                 {tagObject.length > 0 ? (
                   tagObject.filter(
@@ -250,7 +251,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
                             handleTagSelect([tagObj, climbObject.climbId]);
                             setDropDownToggle(false);
                           }}
-                          className={dropDownStyles('zinc')}
+                          className={dropDownStyles('gray')}
                           key={tagObj.tagId} // Use tagObj.id for unique keys
                         >
                           <div className="flex flex-col gap-2 p-2">
@@ -267,7 +268,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
                       onClick={() => {
                         setDropDownToggle(false);
                       }}
-                      className="flex w-96 items-center p-2 text-sm text-white"
+                      className="flex w-96 items-center p-2 text-sm text-gray-700"
                     >
                       No Results
                     </div>
@@ -277,7 +278,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
                     onClick={() => {
                       setDropDownToggle(false);
                     }}
-                    className="flex w-96 items-center p-2 text-sm text-white"
+                    className="flex w-96 items-center p-2 text-sm text-gray-700"
                   >
                     No Results
                   </div>
@@ -344,7 +345,7 @@ const ClimbModalBar: React.FC<ClimbModalBarProps> = ({
       ) : (
         <div
           onClick={() => setConfigToggle(climbObject.climbId)}
-          className="flex h-12 items-center text-white hover:cursor-pointer hover:text-violet-500"
+          className="flex h-12 items-center text-gray-700 hover:cursor-pointer hover:text-violet-500"
         >
           {' '}
           {backArrowIcon}{' '}

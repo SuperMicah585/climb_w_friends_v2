@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Link } from 'react-router-dom';
 import ProfileDropdown from '../reusableComponents/profileDropdown';
-import PurpleButton from '../reusableComponents/genericButton';
 import ToastContainer from '../reusableComponents/toastContainer';
 import { userObject } from '../types/interfaces';
 import climbwfriendsLogo from './homeComponents/climbwfriends.png';
@@ -10,8 +9,8 @@ import climbwfriendsLogo from './homeComponents/climbwfriends.png';
 const Profile = () => {
   const { user } = useAuth0();
   const [userData, setUserData] = useState<userObject | null>(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedUsername, setEditedUsername] = useState('');
+  const [editingField, setEditingField] = useState<string | null>(null);
+  const [editValues, setEditValues] = useState<{[key: string]: string}>({});
   const [isLoading, setIsLoading] = useState(true);
   const [toastTrigger, setToastTrigger] = useState(0);
   const [toastType, setToastType] = useState('success');
@@ -33,7 +32,6 @@ const Profile = () => {
       }
       const data = await response.json();
       setUserData(data);
-      setEditedUsername(data.username || '');
     } catch (error) {
       console.error('Error fetching user data:', error);
       setToastType('error');
@@ -44,20 +42,42 @@ const Profile = () => {
     }
   };
 
-  const handleSave = async () => {
+  const handleEdit = (field: string, currentValue: string) => {
+    setEditingField(field);
+    setEditValues(prev => ({ ...prev, [field]: currentValue }));
+  };
+
+  const handleSave = async (field: string) => {
     if (!userData || !user?.sub) return;
 
     try {
+      const updateData: any = {};
+      
+      // Map frontend field names to backend field names
+      switch (field) {
+        case 'legalName':
+          updateData.Name = editValues[field];
+          break;
+        case 'preferredFirstName':
+          updateData.PreferredFirstName = editValues[field];
+          break;
+        case 'email':
+          updateData.Email = editValues[field];
+          break;
+        case 'phoneNumber':
+          updateData.PhoneNumber = editValues[field];
+          break;
+        case 'username':
+          updateData.UserName = editValues[field];
+          break;
+      }
+
       const response = await fetch(`${domain}api/User/${user.sub}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          userName: editedUsername,
-          name: userData.name,
-          email: userData.email
-        }),
+        body: JSON.stringify(updateData),
       });
 
       if (!response.ok) {
@@ -66,7 +86,7 @@ const Profile = () => {
 
       const updatedData = await response.json();
       setUserData(updatedData);
-      setIsEditing(false);
+      setEditingField(null);
       setToastType('success');
       setToastMessage('Profile updated successfully!');
       setToastTrigger(prev => prev + 1);
@@ -79,8 +99,75 @@ const Profile = () => {
   };
 
   const handleCancel = () => {
-    setEditedUsername(userData?.username || '');
-    setIsEditing(false);
+    setEditingField(null);
+    setEditValues({});
+  };
+
+  const maskEmail = (email: string) => {
+    if (!email) return 'Not provided';
+    const [localPart, domain] = email.split('@');
+    if (localPart.length <= 2) return email;
+    return `${localPart.charAt(0)}***${localPart.charAt(localPart.length - 1)}@${domain}`;
+  };
+
+  const maskPhone = (phone: string) => {
+    if (!phone) return 'Not provided';
+    if (phone.length <= 4) return phone;
+    return `+1 ***-***-${phone.slice(-4)}`;
+  };
+
+  const renderField = (label: string, field: string, value: string, isEditable: boolean = true) => {
+    const isEditing = editingField === field;
+    const displayValue = field === 'email' ? maskEmail(value) : 
+                        field === 'phoneNumber' ? maskPhone(value) : 
+                        value || 'Not provided';
+
+    return (
+      <div className="border-b border-gray-200 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex-1">
+            <div className="font-semibold text-gray-900 mb-1">{label}</div>
+            {isEditing ? (
+              <input
+                type={field === 'email' ? 'email' : field === 'phoneNumber' ? 'tel' : 'text'}
+                value={editValues[field] || ''}
+                onChange={(e) => setEditValues(prev => ({ ...prev, [field]: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent text-gray-900 bg-white"
+                placeholder={`Enter ${label.toLowerCase()}`}
+                autoFocus
+              />
+            ) : (
+              <div className="text-gray-600">{displayValue}</div>
+            )}
+          </div>
+          <div className="ml-4">
+            {isEditing ? (
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handleSave(field)}
+                  className="text-violet-600 hover:text-violet-800 underline font-medium"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={handleCancel}
+                  className="text-gray-600 hover:text-gray-800 underline font-medium"
+                >
+                  Cancel
+                </button>
+              </div>
+            ) : isEditable ? (
+              <button
+                onClick={() => handleEdit(field, value || '')}
+                className="text-violet-600 hover:text-violet-800 underline font-medium"
+              >
+                {value ? 'Edit' : 'Add'}
+              </button>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    );
   };
 
   if (isLoading) {
@@ -137,89 +224,17 @@ const Profile = () => {
 
       {/* Profile Content */}
       <div className="max-w-2xl mx-auto px-6 py-8">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-3xl font-bold text-gray-900">User Profile</h1>
-            {!isEditing && (
-              <PurpleButton
-                paddingLeft="pl-4"
-                paddingRight="pr-4"
-                clickCallBack={() => setIsEditing(true)}
-              >
-                Edit Profile
-              </PurpleButton>
-            )}
-          </div>
-
-          <div className="space-y-6">
-            {/* Email (Read-only) */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email
-              </label>
-              <div className="bg-gray-50 px-4 py-3 rounded-md text-gray-900">
-                {userData?.email || 'Not available'}
-              </div>
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+          <div className="px-8 py-6">
+            <h1 className="text-2xl font-bold text-gray-900 mb-6">Personal Information</h1>
+            
+            <div className="space-y-0">
+              {renderField('Legal name', 'legalName', userData?.name || '')}
+              {renderField('Preferred first name', 'preferredFirstName', userData?.preferredFirstName || '')}
+              {renderField('Email address', 'email', userData?.email || '')}
+              {renderField('Phone number', 'phoneNumber', userData?.phoneNumber || '')}
+              {renderField('Username', 'username', userData?.username || '')}
             </div>
-
-            {/* Name (Read-only) */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Name
-              </label>
-              <div className="bg-gray-50 px-4 py-3 rounded-md text-gray-900">
-                {userData?.name || 'Not available'}
-              </div>
-            </div>
-
-            {/* Username (Editable) */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Username
-              </label>
-              {isEditing ? (
-                <input
-                  type="text"
-                  value={editedUsername}
-                  onChange={(e) => setEditedUsername(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent text-gray-900 bg-white"
-                  placeholder="Enter username"
-                />
-              ) : (
-                <div className="bg-gray-50 px-4 py-3 rounded-md text-gray-900">
-                  {userData?.username || 'Not set'}
-                </div>
-              )}
-            </div>
-
-            {/* Auth0 ID (Read-only) */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                User ID
-              </label>
-              <div className="bg-gray-50 px-4 py-3 rounded-md text-gray-900 text-sm font-mono">
-                {userData?.auth0ID || 'Not available'}
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            {isEditing && (
-              <div className="flex gap-4 pt-4">
-                <PurpleButton
-                  paddingLeft="pl-6"
-                  paddingRight="pr-6"
-                  clickCallBack={handleSave}
-                >
-                  Save Changes
-                </PurpleButton>
-                <button
-                  onClick={handleCancel}
-                  className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors duration-200"
-                >
-                  Cancel
-                </button>
-              </div>
-            )}
           </div>
         </div>
       </div>

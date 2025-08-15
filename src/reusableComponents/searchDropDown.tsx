@@ -9,6 +9,7 @@ interface DropDownProps {
   bgColor?: string;
   textColor?: string;
   bgOpacity?: string;
+  theme?: 'light' | 'dark';
 }
 
 const SearchDropDown: React.FC<DropDownProps> = ({
@@ -20,6 +21,7 @@ const SearchDropDown: React.FC<DropDownProps> = ({
   bgColor,
   textColor,
   bgOpacity,
+  theme = 'light',
   children,
 }) => {
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -43,10 +45,17 @@ const SearchDropDown: React.FC<DropDownProps> = ({
     }
   };
 
+  const getDefaultStyling = () => {
+    if (theme === 'dark') {
+      return 'border border-neutral-700 bg-customGray text-white';
+    }
+    return 'border border-gray-200 bg-white text-gray-800';
+  };
+
   return dropDownStatus ? (
     <div
       ref={dropdownRef}
-      className={`${maxHeight + ' ' + width} overflow-hidden overflow-y-scroll rounded-md ${textColor ? textColor : 'text-white'} ${bgColor ? bgColor + ' ' + 'shadow-lg' : 'border border-slate-500 bg-customGray'} ${bgOpacity ? bgOpacity : ''}`}
+      className={`${maxHeight + ' ' + width} overflow-hidden overflow-y-scroll rounded-md ${textColor ? textColor : theme === 'dark' ? 'text-white' : 'text-gray-800'} ${bgColor ? bgColor + ' ' + 'shadow-lg' : getDefaultStyling()} ${bgOpacity ? bgOpacity : ''}`}
     >
       {children}
     </div>

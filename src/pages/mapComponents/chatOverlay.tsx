@@ -98,10 +98,10 @@ const ModalChat: React.FC<ChatProps> = ({
   return (
     <>
       {displayChat ? (
-        <div className="pointer-events-auto fixed z-10 flex h-2/3 min-h-[400px] w-[700px] min-w-[600px] flex-col items-start rounded-lg bg-zinc-900">
-          <div className="flex w-full gap-5 border-b border-neutral-500 p-5 text-2xl font-semibold text-white">
+        <div className="pointer-events-auto fixed z-10 flex h-2/3 min-h-[400px] w-[700px] min-w-[600px] flex-col items-start rounded-lg bg-white border border-gray-200 shadow-lg">
+          <div className="flex w-full gap-5 border-b border-gray-300 p-5 text-2xl font-semibold text-gray-800">
             <div>{climbName}</div>
-            <div className="white border-r"></div>
+            <div className="border-r border-gray-300"></div>
             <div>{climbGrade}</div>
           </div>
 
@@ -116,7 +116,7 @@ const ModalChat: React.FC<ChatProps> = ({
                     whiteSpace: 'pre-wrap', // This preserves line breaks
                   }}
                   key={index}
-                  className="max-w-[66.6667%] self-end break-words rounded-lg bg-violet-700 p-2 text-white"
+                  className="max-w-[66.6667%] self-end break-words rounded-lg bg-violet-600 p-2 text-white"
                 >
                   {item.message}
                 </div>
@@ -126,9 +126,9 @@ const ModalChat: React.FC<ChatProps> = ({
                     whiteSpace: 'pre-wrap', // This preserves line breaks
                   }}
                   key={index}
-                  className="max-w-[66.6667%] self-start break-words rounded-lg bg-zinc-700 p-2 text-white"
+                  className="max-w-[66.6667%] self-start break-words rounded-lg bg-gray-200 p-2 text-gray-800"
                 >
-                  <div className="font-semibold text-green-500">
+                  <div className="font-semibold text-green-600">
                     {item.username}
                   </div>
                   {item.message}
@@ -137,11 +137,11 @@ const ModalChat: React.FC<ChatProps> = ({
             )}
           </div>
 
-          <div className="absolute bottom-0 flex h-16 w-full items-center justify-between border-t border-neutral-500 bg-zinc-900 p-2">
+          <div className="absolute bottom-0 flex h-16 w-full items-center justify-between border-t border-gray-300 bg-gray-50 p-2">
             {displayChat ? (
               <div
                 onClick={() => setDisplayChat(false)}
-                className="z-10 ml-2 cursor-pointer rounded-full p-1 text-white hover:bg-slate-500 hover:opacity-75"
+                className="z-10 ml-2 cursor-pointer rounded-full p-1 text-gray-700 hover:bg-gray-200 hover:opacity-75"
               >
                 {backArrowIcon}
               </div>

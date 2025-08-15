@@ -17,14 +17,14 @@ const chatInput = forwardRef<HTMLTextAreaElement, InputComponentProps>(
           onChange={(e) => setQuery(e.target.value)}
           value={query}
           placeholder="Send Message"
-          className={`z-10 box-border h-12 rounded-xl bg-zinc-900 bg-opacity-90 p-2.5 pr-12 text-white ${paddingLeft} max-w-96 flex-grow border border-slate-500 shadow-lg focus:outline-none focus:ring-1 focus:ring-violet-500`}
+          className={`z-10 box-border h-12 rounded-xl bg-white bg-opacity-90 p-2.5 pr-12 text-gray-800 ${paddingLeft} max-w-96 flex-grow border border-gray-300 shadow-lg focus:outline-none focus:ring-1 focus:ring-violet-500`}
         />
         <div
           onClick={() => {
             handleSearch(query);
             setQuery('');
           }}
-          className="absolute right-5 z-10 cursor-pointer rounded-full p-1 text-white hover:bg-slate-500 hover:opacity-75"
+          className="absolute right-5 z-10 cursor-pointer rounded-full p-1 text-gray-700 hover:bg-gray-200 hover:opacity-75"
         >
           {submitAirplane}
         </div>

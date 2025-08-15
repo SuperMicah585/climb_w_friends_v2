@@ -127,10 +127,10 @@ const TickOverlay: React.FC<TickOverlayProps> = ({
         mode="dark"
       />
       {displayChat ? (
-        <div className="pointer-events-auto fixed z-10 flex h-2/3 min-h-[400px] w-[700px] min-w-[600px] flex-col items-start rounded-lg bg-zinc-900">
-          <div className="flex w-full gap-5 border-b border-neutral-500 p-5 text-2xl font-semibold text-white">
+        <div className="pointer-events-auto fixed z-10 flex h-2/3 min-h-[400px] w-[700px] min-w-[600px] flex-col items-start rounded-lg bg-white border border-gray-200 shadow-lg">
+          <div className="flex w-full gap-5 border-b border-gray-300 p-5 text-2xl font-semibold text-gray-800">
             <div>{climbName}</div>
-            <div className="white border-r"></div>
+            <div className="border-r border-gray-300"></div>
             <div>{climbGrade}</div>
           </div>
 
@@ -140,13 +140,13 @@ const TickOverlay: React.FC<TickOverlayProps> = ({
           >
             <div className="flex flex-col gap-5">
               <div className="flex items-center gap-5">
-                <div className="border-b-2 border-transparent font-bold">
+                <div className="border-b-2 border-transparent font-bold text-gray-800">
                   {' '}
                   Attempts:
                 </div>{' '}
                 {AttemptArray.map((item, index) => (
                   <div
-                    className={`${item === attemptValue ? 'border-violet-500' : ''} cursor-pointer border-b-2 border-transparent text-sm font-semibold`}
+                    className={`${item === attemptValue ? 'border-violet-500' : ''} cursor-pointer border-b-2 border-transparent text-sm font-semibold text-gray-800`}
                     onClick={() => setAttemptValue(item)}
                     key={index}
                   >
@@ -157,13 +157,13 @@ const TickOverlay: React.FC<TickOverlayProps> = ({
               </div>
 
               <div className="flex items-center gap-5">
-                <div className="border-b-2 border-transparent font-bold">
+                <div className="border-b-2 border-transparent font-bold text-gray-800">
                   {' '}
                   Difficulty:
                 </div>{' '}
                 {difficultyArray.map((item, index) => (
                   <div
-                    className={`${item === difficultyValue ? 'border-violet-500' : ''} cursor-pointer border-b-2 border-transparent text-sm font-semibold`}
+                    className={`${item === difficultyValue ? 'border-violet-500' : ''} cursor-pointer border-b-2 border-transparent text-sm font-semibold text-gray-800`}
                     onClick={() => setDifficultyValue(item)}
                     key={index}
                   >
@@ -178,14 +178,14 @@ const TickOverlay: React.FC<TickOverlayProps> = ({
               value={value}
               onChange={handleChange}
               placeholder="input tick notes here"
-              className="h-full w-full rounded-md border-2 border-neutral-500 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 bg-zinc-900"
+              className="h-full w-full rounded-md border-2 border-gray-300 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 bg-white text-gray-800"
             />
           </div>
-          <div className="absolute bottom-0 flex h-16 w-full items-center justify-between border-t border-neutral-500 bg-zinc-900 p-2">
+          <div className="absolute bottom-0 flex h-16 w-full items-center justify-between border-t border-gray-300 bg-gray-50 p-2">
             {displayChat ? (
               <div
                 onClick={() => setDisplayChat(false)}
-                className="z-10 ml-2 cursor-pointer rounded-full p-1 text-white hover:bg-slate-500 hover:opacity-75"
+                className="z-10 ml-2 cursor-pointer rounded-full p-1 text-gray-700 hover:bg-gray-200 hover:opacity-75"
               >
                 {backArrowIcon}
               </div>

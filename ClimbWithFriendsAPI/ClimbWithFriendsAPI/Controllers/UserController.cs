@@ -153,6 +153,14 @@ public async Task<ActionResult<User>> UpdateUser(string auth0Id, [FromBody] User
         {
             user.Email = request.Email;
         }
+        if (request.PreferredFirstName != null)
+        {
+            user.PreferredFirstName = request.PreferredFirstName;
+        }
+        if (request.PhoneNumber != null)
+        {
+            user.PhoneNumber = request.PhoneNumber;
+        }
 
         await _context.SaveChangesAsync();
 

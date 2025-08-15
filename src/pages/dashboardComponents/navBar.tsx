@@ -1,107 +1,104 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import ProfileDropdown from '../../reusableComponents/profileDropdown';
-import camoBackGroundImage from '../homeComponents/black_camo.jpeg';
-import { useAuth0 } from '@auth0/auth0-react';
-import { retrieveUserStats } from './utilityFunctions';
 
-interface StatObject {
-  totalMaps: number;
-  totalClimbs: number;
-  uniqueClimbers: number;
-}
+import PurpleButton from '../../reusableComponents/genericButton';
 
 interface NavBarProps {
   navBarStatus: string;
   setNavBarStatus: React.Dispatch<React.SetStateAction<string>>;
-  statsTrigger: number;
+  onSearchChange?: (searchTerm: string) => void;
+  onAddMapClick?: () => void;
 }
 
 const NavBar: React.FC<NavBarProps> = ({
   navBarStatus,
   setNavBarStatus,
-  statsTrigger,
+  onSearchChange,
+  onAddMapClick,
 }) => {
-  const { user } = useAuth0();
+
   const navBarItems = ['Maps','Invitations'];
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const [statObject, setStatObject] = useState<StatObject>({
-    totalClimbs: 0,
-    totalMaps: 0,
-    uniqueClimbers: 1,
-  });
-
-  useEffect(() => {
-    const userStats = async () => {
-      if (user && user?.sub) {
-        const data = await retrieveUserStats(user?.sub);
-        setStatObject(data);
-      }
-    };
-
-    if (user && user?.sub) {
-      userStats();
-    } else {
-      console.error('User not found');
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    if (onSearchChange) {
+      onSearchChange(value);
     }
-  }, [user, statsTrigger]);
+  };
 
   return (
-    <div className="relative z-10 flex min-h-96 w-screen items-center justify-center gap-40 bg-gradient-to-br from-indigo-600 to-indigo-500 font-semibold">
-      <img
-        className="pointer-events-none absolute h-full w-full object-cover opacity-20"
-        src={camoBackGroundImage}
-        alt="Description of the image"
-      />
-
-      <div className="z-10 flex items-center gap-5 text-6xl font-black text-white">
-        <div>
-          {' '}
-          <span className="">{statObject.totalMaps}</span>{' '}
-          {statObject.totalMaps == 1 ? 'Map' : 'Maps'}
-        </div>
-        <div> | </div>
-        <div className="">
-          {' '}
-          <span className="">{statObject.totalClimbs}</span>{' '}
-          {statObject.totalClimbs === 1 ? 'Climb' : 'Climbs'}
-        </div>
-        <div> | </div>
-        <div className="">
-          {' '}
-          <span className="">
-            {statObject.uniqueClimbers > 0
-              ? statObject.uniqueClimbers - 1
-              : statObject.uniqueClimbers}
-          </span>{' '}
-          {statObject.uniqueClimbers === 2 ? 'Friend' : 'Friends'}
+    <div className="relative z-10 flex min-h-20 w-screen items-center justify-between px-6 bg-gray-50 border-b border-gray-200">
+      {/* Left side - Logo */}
+      <div className="flex items-center">
+        <div className="flex items-center justify-center font-changa">
+          <div className="text-2xl font-bold text-gray-800"> CLIMB</div>
+          <div className="text-sm font-bold text-gray-800">W</div>
+          <div className="text-2xl font-bold text-gray-800"> FRIENDS</div>
         </div>
       </div>
 
-      <div className="item-center absolute right-5 top-4 z-10 flex">
-        {' '}
-        <ProfileDropdown />{' '}
-      </div>
-
-      <div className="absolute left-5 top-4 flex w-40">
-        <div className="z-10 flex items-center justify-center font-changa">
-          <div className="text-3xl font-bold"> CLIMB</div>
-          <div className="text-sm font-bold">W</div>
-          <div className="text-3xl font-bold"> FRIENDS</div>
+      {/* Center - Navigation and Search */}
+      <div className="flex items-center gap-8">
+        {/* Navigation Items */}
+        <div className="flex items-center gap-8">
+          {navBarItems.map((item) => (
+            <div
+              key={item}
+              onClick={() => {
+                setNavBarStatus(item);
+              }}
+              className={`border-b-2 border-transparent font-semibold text-gray-700 hover:cursor-pointer hover:border-gray-400 transition-colors ${navBarStatus === item ? 'border-gray-600' : ''}`}
+            >
+              {item}
+            </div>
+          ))}
         </div>
-      </div>
 
-      <div className="absolute top-4 flex items-center justify-center gap-10 text-xl">
-        {navBarItems.map((item) => (
-          <div
-            key={item}
-            onClick={() => {
-              setNavBarStatus(item);
-            }}
-            className={`z-10 border-b-4 border-transparent font-extrabold hover:cursor-pointer hover:border-white ${navBarStatus === item ? 'border-white' : ''}`}
+        {/* Search Bar */}
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Search maps..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="w-64 px-4 py-2 pl-10 text-sm text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+          />
+          <svg
+            className="absolute left-3 top-2.5 w-4 h-4 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
           >
-            {item}{' '}
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </div>
+      </div>
+
+      {/* Right side - Add Map Button and Profile */}
+      <div className="flex items-center gap-4">
+        {/* Add Map Button */}
+        <PurpleButton
+          paddingLeft={'pl-4'}
+          paddingRight={'pr-4'}
+          roundedCorners={'rounded-lg'}
+          color={'bg-green-600'}
+          clickCallBack={onAddMapClick}
+        >
+          <div className="flex items-center gap-2 text-white">
+            <span className="text-lg">+</span>
+            <span className="text-sm font-medium">Add Map</span>
           </div>
-        ))}
+        </PurpleButton>
+        
+        {/* Profile Dropdown */}
+        <ProfileDropdown />
       </div>
     </div>
   );

@@ -19,6 +19,10 @@ namespace ClimbWithFriendsAPI.Data
         [EmailAddress] // Ensures the format of this field is a valid email
         public string Email { get; set; } = string.Empty;
 
+        public string? PreferredFirstName { get; set; } // New field for preferred first name
+
+        public string? PhoneNumber { get; set; } // New field for phone number
+
         public DateTime? CreatedAt { get; set; } // When the user was created
     }
 

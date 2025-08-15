@@ -482,10 +482,21 @@ export const gradeIcon = (
 
 export const dropDownStyles = (style: string) => {
   return style === 'gray'
-    ? 'flex items-center text-sm border-b border-zinc-900 bg-customGray cursor-pointer hover:bg-neutral-700 p-2 text-white '
+    ? 'flex items-center text-sm border-b border-gray-200 bg-white cursor-pointer hover:bg-gray-100 p-2 text-gray-800 '
     : style === 'white'
-      ? 'flex items-center text-sm border-b border-zinc-900 bg-white text-black cursor-pointer hover:bg-neutral-200 p-2 '
-      : 'flex items-center text-sm border-b border-customGray bg-zinc-900 cursor-pointer hover:bg-neutral-700 p-2 text-white ';
+      ? 'flex items-center text-sm border-b border-gray-200 bg-white text-gray-800 cursor-pointer hover:bg-gray-100 p-2 '
+      : style === 'zinc'
+      ? 'flex items-center text-sm border-b border-zinc-700 bg-customGray cursor-pointer hover:bg-neutral-700 p-2 text-white '
+      : 'flex items-center text-sm border-b border-gray-200 bg-white cursor-pointer hover:bg-gray-100 p-2 text-gray-800 ';
+};
+
+// Modal-specific dropdown styles for light theme
+export const modalDropDownStyles = (style: string) => {
+  return style === 'gray'
+    ? 'flex items-center text-sm border-b border-gray-200 bg-white cursor-pointer hover:bg-gray-100 p-2 text-gray-800 '
+    : style === 'white'
+      ? 'flex items-center text-sm border-b border-gray-200 bg-white text-gray-800 cursor-pointer hover:bg-gray-100 p-2 '
+      : 'flex items-center text-sm border-b border-gray-200 bg-white cursor-pointer hover:bg-gray-100 p-2 text-gray-800 ';
 };
 
 export const climbTypeDropDownStyle =
@@ -493,14 +504,26 @@ export const climbTypeDropDownStyle =
 export const stateDropDownStyle =
   'bg-customGray text-white font-semibold flex w-14 text-sm justify-between gap-1 items-center cursor-pointer rounded-r-xl p-2 z-10';
 
+// Modal-specific button styles for light theme
+export const modalClimbTypeDropDownStyle =
+  'bg-white text-gray-800 flex font-semibold text-sm w-[84px] justify-between gap-1 items-center cursor-pointer rounded-l-xl p-2 z-10 border border-gray-300';
+export const modalStateDropDownStyle =
+  'bg-white text-gray-800 font-semibold flex w-14 text-sm justify-between gap-1 items-center cursor-pointer rounded-r-xl p-2 z-10 border border-gray-300';
+
 export const basicDropDownStyleContainer = (
+  width: string,
+  height: string = 'max-h-48',
+) =>
+  `${width} text-gray-800 rounded-md border border-gray-200 bg-white ${height} overflow-y-scroll shadow-lg`;
+
+export const darkDropDownStyleContainer = (
   width: string,
   height: string = 'max-h-48',
 ) =>
   `${width} text-white rounded-md border border-neutral-700 bg-customGray ${height} overflow-y-scroll`;
 
 export const searchDropDownStyleContainer =
-  'w-14 border border-slate-500 rounded-md bg-customGray w-96 overflow-hidden max-h-48 overflow-y-scroll';
+  'w-14 border border-gray-200 rounded-md bg-white w-96 overflow-hidden max-h-48 overflow-y-scroll shadow-lg';
 
 export const profileIcon = (
   <svg

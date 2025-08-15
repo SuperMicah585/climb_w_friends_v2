@@ -36,13 +36,13 @@ const ZincModal: React.FC<ModalProps> = ({
     >
       <div
         onClick={(event) => event.stopPropagation()}
-        className={`shadow-opacity-50 relative flex h-1/2 min-h-96 w-1/2 min-w-96 ${maxHeight + ' ' + maxWidth} flex-col items-start gap-2 overflow-y-scroll rounded-lg ${bgColor ? bgColor : 'bg-zinc-900'} pb-5 pl-5 pr-5 pt-5 shadow-sm`}
+        className={`shadow-opacity-50 relative flex h-1/2 min-h-96 w-1/2 min-w-96 ${maxHeight + ' ' + maxWidth} flex-col items-start gap-2 overflow-y-scroll rounded-lg ${bgColor ? bgColor : 'bg-gray-50'} pb-5 pl-5 pr-5 pt-5 shadow-sm`}
       >
         {children}
 
         <div
           onClick={() => closeModalCallBack(false)}
-          className={`absolute right-2 top-2 cursor-pointer rounded-full p-1 ${closeButtonColor ? closeButtonColor : 'text-white'}`}
+          className={`absolute right-2 top-2 cursor-pointer rounded-full p-1 ${closeButtonColor ? closeButtonColor : 'text-gray-700'}`}
         >
           {' '}
           {closeIcon}{' '}

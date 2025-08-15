@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { MapObject } from '../../types/interfaces';
 import { Link } from 'react-router-dom';
 import AddMapComponent from './mapsComponents/addMapModal';
 import EditMapModal from './mapsComponents/editModal';
-import PurpleButton from '../../reusableComponents/genericButton';
+
 import { useAuth0 } from '@auth0/auth0-react';
 import ToastContainer from '../../reusableComponents/toastContainer';
 import AddFriendModal from './mapsComponents/addFriendModal';
@@ -20,8 +20,15 @@ import {
 interface MapProps {
   setStatsTrigger: React.Dispatch<React.SetStateAction<number>>;
 }
-const Maps: React.FC<MapProps> = ({ setStatsTrigger }) => {
+
+export interface MapsRef {
+  handleSearchChange: (searchTerm: string) => void;
+  handleAddMapClick: () => void;
+}
+
+const Maps = forwardRef<MapsRef, MapProps>(({ setStatsTrigger }, ref) => {
   const [mapObject, setMapObject] = useState<MapObject[]>([]);
+  const [filteredMaps, setFilteredMaps] = useState<MapObject[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [editFriendTrigger, setEditFriendTrigger] = useState(false);
   const [editMapTrigger, setEditMapTrigger] = useState(false);
@@ -41,6 +48,35 @@ const Maps: React.FC<MapProps> = ({ setStatsTrigger }) => {
   const [mapId, setMapId] = useState<number>(0);
   const domain = import.meta.env.VITE_DOMAIN;
   const { user } = useAuth0();
+
+  // Expose methods through ref
+  useImperativeHandle(ref, () => ({
+    handleSearchChange,
+    handleAddMapClick,
+  }));
+
+  // Search functionality
+  const handleSearchChange = (searchTerm: string) => {
+    if (searchTerm.trim() === '') {
+      setFilteredMaps(mapObject);
+    } else {
+      const filtered = mapObject.filter(map => 
+        map.mapName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        map.description?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredMaps(filtered);
+    }
+  };
+
+  // Add Map button handler
+  const handleAddMapClick = () => {
+    setAddMapTrigger(true);
+  };
+
+  // Update filtered maps when mapObject changes
+  useEffect(() => {
+    setFilteredMaps(mapObject);
+  }, [mapObject]);
 
   const closeFriendModalCallBack = () => {
     if (user?.sub) {
@@ -99,6 +135,7 @@ const Maps: React.FC<MapProps> = ({ setStatsTrigger }) => {
       const mapsWithUsers = await retrieveMapsAndUsers(mapsJson);
 
       setMapObject(mapsWithUsers);
+      setFilteredMaps(mapsWithUsers); // Initialize filtered maps
     } catch (error: any) {
       console.error(error.message);
     } finally {
@@ -127,6 +164,7 @@ const Maps: React.FC<MapProps> = ({ setStatsTrigger }) => {
       if (combinedObject) {
         ('toast');
         setMapObject((prev) => [...prev, combinedObject.map]);
+        setFilteredMaps((prev) => [...prev, combinedObject.map]); // Update filtered maps
 
         ////----->Toast
         setToastType('success');
@@ -165,6 +203,11 @@ const Maps: React.FC<MapProps> = ({ setStatsTrigger }) => {
             item.mapId === mapItem.mapId ? false : true,
           ),
         );
+        setFilteredMaps((prev) =>
+          prev.filter((mapItem) =>
+            item.mapId === mapItem.mapId ? false : true,
+          ),
+        );
 
         ////----->Toast
         setToastType('success');
@@ -196,6 +239,17 @@ const Maps: React.FC<MapProps> = ({ setStatsTrigger }) => {
             : mapItem,
         ),
       );
+      setFilteredMaps((prev) =>
+        prev.map((mapItem) =>
+          mapItem.mapId === item.mapId
+            ? {
+                ...mapItem,
+                mapName: item.mapName,
+                description: item.description,
+              }
+            : mapItem,
+        ),
+      );
 
       ////----->Toast
       setToastType('success');
@@ -209,9 +263,6 @@ const Maps: React.FC<MapProps> = ({ setStatsTrigger }) => {
     }
   };
 
-  const AddMapButtonTrigger = () => {
-    setAddMapTrigger(true);
-  };
   return (
     <>
       <ToastContainer
@@ -221,23 +272,20 @@ const Maps: React.FC<MapProps> = ({ setStatsTrigger }) => {
         message={toastMessage}
       />
 
-      <div className="absolute top-80 z-10 flex w-full items-center justify-center">
-        <PurpleButton
-          paddingLeft={'pl-5'}
-          paddingRight={'pr-5'}
-          roundedCorners={'rounded-full'}
-          color={'bg-green-600'}
-          clickCallBack={AddMapButtonTrigger}
-        >
-          <div className="text-3xl text-white"> Add Map</div>
-        </PurpleButton>
-      </div>
+
       <div className="border-box 10 relative z-10 w-screen flex-grow pl-10 pr-10">
         <div className="flex justify-center">
           <div className="flex flex-col">
                          <LoadingOverlay className = "mt-10 z-10" isLoading={isLoading} text="Loading maps..." overlay={true} transparency="medium" color="gray">
-              <div className="mt-5 grid w-screen max-w-[1800px] grid-cols-1 gap-6 pl-10 pr-10 md:pl-20 md:pr-20 lg:grid-cols-2 lg:pl-40 lg:pr-40 xl:grid-cols-3">
-                {mapObject.map((item) => (
+              {filteredMaps.length === 0 && !isLoading ? (
+                <div className="mt-20 flex flex-col items-center justify-center text-center">
+                  <div className="text-6xl mb-4 text-gray-300">🗺️</div>
+                  <h3 className="text-xl font-semibold text-gray-600 mb-2">No maps found</h3>
+                  <p className="text-gray-500 mb-6">You don't have any active maps yet. Create your first map to get started!</p>
+                </div>
+              ) : (
+                <div className="mt-5 grid w-screen max-w-[1800px] grid-cols-1 gap-6 pl-10 pr-10 md:pl-20 md:pr-20 lg:grid-cols-2 lg:pl-40 lg:pr-40 xl:grid-cols-3">
+                  {filteredMaps.map((item) => (
                   <div key={item.mapId} className="relative w-full">
                     <Link to={`/maps/${item.mapId}`} className="block">
                       <div className="relative bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group overflow-hidden h-80">
@@ -320,6 +368,7 @@ const Maps: React.FC<MapProps> = ({ setStatsTrigger }) => {
                   </div>
                 ))}
               </div>
+              )}
             </LoadingOverlay>
           </div>
         </div>
@@ -349,5 +398,6 @@ const Maps: React.FC<MapProps> = ({ setStatsTrigger }) => {
       ) : null}
     </>
   );
-};
+});
+
 export default Maps;

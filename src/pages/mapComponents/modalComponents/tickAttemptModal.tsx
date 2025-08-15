@@ -225,10 +225,10 @@ const TickAttemptModal: React.FC<TickAttemptModalProps> = ({
       maxWidth="w-[80vw]"
     >
       <div className="w-full h-full flex flex-col">
-        <h2 className="text-3xl font-bold text-white mb-6">Map Climbing Activity</h2>
+        <h2 className="text-3xl font-bold text-gray-800 mb-6">Map Climbing Activity</h2>
         
         {/* Search Input */}
-        <div className="mb-6 border-b border-neutral-500 pb-5">
+        <div className="mb-6 border-b border-gray-300 pb-5">
           <Input
             paddingLeft={'pl-4'}
             handleSearch={handleSearch}
@@ -246,23 +246,23 @@ const TickAttemptModal: React.FC<TickAttemptModalProps> = ({
               {filteredData.map((climb) => (
                 <div
                   key={climb.climbId}
-                  className="relative mt-5 flex w-full flex-col gap-2 rounded-md bg-customGray p-10 text-black shadow-sm shadow-white"
+                  className="relative mt-5 flex w-full flex-col gap-2 rounded-md bg-white p-10 text-gray-800 shadow-sm border border-gray-200"
                 >
                   <div className="mb-4">
-                    <h3 className="text-xl font-bold text-white mb-1">
+                    <h3 className="text-xl font-bold text-gray-800 mb-1">
                       {climb.climbName}
                     </h3>
-                    <div className="flex items-center gap-4 text-sm text-white">
-                      <span className="bg-zinc-700 px-2 py-1 rounded">
+                    <div className="flex items-center gap-4 text-sm text-gray-700">
+                      <span className="bg-gray-200 px-2 py-1 rounded">
                         {climb.rating}
                       </span>
-                      <span className="bg-zinc-700 px-2 py-1 rounded">
+                      <span className="bg-gray-200 px-2 py-1 rounded">
                         {climb.climbType}
                       </span>
-                      <span className="text-green-500">
+                      <span className="text-green-600">
                         {climb.ticks.length} Tick{climb.ticks.length !== 1 ? 's' : ''}
                       </span>
-                      <span className="text-amber-500">
+                      <span className="text-amber-600">
                         {climb.attempts.length} Attempt{climb.attempts.length !== 1 ? 's' : ''}
                       </span>
                     </div>
@@ -271,7 +271,7 @@ const TickAttemptModal: React.FC<TickAttemptModalProps> = ({
                   {/* Ticks Section */}
                   {climb.ticks.length > 0 && (
                     <div className="mb-4">
-                      <h4 className="text-lg font-semibold text-green-500 mb-2 flex items-center gap-2">
+                      <h4 className="text-lg font-semibold text-green-600 mb-2 flex items-center gap-2">
                         <svg
                           className="w-5 h-5"
                           fill="currentColor"
@@ -289,14 +289,14 @@ const TickAttemptModal: React.FC<TickAttemptModalProps> = ({
                         {climb.ticks.map((tick) => (
                           <div
                             key={tick.tickId}
-                            className="bg-zinc-700 rounded p-3 border-l-4 border-green-500"
+                            className="bg-gray-100 rounded p-3 border-l-4 border-green-500"
                           >
                             <div className="flex justify-between items-start mb-2">
                               <div className="flex items-center gap-2">
-                                <span className="font-semibold text-white">
+                                <span className="font-semibold text-gray-800">
                                   {tick.user.name || tick.user.username}
                                 </span>
-                                <span className="text-sm text-white">
+                                <span className="text-sm text-gray-600">
                                   {tick.attempts} attempt{tick.attempts !== '1' ? 's' : ''}
                                 </span>
                               </div>
@@ -305,9 +305,9 @@ const TickAttemptModal: React.FC<TickAttemptModalProps> = ({
                               </span>
                             </div>
                             {tick.notes && (
-                              <p className="text-white text-sm mb-2">{tick.notes}</p>
+                              <p className="text-gray-800 text-sm mb-2">{tick.notes}</p>
                             )}
-                            <div className="text-xs text-white">
+                            <div className="text-xs text-gray-600">
                               {formatDate(tick.createdAt)}
                             </div>
                           </div>
@@ -319,7 +319,7 @@ const TickAttemptModal: React.FC<TickAttemptModalProps> = ({
                   {/* Attempts Section */}
                   {climb.attempts.length > 0 && (
                     <div>
-                      <h4 className="text-lg font-semibold text-amber-500 mb-2 flex items-center gap-2">
+                      <h4 className="text-lg font-semibold text-amber-600 mb-2 flex items-center gap-2">
                         <svg
                           className="w-5 h-5"
                           fill="currentColor"
@@ -337,14 +337,14 @@ const TickAttemptModal: React.FC<TickAttemptModalProps> = ({
                         {climb.attempts.map((attempt) => (
                           <div
                             key={attempt.attemptId}
-                            className="bg-zinc-700 rounded p-3 border-l-4 border-amber-500"
+                            className="bg-gray-100 rounded p-3 border-l-4 border-amber-500"
                           >
                             <div className="flex justify-between items-start mb-2">
                               <div className="flex items-center gap-2">
-                                <span className="font-semibold text-white">
+                                <span className="font-semibold text-gray-800">
                                   {attempt.user.name || attempt.user.username}
                                 </span>
-                                <span className="text-sm text-white">
+                                <span className="text-sm text-gray-600">
                                   {attempt.attempts} attempt{attempt.attempts !== '1' ? 's' : ''}
                                 </span>
                               </div>
@@ -353,9 +353,9 @@ const TickAttemptModal: React.FC<TickAttemptModalProps> = ({
                               </span>
                             </div>
                             {attempt.notes && (
-                              <p className="text-white text-sm mb-2">{attempt.notes}</p>
+                              <p className="text-gray-800 text-sm mb-2">{attempt.notes}</p>
                             )}
-                            <div className="text-xs text-white">
+                            <div className="text-xs text-gray-600">
                               {formatDate(attempt.createdAt)}
                             </div>
                           </div>

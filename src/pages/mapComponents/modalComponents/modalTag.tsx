@@ -113,7 +113,7 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
           <div className="mt-8 flex flex-col gap-10 overflow-y-scroll p-1">
             <div className="flex flex-col gap-10">
               <div className="flex flex-col gap-5">
-                <div className="text-lg font-semibold text-white"> Add Tag</div>
+                <div className="text-lg font-semibold text-gray-800"> Add Tag</div>
 
                 <div className="flex items-center gap-5">
                   <form onSubmit={handleSubmit}>
@@ -124,7 +124,7 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
                       }}
                       placeholder="Type to Add Tag"
                       value={tagName}
-                      className={`h-12 w-48 rounded-xl ${!tagNameValid ? 'border-2 border-red-500' : 'border border-slate-400'} bg-zinc-900 p-2 text-lg focus:outline-none focus:ring-1 focus:ring-violet-500`}
+                      className={`h-12 w-48 rounded-xl ${!tagNameValid ? 'border-2 border-red-500' : 'border border-gray-300'} bg-white p-2 text-lg text-gray-800 focus:outline-none focus:ring-1 focus:ring-violet-500`}
                     />
                   </form>
 
@@ -134,7 +134,7 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
                       paddingTop="pt-3"
                       paddingLeft="pl-5"
                       paddingRight="pr-5"
-                      roundedCorners="rounded-full"
+                      roundedCorners="rounded-lg"
                     >
                       {' '}
                       Add Tag{' '}
@@ -144,7 +144,7 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
               </div>
 
               <div className="flex flex-col gap-5">
-                <div className="text-lg font-semibold text-white"> Tags</div>
+                <div className="text-lg font-semibold text-gray-800"> Tags</div>
                 <div className="flex flex-wrap gap-2">
                   {modifiedTags && modifiedTags.length > 0 ? (
                     modifiedTags.map((item) => (
@@ -154,13 +154,13 @@ const AddMapComponent: React.FC<AddMapComponentInterface> = ({
                         item={item}
                       >
                         {' '}
-                        <div className="flex cursor-pointer rounded-md border-2 border-green-900 bg-green-600 p-1 text-center text-sm hover:opacity-75">
+                        <div className="flex cursor-pointer rounded-md border-2 border-green-300 bg-green-200 p-1 text-center text-sm text-green-800 hover:opacity-75">
                           {item.tagName}{' '}
                         </div>{' '}
                       </Tooltip>
                     ))
                   ) : (
-                    <div className="text-neutral-400 text-sm italic">
+                    <div className="text-gray-500 text-sm italic">
                       No tags have been added yet
                     </div>
                   )}

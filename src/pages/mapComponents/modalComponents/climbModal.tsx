@@ -275,31 +275,30 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
         />
         <LoadingOverlay className = 'w-full h-full' isLoading = {isLoading || loading} text = "loading..."> 
         <div className="w-full">
-          <div className="w-full rounded-md bg-zinc-900">
-            {climbObject
-              .filter((item: ClimbWithDependencies) =>
-                item.climb?.climbName
-                  .toLowerCase()
-                  .includes(routeFilterString.toLowerCase()),
-              )
+          {climbObject
+            .filter((item: ClimbWithDependencies) =>
+              item.climb?.climbName
+                .toLowerCase()
+                .includes(routeFilterString.toLowerCase()),
+            )
 
-              .sort((a, b) => {
-                if (sortString === 'Order By Grade DESC') {
-                  return compareGrades(b.climb?.rating, a.climb?.rating);
-                } else if (sortString === 'Order By Grade ASC') {
-                  return compareGrades(a.climb?.rating, b.climb?.rating);
-                }
-                return 0;
-              })
+            .sort((a, b) => {
+              if (sortString === 'Order By Grade DESC') {
+                return compareGrades(b.climb?.rating, a.climb?.rating);
+              } else if (sortString === 'Order By Grade ASC') {
+                return compareGrades(a.climb?.rating, b.climb?.rating);
+              }
+              return 0;
+            })
 
-              .map((item: ClimbWithDependencies) => (
-                <div
-                  key={item.climb.climbId}
-                  className="relative mt-5 flex w-full flex-col gap-2 rounded-md bg-customGray p-10 text-black shadow-sm shadow-white"
-                >
+            .map((item: ClimbWithDependencies) => (
+              <div
+                key={item.climb.climbId}
+                className="relative mt-5 flex w-full flex-col gap-2 rounded-md bg-white p-10 text-gray-800 shadow-sm border border-gray-200"
+              >
                   <div
                     onClick={() => mp_page(item)}
-                    className="absolute left-2 top-1 cursor-pointer rounded-lg p-1 text-neutral-500 hover:bg-slate-500 hover:text-neutral-400 hover:opacity-75"
+                    className="absolute left-2 top-1 cursor-pointer rounded-lg p-1 text-gray-500 hover:bg-gray-200 hover:text-gray-700 hover:opacity-75"
                   >
                     {' '}
                     {newWindowIcon}{' '}
@@ -335,23 +334,23 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                     type="climb"
                   />
 
-                  <div className="mt-5 flex items-center gap-5 font-semibold text-white">
+                  <div className="mt-5 flex items-center gap-5 font-semibold text-gray-800">
                     <div className="">{item.climb.climbName}</div>
-                    <div className="white border-r"></div>
+                    <div className="border-r border-gray-300"></div>
                     <div className="flex items-center gap-1 flex-shrink-0">
                       <div className="w-4 h-4 flex-shrink-0">
                         {gradeIcon}
                       </div>
                       {item.climb.rating}
                     </div>
-                    <div className="white border-r"></div>
+                    <div className="border-r border-gray-300"></div>
                     <div className="text-sm italic flex-shrink-0">
                       {item.climb.climbType}
                     </div>
                   </div>
 
                   {item.associatedAt && (
-                    <div className="flex items-center gap-1 text-xs text-neutral-400 italic">
+                    <div className="flex items-center gap-1 text-xs text-gray-500 italic">
                       <div className="w-4 h-4 flex-shrink-0">
                         {calendarIcon}
                       </div>
@@ -359,13 +358,13 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                     </div>
                   )}
 
-                  <div className="flex items-center gap-1 text-xs text-white">
+                  <div className="flex items-center gap-1 text-xs text-gray-700">
                     <div className="w-4 h-4 flex-shrink-0">
                       {locationIcon}
                     </div>
                     {item.climb.location}
                   </div>
-                  <div className="mt-2 flex min-h-8 items-center gap-2 text-xs font-bold text-white">
+                  <div className="mt-2 flex min-h-8 items-center gap-2 text-xs font-bold text-gray-800">
                     <div className="flex items-center gap-1 flex-shrink-0">
                       <div className="w-4 h-4 flex-shrink-0">
                         {usersIcon}
@@ -375,13 +374,13 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                     {item.userObjectForFeature?.map((item, index) => (
                       <div
                         key={index}
-                        className="rounded-md border-2 border-violet-900 bg-violet-600 p-1"
+                        className="rounded-md border-2 border-violet-300 bg-violet-200 p-1 text-violet-800"
                       >
                         {item.username}
                       </div>
                     ))}
                   </div>
-                  <div className="mt-2 flex min-h-8 w-2/3 flex-wrap items-center gap-2 text-xs font-bold text-white">
+                  <div className="mt-2 flex min-h-8 w-2/3 flex-wrap items-center gap-2 text-xs font-bold text-gray-800">
                     <div className="flex items-start gap-2 flex-shrink-0">
                       <div className="w-4 h-4 flex-shrink-0">
                         {tagIcon}
@@ -395,7 +394,7 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                             item={tagsOnClimb}
                             key={tagsOnClimb.tagId}
                           >
-                            <div className="rounded-md border-2 border-green-900 bg-green-600 p-1 text-white hover:opacity-75">
+                            <div className="rounded-md border-2 border-green-300 bg-green-200 p-1 text-green-800 hover:opacity-75">
                               {tagsOnClimb.tagName}
                             </div>
                           </Tooltip>
@@ -404,7 +403,6 @@ const ClimbModal: React.FC<ClimbModalProps> = ({
                   </div>
                 </div>
               ))}
-          </div>
         </div>
         </LoadingOverlay>
       </ZincModal>

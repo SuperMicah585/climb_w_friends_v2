@@ -153,7 +153,8 @@ const TickClimbsComponent: React.FC<TickClimbsComponent> = ({
     <div className="absolute right-0 top-0">
       {setDropDownItemsState === true ? (
         <DownDrop
-          color="zinc"
+          color="gray"
+          theme="light"
           ref={downDropRef}
           downDropWidth="w-36"
           setSelectedFilterCallBack={setSelectedTickCallBack}

@@ -61,7 +61,7 @@ const ModalSearch: React.FC<ModalSearchProps> = ({
   };
 
   return (
-    <div className="flex w-full items-center gap-10 border-b border-neutral-500 pb-5">
+    <div className="flex w-full items-center gap-10 border-b border-gray-300 pb-5">
       <div className="relative flex max-w-96 flex-grow items-center">
         <Input
           paddingLeft={'pl-5'}
@@ -72,7 +72,7 @@ const ModalSearch: React.FC<ModalSearchProps> = ({
         <div
           ref={filterIconDownRef}
           onClick={() => setDropDownToggle((prev) => !prev)}
-          className="absolute right-3 cursor-pointer rounded-full p-1 text-white opacity-75 hover:bg-slate-500 hover:opacity-100"
+          className="absolute right-3 cursor-pointer rounded-full p-1 text-gray-600 opacity-75 hover:bg-gray-200 hover:opacity-100"
         >
           {' '}
           {filterIcon}
@@ -83,7 +83,8 @@ const ModalSearch: React.FC<ModalSearchProps> = ({
             setDropDownToggleCallBack={setDropDownToggleCallBack}
             setSelectedFilterCallBack={setSelectedFilterCallBack}
             filterTypes={filterTypes}
-            color="zinc"
+            color="gray"
+            theme="light"
             downDropWidth={'w-50'}
             ref={filterDropDownRef}
           />

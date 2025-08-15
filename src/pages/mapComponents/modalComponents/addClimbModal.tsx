@@ -449,7 +449,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
               paddingLeft={'pl-2'}
             />
           </div>
-          <div className="border-b border-neutral-500"> </div>
+          <div className="border-b border-gray-300"> </div>
         </div>
 
         {toggleSearchDropDown ? (
@@ -488,7 +488,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
               ) : (
                 <div
                   onClick={() => setToggleSearchDropDown(false)}
-                  className="flex w-96 items-center p-2 text-sm text-white"
+                  className="flex w-96 items-center p-2 text-sm text-gray-700"
                 >
                   No Results
                 </div>
@@ -504,51 +504,51 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
           {climbsArray.map((item) => (
             <div
               key={item.climb.climbId}
-              className="relative mt-5 flex flex-col gap-2 rounded-md bg-customGray p-10 text-black shadow-sm shadow-white"
+              className="relative mt-5 flex flex-col gap-2 rounded-md bg-white p-10 text-gray-800 shadow-sm border border-gray-200"
             >
               <div
                 onClick={() => mp_page(item.climb)}
-                className="absolute left-2 top-1 cursor-pointer rounded-lg p-1 text-neutral-500 hover:bg-slate-500 hover:text-neutral-400 hover:opacity-75"
+                className="absolute left-2 top-1 cursor-pointer rounded-lg p-1 text-gray-500 hover:bg-gray-200 hover:text-gray-700 hover:opacity-75"
               >
                 {' '}
                 {newWindowIcon}{' '}
               </div>
 
-              <div className="mt-5 flex items-center gap-5 font-semibold text-white">
+              <div className="mt-5 flex items-center gap-5 font-semibold text-gray-800">
                 <div className="">{item.climb.climbName}</div>
-                <div className="white border-r"></div>
+                <div className="border-r border-gray-300"></div>
                 <div className="flex items-center gap-1 flex-shrink-0">
                   <div className="w-4 h-4 flex-shrink-0">
                     {gradeIcon}
                   </div>
                   {item.climb.rating}
                 </div>
-                <div className="white border-r"></div>
+                <div className="border-r border-gray-300"></div>
                 <div className="text-sm italic flex-shrink-0">
                   {item.climb.climbType}
                 </div>
               </div>
 
-              <div className="flex items-center gap-1 text-xs text-white">
+              <div className="flex items-center gap-1 text-xs text-gray-800">
                 <div className="w-4 h-4 flex-shrink-0">
                   {locationIcon}
                 </div>
                 {item.climb.location}
               </div>
 
-              <div className="mt-2 flex min-h-8 items-center gap-2 text-xs font-bold text-white">
+              <div className="mt-2 flex min-h-8 items-center gap-2 text-xs font-bold text-gray-800">
                 <div className="flex items-center gap-1 flex-shrink-0">
                   <div className="w-4 h-4 flex-shrink-0">
                     {usersIcon}
                   </div>
                   Climbers:
                 </div>
-                <div className="rounded-md border-2 border-violet-900 bg-violet-600 p-1">
+                                  <div className="rounded-md border-2 border-violet-300 bg-violet-200 p-1 text-violet-800">
                   {item.userObjectForFeature?.map((item) => item.username)}
                 </div>
               </div>
 
-              <div className="mt-2 flex min-h-8 w-2/3 flex-wrap items-center gap-2 text-xs font-bold text-white">
+              <div className="mt-2 flex min-h-8 w-2/3 flex-wrap items-center gap-2 text-xs font-bold text-gray-800">
                 <div className="flex items-start gap-2 flex-shrink-0">
                   <div className="w-4 h-4 flex-shrink-0">
                     {tagIcon}
@@ -563,7 +563,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
                       >
                         <div
                           key={tagsOnClimb.tagId}
-                          className="rounded-md border-2 border-green-900 bg-green-600 p-1 text-white hover:opacity-75"
+                          className="rounded-md border-2 border-green-300 bg-green-200 p-1 text-green-800 hover:opacity-75"
                         >
                           {tagsOnClimb.tagName}
                         </div>
@@ -606,7 +606,7 @@ const AddClimbModal: React.FC<AddClimbsModalProps> = ({
             handleModalSubmit();
             isSubmitLoading(true);
           }}
-          className="absolute bottom-0 right-5 flex h-16 w-full items-center justify-end bg-zinc-900"
+          className="absolute bottom-0 right-5 flex h-16 w-full items-center justify-end bg-gray-100 border-t border-gray-200"
         >
           <PurpleButton>
             {submitLoading ? 'Loading...' : 'Add Climbs'}

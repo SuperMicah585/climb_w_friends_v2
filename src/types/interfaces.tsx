@@ -166,5 +166,7 @@ export interface userObject {
   username: string;
   name: string;
   email: string;
+  preferredFirstName?: string;
+  phoneNumber?: string;
   createdAt: string;
 }
